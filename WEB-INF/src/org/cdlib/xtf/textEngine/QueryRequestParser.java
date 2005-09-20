@@ -504,7 +504,7 @@ public class QueryRequestParser
             Query q;
             boolean isNot = false;
             if( el.name().equals("not") ) {
-                q = parseQuery2(el, name, field, maxSnippets);
+                q = parseQuery2(el, name, field, 0);
                 isNot = true;
             }
             else
