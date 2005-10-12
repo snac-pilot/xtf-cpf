@@ -3731,6 +3731,11 @@ public class XMLTextProcessor extends DefaultHandler
     //
     indexWriter.minMergeDocs = 100;
     
+    // We've been having some trouble with commit locks during indexing, so
+    // let's give a larger margin for overlap.
+    //
+    IndexWriter.COMMIT_LOCK_TIMEOUT = 60 * 1000;
+
     // Don't use compound files, since they can't be added to later.
     indexWriter.setUseCompoundFile( false );
     
