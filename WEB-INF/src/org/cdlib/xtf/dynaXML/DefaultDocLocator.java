@@ -36,7 +36,6 @@ import java.io.InputStream;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.transform.Templates;
-import javax.xml.transform.sax.SAXResult;
 
 import net.sf.saxon.event.Receiver;
 import net.sf.saxon.event.ReceivingContentHandler;
