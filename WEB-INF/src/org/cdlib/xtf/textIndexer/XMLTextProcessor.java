@@ -3736,8 +3736,13 @@ public class XMLTextProcessor extends DefaultHandler
     //
     IndexWriter.COMMIT_LOCK_TIMEOUT = 60 * 1000;
 
-    // Don't use compound files, since they can't be added to later.
-    indexWriter.setUseCompoundFile( false );
+    // Previously we were paranoid about using compound files, on the
+    // mistaken assumption that indexes could not be modified. This is
+    // not true... the modifications simply take place at the next merge,
+    // which is always the case in Lucene (compound or not.)
+    //
+    // Thus, do not do the following:
+    // NO NO NO: indexWriter.setUseCompoundFile( false );
     
   } // private openIdxForWriting()  
 
