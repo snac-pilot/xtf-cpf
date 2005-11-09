@@ -37,8 +37,6 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.lucene.chunk.DocNumMap;
-import org.apache.lucene.chunk.SpanChunkedNotQuery;
-import org.apache.lucene.chunk.SpanDechunkingQuery;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.limit.LimIndexReader;
 import org.apache.lucene.mark.SpanHitCollector;
@@ -49,10 +47,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SparseStringComparator;
-import org.apache.lucene.search.spans.SpanNearQuery;
-import org.apache.lucene.search.spans.SpanQuery;
-import org.apache.lucene.search.spans.SpanRangeQuery;
-import org.apache.lucene.search.spans.SpanWildcardQuery;
 import org.apache.lucene.util.PriorityQueue;
 import org.cdlib.xtf.textEngine.facet.FacetSpec;
 import org.cdlib.xtf.textEngine.facet.GroupCounts;
@@ -213,18 +207,18 @@ public class DefaultQueryProcessor extends QueryProcessor
             return result;
         }
         
-        final Query finalQuery = query;
-        if( finalQuery != req.query )
-            Trace.debug( "Rewritten query: " + finalQuery.toString() );
-
         // Fix up all the "infinite" slop entries to be actually limited to
         // the chunk overlap size. That way, we'll get consistent results and
         // the user won't be able to tell where the chunk boundaries are.
         //
-        fixupSlop( finalQuery, docNumMap, stopSet );
+        final Query finalQuery = new SlopFixupRewriter(docNumMap, stopSet).
+                                         rewriteQuery(query);
         
-        try 
-        {
+        // If debugging is enabled, print out the final rewritten and fixed
+        // up query.
+        //
+        if( finalQuery != req.query )
+            Trace.debug( "Rewritten query: " + finalQuery.toString() );
 
         // If grouping was specified by the query, read in all the group data.
         // Note that the GroupData class holds its own cache so we don't have
@@ -288,7 +282,7 @@ public class DefaultQueryProcessor extends QueryProcessor
                 collect( doc, score, null );
             }
         } );
-
+        
         // Take the high-ranking hits and add them to the hit vector.
         // Note that they come out of the hit queue in backwards order.
         //
@@ -331,7 +325,7 @@ public class DefaultQueryProcessor extends QueryProcessor
         // Done with that searcher
         searcher.close();
         searcher = null;
-
+        
         assert req.maxDocs < 0 || hitVec.size() <= req.maxDocs;
         
         // And we're done. Pack up the results into a tidy array.
@@ -341,12 +335,6 @@ public class DefaultQueryProcessor extends QueryProcessor
         result.docHits   = (DocHit[]) hitVec.toArray( new DocHit[hitVec.size()] );
         
         return result;
-
-        } // try
-        finally {
-            undoFixup( finalQuery );
-        }
-        
     } // processReq()
 
     /**
@@ -426,84 +414,7 @@ public class DefaultQueryProcessor extends QueryProcessor
         
     } // finishGroup()
     
-    /**
-     * After index parameters are known, this method should be called to
-     * update the slop parameters of queries that need to know. Also informs
-     * wildcard and range queries of the stopword set.
-     */
-    private void fixupSlop( Query query, DocNumMap docNumMap, Set stopSet )
-    {
-        // First, fix up this query if necessary.
-        boolean isText = (query instanceof SpanQuery) ?
-            ((SpanQuery)query).getField().equals("text") : false;
-            
-        if( query instanceof SpanNearQuery ) {
-            SpanNearQuery nq = (SpanNearQuery) query;
-            
-            // For text queries, set the max to the chunk overlap size. For
-            // meta-data fields, set it to the bump between multiple values
-            // for the same field, *minus one* to prevent matches across the
-            // boundary.
-            //
-            int maxSlop = isText ? docNumMap.getChunkOverlap() : (1000000-1);
-            nq.setSlop( Math.min(nq.getSlop(), maxSlop) );
-        }
-        else if( query instanceof SpanChunkedNotQuery ) {
-            SpanChunkedNotQuery nq = (SpanChunkedNotQuery) query;
-            nq.setSlop( 
-                Math.min(nq.getSlop(), docNumMap.getChunkOverlap()),
-                docNumMap.getChunkSize() - docNumMap.getChunkOverlap() ); 
-        }
-        else if( query instanceof SpanDechunkingQuery ) {
-            SpanDechunkingQuery dq = (SpanDechunkingQuery) query;
-            dq.setDocNumMap( docNumMap );
-        }
-        else if( query instanceof SpanWildcardQuery ) {
-            SpanWildcardQuery wq = (SpanWildcardQuery) query;
-            wq.setStopWords( stopSet );
-        }
-        else if( query instanceof SpanRangeQuery ) {
-            SpanRangeQuery rq = (SpanRangeQuery) query;
-            rq.setStopWords( stopSet );
-        }
-        
-        // Now process any sub-queries it has.
-        Query[] subQueries = query.getSubQueries();
-        if( subQueries != null ) {
-            for( int i = 0; i < subQueries.length; i++ )
-                fixupSlop( subQueries[i], docNumMap, stopSet );
-        }
-    } // fixupSlop()
-    
-    /**
-     * Undo attachments between the query and the query processor, to avoid
-     * 'unintended object retention', i.e. a memory leak.
-     *
-     * In the next version, this will be done properly with query rewriting.
-     */
-    private void undoFixup( Query query )
-    {
-        if( query instanceof SpanDechunkingQuery ) {
-            SpanDechunkingQuery dq = (SpanDechunkingQuery) query;
-            dq.setDocNumMap( null );
-        }
-        else if( query instanceof SpanWildcardQuery ) {
-            SpanWildcardQuery wq = (SpanWildcardQuery) query;
-            wq.setStopWords( null );
-        }
-        else if( query instanceof SpanRangeQuery ) {
-            SpanRangeQuery rq = (SpanRangeQuery) query;
-            rq.setStopWords( null );
-        }
-        
-        // Now process any sub-queries it has.
-        Query[] subQueries = query.getSubQueries();
-        if( subQueries != null ) {
-            for( int i = 0; i < subQueries.length; i++ )
-                undoFixup( subQueries[i] );
-        }
-    } // undoFixup()
-    
+
     /**
      * QueryProcessor maintains a static cache of Lucene searchers, one for
      * each index directory. If data is changed, normally it's not recognized
