@@ -223,6 +223,9 @@ public class DefaultQueryProcessor extends QueryProcessor
         //
         fixupSlop( finalQuery, docNumMap, stopSet );
         
+        try 
+        {
+
         // If grouping was specified by the query, read in all the group data.
         // Note that the GroupData class holds its own cache so we don't have
         // to read data for a given field more than once.
@@ -285,7 +288,7 @@ public class DefaultQueryProcessor extends QueryProcessor
                 collect( doc, score, null );
             }
         } );
-        
+
         // Take the high-ranking hits and add them to the hit vector.
         // Note that they come out of the hit queue in backwards order.
         //
@@ -328,7 +331,7 @@ public class DefaultQueryProcessor extends QueryProcessor
         // Done with that searcher
         searcher.close();
         searcher = null;
-        
+
         assert req.maxDocs < 0 || hitVec.size() <= req.maxDocs;
         
         // And we're done. Pack up the results into a tidy array.
@@ -338,6 +341,12 @@ public class DefaultQueryProcessor extends QueryProcessor
         result.docHits   = (DocHit[]) hitVec.toArray( new DocHit[hitVec.size()] );
         
         return result;
+
+        } // try
+        finally {
+            undoFixup( finalQuery );
+        }
+        
     } // processReq()
 
     /**
@@ -465,6 +474,35 @@ public class DefaultQueryProcessor extends QueryProcessor
                 fixupSlop( subQueries[i], docNumMap, stopSet );
         }
     } // fixupSlop()
+    
+    /**
+     * Undo attachments between the query and the query processor, to avoid
+     * 'unintended object retention', i.e. a memory leak.
+     *
+     * In the next version, this will be done properly with query rewriting.
+     */
+    private void undoFixup( Query query )
+    {
+        if( query instanceof SpanDechunkingQuery ) {
+            SpanDechunkingQuery dq = (SpanDechunkingQuery) query;
+            dq.setDocNumMap( null );
+        }
+        else if( query instanceof SpanWildcardQuery ) {
+            SpanWildcardQuery wq = (SpanWildcardQuery) query;
+            wq.setStopWords( null );
+        }
+        else if( query instanceof SpanRangeQuery ) {
+            SpanRangeQuery rq = (SpanRangeQuery) query;
+            rq.setStopWords( null );
+        }
+        
+        // Now process any sub-queries it has.
+        Query[] subQueries = query.getSubQueries();
+        if( subQueries != null ) {
+            for( int i = 0; i < subQueries.length; i++ )
+                undoFixup( subQueries[i] );
+        }
+    } // undoFixup()
     
     /**
      * QueryProcessor maintains a static cache of Lucene searchers, one for
