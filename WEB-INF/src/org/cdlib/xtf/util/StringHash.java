@@ -30,13 +30,13 @@ package org.cdlib.xtf.util;
  */
 
 /**
- * A fast but inflexible hash table where the keys are integers and the size
+ * A fast but inflexible hash table where the keys are strings and the size
  * is fixed. Handles consecutive keys gracefully, but doesn't support resizing,
  * deletion, or iteration.
  * 
  * @author Martin Haye
  */
-public class IntHash
+public class StringHash
 {
     private final int hashSize;
     private final Ent[] ents;
@@ -49,7 +49,7 @@ public class IntHash
      * 
      * @param size  Max # of entries
      */
-    public IntHash( int maxSize )
+    public StringHash( int maxSize )
     {
         this.hashSize = Prime.findAfter( maxSize*2 );
         ents = new Ent[hashSize];
@@ -62,17 +62,20 @@ public class IntHash
      * value is replaced. Using null for the value can be useful if one only
      * needs to check for key presence using contains(). 
      */
-    public void put( int key, Object val )
+    public void put( String key, Object val )
     {
-        int bucket = key % hashSize;
+        int bucket = hashSlot( key );
         
         // Is there already an entry for this key?
         Ent e;
+        int count = 0;
         for( e = ents[bucket]; e != null; e = e.next ) {
-            if( key == e.key ) {
+            if( key.equals(e.key) ) {
                 e.val = val;
                 return;
             }
+            count++;
+            assert count < 10;
         } // for e
         
         // Okay, make a new entry
@@ -88,14 +91,24 @@ public class IntHash
         ++curSize;
     } // put()
     
-   
+    
+    /** Calculate the hash slot for a given key */
+    private final int hashSlot( String key )
+    {
+        int code = key.hashCode();
+        if( code >= 0 )
+            return code % hashSize;
+        return (-code) % hashSize;
+    } // hash()
+    
+          
     /**
      * Checks if the hash contains an entry for the given key.
      */
-    public boolean contains( int key )
+    public boolean contains( String key )
     {
-        for( Ent e = ents[key%hashSize]; e != null; e = e.next )
-            if( key == e.key )
+        for( Ent e = ents[hashSlot(key)]; e != null; e = e.next )
+            if( key.equals(e.key) )
                 return true;
         return false;
     } // contains()
@@ -107,10 +120,10 @@ public class IntHash
      * @param key   Key to look for
      * @return      The associated value, or null if not found.
      */
-    public Object get( int key )
+    public Object get( String key )
     {
-        for( Ent e = ents[key%hashSize]; e != null; e = e.next )
-            if( key == e.key )
+        for( Ent e = ents[hashSlot(key)]; e != null; e = e.next )
+            if( key.equals(e.key) )
                 return e.val;
         return null;
     } // get()
@@ -129,7 +142,7 @@ public class IntHash
      */
     private class Ent
     {
-        int    key;
+        String key;
         Object val;
         Ent    next;
     } // private class Ent
@@ -138,29 +151,29 @@ public class IntHash
     /**
      * Basic regression test
      */
-    public static final Tester tester = new Tester("IntHash") {
+    public static final Tester tester = new Tester("StringHash") {
         protected void testImpl() {
-            IntHash hash = new IntHash( 5 );
+            StringHash hash = new StringHash( 5 );
             
-            hash.put( 100, "hello" );
-            assert hash.contains(100);
-            assert !hash.contains(111);
-            assert hash.get(100).equals("hello");
+            hash.put( "100", "hello" );
+            assert hash.contains("100");
+            assert !hash.contains("111");
+            assert hash.get("100").equals("hello");
             assert hash.size() == 1;
             
-            hash.put( 200, "foo" );
-            hash.put( 211, "bar" );
-            assert hash.contains(100);
-            assert hash.contains(200);
-            assert hash.contains(211);
-            assert !hash.contains(111);
-            assert !hash.contains(212);
+            hash.put( "200", "foo" );
+            hash.put( "211", "bar" );
+            assert hash.contains("100");
+            assert hash.contains("200");
+            assert hash.contains("211");
+            assert !hash.contains("111");
+            assert !hash.contains("212");
             assert hash.size() == 3;
             
-            assert hash.get(100).equals("hello");
-            assert hash.get(200).equals("foo");
-            assert hash.get(211).equals("bar");
+            assert hash.get("100").equals("hello");
+            assert hash.get("200").equals("foo");
+            assert hash.get("211").equals("bar");
         } // testImpl()
     };
     
-} // class Inthash
+} // class StringHash
