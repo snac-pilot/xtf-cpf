@@ -222,10 +222,6 @@ public class DynaXML extends TextServlet
     public void doGet( HttpServletRequest req, HttpServletResponse res )
         throws IOException
     {
-        long reqStartTime = 0;
-        if( config == null || config.reportLatency )
-            reqStartTime = System.currentTimeMillis();
-        
         try {
 
             // Get the parameters out of the request structure.
@@ -286,13 +282,6 @@ public class DynaXML extends TextServlet
         catch( Exception e ) {
             genErrorPage( req, res, e );
             return;
-        }
-        finally {
-            if( config.reportLatency ) {
-                long latency = System.currentTimeMillis() - reqStartTime;
-                Trace.info( "Latency: " + latency + " msec for request: " +
-                    getRequestURL(req) );
-            }
         }
     } // doGet()
 
@@ -397,7 +386,7 @@ public class DynaXML extends TextServlet
         String raw = req.getParameter("raw");
         if( "yes".equals(raw) || "true".equals(raw) || "1".equals(raw) ) 
         {
-            res.setContentType("text/html");
+            res.setContentType("text/xml");
             
             transformer = IndexUtil.createTransformer();
             Properties props = transformer.getOutputProperties();
