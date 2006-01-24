@@ -45,6 +45,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
@@ -274,9 +275,28 @@ public abstract class TextServlet extends HttpServlet
         // If not initialized yet, do it now.
         String clearCaches = req.getParameter( "clear-caches" );
         firstTimeInit( "yes".equals(clearCaches) );
+
+        // If reporting latency, record the start time.
+        TextConfig config = getConfig();
+        long reqStartTime = 0;
+        if( config.reportLatency )
+            reqStartTime = System.currentTimeMillis();
+        
+        // If a latency cut-off is specified, substitute a counting output 
+        // stream.
+        //
+        String requestUrl = getRequestURL( req );
+        LatencyCutoffStream cutoffStream = null;
+        if( config.reportLatency && config.latencyCutoffSize > 0 ) {
+            cutoffStream = new LatencyCutoffStream( 
+                res.getOutputStream(),
+                config.latencyCutoffSize,
+                reqStartTime,
+                requestUrl );
+            res = new ResponseWrapper( res, cutoffStream );
+        }
         
         // Turn on runaway tracking if enabled.
-        TextConfig config = getConfig();
         boolean trackRunaway = (config.runawayNormalTime > 0) ||
                                (config.runawayKillTime   > 0);
         
@@ -288,11 +308,22 @@ public abstract class TextServlet extends HttpServlet
             }
             
             super.service( req, res );
+            
+            res.getOutputStream().flush();
         }
         finally {
             if( trackRunaway )
                 ThreadWatcher.endWatch();
-        }
+            
+            if( config.reportLatency ) {
+                long latency = System.currentTimeMillis() - reqStartTime;
+                boolean alreadyPrinted = (cutoffStream != null && 
+                                          cutoffStream.isReported());
+                String extraText = alreadyPrinted ? " (final)" : "";
+                Trace.info( "Latency" + extraText + ": " + latency + 
+                    " msec for request: " + requestUrl );
+            } // if
+        } // finally
         
     } // service()
     
@@ -1067,5 +1098,23 @@ public abstract class TextServlet extends HttpServlet
 
     } // genErrorPage()
 
+    
+    /** Wraps a servlet response, substituting a different output stream */
+    private class ResponseWrapper extends HttpServletResponseWrapper
+    {
+        private ServletOutputStream substOutStream;
+        
+        ResponseWrapper( HttpServletResponse toWrap,
+                         ServletOutputStream substOutStream )
+        {
+            super( toWrap );
+            this.substOutStream = substOutStream;
+        }
+        
+        public ServletOutputStream getOutputStream() throws IOException
+        {
+            return substOutStream;
+        }
+    } // class ResponseWrapper
 
 } // class TextServlet
