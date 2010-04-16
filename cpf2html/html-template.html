@@ -12,8 +12,8 @@
 
 /* identity section elements need to get closer than defaults */
 .identity h1 { margin-bottom: .3em; }
-.identity .id { padding: .3em; } 
-.identity .description {} /* right now a placeholder ul is pushing this into formation */
+.identity .id { margin-left: .3em; } 
+.identity .description { margin-left: .3em; } 
 
 /* .biogHist {} */
 
@@ -30,12 +30,13 @@
 
 <body>
 <div class="main">
-<div class="clear"><nbsp/></div>
+<div class="clear">&#160;</div>
 <div class="identity g960">
 <h1 tmpl:change-value="nameEntry-part">Eckart, Carl, 1902-</h1>
 <div tmpl:change-value="entityId" class="id">ID (SNAC): DLC.ms001014.c</div>
-<ul tmpl:change-value="dateRange" class="description"><li>date range</li></ul>
+<div tmpl:change-value="dateRange" class="description">date range</div>
 </div>
+<div class="clear">&#160;</div>
 
 <div class="description g160">
 <h2>Occupations</h2>
@@ -88,7 +89,7 @@
 </div>
  </div>
 
-<div class="clear"><nbsp/></div>
+<div class="clear">&#160;</div>
 <div>created with <a href="http://bitbucket.org/btingle/cpf2html">cpf2html</a></div>
  </div>
 </body>
