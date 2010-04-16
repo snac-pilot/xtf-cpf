@@ -1,0 +1,19 @@
+XSLT 2.0 stylesheet written by Brian Tingle http://www.cdlib.org/contact/staff_directory/btingle.html
+
+Input document is EAC-CPF http://eac.staatsbibliothek-berlin.de/
+
+Output Document is HTML
+
+uses the golden grid http://code.google.com/p/the-golden-grid/
+
+uses the Style-free XSLT Style Sheets style documented by Eric van
+der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
+
+xmlns:tmpl="xslt://template" attributes are used in the HTML template to indicate
+tranformed elements
+
+produced for the SNAC project http://www.iath.virginia.edu/news/news_snac_grant.html
+
+TODO: unit tests that validate the HTML and CSS
+
+TODO: build it based off of the schema (so far it is just based on one sample EAC)
