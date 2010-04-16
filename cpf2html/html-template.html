@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tmpl="xslt://template">
+<head>
+<link rel="stylesheet" href="golden-grid-css/reset-min.css" type="text/css" media="screen, projection"></link>
+<link rel="stylesheet" href="golden-grid-css/golden-min.css" type="text/css" media="screen, projection"></link>
+<link rel="stylesheet" href="golden-grid-css/typography-min.css" type="text/css" media="screen, projection"></link>
+<title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
+<style>
+/* body{background-color:#5582d1;} */
+
+/* css order tries to match source order basically */
+
+/* identity section elements need to get closer than defaults */
+.identity h1 { margin-bottom: .3em; }
+.identity .id { padding: .3em; } 
+.identity .description {} /* right now a placeholder ul is pushing this into formation */
+
+/* .biogHist {} */
+
+/* various relations need more space 
+   values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
+*/
+.relations div { margin-bottom: .2em; padding: .3em; }
+.relations h3 { margin-bottom: .441em; margin-top: .441em;}
+/* .person, .corporateBody, .resources {} */
+
+
+</style>
+</head>
+
+<body>
+<div class="main">
+<div class="clear"><nbsp/></div>
+<div class="identity g960">
+<h1 tmpl:change-value="nameEntry-part">Eckart, Carl, 1902-</h1>
+<div tmpl:change-value="entityId" class="id">ID (SNAC): DLC.ms001014.c</div>
+<ul tmpl:change-value="dateRange" class="description"><li>date range</li></ul>
+</div>
+
+<div class="description g160">
+<h2>Occupations</h2>
+<ul tmpl:replace-markup="occupations">
+<li>Educators.</li>
+<li>Oceanographers.</li>
+<li>Physicists.</li>
+</ul>
+
+<h2>Subjects</h2>
+<ul tmpl:replace-markup="localDescriptions">
+<li>Atomic bomb.</li>
+<li>Geophysics.</li>
+<li>Oceanography.</li>
+<li>Physics.</li>
+<li>Quantum theory.</li>
+<li>Science--History.</li>
+<li>Science--Societies, etc.</li>
+<li>Submarine warfare.</li>
+<li>Thermodynamics.</li>
+<li>Universities and colleges--California.</li>
+<li>Universities and colleges--Illinois.</li>
+<li>World War, 1939-1945--Naval operations--Submarine.</li>
+</ul>
+
+</div>
+
+<div class="biogHist g400">
+<h2>Biographical History</h2>
+<div tmpl:replace-markup="biogHist">
+<dl>
+<dt>1902, May 4</dt>
+<dd>Born, St. Louis, Mo.</dd>
+</dl>
+</div>
+
+ </div>
+ <div class="relations g400">
+<h2>Related Entries</h2>
+<div tmpl:replace-markup="relations">
+<h3>People</h3>
+<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
+<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
+<h3>Corporate Bodies</h3>
+<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
+<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
+<h3>Resources</h3>
+<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
+<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
+</div>
+ </div>
+
+<div class="clear"><nbsp/></div>
+<div>created with <a href="http://bitbucket.org/btingle/cpf2html">cpf2html</a></div>
+ </div>
+</body>
+</html>
