@@ -26,7 +26,7 @@
   <xsl:template match='*[@tmpl:change-value="html-title"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry/eac:part"/>
+      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
       <xsl:text> [</xsl:text>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId"/>
       <xsl:text>]</xsl:text>
@@ -36,8 +36,13 @@
   <xsl:template match='*[@tmpl:change-value="nameEntry-part"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry/eac:part"/>
+      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
     </xsl:element>
+    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()>1]" mode="extra-names"/>
+  </xsl:template>
+
+  <xsl:template match="eac:nameEntry" mode="extra-names">
+    <div class="extra-names"><xsl:value-of select="eac:part"/></div>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="entityId"]'>
@@ -54,20 +59,72 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations"/>
+  <xsl:template match='*[@tmpl:condition="occupations"]'>
+    <xsl:if test="($occupations)">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="occupations"]'>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations" mode="eac"/>
+    <xsl:apply-templates select="$occupations" mode="eac"/>
   </xsl:template>
 
+  <xsl:variable name="localDescriptions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions"/>
+  <xsl:template match='*[@tmpl:condition="localDescriptions"]'>
+    <xsl:if test="($localDescriptions)">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="localDescriptions"]'>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions" mode="eac"/>
+    <xsl:apply-templates select="$localDescriptions" mode="eac"/>
   </xsl:template>
 
+  <xsl:variable name="biogHist" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:biogHist"/>
+  <xsl:template match='*[@tmpl:condition="biogHist"]'>
+    <xsl:if test="($biogHist)">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:biogHist" mode="eac"/>
+    <xsl:apply-templates select="$biogHist" mode="eac"/>
   </xsl:template>
 
+  <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
+  <xsl:template match='*[@tmpl:condition="relations"]'>
+    <xsl:if test="($relations)">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations" mode="eac"/>
+    <xsl:apply-templates select="$relations" mode="eac"/>
   </xsl:template>
 
   <!-- templates that format EAC to HTML -->
@@ -108,11 +165,11 @@
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
-    <h3>People</h3>
+    <xsl:if test="eac:cpfRelation[@xlink:role='person']"><h3>People</h3></xsl:if>
     <xsl:apply-templates select="eac:cpfRelation[@xlink:role='person']" mode="eac"/>
-    <h3>Corporate Bodies</h3>
+    <xsl:if test="eac:cpfRelation[@xlink:role='corporateBody']"><h3>Corporate Bodies</h3></xsl:if>
     <xsl:apply-templates select="eac:cpfRelation[@xlink:role='corporateBody']" mode="eac"/>
-    <h3>Resources</h3>
+    <xsl:if test="eac:resourceRelation"><h3>Resources</h3></xsl:if>
     <xsl:apply-templates select="eac:resourceRelation" mode="eac"/>
   </xsl:template>
 
