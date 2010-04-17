@@ -108,6 +108,45 @@
     <xsl:apply-templates select="$localDescriptions" mode="eac"/>
   </xsl:template>
 
+  <xsl:variable name="places" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:places"/>
+
+  <xsl:template match='*[@tmpl:condition="places"]'>
+    <xsl:if test="($places)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match='*[@tmpl:replace-markup="places"]'>
+    <xsl:apply-templates select="$places" mode="eac"/>
+  </xsl:template>
+
+  <xsl:variable name="functions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:functions"/>
+
+  <xsl:template match='*[@tmpl:condition="functions"]'>
+    <xsl:if test="($functions)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match='*[@tmpl:replace-markup="functions"]'>
+    <xsl:apply-templates select="$functions" mode="eac"/>
+  </xsl:template>
+
+  <xsl:variable name="mandates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:mandates"/>
+
+  <xsl:template match='*[@tmpl:condition="mandates"]'>
+    <xsl:if test="($mandates)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match='*[@tmpl:replace-markup="mandates"]'>
+    <xsl:apply-templates select="$mandates" mode="eac"/>
+  </xsl:template>
+
   <xsl:variable name="biogHist" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:biogHist"/>
 
   <xsl:template match='*[@tmpl:condition="biogHist"]'>
@@ -119,6 +158,19 @@
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
     <xsl:apply-templates select="$biogHist" mode="eac"/>
+  </xsl:template>
+
+  <xsl:variable name="generalContext" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:generalContext"/>
+
+  <xsl:template match='*[@tmpl:condition="generalContext"]'>
+    <xsl:if test="($generalContext)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match='*[@tmpl:replace-markup="generalContext"]'>
+    <xsl:apply-templates select="$generalContext" mode="eac"/>
   </xsl:template>
 
   <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
@@ -146,19 +198,15 @@
     <xsl:value-of select="eac:toDate"/>
   </xsl:template>
 
-  <xsl:template match="eac:occupations" mode="eac">
-    <ul><xsl:apply-templates select="eac:occupation" mode="eac"/></ul>
-  </xsl:template>
-
-  <xsl:template match="eac:occupation" mode="eac">
-    <li><xsl:apply-templates mode="eac"/></li>
+  <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
+    <ul><xsl:apply-templates select="*" mode="eac"/></ul>
   </xsl:template>
 
   <xsl:template match="eac:localDescriptions" mode="eac">
     <ul><xsl:apply-templates select="eac:localDescription" mode="eac"/></ul>
   </xsl:template>
 
-  <xsl:template match="eac:localDescription" mode="eac">
+  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
     <li><xsl:apply-templates mode="eac"/></li>
   </xsl:template>
 
@@ -168,10 +216,6 @@
 
   <xsl:template match="eac:chronList" mode="eac">
     <dl><xsl:apply-templates select="eac:chronItem" mode="eac"/></dl>
-  </xsl:template>
-
-  <xsl:template match="eac:p[1]" mode="eac">
-    <p class="first"><xsl:apply-templates mode="eac"/></p>
   </xsl:template>
 
   <xsl:template match="eac:p" mode="eac">
@@ -184,10 +228,10 @@
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
-    <xsl:if test="eac:cpfRelation[@xlink:role='person']"><h3>People</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='person']" mode="eac"/>
-    <xsl:if test="eac:cpfRelation[@xlink:role='corporateBody']"><h3>Corporate Bodies</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='corporateBody']" mode="eac"/>
+    <xsl:if test="eac:cpfRelation[@xlink:role='person' or @cpfRelationType='family']"><h3>People</h3></xsl:if>
+    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='person' or @cpfRelationType='family']" mode="eac"/>
+    <xsl:if test="eac:cpfRelation[@xlink:role='corporateBody' or @cpfRelationType='associative']"><h3>Corporate Bodies</h3></xsl:if>
+    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='corporateBody' or @cpfRelationType='associative']" mode="eac"/>
     <xsl:if test="eac:resourceRelation"><h3>Resources</h3></xsl:if>
     <xsl:apply-templates select="eac:resourceRelation" mode="eac"/>
   </xsl:template>
