@@ -39,14 +39,14 @@
 <div class="clear">&#160;</div>
 
 <div class="description g160">
-<h2>Occupations</h2>
+<h2 tmpl:condition="occupations">Occupations</h2>
 <ul tmpl:replace-markup="occupations">
 <li>Educators.</li>
 <li>Oceanographers.</li>
 <li>Physicists.</li>
 </ul>
 
-<h2>Subjects</h2>
+<h2 tmpl:condition="localDescriptions">Subjects</h2>
 <ul tmpl:replace-markup="localDescriptions">
 <li>Atomic bomb.</li>
 <li>Geophysics.</li>
@@ -64,7 +64,7 @@
 
 </div>
 
-<div class="biogHist g400">
+<div tmpl:condition="biogHist" class="biogHist g400">
 <h2>Biographical History</h2>
 <div tmpl:replace-markup="biogHist">
 <dl>
@@ -74,7 +74,7 @@
 </div>
 
  </div>
- <div class="relations g400">
+ <div tmpl:condition="relations" class="relations g400">
 <h2>Related Entries</h2>
 <div tmpl:replace-markup="relations">
 <h3>People</h3>
