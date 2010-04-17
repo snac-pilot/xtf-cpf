@@ -127,9 +127,13 @@
   <!-- templates that format EAC to HTML -->
 
   <xsl:template match="eac:existDates" mode="eac">
-    <xsl:value-of select="eac:dateRange/eac:fromDate"/>
+    <xsl:apply-templates select="eac:dateRange" mode="eac"/>
+  </xsl:template>
+
+  <xsl:template match="eac:dateRange" mode="eac">
+    <xsl:value-of select="eac:fromDate"/>
     <xsl:text> - </xsl:text>
-    <xsl:value-of select="eac:dateRange/eac:toDate"/>
+    <xsl:value-of select="eac:toDate"/>
   </xsl:template>
 
   <xsl:template match="eac:occupations" mode="eac">
@@ -156,8 +160,16 @@
     <dl><xsl:apply-templates select="eac:chronItem" mode="eac"/></dl>
   </xsl:template>
 
+  <xsl:template match="eac:p[1]" mode="eac">
+    <p class="first"><xsl:apply-templates mode="eac"/></p>
+  </xsl:template>
+
+  <xsl:template match="eac:p" mode="eac">
+    <p><xsl:apply-templates mode="eac"/></p>
+  </xsl:template>
+
   <xsl:template match="eac:chronItem" mode="eac">
-    <dt><xsl:apply-templates select="eac:date" mode="eac"/></dt>
+    <dt><xsl:apply-templates select="eac:date|eac:dateRange" mode="eac"/></dt>
     <dd><xsl:apply-templates select="eac:event" mode="eac"/></dd>
   </xsl:template>
 
