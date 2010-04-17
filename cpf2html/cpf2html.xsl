@@ -35,8 +35,10 @@
 
   <xsl:template match='*[@tmpl:change-value="nameEntry-part"]'>
     <xsl:element name="{name()}">
+      <span class="{($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
+      </span>
       <xsl:text> </xsl:text>
     <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:authorizedForm" mode="extra-names"/>
     </xsl:element>
@@ -200,10 +202,6 @@
 
   <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
     <ul><xsl:apply-templates select="*" mode="eac"/></ul>
-  </xsl:template>
-
-  <xsl:template match="eac:localDescriptions" mode="eac">
-    <ul><xsl:apply-templates select="eac:localDescription" mode="eac"/></ul>
   </xsl:template>
 
   <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
