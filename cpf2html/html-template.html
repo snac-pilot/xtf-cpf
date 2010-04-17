@@ -14,9 +14,9 @@
 .identity h1 { margin-bottom: .3em; }
 .identity .id { margin-left: .3em; } 
 .identity .description { margin-left: .3em; } 
-/* .identity .authorizedForm {} */
+.identity .authorizedForm { font-size: .6em; color:#8d8a72;} 
 
-/* .biogHist {} */
+/* .content {} */
 
 /* various relations need more space 
    values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
@@ -63,18 +63,32 @@
 <li>World War, 1939-1945--Naval operations--Submarine.</li>
 </ul>
 
+<h2 tmpl:condition="places">Places</h2>
+<ul tmpl:replace-markup="places">
+</ul>
+
+<h2 tmpl:condition="functions">Functions</h2>
+<ul tmpl:replace-markup="functions">
+</ul>
+
+<h2 tmpl:condition="mandates">Mandates</h2>
+<ul tmpl:replace-markup="mandates">
+</ul>
+
 </div>
 
-<div tmpl:condition="biogHist" class="biogHist g400">
-<h2>Biographical History</h2>
-<div tmpl:replace-markup="biogHist">
-<dl>
-<dt>1902, May 4</dt>
-<dd>Born, St. Louis, Mo.</dd>
-</dl>
+<div class="content g400">
+    <h2 tmpl:condition="generalContext">General Context</h2>
+    <div tmpl:replace-markup="generalContext"><p>hey</p></div>
+    <h2 tmpl:condition="biogHist">Biographical History</h2>
+    <div tmpl:replace-markup="biogHist">
+      <dl>
+      <dt>1902, May 4</dt>
+      <dd>Born, St. Louis, Mo.</dd>
+      </dl>
+    </div>
 </div>
 
- </div>
  <div tmpl:condition="relations" class="relations g400">
 <h2>Related Entries</h2>
 <div tmpl:replace-markup="relations">
