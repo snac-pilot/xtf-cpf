@@ -37,12 +37,22 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
+      <xsl:text> </xsl:text>
+    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:authorizedForm" mode="extra-names"/>
     </xsl:element>
     <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()>1]" mode="extra-names"/>
   </xsl:template>
 
+  <xsl:template match="eac:authorizedForm" mode="extra-names">
+    <xsl:text> </xsl:text>
+    <span class="authorizedForm"><xsl:apply-templates mode="eac"/></span>
+  </xsl:template>
+
   <xsl:template match="eac:nameEntry" mode="extra-names">
-    <div class="extra-names"><xsl:value-of select="eac:part"/></div>
+    <div class="extra-names">
+      <xsl:value-of select="eac:part"/>
+      <xsl:apply-templates select="eac:authorizedForm" mode="extra-names"/>
+    </div>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="entityId"]'>
