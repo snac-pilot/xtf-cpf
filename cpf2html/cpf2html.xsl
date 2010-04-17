@@ -59,17 +59,26 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations"/>
-  <xsl:template match='*[@tmpl:condition="occupations"]'>
-    <xsl:if test="($occupations)">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
+  <!-- continuation template for conditional sections -->
+  <xsl:template name="keep-going">
+    <xsl:param name="node"/>
+    <xsl:element name="{name($node)}">
+      <xsl:for-each select="$node/@*">
         <xsl:attribute name="{name(.)}">
           <xsl:value-of select="."/>
         </xsl:attribute>
       </xsl:for-each>
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="($node)/*|($node)/text()"/>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations"/>
+
+  <xsl:template match='*[@tmpl:condition="occupations"]'>
+    <xsl:if test="($occupations)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="occupations"]'>
@@ -77,16 +86,12 @@
   </xsl:template>
 
   <xsl:variable name="localDescriptions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions"/>
+
   <xsl:template match='*[@tmpl:condition="localDescriptions"]'>
     <xsl:if test="($localDescriptions)">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates/>
-    </xsl:element>
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="localDescriptions"]'>
@@ -94,16 +99,12 @@
   </xsl:template>
 
   <xsl:variable name="biogHist" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:biogHist"/>
+
   <xsl:template match='*[@tmpl:condition="biogHist"]'>
     <xsl:if test="($biogHist)">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates/>
-    </xsl:element>
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
@@ -111,16 +112,12 @@
   </xsl:template>
 
   <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
+
   <xsl:template match='*[@tmpl:condition="relations"]'>
     <xsl:if test="($relations)">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates/>
-    </xsl:element>
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
