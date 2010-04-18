@@ -9,6 +9,7 @@
   version="2.0">
 
   <xsl:strip-space elements="*"/>
+  <xsl:output method="xml" indent="yes"/>
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('html-template.html')"/>
@@ -58,33 +59,44 @@
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="entityId"]'>
+    <xsl:variable name="entityId" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId"/>
+    <xsl:if test="$entityId">
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId"/>
+      <xsl:value-of select="$entityId"/>
     </xsl:element>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="dateRange"]'>
+    <xsl:variable name="existDates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates"/>
+    <xsl:if test="$existDates">
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates" mode="eac"/>
+      <xsl:apply-templates select="$existDates" mode="eac"/>
     </xsl:element>
+    </xsl:if>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
   <xsl:template name="keep-going">
     <xsl:param name="node"/>
     <xsl:element name="{name($node)}">
-      <xsl:for-each select="$node/@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
+      <xsl:for-each select="$node/@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:apply-templates select="($node)/*|($node)/text()"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations"/>
+  <xsl:variable name="description" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/*[not(name()='eac:existDates')]"/>
+  <xsl:template match='*[@tmpl:condition="description"]'>
+    <xsl:if test="($description)">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupation"/>
 
   <xsl:template match='*[@tmpl:condition="occupations"]'>
     <xsl:if test="($occupations)">
@@ -201,11 +213,20 @@
   </xsl:template>
 
   <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
-    <ul><xsl:apply-templates select="*" mode="eac"/></ul>
+    <xsl:if test="eac:occupation | eac:localDescription | eac:function | eac:mandate | eac:place">
+      <ul>
+        <xsl:apply-templates select="eac:occupation | eac:localDescription | eac:function | eac:mandate | eac:place" mode="eac-inlist"/>
+      </ul>
+    </xsl:if>
+    <xsl:apply-templates select="eac:descriptiveNote| eac:p" mode="eac"/>
+  </xsl:template>
+
+  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
+    <li><xsl:apply-templates mode="eac"/></li>
   </xsl:template>
 
   <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
-    <li><xsl:apply-templates mode="eac"/></li>
+    <ul><li><xsl:apply-templates mode="eac"/></li></ul>
   </xsl:template>
 
   <xsl:template match="eac:biogHist" mode="eac">
