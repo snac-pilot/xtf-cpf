@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="golden-grid-css/golden-min.css" type="text/css" media="screen, projection"></link>
 <link rel="stylesheet" href="golden-grid-css/typography-min.css" type="text/css" media="screen, projection"></link>
 <title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
-<style>
+<style type="text/css">
 /* body{background-color:#5582d1;} */
 
 /* css order tries to match source order basically */
@@ -14,7 +14,11 @@
 .identity h1 { margin-bottom: .3em; }
 .identity .id { margin-left: .3em; } 
 .identity .description { margin-left: .3em; } 
+.identity .extra-names { margin-left: .3em; } 
 .identity .authorizedForm { font-size: .6em; color:#8d8a72;} 
+.identity .person { background-color: #FFDEAD; }
+.identity .corporateBody { background-color: #E0FFFF; }
+.identity .family { background-color: #DEB887; }
 
 /* .content {} */
 
@@ -32,14 +36,14 @@
 <body>
 <div class="main">
 <div class="clear">&#160;</div>
-<div class="identity g960">
+<div class="identity">
 <h1 tmpl:change-value="nameEntry-part">Eckart, Carl, 1902-</h1>
 <div tmpl:change-value="entityId" class="id">ID (SNAC): DLC.ms001014.c</div>
 <div tmpl:change-value="dateRange" class="description">date range</div>
 </div>
 <div class="clear">&#160;</div>
 
-<div class="description g160">
+<div tmpl:condition="description" class="description g160">
 <h2 tmpl:condition="occupations">Occupations</h2>
 <ul tmpl:replace-markup="occupations">
 <li>Educators.</li>
