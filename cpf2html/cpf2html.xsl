@@ -124,7 +124,7 @@
     <xsl:apply-templates select="$localDescriptions" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="places" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:places"/>
+  <xsl:variable name="places" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:places
         | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:place"/>
 
   <xsl:template match='*[@tmpl:condition="places"]'>
@@ -138,7 +138,7 @@
     <xsl:apply-templates select="$places" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="functions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:functions"/>
+  <xsl:variable name="functions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:functions
         | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:function"/>
 
   <xsl:template match='*[@tmpl:condition="functions"]'>
@@ -152,7 +152,7 @@
     <xsl:apply-templates select="$functions" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="mandates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:mandates"/>
+  <xsl:variable name="mandates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:mandates
         | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:mandate"/>
 
   <xsl:template match='*[@tmpl:condition="mandates"]'>
