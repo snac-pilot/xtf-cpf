@@ -8,6 +8,17 @@
   exclude-result-prefixes="#all" 
   version="2.0">
 
+<!-- 
+uses the golden grid http://code.google.com/p/the-golden-grid/
+
+uses the Style-free XSLT Style Sheets style documented by Eric van
+der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
+
+xmlns:tmpl="xslt://template" attributes are used in the HTML template to indicate
+tranformed elements
+
+-->
+
   <xsl:strip-space elements="*"/>
 
    <xsl:output method="xhtml" indent="no"

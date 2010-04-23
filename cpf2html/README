@@ -1,18 +1,20 @@
-XSLT 2.0 stylesheet written by Brian Tingle http://www.cdlib.org/contact/staff_directory/btingle.html
+cpf2html is a package of XSLT for EAC that can work with XTF
 
-Input document is EAC-CPF http://eac.staatsbibliothek-berlin.de/
+Brian Tingle, California Digital Library  http://www.cdlib.org/contact/staff_directory/btingle.html
+for the SNAC project http://www.iath.virginia.edu/news/news_snac_grant.html
 
-Output Document is HTML
+See also: http://bitbucket.org/btingle/cpf2html/wiki/Home
 
-uses the golden grid http://code.google.com/p/the-golden-grid/
+cpf2html.xsl and html-template.html
+	EAC-CPF to HTML 
 
-uses the Style-free XSLT Style Sheets style documented by Eric van
-der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
+cpfDocSelector.xsl and cpfXtfPreFilter.xsl
+	For integration with XTF http://xtf.sf.net/
+	cpfResultsFormatter.xsl and XTF conf files/instructions to come
 
-xmlns:tmpl="xslt://template" attributes are used in the HTML template to indicate
-tranformed elements
+golden-grid-css/ from http://code.google.com/p/the-golden-grid/
+	see golden-grid-css/LICENSE
 
-primative testing structure in tests/tests.sh includes html dtd and
-saxon; depends on xmllint being installed
-
-produced for the SNAC project http://www.iath.virginia.edu/news/news_snac_grant.html
+tests/tests.sh 
+	primative testing structure
+	see tests/LICENSE
