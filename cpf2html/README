@@ -15,8 +15,4 @@ tranformed elements
 primative testing structure in tests/tests.sh includes html dtd and
 saxon; depends on xmllint being installed
 
-Untested XTF prefilter included
-
 produced for the SNAC project http://www.iath.virginia.edu/news/news_snac_grant.html
-
-TODO: build it based off of the schema (so far it is just based on one sample EAC)
