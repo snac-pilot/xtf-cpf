@@ -9,7 +9,11 @@
   version="2.0">
 
   <xsl:strip-space elements="*"/>
-  <xsl:output method="xml" indent="yes"/>
+
+   <xsl:output method="xhtml" indent="no"
+      encoding="UTF-8" media-type="text/html; charset=UTF-8"
+      omit-xml-declaration="yes"
+      exclude-result-prefixes="#all"/>
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('html-template.html')"/>
