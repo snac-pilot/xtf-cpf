@@ -19,12 +19,18 @@ tranformed elements
 
 -->
 
+  <!-- xsl:import href="xmlverbatim-xsl/xmlverbatim.xsl"/ -->
+  <xsl:import href="xml-to-string-xsl/xml-to-string.xsl"/>
+
   <xsl:strip-space elements="*"/>
 
-   <xsl:output method="xhtml" indent="no"
-      encoding="UTF-8" media-type="text/html; charset=UTF-8"
-      omit-xml-declaration="yes"
-      exclude-result-prefixes="#all"/>
+  <xsl:output method="xhtml" indent="no"
+    encoding="UTF-8" media-type="text/html; charset=UTF-8"
+    omit-xml-declaration="yes"
+    exclude-result-prefixes="#all"/>
+
+  <!-- options -->
+  <xsl:param name="showXML" select="'no'"/>
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('html-template.html')"/>
@@ -218,6 +224,16 @@ tranformed elements
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
     <xsl:apply-templates select="$relations" mode="eac"/>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:replace-markup="xml"]'>
+<xsl:if test="$showXML='yes'">
+<pre><code>
+  <xsl:call-template name="xml-to-string">
+    <xsl:with-param name="node-set" select="($page)/*"/>
+  </xsl:call-template>
+</code></pre>
+</xsl:if>
   </xsl:template>
 
   <!-- templates that format EAC to HTML -->

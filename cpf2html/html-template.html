@@ -13,6 +13,7 @@ tranformed elements
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/golden-min.css" type="text/css" media="screen, projection"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography-min.css" type="text/css" media="screen, projection"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/highlight-js/styles/vs.css" type="text/css" media="screen, projection"></link>
 <title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
 <style type="text/css">
 /* body{background-color:#5582d1;} */
@@ -40,6 +41,10 @@ tranformed elements
 
 
 </style>
+<script type="text/javascript" src="/xtf/cpf2html/highlight-js/highlight.pack.js"></script>
+<script type="text/javascript">
+   hljs.initHighlightingOnLoad();
+</script>
 </head>
 
 <body>
@@ -118,7 +123,21 @@ tranformed elements
  </div>
 
 <div class="clear">&#160;</div>
+
+<div tmpl:replace-markup="xml">
+<pre><code>&lt;?xml version="1.0"?&gt;
+&lt;response value="ok" xml:lang="en"&gt;
+  &lt;text&gt;Ok&lt;/text&gt;
+  &lt;comment/&gt;
+  &lt;ns:description&gt;&lt;![CDATA[
+  CDATA is &lt;not&gt; magical.
+  ]]&gt;&lt;/ns:description&gt;
+&lt;/response&gt;
+</code></pre> 
+</div>
+
 <div>created with <a href="http://bitbucket.org/btingle/cpf2html/src">cpf2html</a></div>
  </div>
+
 </body>
 </html>
