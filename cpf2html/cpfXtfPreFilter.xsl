@@ -25,12 +25,26 @@
   <!-- add metadata to XTF index -->
   <xsl:template name="get-meta">
     <xtf:meta>
+      <xsl:apply-templates select="/eac:eac-cpf" mode="main-facet"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations/eac:occupation" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions/eac:localDescription" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:cpfRelation" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:resourceRelation" mode="meta"/>
     </xtf:meta>
+  </xsl:template>
+
+  <xsl:template match="eac:eac-cpf" mode="main-facet">
+    <facet-recordLevel xtf:facet="yes" xtf:meta="yes">
+      <xsl:choose>
+        <xsl:when test="eac:cpfDescription/eac:description">
+          <xsl:text>hasDescription</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>sparse</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </facet-recordLevel>
   </xsl:template>
 
   <xsl:template match="eac:identity" mode="meta">
