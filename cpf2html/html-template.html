@@ -20,6 +20,8 @@ tranformed elements
 
 /* css order tries to match source order basically */
 
+.actions { float: right; }
+
 /* identity section elements need to get closer than defaults */
 .identity h1 { margin-bottom: .3em; }
 .identity .id { margin-left: .3em; } 
@@ -49,7 +51,8 @@ tranformed elements
 
 <body>
 <div class="main">
-<div class="clear">&#160;</div>
+<div tmpl:change-value="actions" class="actions">show XML | report issue</div>
+<div class="clear"></div>
 <div class="identity">
 <h1 tmpl:change-value="nameEntry-part">Eckart, Carl, 1902-</h1>
 <div tmpl:change-value="entityId" class="id">ID (SNAC): DLC.ms001014.c</div>
