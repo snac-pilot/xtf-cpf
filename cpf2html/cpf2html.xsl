@@ -74,6 +74,8 @@ tranformed elements
         </xsl:when>
         <xsl:otherwise>
           <a href="{replace($http.URL,';showXML=yes','')}">hide XML</a>
+          <xsl:text> | </xsl:text>
+          <a href="#xml">jump to XML</a>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="$spreadsheets.formkey!=''">
@@ -320,7 +322,21 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
-    <div><xsl:apply-templates mode="eac"/></div>
+    <div>
+      <xsl:if test="@xlink:role or @cpfRelationType">
+        <xsl:attribute name="class">
+          <xsl:choose>
+            <xsl:when test="@xlink:role">
+              <xsl:value-of select="@xlink:role"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="@cpfRelationType"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates mode="eac"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="*" mode="eac">
