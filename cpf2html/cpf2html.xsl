@@ -5,6 +5,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:tmpl="xslt://template" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -30,7 +31,16 @@ tranformed elements
     exclude-result-prefixes="#all"/>
 
   <!-- options -->
-  <xsl:param name="showXML" select="'no'"/>
+  <xsl:param name="showXML"/>
+
+  <!-- in dynaXML-config put
+	<spreadsheets formkey="XXXX"/>
+	and the "report issue" link will turn on
+  -->
+  <xsl:param name="spreadsheets.formkey"/>
+
+  <xsl:param name="http.URL"/>
+
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('html-template.html')"/>
@@ -52,6 +62,24 @@ tranformed elements
       <xsl:text> [</xsl:text>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId"/>
       <xsl:text>]</xsl:text>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:change-value="actions"]'>
+    <xsl:element name="{name()}">
+      <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+      <xsl:choose>
+        <xsl:when test="$showXML = ''">
+          <a href="{$http.URL};showXML=yes">show XML</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{replace($http.URL,';showXML=yes','')}">hide XML</a>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="$spreadsheets.formkey!=''">
+        <xsl:text> | </xsl:text>
+        <a href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">report issue</a>
+      </xsl:if>
     </xsl:element>
   </xsl:template>
 
