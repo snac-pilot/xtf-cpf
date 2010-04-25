@@ -78,7 +78,7 @@ tranformed elements
       </xsl:choose>
       <xsl:if test="$spreadsheets.formkey!=''">
         <xsl:text> | </xsl:text>
-        <a href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">report issue</a>
+        <a target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">report issue</a>
       </xsl:if>
     </xsl:element>
   </xsl:template>
