@@ -27,6 +27,10 @@
     <xtf:meta>
       <xsl:apply-templates select="/eac:eac-cpf" mode="main-facet"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity" mode="meta"/>
+      <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId" mode="meta"/>
+      <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates/eac:dateRange/eac:fromDate" mode="meta"/>
+      <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates/eac:dateRange/eac:toDate" mode="meta"/>
+
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations/eac:occupation" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions/eac:localDescription" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:cpfRelation" mode="meta"/>
@@ -74,6 +78,15 @@
   
   <xsl:template match="eac:resourceRelation" mode="meta">
     <facet-resourceRelation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:relationEntry"/></facet-resourceRelation>
+  </xsl:template>
+
+  <xsl:template match="eac:fromDate|eac:toDate|eac:entityId" mode="meta">
+    <xsl:element name="{name()}">
+      <xsl:for-each select="@*"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+      <xsl:attribute name="xtf:meta">yes</xsl:attribute>
+      <xsl:apply-templates select="*|text()"/>
+    </xsl:element>
+
   </xsl:template>
 
   <!-- identity transform -->
