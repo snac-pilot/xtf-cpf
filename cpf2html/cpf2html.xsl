@@ -322,19 +322,7 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
-    <div>
-      <xsl:if test="@xlink:role or @cpfRelationType">
-        <xsl:attribute name="class">
-          <xsl:choose>
-            <xsl:when test="@xlink:role">
-              <xsl:value-of select="@xlink:role"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="@cpfRelationType"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-      </xsl:if>
+    <div class="{if (@xlink:role) then (@xlink:role) else if (@cpfRelationType) then @cpfRelationType else 'related'}">
       <xsl:apply-templates mode="eac"/>
     </div>
   </xsl:template>
