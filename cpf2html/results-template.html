@@ -1,0 +1,191 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tmpl="xslt://template">
+<!--
+uses the golden grid http://code.google.com/p/the-golden-grid/
+
+uses the Style-free XSLT Style Sheets style documented by Eric van
+der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
+
+xmlns:tmpl="xslt://template" attributes are used in the HTML template to indicate
+tranformed elements
+-->
+<head>
+<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection, print"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/golden-min.css" type="text/css" media="screen, projection, print"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography-min.css" type="text/css" media="screen, projection, print"></link>
+<title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
+<style type="text/css">
+.main{background-color:#fff;}
+
+.cpfSearch { font-size: 13px;
+    background-color: #d6e5f4;
+    padding: 10px;
+    }
+.cpfSearch input[type="text"] { font-size: 1.32em; } 
+.cpfSearch input.button { font-size: 1.32em; background-color: #ffffff;} 
+
+.results .person .hit, h1 .person { background-color: #FFDEAD; }
+.results .corporateBody .hit, h1 .corporateBody { background-color: #E0FFFF; }
+.results .family .hit, h1 .family { background-color: #DEB887; }
+
+div.result, .relations div { margin-bottom: .4em; padding-top: .3em; padding-botton: .3em; }
+div.result {
+  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: #000;
+}
+div.result:hover { border-style: solid;}
+
+.results h3, .relations h3 { margin-bottom: .441em; margin-top: .441em;}
+
+div.result div:first-child { font-size: 140%; }
+div.result div:last-child { font-size: 80%; }
+
+.hit { background-color: yellow; }
+
+</style>
+</head>
+
+<body>
+<div class="main">
+<div class="g960">
+<h1>Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
+<form methon="GET" action="/xtf/search" class="cpfSearch">
+<a tmpl:condition="search" href="/xtf/search">☒ </a><input type="text" size="27" placeholder="enter a name or keywords" name="keyword" tmpl:add-value="search"/>
+<input class="button" type="submit" value="search"/>
+</form>
+</div>
+<div class="clear">&#160;</div> 
+<div class="g240">
+<h2>RecordLevel</h2>
+<ul tmpl:replace-markup="recordLevel">
+<li>sparse	 (239)</li>
+<li>hasDescription	 (95)</li>
+</ul>
+<h2>EntityType</h2>
+<ul tmpl:replace-markup="entityType">
+<li>person	 (307)</li>
+<li>corporateBody	 (27)</li>
+</ul>
+<h2>Occupation</h2>
+<ul tmpl:replace-markup="occupations">
+<li>Abolitionists. (5) </li>
+<li>Accountants. (1) </li>
+<li>Actors (5) </li>
+<li>Actresses. (4) </li>
+<li>Administrators. (6) </li>
+<li>Advertising executives (1) </li>
+<li>Advertising executives. (1) </li>
+<li>Aerospace engineers. (1) </li>
+<li>Air Force officers. (5) </li>
+<li>Aircraft manufacturers. (1) </li>
+<li>Ambassadors. (2) </li>
+<li>Anthropologists. (1) </li>
+<li>Archaeologists. (1) </li>
+<li>Architects. (6)</li>
+<li>Architectural historians. (1) </li>
+<li class="more">more (totalGroups 346)
+</li>
+</ul>
+<h2>Subject</h2>
+<ul tmpl:replace-markup="subjects">
+<li>AIDS (Disease) (1)</li>
+<li>Aachen, Battle of, Aachen, Germany, 1944. (1)</li>
+<li>Abnormalities, Human--Psychological aspects. (1)</li>
+<li>Abolitionists--United States. (1)</li>
+<li>Abolitionists. (1)</li>
+<li>Abortion--Law and legislation--United States. (1)</li>
+<li>Abortion--Law and legislation. (1)</li>
+<li>Abortion--United States. (1)</li>
+<li>Abortion. (3)</li>
+<li>Acadians--Maine. (1)</li>
+<li>Accordionists--Russia (Federation)--Photographs. (1)</li>
+<li>Acid rain--United States. (1)</li>
+<li>Acoustical engineering. (1)</li>
+<li>Acting. (4)</li>
+<li>Actions and defenses--Mississippi. (1)</li>
+<li class="more">more (totalGroups 3802)</li>
+</ul>
+</div>
+
+<div class="g400">
+<h2 tmpl:change-value="totalDocs">CPF Records</h2>
+<div class="results" tmpl:change-value="results">
+	<div class="result">
+		<div>Aaron, Hank, 1934</div>
+		<div>DLC.ms009038.r001</div>
+	</div>
+
+	<div class="result">
+         <div>Abbot, Jos. Hale (Joseph Hale), 1802-1873 </div>
+	<div class="id">DLC.ms007005.r004</div>
+	</div>
+         <div>Abbot, Mary Susan Everett, 1832-1871 <div class="id">DLC.ms007005.r005</div></div>
+         <div>Abbot, C. G. (Charles Greeley), b. 1872 <div class="id">DLC.ms009045.r002</div></div>
+         <div>Abbott, Berenice, 1898-1991 <div class="id">DLC.ms006024.r001</div></div>
+         <div>Abbott family <div class="id">DLC.ms007005.r012</div></div>
+         <div>Abbott, Lyman, 1835-1922 <div class="id">DLC.ms008040.r001</div></div>
+         <div>Abbott, George, 1887-1995 <div class="id">DLC.ms008072.r001</div></div>
+         <div>Abbott, Lyman, 1835-1922 <div class="id">DLC.ms009253.r001</div></div>
+         <div>Abbott, Grace, 1878-1939 <div class="id">DLC.ms998018.r001</div></div>
+         <div>Abel, Theodora Mead, 1899 <div class="id">DLC.ms008041.r001</div></div>
+         <div>Abelson, Philip Hauge <div class="id">DLC.ms003055.c</div></div>
+         <div>Abraham, Karl, 1877-1925 <div class="id">DLC.ms004017.r001</div></div>
+         <div>Abt, Franz, 1819-1885 <div class="id">DLC.mu004004.r001</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms003024.r001</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms004004.r001</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms008009.r001</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms009038.r002</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms009291.r001</div></div>
+         <div>Acheson, Dean, 1893-1971 <div class="id">DLC.ms997016.r001</div></div>
+</div>
+</div>
+
+<div class="relations g320">
+<h2>Related Entries</h2>
+ <h3>Names</h3>
+   <div tmpl:replace-markup="cpfRelation">
+      <div>14th Air Force Association (U.S.)</div>
+      <div>14th Air Force Association (U.S.). Flying Tigers.</div>
+      <div>A. Philip Randolph Institute. A &#34;freedom budget&#34; for all Americans; budgeting our resources, 1966-1975, to achieve &#34;freedom from want.&#34;</div>
+      <div>A.M. Chesbrough Seminary (North Chili, N.Y.)</div>
+      <div>A.R. Tucker (Bark)</div>
+      <div>AFL-CIO Atomic Energy Technical Committee.</div>
+      <div>AFL-CIO.</div>
+      <div>AFSCME.</div>
+      <div>AT &amp; T.</div>
+      <div>Aaron, Daniel, 1912-</div>
+      <div>Aaron, Hank, 1934</div>
+      <div>Aaron, Hank, 1934-</div>
+      <div>Abbe, Cleveland, 1838-1916</div>
+      <div>Abbot, C. G. (Charles Greeley), b. 1872</div>
+      <div>Abbot, Edward Stanley, 1841-1863</div>
+  </div>
+<h3>Resources</h3>
+  <div tmpl:replace-markup="resourceRelation">
+      <div>&#34;Benjamin Hornor Coates, M.D. (1797-1881): A Study Based on His Manuscripts,&#34; Transactions and Studies of the College of Physicians of Philadelphia, 4th ser., no. 35 (Oct. 1967), pp. 63-68 1967</div>
+      <div>&#34;Early American Water Color Painting,&#34; Antiques, LIX, no. 1 (Jan. 1954), pp. 54-56 1954</div>
+      <div>&#34;Early Photography and the University,&#34; General Magazine and Historical Chronicle, XLIII (Jan. 1941), pp. 144-153 1941</div>
+      <div>&#34;Philadelphia: A Century Ago,&#34; American Philatelist, LXV (Sept. 1952), p. 909 1952</div>
+      <div>&#34;The Duncan Phyfe Shops by John Rubens Smith, Artist and Drawing Master,&#34; American Art Journal, XI, no. 4 (Autumn 1979), pp. 69-78 1979</div>
+      <div>&#34;Where Iron Is, There Is the Fatherland!&#34; A Note on the Relation of Privilege and Monopoly to War 1920</div>
+      <div>'48, The Magazine of the Year 1948</div>
+      <div>(Despair 1932</div>
+      <div>(Glory 1933</div>
+      <div>(King, Queen, Knave) 1928</div>
+      <div>(Mary) 1926</div>
+      <div>(The Defense 1930</div>
+      <div>(The Gift 1937</div>
+      <div>(The Gift 1952</div>
+      <div>(Time for Reason 1945-1947</div>
+  </div>
+</div>
+
+<div class="clear">&#160;</div> 
+<div class="g960">created with <a href="http://bitbucket.org/btingle/cpf2html/src">cpf2html</a></div>
+
+ </div>
+
+</body>
+</html>
