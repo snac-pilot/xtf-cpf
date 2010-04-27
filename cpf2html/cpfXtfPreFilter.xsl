@@ -49,6 +49,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </facet-recordLevel>
+    <facet-entityType xtf:facet="yes" xtf:meta="yes">
+      <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
+    </facet-entityType>
   </xsl:template>
 
   <xsl:template match="eac:identity" mode="meta">

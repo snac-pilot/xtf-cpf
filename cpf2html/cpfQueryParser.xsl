@@ -13,10 +13,11 @@
    
   <xsl:template match="/">
     <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
-    <xsl:variable name="browse" select="if ($keyword='') then ('yes') else ('no')"/>
+    <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
     <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('identity') else (false)"/>
-    <xsl:variable name="sortGroupsBy" select="if ($browse='yes') then ('value') else ('totalDocs')"/>
-    <xsl:variable name="maxDocs" select="if ($browse='yes') then (0) else (25)"/>
+    <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
+    <xsl:variable name="maxDocs" select="if ($browse='yes') then (25) else (25)"/>
+    <xsl:variable name="includeEmptyGroups" select="'yes'"/>
       <query 
         indexPath="index" 
         termLimit="1000" 
@@ -36,6 +37,7 @@
         </xsl:if>
         
          <facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+         <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
          <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
          <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
          <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
@@ -43,14 +45,7 @@
          <facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
          <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
          <spellcheck/>
-         <xsl:choose>
-           <xsl:when test="$keyword=''">
-             <allDocs/>
-           </xsl:when>
-           <xsl:otherwise>
-             <xsl:apply-templates/>
-           </xsl:otherwise>
-         </xsl:choose>
+         <xsl:apply-templates/>
       </query>
    </xsl:template>
    
@@ -63,7 +58,6 @@
       <!-- Find the meta-data and full-text queries, if any -->
       <xsl:variable name="queryParams"
          select="param[not(matches(@name,'style|smode|rmode|expand|brand|sort|startDoc|docsPerPage|sectionType|fieldList|normalizeScores|explainScores|f[0-9]+-.+|facet-.+|browse-*|email|.*-exclude|.*-join|.*-prox|.*-max|.*-ignore|freeformQuery'))]"/>
-      
       <and>
          <!-- Process the meta-data and text queries, if any -->
          <xsl:apply-templates select="$queryParams"/>
@@ -97,7 +91,7 @@
          </xsl:for-each>
       
          <!-- to enable you to see browse results -->
-         <xsl:if test="param[matches(@name, 'browse-')]">
+         <xsl:if test="not(param[starts-with(@name, 'f[0-9]-')] and $keyword='')">
             <allDocs/>
          </xsl:if>
 
