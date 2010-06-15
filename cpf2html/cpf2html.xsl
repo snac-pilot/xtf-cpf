@@ -325,7 +325,7 @@ tranformed elements
     <div class="{if (@xlink:role) then (@xlink:role) else if (@cpfRelationType) then @cpfRelationType else 'related'}">
       <xsl:choose>
         <xsl:when test="@xlink:href">
-          <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:PlaceEntry" mode="eac"/></a>
+          <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
           <xsl:apply-templates select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote" mode="eac"/>
         </xsl:when>
         <xsl:otherwise>
