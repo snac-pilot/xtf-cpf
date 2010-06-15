@@ -323,7 +323,15 @@ tranformed elements
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
     <div class="{if (@xlink:role) then (@xlink:role) else if (@cpfRelationType) then @cpfRelationType else 'related'}">
-      <xsl:apply-templates mode="eac"/>
+      <xsl:choose>
+        <xsl:when test="@xlink:href">
+          <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:PlaceEntry" mode="eac"/></a>
+          <xsl:apply-templates select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote" mode="eac"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates mode="eac"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </div>
   </xsl:template>
 
