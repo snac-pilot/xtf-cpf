@@ -92,7 +92,14 @@
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:apply-templates select="*|text()"/>
     </xsl:element>
+  </xsl:template>
 
+  <!-- don't index objectXMLWrap'ed XML b/c it is not displayed -->
+  <xsl:template match="eac:objectXMLWrap">
+    <xsl:copy>
+      <xsl:attribute name="xtf:index" select="'no'"/>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
   </xsl:template>
 
   <!-- sectionTypes - default mode -->
