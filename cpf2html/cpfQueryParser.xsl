@@ -9,7 +9,8 @@
    <xsl:output method="xml" indent="yes" encoding="utf-8"/>
    <xsl:strip-space elements="*"/>
    <xsl:param name="fieldList" select="'identity text'"/>
-   <xsl:param name="keyword"/>
+   <xsl:param name="text"/>
+   <xsl:param name="keyword" select="$text"/>
    
   <xsl:template match="/">
     <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
