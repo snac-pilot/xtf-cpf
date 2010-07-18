@@ -8,13 +8,13 @@
    <xsl:import href="../style/crossQuery/queryParser/common/queryParserCommon.xsl"/>
    <xsl:output method="xml" indent="yes" encoding="utf-8"/>
    <xsl:strip-space elements="*"/>
-   <xsl:param name="fieldList" select="'text identity'"/>
+   <xsl:param name="fieldList" select="'identity text'"/>
    <xsl:param name="keyword"/>
    
   <xsl:template match="/">
     <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
     <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
-    <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('identity') else (false)"/>
+    <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('sort-identity') else (false)"/>
     <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
     <xsl:variable name="maxDocs" select="if ($browse='yes') then (25) else (25)"/>
     <xsl:variable name="includeEmptyGroups" select="'yes'"/>
@@ -61,13 +61,15 @@
       <and>
          <!-- Process the meta-data and text queries, if any -->
          <xsl:apply-templates select="$queryParams"/>
-
          <!-- Process special facet query params -->
          <xsl:if test="//param[matches(@name,'f[0-9]+-.+')]">
             <and maxSnippets="0">
                <xsl:for-each select="//param[matches(@name,'f[0-9]+-.+')]">
                   <and field="{replace(@name,'f[0-9]+-','facet-')}">
                      <term><xsl:value-of select="@value"/></term>
+                      <term>
+                        <xsl:value-of select="@value"/>
+                      </term>
                   </and>
                </xsl:for-each>
             </and>
@@ -98,7 +100,7 @@
       </and>
       
    </xsl:template>
-   
+
    <!-- ====================================================================== -->
    <!-- Facet Query Template                                                   -->
    <!-- ====================================================================== -->

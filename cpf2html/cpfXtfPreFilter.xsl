@@ -58,6 +58,9 @@
     <identity xtf:meta="yes">
       <xsl:value-of select="eac:nameEntry/eac:part"/>
     </identity>
+    <sort-identity xtf:meta="yes" xtf:tokenize="false">
+      <xsl:value-of select="eac:nameEntry/eac:part"/>
+    </sort-identity>
     <xsl:element name="facet-{eac:entityType}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:attribute name="xtf:facet">yes</xsl:attribute>
@@ -90,6 +93,29 @@
       <xsl:apply-templates select="*|text()"/>
     </xsl:element>
 
+  </xsl:template>
+
+  <!-- sectionTypes - default mode -->
+  <!-- per https://docs.google.com/document/pub?id=1wP9x6sdOZTagJNQXoyJfPh0Y6UzQgqLwLI86WSlIPbk -->
+  <!-- sectionTypes -->
+
+  <!-- one level deep 
+-->
+  <xsl:template match="eac:control|eac:cpfDescription">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:attribute name="xtf:sectionType" select="name()"/>
+      <xsl:apply-templates/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- two or three levels deep 
+-->
+  <xsl:template match="eac:identity|eac:description|eac:relations|eac:existDates|eac:biogHist|eac:generalContext|eac:occupation|eac:localDescription|eac:cpfRelation|eac:resourceRelation">
+    <xsl:copy>
+      <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
   </xsl:template>
 
   <!-- identity transform -->
