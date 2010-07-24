@@ -58,9 +58,18 @@
     <identity xtf:meta="yes">
       <xsl:value-of select="eac:nameEntry/eac:part"/>
     </identity>
+
+    <xsl:variable name="identity" select="eac:nameEntry/eac:part"/>
+
+    <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
-      <xsl:value-of select="eac:nameEntry/eac:part"/>
+      <xsl:value-of select="$identity"/>
     </sort-identity>
+    <!-- for A .. Z browse -->
+    <facet-identityAZ xtf:meta="true" xtf:tokenize="no">
+	<xsl:variable name="firstChar" select="upper-case(substring($identity,1,1))"/>
+	<xsl:value-of select="if (matches($firstChar,'[A-Z]')) then $firstChar else '0'"/>
+    </facet-identityAZ>
     <xsl:element name="facet-{eac:entityType}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:attribute name="xtf:facet">yes</xsl:attribute>
