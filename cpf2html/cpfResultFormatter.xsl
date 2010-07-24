@@ -52,7 +52,7 @@
   </xsl:template>
 
 
-  <!-- templates that hook the html template to the EAC -->
+  <!-- templates that hook the html template to the results -->
 
   <xsl:template match="*[@tmpl:change-value='html-title']" mode="html-template">
     <title>
@@ -104,6 +104,30 @@
       <xsl:apply-templates mode="html-template"/>
     </xsl:element>
   </xsl:template>
+
+  <!-- am I a browse page or a results page ? -->
+  <xsl:template match='*[@tmpl:process-markup="resultWrapper"]' mode="html-template">
+    <xsl:choose>
+      <!-- Browse Identities -->
+      <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
+      </xsl:when>
+      <!-- otherwise continue on with the HTML template -->
+      <xsl:otherwise>
+        <xsl:element name="{name(.)}">
+          <xsl:for-each select="@*">
+            <xsl:attribute name="{name(.)}">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:for-each>
+          <xsl:apply-templates mode="html-template"/>
+        </xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- browse page -->
+
+  <!-- results page -->
 
   <xsl:template match='*[@tmpl:replace-markup="recordLevel"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-recordLevel']" mode="result"/>
