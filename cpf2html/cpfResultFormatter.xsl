@@ -32,8 +32,10 @@
    <xsl:param name="css.path" select="concat($xtfURL, 'css/default/')"/>
    <xsl:param name="icon.path" select="concat($xtfURL, 'icons/default/')"/>
    <xsl:param name="docHits" select="/crossQueryResult/docHit"/>
-  <xsl:param name="keyword"/>
-   
+   <xsl:param name="text"/>
+   <xsl:param name="keyword" select="$text"/>
+   <xsl:param name="sectionType"/>
+
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
    <!-- ====================================================================== -->
@@ -73,6 +75,33 @@
       <xsl:attribute name="value">
         <xsl:value-of select="$keyword"/>
       </xsl:attribute>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:process-markup="sectionType"]' mode="html-template">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@name">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates mode="sectionType-selected"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="*" mode="sectionType-selected">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <!-- add selected attribute / default cpfdescription if no serach -->
+      <xsl:if test="($text!='' and $sectionType = @value) 
+		or ( $text='' and @value = 'cpfdescription')">
+        <xsl:attribute name="selected" select="'selected'"/>
+      </xsl:if>
+      <xsl:apply-templates mode="html-template"/>
     </xsl:element>
   </xsl:template>
 

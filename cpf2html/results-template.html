@@ -54,6 +54,24 @@ div.result div:last-child { font-size: 80%; }
 <form methon="GET" action="/xtf/search" class="cpfSearch">
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input type="text" size="27" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
 <input class="button" type="submit" value="search"/>
+
+<!-- process-markup is programed to add selected="selected" -->
+<select name="sectionType" tmpl:process-markup="sectionType">
+<option value="">eac-cpf</option>
+<option value="control">&#160;&#160;control</option>
+<option value="cpfdescription">&#160;&#160;cpfDescription</option>
+<option value="identity">&#160;&#160;&#160;&#160;identity</option>
+<option value="description">&#160;&#160;&#160;&#160;description</option>
+<option value="existdate">&#160;&#160;&#160;&#160;&#160;&#160;existDates</option>
+<option value="bioghist">&#160;&#160;&#160;&#160;&#160;&#160;biogHist</option>
+<option value="generalcontext">&#160;&#160;&#160;&#160;&#160;&#160;generalContext</option>
+<option value="occupation">&#160;&#160;&#160;&#160;&#160;&#160;occupation</option>
+<option value="localdescription">&#160;&#160;&#160;&#160;&#160;&#160;localDescription</option>
+<option value="relation">&#160;&#160;&#160;&#160;relations</option>
+<option value="cpfrelation">&#160;&#160;&#160;&#160;&#160;&#160;cpfRelation</option>
+<option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
+</select>
+
 </form>
 </div>
 <div class="clear">&#160;</div> 
