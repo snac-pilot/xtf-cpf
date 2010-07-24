@@ -313,16 +313,20 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
-    <xsl:if test="eac:cpfRelation[@xlink:role='person' or @cpfRelationType='family']"><h3>People</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='person' or @cpfRelationType='family']" mode="eac"/>
-    <xsl:if test="eac:cpfRelation[@xlink:role='corporateBody' or @cpfRelationType='associative']"><h3>Corporate Bodies</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[@xlink:role='corporateBody' or @cpfRelationType='associative']" mode="eac"/>
+    <xsl:if test="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']"><h3>People</h3></xsl:if>
+    <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']" mode="eac"/>
+    <xsl:if test="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']"><h3>Corporate Bodies</h3></xsl:if>
+    <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']" mode="eac"/>
     <xsl:if test="eac:resourceRelation"><h3>Resources</h3></xsl:if>
     <xsl:apply-templates select="eac:resourceRelation" mode="eac"/>
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
-    <div class="{if (@xlink:role) then (@xlink:role) else if (@cpfRelationType) then @cpfRelationType else 'related'}">
+    <div class="{if (ends-with(lower-case(@xlink:role),'person')) then ('person') 
+                 else if (ends-with(lower-case(@xlink:role),'corporatebody')) then ('corporateBody')
+                 else if (ends-with(lower-case(@xlink:role),'family')) then ('family')
+                 else if (@cpfRelationType) then @cpfRelationType 
+                 else 'related'}">
       <xsl:choose>
         <xsl:when test="@xlink:href">
           <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
