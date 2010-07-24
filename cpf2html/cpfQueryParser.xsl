@@ -13,11 +13,11 @@
    <xsl:param name="keyword" select="$text"/>
    
   <xsl:template match="/">
-    <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
+    <xsl:variable name="stylesheet" select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
     <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
     <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('sort-identity') else (false)"/>
     <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-    <xsl:variable name="maxDocs" select="if ($browse='yes') then (25) else (25)"/>
+    <xsl:variable name="maxDocs" select="if ($browse='yes') then (25) else if ($rmode='dot') then (25) else (25)"/>
     <xsl:variable name="includeEmptyGroups" select="'yes'"/>
       <query 
         indexPath="index" 
@@ -36,17 +36,23 @@
         <xsl:if test="$sortDocsBy">
           <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
         </xsl:if>
-        
-         <facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-         <spellcheck/>
-         <xsl:apply-templates/>
+        <xsl:choose>
+          <xsl:when test="$browse='no'">
+            <facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <spellcheck/>
+          </xsl:when>
+          <xsl:otherwise>
+            <facet field="facet-identityAZ" select="*" sortGroupsBy="value"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates/>
       </query>
    </xsl:template>
    
