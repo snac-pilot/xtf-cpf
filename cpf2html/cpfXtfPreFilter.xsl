@@ -11,12 +11,26 @@
   <!-- preFilter for eac-cpf in XTF -->
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+
+  <xsl:param name="hasDescription">
+    <xsl:choose>
+      <xsl:when test="/eac:eac-cpf/eac:cpfDescription/eac:description">
+        <xsl:text>true</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>false</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:param>
   
   <!-- Root Template --> 
   <xsl:template match="/*">
     <xsl:copy>
       <xsl:namespace name="xtf" select="'http://cdlib.org/xtf'"/>
       <xsl:copy-of select="@*"/>
+      <xsl:if test="$hasDescription = 'true'">
+        <xsl:attribute name="xtf:wordBoost" select="'1.0'"/>
+      </xsl:if>
       <xsl:call-template name="get-meta"/>
       <xsl:apply-templates/>
     </xsl:copy>
@@ -59,7 +73,7 @@
       <xsl:value-of select="eac:nameEntry/eac:part"/>
     </identity>
 
-    <xsl:variable name="identity" select="eac:nameEntry/eac:part"/>
+    <xsl:variable name="identity" select="replace(upper-case(eac:nameEntry/eac:part),'^[^0-9A-Z\s]','')"/>
 
     <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
@@ -127,9 +141,32 @@
 
   <!-- two or three levels deep 
 -->
-  <xsl:template match="eac:identity|eac:description|eac:relations|eac:existDates|eac:biogHist|eac:generalContext|eac:occupation|eac:localDescription|eac:cpfRelation|eac:resourceRelation">
+  <xsl:template match="eac:description|eac:cpfRelations|eac:existDates|eac:biogHist|eac:generalContext|eac:occupation|eac:localDescription|eac:resourceRelation">
     <xsl:copy>
       <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="eac:relations">
+    <xsl:copy>
+      <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
+          <xsl:attribute name="xtf:wordBoost" select="'1.0'"/>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="eac:identity">
+    <xsl:copy>
+      <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
+      <xsl:choose>
+        <xsl:when test="$hasDescription='true'">
+          <xsl:attribute name="xtf:wordBoost" select="'100'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="xtf:wordBoost" select="'1.5'"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
