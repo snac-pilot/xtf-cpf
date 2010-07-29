@@ -13,7 +13,7 @@
    <!-- Import Common Templates                                                -->
    <!-- ====================================================================== -->
    
-   <xsl:import href="../style/crossQuery/resultFormatter/common/resultFormatterCommon.xsl"/>
+   <xsl:include href="../style/crossQuery/resultFormatter/common/resultFormatterCommon.xsl"/>
    <!-- xsl:include href="../style/crossQuery/resultFormatter/default/searchForms.xsl"/ -->
    
    <!-- ====================================================================== -->
@@ -32,9 +32,10 @@
    <xsl:param name="css.path" select="concat($xtfURL, 'css/default/')"/>
    <xsl:param name="icon.path" select="concat($xtfURL, 'icons/default/')"/>
    <xsl:param name="docHits" select="/crossQueryResult/docHit"/>
-   <xsl:param name="text"/>
-   <xsl:param name="keyword" select="$text"/>
-   <xsl:param name="sectionType"/>
+   <xsl:param name="http.URL"/>
+   <!-- xsl:param name="text"/ -->
+   <!-- xsl:param name="keyword" select="$text"/ -->
+   <!-- xsl:param name="sectionType"/ -->
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -49,6 +50,10 @@
   <!-- apply templates on the layout file; rather than walking the input XML -->
   <xsl:template match="/">
     <xsl:apply-templates select="($layout)//*[local-name()='html']" mode="html-template"/>
+    <xsl:comment>
+        url: <xsl:value-of select="$http.URL"/>
+        xslt: <xsl:value-of select="static-base-uri()"/>
+    </xsl:comment>
   </xsl:template>
 
 
@@ -57,12 +62,12 @@
   <xsl:template match="*[@tmpl:change-value='html-title']" mode="html-template">
     <title>
       <xsl:text>Find Records: </xsl:text>
-      <xsl:value-of select="$keyword"/>
+      <xsl:value-of select="$text"/>
     </title>
   </xsl:template>
 
   <xsl:template match="*[@tmpl:condition='search']" mode="html-template">
-    <xsl:if test="($keyword!='')">
+    <xsl:if test="($text!='')">
       <xsl:call-template name="keep-going">
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
@@ -73,7 +78,7 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:attribute name="value">
-        <xsl:value-of select="$keyword"/>
+        <xsl:value-of select="$text"/>
       </xsl:attribute>
     </xsl:element>
   </xsl:template>
@@ -87,7 +92,35 @@
       </xsl:for-each>
       <xsl:apply-templates mode="sectionType-selected"/>
     </xsl:element>
+    <!-- sneak in the spelling here -->
+    <xsl:apply-templates select="$page/crossQueryResult/spelling" mode="spelling"/>
   </xsl:template>
+
+  <!-- digress into spelling before finishing the selected logic -->
+  <xsl:template match="spelling" mode="spelling">
+    <xsl:variable name="suggestQ" select="editURL:spellingFix($text,suggestion)"/>
+    <div class="spelling-suggestion">Did you mean: 
+      <a href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'text', $suggestQ)}">
+        <xsl:value-of select="$suggestQ"/>
+      </a>
+    </div>
+  </xsl:template>
+
+  <xsl:function name="editURL:spellingFix">
+    <xsl:param name="query"/>
+    <xsl:param name="suggestion"/>
+    <xsl:variable name="thisTerm" select="($suggestion)[1]"/>
+    <xsl:variable name="nextTerm" select="($suggestion)[position()&gt;1]"/>
+    <xsl:variable name="changedQuery" select="replace($query, $thisTerm/@originalTerm, $thisTerm/@suggestedTerm)"/>
+    <xsl:choose>
+      <xsl:when test="boolean($nextTerm)">
+        <xsl:value-of select="editURL:spellingFix($changedQuery,$nextTerm)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$changedQuery"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 
   <xsl:template match="*" mode="sectionType-selected">
     <xsl:element name="{name(.)}">
@@ -110,6 +143,16 @@
     <xsl:choose>
       <!-- Browse Identities -->
       <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
+        <div class="g960">
+        <!-- h2>Identities</h2>
+        <h3>Show all | People | Corporate Bodies | Families</h3>
+        Browse Identities by Name
+        <xsl:for-each select="'0-9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="."/>
+        </xsl:for-each -->
+        </div>
+<!-- xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']"/ -->
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->
       <xsl:otherwise>
