@@ -40,6 +40,7 @@ tranformed elements
   <xsl:param name="spreadsheets.formkey"/>
 
   <xsl:param name="http.URL"/>
+  <xsl:variable name="rel.URL" select="replace($http.URL,'http://[^/]*/','/')"/>
 
 
   <!-- keep gross layout in an external file -->
@@ -70,10 +71,10 @@ tranformed elements
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:choose>
         <xsl:when test="$showXML = ''">
-          <a href="{$http.URL};showXML=yes">show XML</a>
+          <a href="{$rel.URL};showXML=yes">show XML</a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{replace($http.URL,';showXML=yes','')}">hide XML</a>
+          <a href="{replace($rel.URL,';showXML=yes','')}">hide XML</a>
           <xsl:text> | </xsl:text>
           <a href="#xml">jump to XML</a>
         </xsl:otherwise>
@@ -337,7 +338,8 @@ tranformed elements
           <xsl:value-of select="eac:relationEntry"/>
           </a>
           <xsl:if test="@xlink:arcrole">
-            <span style="font-size: 80%;"> (<xsl:value-of select="@xlink:arcrole"/>)</span>
+            <xsl:text> </xsl:text>
+            <span class="arcrole"><xsl:value-of select="@xlink:arcrole"/></span>
           </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
