@@ -20,6 +20,8 @@ tranformed elements
 
 /* colors http://www.w3schools.com/css/css_colorsfull.asp */
 
+a[href^="http://"]:after { content: "&#160;↗"; }
+
 /* css order tries to match source order basically */
 
 .actions { float: right; }
@@ -29,7 +31,7 @@ tranformed elements
 .identity .id { margin-left: .3em; } 
 .identity .description { margin-left: .3em; } 
 .identity .extra-names { margin-left: .3em; } 
-.identity .authorizedForm { font-size: .6em; color:#8d8a72;} 
+.identity .authorizedForm, .arcrole { font-size: .6em; color:#8d8a72;} 
 .identity .person { background-color: #FFDEAD; }
 .identity .corporateBody { background-color: #E0FFFF; }
 .identity .family { background-color: #DEB887; }
