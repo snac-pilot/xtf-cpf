@@ -159,6 +159,10 @@
           <div class="list">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/group" mode="AZ"/>
           </div>
+        <div class="AZletters">
+         <hr/>
+        <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
+        </div>
         </div><!-- end g960 -->
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->
