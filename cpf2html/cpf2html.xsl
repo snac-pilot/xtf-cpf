@@ -333,7 +333,12 @@ tranformed elements
           <xsl:apply-templates select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote" mode="eac"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates mode="eac"/>
+          <a href="/xtf/search?text={eac:relationEntry}">
+          <xsl:value-of select="eac:relationEntry"/>
+          </a>
+          <xsl:if test="@xlink:arcrole">
+            <span style="font-size: 80%;"> (<xsl:value-of select="@xlink:arcrole"/>)</span>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </div>
