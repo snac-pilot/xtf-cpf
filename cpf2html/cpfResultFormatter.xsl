@@ -36,6 +36,7 @@
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
    <!-- xsl:param name="sectionType"/ -->
+   <xsl:param name="facet-identityAZ" select="'A'"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -144,15 +145,21 @@
       <!-- Browse Identities -->
       <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
         <div class="g960">
-        <!-- h2>Identities</h2>
-        <h3>Show all | People | Corporate Bodies | Families</h3>
-        Browse Identities by Name
-        <xsl:for-each select="'0-9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'">
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="."/>
-        </xsl:for-each -->
+       <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalGroups)"/> 
+       <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
+       <xsl:variable name="corporateBody-count" select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
+        <h2>Named Identities (<xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>)</h2>
+        <!-- h3>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</h3 -->
+
+        <div class="AZletters">
+        <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
+         <hr/>
         </div>
-<!-- xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']"/ -->
+
+          <div class="list">
+          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/group" mode="AZ"/>
+          </div>
+        </div><!-- end g960 -->
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->
       <xsl:otherwise>
@@ -169,6 +176,31 @@
   </xsl:template>
 
   <!-- browse page -->
+
+  <xsl:template match="group" mode="AZletters">
+    <xsl:choose>
+     <xsl:when test="not($facet-identityAZ=@value)">
+      <a href="/xtf/search?facet-identityAZ={escape-html-uri(@value)}">
+        <xsl:value-of select="@value"/>
+      </a>
+     </xsl:when> 
+     <xsl:otherwise>
+        <xsl:value-of select="@value"/>
+     </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text>&#160;</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="group" mode="AZ">
+    <div>
+      <a href="/xtf/search?text={escape-html-uri(@value)}">
+        <xsl:value-of select="@value"/>
+      </a>
+      <xsl:text> (</xsl:text>
+      <xsl:value-of select="@totalDocs"/>
+      <xsl:text>)</xsl:text>
+    </div>
+  </xsl:template>
 
   <!-- results page -->
 
