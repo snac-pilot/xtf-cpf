@@ -83,6 +83,8 @@
     <facet-identityAZ xtf:meta="true" xtf:tokenize="no">
 	<xsl:variable name="firstChar" select="upper-case(substring($identity,1,1))"/>
 	<xsl:value-of select="if (matches($firstChar,'[A-Z]')) then $firstChar else '0'"/>
+        <xsl:text>::</xsl:text>
+        <xsl:value-of select="eac:nameEntry/eac:part"/>
     </facet-identityAZ>
     <xsl:element name="facet-{eac:entityType}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>

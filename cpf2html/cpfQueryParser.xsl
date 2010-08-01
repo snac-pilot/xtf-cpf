@@ -11,13 +11,14 @@
    <xsl:param name="fieldList" select="'identity text'"/>
    <xsl:param name="text"/>
    <xsl:param name="keyword" select="$text"/>
+   <xsl:param name="facet-identityAZ" select="'A'"/>
    
   <xsl:template match="/">
     <xsl:variable name="stylesheet" select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
     <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
     <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('sort-identity') else (false)"/>
     <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-    <xsl:variable name="maxDocs" select="if ($browse='yes') then (25) else if ($rmode='dot') then (25) else (25)"/>
+    <xsl:variable name="maxDocs" select="if ($browse='yes') then (0) else if ($rmode='dot') then (25) else (25)"/>
     <xsl:variable name="includeEmptyGroups" select="'yes'"/>
       <query 
         indexPath="index" 
@@ -49,7 +50,10 @@
             <spellcheck/>
           </xsl:when>
           <xsl:otherwise>
-            <facet field="facet-identityAZ" select="*" sortGroupsBy="value"/>
+            <facet field="facet-identityAZ" select="*|{$facet-identityAZ}::*" sortGroupsBy="value" sortDocsBy="sort-identity"/>
+            <facet field="facet-person" select="*[1]"/>
+            <facet field="facet-corporateBody" select="*[1]"/>
+            <facet field="facet-family" select="*[1]"/>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates/>
@@ -100,7 +104,7 @@
          </xsl:for-each>
       
          <!-- to enable you to see browse results -->
-         <xsl:if test="not(param[starts-with(@name, 'f[0-9]-')] and $keyword='')">
+         <xsl:if test="$text=''">
             <allDocs/>
          </xsl:if>
 
