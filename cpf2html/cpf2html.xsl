@@ -334,7 +334,7 @@ tranformed elements
           <xsl:apply-templates select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote" mode="eac"/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="/xtf/search?text={eac:relationEntry}">
+          <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)}">
           <xsl:value-of select="eac:relationEntry"/>
           </a>
           <xsl:if test="@xlink:arcrole">
