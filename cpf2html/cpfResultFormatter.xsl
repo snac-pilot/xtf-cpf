@@ -184,7 +184,7 @@
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
      <xsl:when test="not($facet-identityAZ=@value)">
-      <a href="/xtf/search?facet-identityAZ={escape-html-uri(@value)}">
+      <a href="/xtf/search?facet-identityAZ={@value}">
         <xsl:value-of select="@value"/>
       </a>
      </xsl:when> 
@@ -197,7 +197,7 @@
 
   <xsl:template match="group" mode="AZ">
     <div>
-      <a href="/xtf/search?text={escape-html-uri(@value)}">
+      <a href="/xtf/search?text={encode-for-uri(@value)}">
         <xsl:value-of select="@value"/>
       </a>
       <xsl:text> (</xsl:text>
