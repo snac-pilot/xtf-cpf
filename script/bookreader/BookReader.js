@@ -2683,7 +2683,7 @@ BookReader.prototype.jumpToSearchResult = function(clientKey) {
         if (result.clientKey == clientKey) {
             var middleX = (result.l + result.r) >> 1;
             var middleY = (result.t + result.b) >> 1;
-            this.jumpToIndex(result.index, middleX, middleY);
+            this.jumpToIndex(parseInt(result.index), middleX, middleY);
             return true;
         }
     }

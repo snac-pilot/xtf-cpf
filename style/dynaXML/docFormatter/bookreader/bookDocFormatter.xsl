@@ -526,7 +526,7 @@
    <xsl:function name="local:unquote">
       <xsl:param name="str"/>
       <xsl:variable name="quote" select="'&quot;'"/>
-      <xsl:value-of select="replace($str, $quote, '')"/>
+      <xsl:value-of select="replace(replace($str, $quote, ''), '\\', '')"/>
    </xsl:function>
    
    <!-- ====================================================================== -->
