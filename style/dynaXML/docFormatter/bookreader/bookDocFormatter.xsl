@@ -266,18 +266,7 @@
                   var page = this.indexToPage[index];
                   if (page === undefined)
                      return undefined;
-                     
-                  // Scaling by maximum dimension seems to be faster in Djatoka for some reason.
-                  var maxDim = Math.max(page.w, page.h);
-                  var scale = parseInt(maxDim / reduce);
-                  var amp = String.fromCharCode(38); // raw ampersands are tough to output in XSLT
-                  return "<xsl:value-of select="replace($root.URL, '(http://[^/]+).*$', '$1')"/>/adore-djatoka/resolver?url_ver=Z39.88-2004"
-                         + amp + "rft_id=file:" + encodeURIComponent("<xsl:value-of select="concat($servlet.dir, 'data/', $docPath)"/>" + this.indexToPage[index].imgFile)
-                         + amp + "svc_id=info:lanl-repo/svc/getRegion"
-                         + amp + "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000"
-                         + amp + "svc.format=image/jpeg"
-                         + amp + "svc.scale=" + scale
-                         + amp + "svc.rotate=0";
+                  return "<xsl:value-of select="$doc.dir"/>" + page.imgFile;
                }
                
                br.getPageNum = function(index) {
