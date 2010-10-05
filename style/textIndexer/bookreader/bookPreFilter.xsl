@@ -78,14 +78,6 @@
    </xsl:variable>
    
    <!-- ====================================================================== -->
-   <!-- Keys for speedy processing                                             -->
-   <!-- ====================================================================== -->
-   
-   <xsl:key name="pageDivs" 
-            match="//METS:div[@TYPE='page']" 
-            use="@ORDER cast as xs:integer"/>
-   
-   <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
    <!-- ====================================================================== -->
    
@@ -470,12 +462,12 @@
          </xsl:if>
          
          <!-- Jump through hoops to find the image file -->
-         <xsl:variable name="pageDiv" select="key('pageDivs', $leafNum)"/>
-         <xsl:variable name="fileIDs" select="$pageDiv//METS:fptr/string(@FILEID)"/>
-         <xsl:variable name="files" select="//METS:file[@ID = $fileIDs]"/>
-         <xsl:variable name="imgFileLoc" select="$files[matches(@MIMETYPE, 'image/')]/METS:FLocat/string(@xlink:href)"/>
-         <xsl:if test="$imgFileLoc">
-            <xsl:attribute name="imgFile" select="$imgFileLoc"/>
+         <xsl:variable name="imageFileLoc" select="concat(format-number(@leafNum, '00000000'), '.jpg')"/>
+         <xsl:variable name="docpath" select="saxon:system-id()"/>
+         <xsl:variable name="base" select="replace($docpath, '(.*)/[^/]+$', '$1')"/>
+         <xsl:variable name="imagePath" select="concat($base, '/', $imageFileLoc)"/>
+         <xsl:if test="FileUtils:exists($imagePath)">
+            <xsl:attribute name="imgFile" select="$imageFileLoc"/>
          </xsl:if>
          
          <!-- Copy the crop box dimensions -->
@@ -488,11 +480,9 @@
          </xsl:if>
          
          <!-- Now process the DJVU XML -->
-         <xsl:variable name="xmlFileLoc" select="$files[matches(@MIMETYPE, 'text/xml')]/METS:FLocat/string(@xlink:href)"/>
-         <xsl:variable name="docpath" select="saxon:system-id()"/>
-         <xsl:variable name="base" select="replace($docpath, '(.*)/[^/]+$', '$1')"/>
+         <xsl:variable name="xmlFileLoc" select="concat(format-number(@leafNum, '00000000'), '.xml')"/>
          <xsl:variable name="xmlPath" select="concat($base, '/', $xmlFileLoc)"/>
-         <xsl:if test="$xmlFileLoc and FileUtils:exists($xmlPath)">
+         <xsl:if test="FileUtils:exists($xmlPath)">
             <xsl:variable name="xmlDoc" select="document($xmlPath)"/>
             <xsl:choose>
                <xsl:when test="$xmlDoc/DjVuXML">
