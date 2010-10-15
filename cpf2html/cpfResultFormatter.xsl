@@ -44,6 +44,7 @@
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('results-template.html')"/>
+  <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
   <xsl:variable name="page" select="/"/>
@@ -57,6 +58,9 @@
     </xsl:comment>
   </xsl:template>
 
+  <xsl:template match="*:footer" mode="html-template">
+    <xsl:copy-of select="$footer"/> 
+  </xsl:template>
 
   <!-- templates that hook the html template to the results -->
 
@@ -162,6 +166,7 @@
         <div class="AZletters">
          <hr/>
         <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
+         <hr/>
         </div>
         </div><!-- end g960 -->
       </xsl:when>
@@ -267,14 +272,15 @@
     <xsl:param name="path" select="@path"/>
     <div class="result">
       <div class="{meta/facet-entityType}">
+      <xsl:variable name="href">
+        <xsl:call-template name="dynaxml.url">
+          <xsl:with-param name="path" select="$path"/>
+        </xsl:call-template>
+      </xsl:variable>
       <a>
-        <xsl:attribute name="href">
-          <xsl:call-template name="dynaxml.url">
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-        </xsl:attribute>
+        <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
         <xsl:apply-templates select="meta/identity[1]"/>
-      </a>
+      </a> 
       </div>
       <div><xsl:apply-templates select="meta/entityId"/></div>
       <div><xsl:apply-templates select="snippet" mode="text"/></div>
@@ -315,16 +321,15 @@
     <xsl:variable name="field" select="replace(ancestor::facet/@field, 'facet-(.*)', '$1')"/>
     <xsl:variable name="value" select="@value"/>
     <xsl:variable name="nextName" select="editURL:nextFacetParam($queryString, $field)"/>
-    <xsl:variable name="queryStringClean" select="replace($queryString,'http://archive1.village.virginia.edu:8080/xtf/search','')"/>
-
+    <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
     <xsl:variable name="selectLink" select="
-         concat($xtfURL, $crossqueryPath, '?',
+         concat('/xtf/', $crossqueryPath, '?',
                 editURL:set($queryStringClean,
                             $nextName, $value))">
     </xsl:variable>
 
     <xsl:variable name="clearLink" select="
-         concat($xtfURL, $crossqueryPath, '?',
+         concat('/xtf/', $crossqueryPath, '?',
                 editURL:replaceEmpty(editURL:remove($queryString, concat('f[0-9]+-',$field,'=',$value)),
                                      'browse-all=yes'))">
     </xsl:variable>
