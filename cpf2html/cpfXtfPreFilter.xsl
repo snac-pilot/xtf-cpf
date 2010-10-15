@@ -69,11 +69,9 @@
   </xsl:template>
 
   <xsl:template match="eac:identity" mode="meta">
-    <identity xtf:meta="yes">
-      <xsl:value-of select="eac:nameEntry/eac:part"/>
-    </identity>
+    <xsl:apply-templates select="eac:nameEntry" mode="meta"/>
 
-    <xsl:variable name="identity" select="replace(upper-case(eac:nameEntry/eac:part),'^[^0-9A-Z\s]','')"/>
+    <xsl:variable name="identity" select="replace(upper-case(eac:nameEntry[1]/eac:part),'^[^0-9A-Z\s]','')"/>
 
     <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
@@ -84,15 +82,21 @@
 	<xsl:variable name="firstChar" select="upper-case(substring($identity,1,1))"/>
 	<xsl:value-of select="if (matches($firstChar,'[A-Z]')) then $firstChar else '0'"/>
         <xsl:text>::</xsl:text>
-        <xsl:value-of select="eac:nameEntry/eac:part"/>
+        <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
     </facet-identityAZ>
     <xsl:element name="facet-{eac:entityType}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:attribute name="xtf:facet">yes</xsl:attribute>
-      <xsl:value-of select="eac:nameEntry/eac:part"/>
+      <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
     </xsl:element>
   </xsl:template>
- 
+
+  <xsl:template match="eac:nameEntry" mode="meta">
+    <identity xtf:meta="yes">
+      <xsl:value-of select="eac:part"/>
+    </identity>
+  </xsl:template>
+
   <xsl:template match="eac:occupation" mode="meta">
     <occupation xtf:meta="yes"><xsl:value-of select="eac:term"/></occupation>
     <facet-occupation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:term"/></facet-occupation>
@@ -169,7 +173,10 @@
           <xsl:attribute name="xtf:wordBoost" select="'1.5'"/>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:apply-templates select="@*|node()"/>
+      <!-- xsl:apply-templates select="@*|node()"/ -->
+      <!-- //preceding::item/preceding::item[not(.=preceding-sibling::item)]/text() -->
+      <xsl:apply-templates select="@*|eac:descriptiveNote|eac:entityId|eac:entityType|eac:nameEntryParallel|
+        eac:nameEntry/preceding::eac:nameEntry[not(.=preceding-sibling::eac:nameEntry)] "/>
     </xsl:copy>
   </xsl:template>
 

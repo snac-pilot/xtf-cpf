@@ -6,6 +6,7 @@
   xmlns:tmpl="xslt://template" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:xtf="http://cdlib.org/xtf"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -32,6 +33,7 @@ tranformed elements
 
   <!-- options -->
   <xsl:param name="showXML"/>
+  <xsl:param name="docId"/>
 
   <!-- in dynaXML-config put
 	<spreadsheets formkey="XXXX"/>
@@ -45,6 +47,7 @@ tranformed elements
 
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('html-template.html')"/>
+  <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
   <xsl:variable name="page" select="/"/>
@@ -54,10 +57,15 @@ tranformed elements
     <xsl:apply-templates select="($layout)//*[local-name()='html']"/>
   </xsl:template>
 
+  <xsl:template match="*:footer">
+    <xsl:copy-of select="$footer"/>
+  </xsl:template>
+
   <!-- templates that hook the html template to the EAC -->
 
   <xsl:template match='*[@tmpl:change-value="html-title"]'>
     <xsl:element name="{name()}">
+
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
       <xsl:text> [</xsl:text>
@@ -71,7 +79,7 @@ tranformed elements
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:choose>
         <xsl:when test="$showXML = ''">
-          <a href="{$rel.URL};showXML=yes">show XML</a>
+          <a href="/xtf/data/{escape-html-uri($docId)}">show XML</a>
         </xsl:when>
         <xsl:otherwise>
           <a href="{replace($rel.URL,';showXML=yes','')}">hide XML</a>
@@ -104,10 +112,11 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:nameEntry" mode="extra-names">
-    <div class="extra-names">
-      <xsl:value-of select="eac:part"/>
-      <xsl:apply-templates select="eac:authorizedForm" mode="extra-names"/>
-    </div>
+    <xsl:text>
+</xsl:text>
+    <span class="extra-names">
+      <xsl:apply-templates select="eac:part, eac:authorizedForm" mode="extra-names"/>
+    </span>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="entityId"]'>
@@ -254,7 +263,13 @@ tranformed elements
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
+    <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[@xlink:role='archivalRecords']" />
+    <xsl:if test="$archivalRecords">
+      <h3>Archival Collections</h3>
+      <xsl:apply-templates select="$archivalRecords" mode="eac"/>
+    </xsl:if>
     <xsl:apply-templates select="$relations" mode="eac"/>
+      <xsl:apply-templates select="($relations)/*[eac:cpfRelation] | ($relations)/*[eac:resourceRelation[@xlink:role!='archivalRecords']]" mode="eac"/>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="xml"]'>
@@ -288,12 +303,22 @@ tranformed elements
     <xsl:apply-templates select="eac:descriptiveNote| eac:p" mode="eac"/>
   </xsl:template>
 
-  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
+  <xsl:template match="eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
     <li><xsl:apply-templates mode="eac"/></li>
   </xsl:template>
 
+  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
+    <li>
+      <xsl:apply-templates select="@localType[.!='subject']"/>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates mode="eac"/>
+    </li>
+  </xsl:template>
+
   <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
-    <ul><li><xsl:apply-templates mode="eac"/></li></ul>
+    <ul>
+      <xsl:apply-templates select="." mode="eac-inlist"/>
+    </ul>
   </xsl:template>
 
   <xsl:template match="eac:biogHist" mode="eac">
@@ -344,6 +369,17 @@ tranformed elements
         </xsl:otherwise>
       </xsl:choose>
     </div>
+  </xsl:template>
+ 
+  <xsl:template match="eac:placeEntry" mode="eac">
+    <xsl:apply-templates select="@countryCode" mode="attribute"/>
+    <xsl:apply-templates mode="eac"/>
+  </xsl:template>
+
+  <xsl:template match="@*" mode="attribute">
+    <xsl:value-of select="name()"/>
+    <xsl:text>: </xsl:text>
+    <xsl:value-of select="."/>
   </xsl:template>
 
   <xsl:template match="*" mode="eac">

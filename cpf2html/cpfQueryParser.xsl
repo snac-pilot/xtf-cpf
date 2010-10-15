@@ -39,14 +39,14 @@
         </xsl:if>
         <xsl:choose>
           <xsl:when test="$browse='no'">
-            <facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <!-- facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/ -->
             <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <!-- facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/ -->
             <spellcheck/>
           </xsl:when>
           <xsl:otherwise>
