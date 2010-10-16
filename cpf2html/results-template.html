@@ -26,6 +26,7 @@ tranformed elements
        });
   });
 </script>
+<script tmpl:replace-markup="google-tracking-code"/>
 </head>
 
 <body>
@@ -33,10 +34,16 @@ tranformed elements
 <div class="g960">
 <h1>Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
 <form methon="GET" action="/xtf/search" class="cpfSearch">
+<div class="main-search">
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input id="userInput" type="text" size="27" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
 <input class="button" type="submit" value="search"/>
 
 <!-- process-markup is programed to add selected="selected" -->
+</div>
+<div class="advanced-search"> 
+<div>Limit to <a href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html">EAC Tag</a>
+</div>
+<div>
 <select name="sectionType" tmpl:process-markup="sectionType">
 <option value="">eac-cpf</option>
 <option value="control">&#160;&#160;control</option>
@@ -52,6 +59,8 @@ tranformed elements
 <option value="cpfrelation">&#160;&#160;&#160;&#160;&#160;&#160;cpfRelation</option>
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
+</div>
+</div>
 
 </form>
 </div>

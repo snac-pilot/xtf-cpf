@@ -13,6 +13,7 @@
    <!-- Import Common Templates                                                -->
    <!-- ====================================================================== -->
    
+   <xsl:import href="google-tracking.xsl"/>
    <xsl:include href="../style/crossQuery/resultFormatter/common/resultFormatterCommon.xsl"/>
    <!-- xsl:include href="../style/crossQuery/resultFormatter/default/searchForms.xsl"/ -->
    
@@ -77,6 +78,10 @@
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]' mode="html-template">
+    <xsl:call-template name="google-tracking-code"/>
   </xsl:template>
 
   <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
@@ -160,7 +165,8 @@
         </div>
 
           <div class="AZlist">
-          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/group" mode="AZ"/>
+          <!-- process the results -->
+          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit" mode="AZlist"/>
           </div>
         </div><!-- end g960 -->
       </xsl:when>
@@ -194,15 +200,19 @@
     <xsl:text>&#160;</xsl:text>
   </xsl:template>
 
-  <xsl:template match="group" mode="AZ">
-    <div>
-      <a href="/xtf/search?text={encode-for-uri(@value)}">
-        <xsl:value-of select="@value"/>
+  <xsl:template match="docHit" mode="AZlist">
+    <xsl:param name="path" select="@path"/>
+      <div class="{meta/facet-entityType}">
+      <xsl:variable name="href">
+        <xsl:call-template name="dynaxml.url">
+          <xsl:with-param name="path" select="$path"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <a>
+        <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
+        <xsl:value-of select="replace(meta/facet-identityAZ,'^.::','')"/>
       </a>
-      <xsl:text> (</xsl:text>
-      <xsl:value-of select="@totalDocs"/>
-      <xsl:text>)</xsl:text>
-    </div>
+      </div>
   </xsl:template>
 
   <!-- results page -->
