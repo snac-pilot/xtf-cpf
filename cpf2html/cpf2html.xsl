@@ -269,19 +269,17 @@ tranformed elements
       <xsl:apply-templates select="$archivalRecords" mode="eac"/>
     </xsl:if>
     <xsl:apply-templates select="$relations" mode="eac"/>
-      <xsl:apply-templates select="($relations)/*[eac:cpfRelation] | ($relations)/*[eac:resourceRelation[@xlink:role!='archivalRecords']]" mode="eac"/>
+      <xsl:apply-templates select="($relations)/*[eac:cpfRelation]" mode="eac"/>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:replace-markup="xml"]'>
-<xsl:if test="$showXML='yes'">
-<pre><code>
-  <xsl:call-template name="xml-to-string">
-    <xsl:with-param name="node-set" select="($page)/*"/>
-  </xsl:call-template>
-</code></pre>
-</xsl:if>
+  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '<xsl:value-of select="document('UA-code.xml')/UA"/>']);
+    _gaq.push(['_trackPageview']);
+  </script>
   </xsl:template>
-
+  
   <!-- templates that format EAC to HTML -->
 
   <xsl:template match="eac:existDates" mode="eac">
@@ -343,8 +341,9 @@ tranformed elements
     <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']" mode="eac"/>
     <xsl:if test="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']"><h3>Corporate Bodies</h3></xsl:if>
     <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']" mode="eac"/>
-    <xsl:if test="eac:resourceRelation"><h3>Resources</h3></xsl:if>
-    <xsl:apply-templates select="eac:resourceRelation" mode="eac"/>
+    <xsl:variable name="resources" select="eac:resourceRelation[not(@xlink:role='archivalRecords')]"/>
+    <xsl:if test="$resources"><h3>Resources</h3></xsl:if>
+    <xsl:apply-templates select="$resources" mode="eac"/>
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
