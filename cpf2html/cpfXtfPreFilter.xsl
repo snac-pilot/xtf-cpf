@@ -106,9 +106,27 @@
   </xsl:template>
 
   <xsl:template match="eac:localDescription" mode="meta">
-    <localDescription xtf:meta="yes"><xsl:value-of select="eac:term"/></localDescription>
-    <facet-localDescription xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:term"/></facet-localDescription>
+    <localDescription xtf:meta="yes">
+      <xsl:apply-templates select="@localType[.!='subject']|eac:term|eac:placeEntry" mode="meta"/>
+    </localDescription>
+    <facet-localDescription xtf:facet="yes" xtf:meta="yes">
+      <xsl:apply-templates select="@localType[.!='subject']|eac:term|eac:placeEntry" mode="meta"/>
+    </facet-localDescription>
   </xsl:template>
+
+  <xsl:template match="@localType" mode="meta">
+    <xsl:value-of select="."/>
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="eac:term" mode="meta">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="eac:placeEntry" mode="meta">
+    <xsl:value-of select="@countryCode"/>
+  </xsl:template>
+
   
   <xsl:template match="eac:cpfRelation" mode="meta">
     <facet-cpfRelation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:relationEntry"/></facet-cpfRelation>
