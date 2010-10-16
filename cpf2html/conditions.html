@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 <html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
   <head>
     <title>The Social Networks and Archival Context Project (SNAC) - Conditions of Use</title>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection, print"></link>
@@ -117,6 +117,13 @@ function _loadUserVoice() {
 }
 _loadSuper = window.onload;
 window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+
+// track external links
+$(document).ready(function(){
+  $("a[href^='http://']").click(function(){
+    _gaq.push( ['_trackPageview','/outgoing/'+ $(this).attr('href')] );
+  });
+});
 </script>
 </div>
 </div>
