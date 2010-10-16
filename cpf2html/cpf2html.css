@@ -47,6 +47,8 @@ a[href^="http://"]:after { content: " ↗"; }
     }
 .cpfSearch input[type="text"] { font-size: 1.32em; }
 .cpfSearch input.button { font-size: 1.32em; background-color: #ffffff;}
+.cpfSearch div.main-search { float: left; padding-right: 4em; padding-top: .3em; }
+.cpfSearch div.advanced-search {  }
 
 .AZletters, .AZlist { padding-bottom: 1em; }
 .AZletters { font-size: 125%; }

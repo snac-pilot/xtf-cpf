@@ -23,6 +23,7 @@ tranformed elements
 
   <!-- xsl:import href="xmlverbatim-xsl/xmlverbatim.xsl"/ -->
   <xsl:import href="xml-to-string-xsl/xml-to-string.xsl"/>
+  <xsl:include href="google-tracking.xsl"/>
 
   <xsl:strip-space elements="*"/>
 
@@ -273,13 +274,9 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '<xsl:value-of select="document('UA-code.xml')/UA"/>']);
-    _gaq.push(['_trackPageview']);
-  </script>
+    <xsl:call-template name="google-tracking-code"/>
   </xsl:template>
-  
+
   <!-- templates that format EAC to HTML -->
 
   <xsl:template match="eac:existDates" mode="eac">
