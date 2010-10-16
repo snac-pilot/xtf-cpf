@@ -1,6 +1,9 @@
 a[href^="http://"]:after { content: " ↗"; }
+.hit { background-color: yellow; }
 
 /* css order tries to match source order basically */
+
+.home { padding-bottom: .5em; }
 
 .actions { float: right; }
 
@@ -10,7 +13,7 @@ a[href^="http://"]:after { content: " ↗"; }
 .identity .description { margin-left: .3em; }
 .identity .extra-names { margin-left: .3em; white-space: nowrap; }
           .extra-names:after { content: "; "; }
-          .extra-names:hover { background-color: #FFDEAD; }
+          span.extra-names:hover { background-color: #FFDEAD; }
 .identity .authorizedForm, .arcrole { font-size: .6em; color:#8d8a72;}
 .identity .person { background-color: #FFDEAD; }
 .identity .corporateBody { background-color: #E0FFFF; }
@@ -26,17 +29,17 @@ a[href^="http://"]:after { content: " ↗"; }
 */
 .relations div { margin-bottom: .2em; padding: .3em; }
 .relations h3 { margin-bottom: .441em; margin-top: .441em;}
-.relations .person:hover { background-color: #FFDEAD; }
-.relations .corporateBody:hover { background-color: #E0FFFF; }
-.relations .family:hover { background-color: #DEB887; }
-.relations .archivalRecords:hover { background-color: #F694FF; }
-.relations .related:hover { background-color: #CEFFAD; }
+.relations div.person:hover { background-color: #FFDEAD; }
+.relations div.corporateBody:hover { background-color: #E0FFFF; }
+.relations div.family:hover { background-color: #DEB887; }
+.relations div.archivalRecords:hover { background-color: #F694FF; }
+.relations div.related:hover { background-color: #CEFFAD; }
 
 /* CEFFAD green ; ADEFFF blue; FFADEF pink */
 
 /* .person, .corporateBody, .resources {} */
 
-.main{background-color:#fff;}
+.main{background-color:#fff; }
 
 .cpfSearch { font-size: 13px;
     background-color: #d6e5f4;
@@ -44,6 +47,9 @@ a[href^="http://"]:after { content: " ↗"; }
     }
 .cpfSearch input[type="text"] { font-size: 1.32em; }
 .cpfSearch input.button { font-size: 1.32em; background-color: #ffffff;}
+
+.AZletters, .AZlist { padding-bottom: 1em; }
+.AZletters { font-size: 125%; }
 
 .results .person .hit, h1 .person, div.home .person { background-color: #FFDEAD; }
 .results .corporateBody .hit, h1 .corporateBody, div.home .corporateBody { background-color: #E0FFFF; }
@@ -68,6 +74,6 @@ border-style: solid;
 div.result div:first-child { font-size: 140%; }
 div.result div:last-child { font-size: 80%; }
 
-.hit { background-color: yellow; }
+.blank { padding-bottom: 20em; }
 
 .footer { background-color: #d6e5f4; }

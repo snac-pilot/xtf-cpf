@@ -36,7 +36,7 @@
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
    <!-- xsl:param name="sectionType"/ -->
-   <xsl:param name="facet-identityAZ" select="'A'"/>
+   <xsl:param name="facet-identityAZ" select="'0'"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -153,21 +153,15 @@
        <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
        <xsl:variable name="corporateBody-count" select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
         <h2>Named Identities (<xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>)</h2>
-        <!-- h3>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</h3 -->
+        <h3>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</h3>
 
         <div class="AZletters">
         <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-         <hr/>
         </div>
 
-          <div class="list">
+          <div class="AZlist">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/group" mode="AZ"/>
           </div>
-        <div class="AZletters">
-         <hr/>
-        <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-         <hr/>
-        </div>
         </div><!-- end g960 -->
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->

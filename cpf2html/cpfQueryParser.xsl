@@ -11,9 +11,16 @@
    <xsl:param name="fieldList" select="'identity text'"/>
    <xsl:param name="text"/>
    <xsl:param name="keyword" select="$text"/>
-   <xsl:param name="facet-identityAZ" select="'A'"/>
+   <xsl:param name="facet-identityAZ" select="'0'"/>
+   <xsl:param name="autocomplete"/>
    
   <xsl:template match="/">
+  <xsl:choose>
+  <xsl:when test="$autocomplete">
+    <xsl:apply-templates select="." mode="autocomplete"/>
+  </xsl:when>
+
+  <xsl:otherwise>
     <xsl:variable name="stylesheet" select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
     <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
     <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('sort-identity') else (false)"/>
@@ -27,6 +34,7 @@
         maxSnippets="0"
         style="{$stylesheet}" 
         startDoc="{$startDoc}" 
+	returnMetaFields="identity"
         maxDocs="{$maxDocs}">
         <xsl:if test="$normalizeScores">
           <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -39,17 +47,14 @@
         </xsl:if>
         <xsl:choose>
           <xsl:when test="$browse='no'">
-            <!-- facet field="facet-recordLevel" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/ -->
             <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <!-- facet field="facet-cpfRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-resourceRelation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/ -->
             <spellcheck/>
           </xsl:when>
-          <xsl:otherwise>
+          <xsl:otherwise><!-- AZ browse via facets / de-duplicates -->
             <facet field="facet-identityAZ" select="*|{$facet-identityAZ}::*" sortGroupsBy="value" sortDocsBy="sort-identity"/>
             <facet field="facet-person" select="*[1]"/>
             <facet field="facet-corporateBody" select="*[1]"/>
@@ -58,7 +63,51 @@
         </xsl:choose>
         <xsl:apply-templates/>
       </query>
+    </xsl:otherwise>
+    </xsl:choose>
    </xsl:template>
+   
+   <!-- ====================================================================== -->
+   <!-- autocomplete  http://gist.github.com/612901                            -->
+   <!-- ====================================================================== -->
+
+  <!-- autocomplete on identity (the title/subject of an EAC)  -->
+
+  <xsl:template match="/" mode="autocomplete">
+    <xsl:variable name="stylesheet" select="'cpf2html/autocomplete.xsl'"/>
+    <query indexPath="index" termLimit="1000" workLimit="20000000"
+                style="{$stylesheet}" startDoc="{$startDoc}" maxDocs="20" normalizeScores="false"
+		returnMetaFields="identity">
+      <xsl:choose>
+        <xsl:when test="string-length($autocomplete) &gt; 2">
+          <and maxSnippets="0">
+            <!-- additional search limits -->
+            <and field="identity">
+              <xsl:apply-templates select="parameters/param[@name='term']/token" mode="autotitle"/>
+            </and>
+          </and>
+        </xsl:when>
+        <xsl:otherwise> </xsl:otherwise>
+      </xsl:choose>
+    </query>
+  </xsl:template>
+
+  <!-- do a wildcard search on the last word -->
+  <xsl:template match="token[position()=last()]" mode="autotitle">
+    <xsl:variable name="value">
+      <xsl:value-of select="@value"/>
+      <xsl:text>*</xsl:text>
+    </xsl:variable>
+    <or>
+      <near slop="13"><term><xsl:value-of select="$value"/></term></near>
+      <near slop="13"><term><xsl:value-of select="@value"/></term></near>
+    </or>
+  </xsl:template>
+
+  <xsl:template match="token" mode="autotitle">
+    <term><xsl:value-of select="@value"/></term>
+  </xsl:template>
+
    
    <!-- ====================================================================== -->
    <!-- Parameters Template                                                    -->
