@@ -1,75 +1,95 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:session="java:org.cdlib.xtf.xslt.Session"
-   xmlns:freeformQuery="java:org.cdlib.xtf.xslt.FreeformQuery"
-   extension-element-prefixes="session freeformQuery"
-   exclude-result-prefixes="#all" 
-   version="2.0">
+  xmlns:session="java:org.cdlib.xtf.xslt.Session"
+  xmlns:freeformQuery="java:org.cdlib.xtf.xslt.FreeformQuery"
+  extension-element-prefixes="session freeformQuery"
+  exclude-result-prefixes="#all" 
+  version="2.0">
    
-   <xsl:import href="../style/crossQuery/queryParser/common/queryParserCommon.xsl"/>
-   <xsl:output method="xml" indent="yes" encoding="utf-8"/>
-   <xsl:strip-space elements="*"/>
-   <xsl:param name="fieldList" select="'identity text'"/>
-   <xsl:param name="text"/>
-   <xsl:param name="keyword" select="$text"/>
-   <xsl:param name="facet-identityAZ" select="'0'"/>
-   <xsl:param name="autocomplete"/>
+  <xsl:import href="../style/crossQuery/queryParser/common/queryParserCommon.xsl"/>
+  <xsl:output method="xml" indent="yes" encoding="utf-8"/>
+  <xsl:strip-space elements="*"/>
+  <xsl:param name="fieldList" select="'identity text'"/>
+  <xsl:param name="text"/>
+  <xsl:param name="keyword" select="$text"/>
+  <xsl:param name="facet-identityAZ" select="'0'"/>
+  <xsl:param name="autocomplete"/>
    
   <xsl:template match="/">
-  <xsl:choose>
-  <xsl:when test="$autocomplete">
-    <xsl:apply-templates select="." mode="autocomplete"/>
-  </xsl:when>
+    <xsl:variable name="browse" 
+      select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
+    <xsl:choose>
+      <xsl:when test="$autocomplete">
+        <xsl:apply-templates select="." mode="autocomplete"/>
+      </xsl:when>
+      <xsl:when test="$browse='yes'">
+        <xsl:apply-templates select="." mode="browse"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="stylesheet" 
+          select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
+        <xsl:variable name="sortDocsBy" select="(false)"/>
+        <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
+        <xsl:variable name="maxDocs" select="25"/>
+        <xsl:variable name="includeEmptyGroups" select="'yes'"/>
+        <query 
+          indexPath="index" 
+          termLimit="1000" 
+          workLimit="1000000" 
+          maxSnippets="0"
+          style="{$stylesheet}" 
+          startDoc="{$startDoc}" 
+	  returnMetaFields="identity, facet-entityType, entityId"
+          maxDocs="{$maxDocs}">
+          <xsl:if test="$normalizeScores">
+            <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
+          </xsl:if>
+          <xsl:if test="$explainScores">
+            <xsl:attribute name="explainScores" select="$explainScores"/>
+          </xsl:if>
+          <xsl:if test="$sortDocsBy">
+            <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
+          </xsl:if>
+          <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+          <spellcheck/>
+          <xsl:apply-templates/>
+        </query>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
-  <xsl:otherwise>
-    <xsl:variable name="stylesheet" select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
-    <xsl:variable name="browse" select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
-    <xsl:variable name="sortDocsBy" select="if ($browse='yes') then ('sort-identity') else (false)"/>
-    <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-    <xsl:variable name="maxDocs" select="if ($browse='yes') then (0) else if ($rmode='dot') then (25) else (25)"/>
-    <xsl:variable name="includeEmptyGroups" select="'yes'"/>
-      <query 
-        indexPath="index" 
-        termLimit="1000" 
-        workLimit="1000000" 
-        maxSnippets="0"
-        style="{$stylesheet}" 
-        startDoc="{$startDoc}" 
-	returnMetaFields="identity"
-        maxDocs="{$maxDocs}">
-        <xsl:if test="$normalizeScores">
-          <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
-        </xsl:if>
-        <xsl:if test="$explainScores">
-          <xsl:attribute name="explainScores" select="$explainScores"/>
-        </xsl:if>
-        <xsl:if test="$sortDocsBy">
-          <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="$browse='no'">
-            <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <spellcheck/>
-          </xsl:when>
-          <xsl:otherwise><!-- AZ browse via facets / de-duplicates -->
-            <facet field="facet-identityAZ" select="*|{$facet-identityAZ}::*" sortGroupsBy="value" sortDocsBy="sort-identity"/>
+  <xsl:template match="/" mode="browse">
+       <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
+        <xsl:variable name="sortDocsBy" select="(false)"/>
+        <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
+        <xsl:variable name="maxDocs" select="0"/>
+        <xsl:variable name="includeEmptyGroups" select="'yes'"/>
+        <query
+          indexPath="index"
+          termLimit="1000"
+          workLimit="1000000"
+          maxSnippets="0"
+          style="{$stylesheet}"
+          startDoc="{$startDoc}"
+          returnMetaFields="facet-identityAZ, facet-entityType, entityId"
+          maxDocs="{$maxDocs}">
+          <!-- all this does now is trigger the display mode? -->
+            <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity"/>
             <facet field="facet-person" select="*[1]"/>
             <facet field="facet-corporateBody" select="*[1]"/>
             <facet field="facet-family" select="*[1]"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates/>
-      </query>
-    </xsl:otherwise>
-    </xsl:choose>
-   </xsl:template>
+        <and><allDocs/>
+</and>
+        </query>
+
+  </xsl:template>
    
-   <!-- ====================================================================== -->
-   <!-- autocomplete  http://gist.github.com/612901                            -->
-   <!-- ====================================================================== -->
+  <!-- ====================================================================== -->
+  <!-- autocomplete  http://gist.github.com/612901                            -->
+  <!-- ====================================================================== -->
 
   <!-- autocomplete on identity (the title/subject of an EAC)  -->
 
@@ -152,11 +172,6 @@
             </xsl:if>
          </xsl:for-each>
       
-         <!-- to enable you to see browse results -->
-         <xsl:if test="$text=''">
-            <allDocs/>
-         </xsl:if>
-
       </and>
       
    </xsl:template>
