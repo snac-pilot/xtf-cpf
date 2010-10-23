@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tmpl="xslt://template">
+<html xmlns:tmpl="xslt://template">
 <!--
 uses the golden grid http://code.google.com/p/the-golden-grid/
 
@@ -13,7 +13,7 @@ tranformed elements
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection, print"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/golden-min.css" type="text/css" media="screen, projection, print"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography-min.css" type="text/css" media="screen, projection, print"></link>
-<link rel="stylesheet" href="/xtf/cpf2html/cpf2html.css" type="text/css" media="screen, projection"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/cpf2html.css" type="text/css" media="screen, projection, print"></link>
 <title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"/>
 <script tmpl:replace-markup="google-tracking-code"/>
@@ -21,13 +21,16 @@ tranformed elements
 
 <body>
 <div class="main">
-<div class="home"><a href="/xtf/search">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</a></div>
+<div class="header g960">
+<div class="home"><a title="new search" href="/xtf/search">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</a></div>
 <div tmpl:change-value="actions" class="actions">show XML | report issue</div>
-<div class="clear"></div>
-<div class="identity">
+<div class="clear">&#160;</div>
+</div>
+<div class="g960 identity">
 <h1 tmpl:change-value="nameEntry-part">Eckart, Carl, 1902-</h1>
 <div tmpl:change-value="entityId" class="id">ID (SNAC): DLC.ms001014.c</div>
-<div tmpl:change-value="dateRange" class="description">date range</div>
+<div tmpl:change-value="dateRange">date range</div><!-- plus VIAF gender, nationality -->
+<div tmpl:change-value="extra-names" class="extra-names">alternative names</div>
 </div>
 <div class="clear">&#160;</div>
 
@@ -66,7 +69,6 @@ tranformed elements
 <h2 tmpl:condition="mandates">Mandates</h2>
 <ul tmpl:replace-markup="mandates">
 </ul>
-
 </div>
 
 <div class="content g400">
@@ -93,12 +95,14 @@ tranformed elements
 <h3>Resources</h3>
 <div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
 <div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
+&#160;
 </div>
  </div>
 
 <div class="clear">&#160;</div>
+<div class="g960">
 <footer>feets</footer>
-
+</div>
  </div>
 
 </body>

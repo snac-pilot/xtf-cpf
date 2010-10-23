@@ -4,11 +4,14 @@
   xmlns:eac="urn:isbn:1-931666-33-4"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xtf="http://cdlib.org/xtf"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xs="http://www.w4.org/2001/XMLSchema" 
+  xmlns:iso="iso:/3166"
   exclude-result-prefixes="#all" 
   version="2.0">
 
   <!-- preFilter for eac-cpf in XTF -->
+
+  <xsl:include href="iso_3166.xsl"/>
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
@@ -124,9 +127,12 @@
   </xsl:template>
 
   <xsl:template match="eac:placeEntry" mode="meta">
-    <xsl:value-of select="@countryCode"/>
+    <xsl:value-of select="iso:lookup(@countryCode)"/>
   </xsl:template>
-
+  
+  <xsl:template match="eac:placeEntry[../eac:localDescription[@localType='VIAF:nationality']]">
+    <term><xsl:value-of select="iso:lookup(@countryCode)"/></term>
+  </xsl:template>
   
   <xsl:template match="eac:cpfRelation" mode="meta">
     <facet-cpfRelation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:relationEntry"/></facet-cpfRelation>

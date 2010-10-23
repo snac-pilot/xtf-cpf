@@ -2,11 +2,13 @@
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:eac="urn:isbn:1-931666-33-4"
+  xmlns:ead="urn:isbn:1-931666-22-9"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:tmpl="xslt://template" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:xtf="http://cdlib.org/xtf"
+  xmlns:iso="iso:/3166"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -21,8 +23,8 @@ tranformed elements
 
 -->
 
+  <xsl:include href="iso_3166.xsl"/>
   <!-- xsl:import href="xmlverbatim-xsl/xmlverbatim.xsl"/ -->
-  <xsl:import href="xml-to-string-xsl/xml-to-string.xsl"/>
   <xsl:include href="google-tracking.xsl"/>
 
   <xsl:strip-space elements="*"/>
@@ -40,7 +42,8 @@ tranformed elements
 	<spreadsheets formkey="XXXX"/>
 	and the "report issue" link will turn on
   -->
-  <xsl:param name="spreadsheets.formkey"/>
+  <xsl:variable name="spreadsheets.code" select="document('spreadsheets-code.xml')/spreadsheets/@formkey" />
+  <xsl:param name="spreadsheets.formkey" select="$spreadsheets.code"/>
 
   <xsl:param name="http.URL"/>
   <xsl:variable name="rel.URL" select="replace($http.URL,'http://[^/]*/','/')"/>
@@ -59,6 +62,7 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="*:footer">
+<div class="clear">&#160;</div>
     <xsl:copy-of select="$footer"/>
   </xsl:template>
 
@@ -78,44 +82,44 @@ tranformed elements
   <xsl:template match='*[@tmpl:change-value="actions"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:choose>
-        <xsl:when test="$showXML = ''">
-          <a href="/xtf/data/{escape-html-uri($docId)}">show XML</a>
-        </xsl:when>
-        <xsl:otherwise>
-          <a href="{replace($rel.URL,';showXML=yes','')}">hide XML</a>
-          <xsl:text> | </xsl:text>
-          <a href="#xml">jump to XML</a>
-        </xsl:otherwise>
-      </xsl:choose>
       <xsl:if test="$spreadsheets.formkey!=''">
-        <xsl:text> | </xsl:text>
-        <a target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">report issue</a>
+        <div><a title="form in new window/tab" target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">note data issue</a></div>
       </xsl:if>
+      <a title="raw XML" href="/xtf/data/{escape-html-uri($docId)}">view source EAC-CPF</a>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="nameEntry-part"]'>
     <xsl:element name="{name()}">
-      <span class="{($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType}">
+      <span title="authorized form of name" class="{($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
       </span>
       <xsl:text> </xsl:text>
     <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:authorizedForm" mode="extra-names"/>
     </xsl:element>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()>1]" mode="extra-names"/>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:change-value="extra-names"]'>
+    <xsl:variable name="extra-names" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()>1]"/>
+    <xsl:if test="$extra-names">
+      <xsl:element name="{name()}">
+        <xsl:attribute name="title" select="'alternative forms of name'"/>
+        <xsl:attribute name="class" select="'extra-names'"/>
+        <xsl:apply-templates select="$extra-names" mode="extra-names"/>
+      </xsl:element>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="eac:authorizedForm" mode="extra-names">
     <xsl:text> </xsl:text>
-    <span class="authorizedForm"><xsl:apply-templates mode="eac"/></span>
+    <span title="authority" class="authorizedForm"><xsl:apply-templates mode="eac"/></span>
   </xsl:template>
 
   <xsl:template match="eac:nameEntry" mode="extra-names">
     <xsl:text>
 </xsl:text>
-    <span class="extra-names">
+    <span>
       <xsl:apply-templates select="eac:part, eac:authorizedForm" mode="extra-names"/>
     </span>
   </xsl:template>
@@ -130,14 +134,26 @@ tranformed elements
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:change-value="dateRange"]'>
+  <xsl:template match='*[@tmpl:change-value="dateRange"]'><!-- plus VIAF gender nationality -->
     <xsl:variable name="existDates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates"/>
     <xsl:if test="$existDates">
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:apply-templates select="$existDates" mode="eac"/>
+      (<xsl:apply-templates select="$existDates" mode="eac"/>)
+    <xsl:apply-templates select="
+      ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
+      ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
+      mode="viaf-extra" />
     </xsl:element>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="eac:localDescription[@localType='VIAF:nationality']" mode="viaf-extra">
+    <span title="nationality" class="nationality"><xsl:apply-templates select="eac:placeEntry" mode="eac"/>&#160;</span>
+  </xsl:template>
+
+  <xsl:template match="eac:localDescription[@localType='VIAF:gender']" mode="viaf-extra">
+    <span title="gender" class="gender"><xsl:apply-templates mode="eac"/>&#160;</span>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
@@ -149,13 +165,28 @@ tranformed elements
     </xsl:element>
   </xsl:template>
 
-  <xsl:variable name="description" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/*[not(name()='eac:existDates')]"/>
+  <xsl:template name="placeholder">
+    <xsl:param name="node"/>
+    <xsl:element name="{name($node)}">
+      <xsl:for-each select="$node/@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+      <xsl:text>&#160;</xsl:text>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:variable name="description" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description[eac:occupation|eac:localDescription|eac:legalStatus|eac:function|eac:occupation|eac:mandate|eac:structureOrGenealogy|eac:generalContext|eac:biogHist]"/>
   <xsl:template match='*[@tmpl:condition="description"]'>
-    <xsl:if test="($description)">
-      <xsl:call-template name="keep-going">
-        <xsl:with-param name="node" select="."/>
-      </xsl:call-template>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="($description)">
+        <xsl:call-template name="keep-going">
+          <xsl:with-param name="node" select="."/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="placeholder">
+          <xsl:with-param name="node" select="."/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations 
@@ -265,12 +296,21 @@ tranformed elements
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
     <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[@xlink:role='archivalRecords']" />
+    <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
+    <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1/')"/>
+    <xsl:if test="$VIAF">
+      <div class="related">
+        <div class="arcrole">sameAs</div>
+        <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
+      </div>
+    </xsl:if>
     <xsl:if test="$archivalRecords">
       <h3>Archival Collections</h3>
-      <xsl:apply-templates select="$archivalRecords" mode="eac"/>
+      <xsl:apply-templates select="($archivalRecords)[contains(@xlink:arcrole,'creatorOf')] , 
+                                   ($archivalRecords)[not(contains(@xlink:arcrole,'creatorOf'))]" mode="eac"/>
     </xsl:if>
     <xsl:apply-templates select="$relations" mode="eac"/>
-      <xsl:apply-templates select="($relations)/*[eac:cpfRelation]" mode="eac"/>
+    <xsl:apply-templates select="($relations)/*[eac:cpfRelation]" mode="eac"/>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
@@ -284,9 +324,11 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:dateRange" mode="eac">
+    <label title="life dates">
     <xsl:value-of select="eac:fromDate"/>
     <xsl:text> - </xsl:text>
     <xsl:value-of select="eac:toDate"/>
+    </label>
   </xsl:template>
 
   <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
@@ -298,15 +340,39 @@ tranformed elements
     <xsl:apply-templates select="eac:descriptiveNote| eac:p" mode="eac"/>
   </xsl:template>
 
-  <xsl:template match="eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
+  <xsl:template match="eac:function | eac:mandate | eac:place" mode="eac-inlist">
     <li><xsl:apply-templates mode="eac"/></li>
   </xsl:template>
 
-  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
+  <!-- xsl:template match="eac:occupation | eac:function | eac:mandate | eac:place" mode="eac-inlist">
     <li>
       <xsl:apply-templates select="@localType[.!='subject']"/>
       <xsl:text> </xsl:text>
       <xsl:apply-templates mode="eac"/>
+    </li>
+  </xsl:template -->
+
+  <xsl:template match="eac:occupation" mode="eac-inlist">
+    <xsl:variable name="value">
+      <xsl:apply-templates mode="eac"/>
+    </xsl:variable>
+    <li>
+      <a href="/xtf/search?f1-occupation={normalize-space($value)}">
+        <xsl:value-of select="$value"/>
+      </a>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="eac:localDescription" mode="eac-inlist">
+    <xsl:variable name="value">
+      <xsl:apply-templates select="@localType[.!='subject']"/>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates mode="eac"/>
+    </xsl:variable>
+    <li>
+      <a href="/xtf/search?f1-localDescription={normalize-space($value)}">
+        <xsl:value-of select="$value"/>
+      </a>
     </li>
   </xsl:template>
 
@@ -330,7 +396,16 @@ tranformed elements
 
   <xsl:template match="eac:chronItem" mode="eac">
     <dt><xsl:apply-templates select="eac:date|eac:dateRange" mode="eac"/></dt>
-    <dd><xsl:apply-templates select="eac:event" mode="eac"/></dd>
+    <dd><xsl:apply-templates select="eac:placeEntry|eac:event" mode="eac"/></dd>
+  </xsl:template>
+
+  <xsl:template match="eac:placeEntry[parent::eac:localDescription[@localType='VIAF:nationality']]" mode="eac">
+    <xsl:value-of select="iso:lookup(@countryCode)"/>
+  </xsl:template>
+
+  <xsl:template match="eac:placeEntry[parent::eac:chronItem]" mode="eac">
+    <span class="placeEntry"><xsl:apply-templates mode="eac"/></span>
+    <xsl:text> </xsl:text>
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
@@ -351,25 +426,31 @@ tranformed elements
                  else 'related'}">
       <xsl:choose>
         <xsl:when test="@xlink:href">
+          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
-          <xsl:apply-templates select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote" mode="eac"/>
+          <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
+          <xsl:if test="$extra-info">
+            <div>
+              <xsl:apply-templates select="$extra-info" mode="eac"/>
+            </div>
+          </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)}">
+          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)};browse=">
           <xsl:value-of select="eac:relationEntry"/>
           </a>
-          <xsl:if test="@xlink:arcrole">
-            <xsl:text> </xsl:text>
-            <span class="arcrole"><xsl:value-of select="@xlink:arcrole"/></span>
-          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </div>
   </xsl:template>
  
-  <xsl:template match="eac:placeEntry" mode="eac">
-    <xsl:apply-templates select="@countryCode" mode="attribute"/>
-    <xsl:apply-templates mode="eac"/>
+  <xsl:template match="@xlink:arcrole" mode="arcrole">
+            <div class="arcrole"><xsl:value-of select="."/></div>
+  </xsl:template>
+
+  <xsl:template match="ead:repository" mode="eac">
+    <xsl:value-of select="ead:corpname[1]"/>
   </xsl:template>
 
   <xsl:template match="@*" mode="attribute">
