@@ -16,7 +16,8 @@
    
   <xsl:template match="/">
     <xsl:variable name="browse" 
-      select="if ($keyword='' and not(/parameters/param[starts-with(@name, 'f[0-9]-')])) then ('yes') else ('no')"/>
+      select="if ($keyword='' and not(/parameters/param[matches(@name, '^f[0-9]+-')])) then ('yes') else ('no')"/>
+      <!-- select="if ($keyword='') then ('yes') else ('no')"/ -->
     <xsl:choose>
       <xsl:when test="$autocomplete">
         <xsl:apply-templates select="." mode="autocomplete"/>
@@ -27,9 +28,10 @@
       <xsl:otherwise>
         <xsl:variable name="stylesheet" 
           select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
-        <xsl:variable name="sortDocsBy" select="(false)"/>
+        <xsl:variable name="sortDocsBy" 
+select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) then ('sort-identity') else (false)"/>
         <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-        <xsl:variable name="maxDocs" select="25"/>
+        <xsl:variable name="maxDocs" select="2500"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
           indexPath="index" 

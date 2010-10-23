@@ -3,26 +3,38 @@ a[href^="http://"]:after { content: " ↗"; }
 
 /* css order tries to match source order basically */
 
-.home { padding-bottom: .5em; }
+div.home { padding-bottom: .5em; float: left; }
 
 .actions { float: right; }
 
+h1.page-header a:hover { text-decoration: none; }
+
 /* identity section elements need to get closer than defaults */
 .identity h1 { margin-bottom: .3em; }
-.identity .id { margin-left: .3em; }
-.identity .description { margin-left: .3em; }
-.identity .extra-names { margin-left: .3em; white-space: nowrap; }
-          .extra-names:after { content: "; "; }
-          span.extra-names:hover { background-color: #FFDEAD; }
-.identity .authorizedForm, .arcrole { font-size: .6em; color:#8d8a72;}
+/* .identity .id { margin-left: .3em; }
+.identity .description { margin-left: .3em; } */
+.identity .gender, .identity .nationality { padding-left: 3em; }
+
+.identity div.extra-names span { white-space: nowrap; }
+          div.extra-names span:after { content: "; "; }
+          div.extra-names span:hover { background-color: #FFDEAD; }
+          div.extra-names { text-overflow: ellipsis; white-space: nowrap;
+	width: 100%;
+	overflow: hidden;}
+.identity .authorizedForm, .arcrole { font-size: .8em; color: #8d8a72; }
+ 
 .identity .person { background-color: #FFDEAD; }
 .identity .corporateBody { background-color: #E0FFFF; }
 .identity .family { background-color: #DEB887; }
 
-
 .description ul li:hover { background-color: #D3D3D3; }
 
+.view-source { position:absolute;bottom:0; } 
+
 /* .content {} */
+
+.content .placeEntry { font-style: italic; display: block; } 
+.identity .nationality { font-style: italic; } 
 
 /* various relations need more space
    values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
@@ -39,7 +51,7 @@ a[href^="http://"]:after { content: " ↗"; }
 
 /* .person, .corporateBody, .resources {} */
 
-.main{background-color:#fff; }
+.main{ background-color:#fff; }
 
 .cpfSearch { font-size: 13px;
     background-color: #d6e5f4;
@@ -47,8 +59,14 @@ a[href^="http://"]:after { content: " ↗"; }
     }
 .cpfSearch input[type="text"] { font-size: 1.32em; }
 .cpfSearch input.button { font-size: 1.32em; background-color: #ffffff;}
-.cpfSearch div.main-search { float: left; padding-right: 4em; padding-top: .3em; }
-.cpfSearch div.advanced-search {  }
+
+/* .cpfSearch div.top-facets { float: right; } */
+.cpfSearch .advancedSearch { filter:alpha(opacity=75); -moz-opacity:0.75; -khtml-opacity: 0.75; opacity: 0.75; 
+display: block; float: right; padding-right: 15em; padding-top: .6em; } 
+
+/*
+.cpfSearch div.main-search { padding-right: 4em; padding-top: .3em; }
+*/
 
 .AZletters, .AZlist { padding-bottom: 1em; }
 .AZletters { font-size: 125%; }
@@ -58,6 +76,9 @@ a[href^="http://"]:after { content: " ↗"; }
 .results .family .hit, h1 .family, div.home .family { background-color: #DEB887; }
 
 div.result, .relations div { margin-bottom: .4em; padding-top: .3em; padding-botton: .3em; }
+.relations div div { 
+padding: 0; margin-bottom: 0;
+}
 div.result {
   -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
   border-width: 1px;
@@ -78,4 +99,13 @@ div.result div:last-child { font-size: 80%; }
 
 .blank { padding-bottom: 20em; }
 
+.return-top { font-size: 400%; position: fixed;
+  filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; 
+  top: 1em;
+  right: 1em;
+  display: none;
+ } 
+
+   .return-top a:hover { text-decoration: overline; }
 .footer { background-color: #d6e5f4; }
+

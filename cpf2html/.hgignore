@@ -1,1 +1,3 @@
 ^UA-code.xml$
+^spreadsheets-code.xml$
+^test/.*\.xml$

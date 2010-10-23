@@ -36,7 +36,6 @@
    <xsl:param name="http.URL"/>
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
-   <!-- xsl:param name="sectionType"/ -->
    <xsl:param name="facet-identityAZ" select="'0'"/>
 
    <!-- ====================================================================== -->
@@ -59,6 +58,23 @@
     </xsl:comment>
   </xsl:template>
 
+  <xsl:template match="*:h1" mode="html-template">
+    <xsl:choose>
+      <xsl:when test="$text='' and ($sectionType='cpfdescription' or $sectionType='' ) and not($page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')])">
+        <h1 title="prototype historical resource">
+          <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
+          <xsl:apply-templates mode="html-template"/>
+        </h1>
+      </xsl:when>
+      <xsl:otherwise>
+        <h1>
+          <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
+          <a href="/xtf/search" title="new search"><xsl:apply-templates mode="html-template"/></a>
+        </h1>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="*:footer" mode="html-template">
     <xsl:copy-of select="$footer"/> 
   </xsl:template>
@@ -72,41 +88,57 @@
     </title>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:condition='search']" mode="html-template">
+  <xsl:template match="*[@tmpl:condition='autocomplete']" mode="html-template">
+    <xsl:choose>
+      <xsl:when test="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]"/>
+      <xsl:otherwise>
+<script type="text/javascript">
+<![CDATA[
+  $(function() {
+    $("input#userInput").autocomplete({
+      source: "/xtf/search?autocomplete=yes;callback=?",  /* JSONP '?' turns to callback; term=letters gets added */
+      minLength: 3,
+      delay: 250
+    }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
+      if (e.keyCode === 13) {
+        $(this).autocomplete("close");
+        $(this).closest('form').trigger('submit');
+      }
+    });
+  });
+]]>
+</script>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*:a[@tmpl:condition='search']" mode="html-template">
     <xsl:if test="($text!='')">
-      <xsl:call-template name="keep-going">
-        <xsl:with-param name="node" select="."/>
-      </xsl:call-template>
+      <a title="remove keyword search" href="/xtf/search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
+        <xsl:apply-templates select="text()" mode="html-template"/>
+      </a>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]' mode="html-template">
-    <xsl:call-template name="google-tracking-code"/>
+  <xsl:template match="*[@tmpl:condition='top-facets']" mode="html-template">
+    <div>
+      <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
+      <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]" mode="top-facets"/>
+    </div>
+  </xsl:template>
+ 
+  <xsl:template match="param" mode="top-facets">
+    <div class="tooltip" title="search limit">
+      <xsl:value-of select="@value"/>
+      <xsl:text>&#160;</xsl:text>
+      <a class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
+    </div>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
-    <xsl:element name="{name()}">
-      <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:attribute name="value">
-        <xsl:value-of select="$text"/>
-      </xsl:attribute>
-    </xsl:element>
-  </xsl:template>
-
-  <xsl:template match='*[@tmpl:process-markup="sectionType"]' mode="html-template">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@name">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates mode="sectionType-selected"/>
-    </xsl:element>
-    <!-- sneak in the spelling here -->
+  <xsl:template match="*[@tmpl:condition='spelling']" mode="html-template">
     <xsl:apply-templates select="$page/crossQueryResult/spelling" mode="spelling"/>
   </xsl:template>
 
-  <!-- digress into spelling before finishing the selected logic -->
   <xsl:template match="spelling" mode="spelling">
     <xsl:variable name="suggestQ" select="editURL:spellingFix($text,suggestion)"/>
     <div class="spelling-suggestion">Did you mean: 
@@ -132,7 +164,54 @@
     </xsl:choose>
   </xsl:function>
 
-  <xsl:template match="*" mode="sectionType-selected">
+  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]' mode="html-template">
+    <xsl:call-template name="google-tracking-code"/>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:replace-markup="show-xml"]' mode="html-template">
+    <a title="raw xml" href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
+  </xsl:template>
+
+  <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
+    <!-- hidden search elements -->
+    <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]" mode="hidden-facets"/>
+    <xsl:element name="{name()}">
+      <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+      <xsl:attribute name="value">
+        <xsl:value-of select="$text"/>
+      </xsl:attribute>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="param" mode="hidden-facets">
+    <input type="hidden" value="{@value}" name="{@name}"/>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:process-markup="sectionType"]' mode="html-template">
+    <xsl:element name="{name(.)}">
+      <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
+      <xsl:attribute name="title"><xsl:value-of select="@title"/></xsl:attribute>
+      <xsl:for-each select="@name">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates mode="sectionType-selected"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="*:select" mode="sectionType-selected">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates mode="sectionType-selected"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="*:option" mode="sectionType-selected">
     <xsl:element name="{name(.)}">
       <xsl:for-each select="@*">
         <xsl:attribute name="{name(.)}">
@@ -140,7 +219,7 @@
         </xsl:attribute>
       </xsl:for-each>
       <!-- add selected attribute / default cpfdescription if no serach -->
-      <xsl:if test="($text!='' and $sectionType = @value) 
+      <xsl:if test="($sectionType = @value) 
 		or ( $text='' and @value = 'cpfdescription')">
         <xsl:attribute name="selected" select="'selected'"/>
       </xsl:if>
@@ -156,9 +235,11 @@
         <div class="g960">
        <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalGroups)"/> 
        <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
-       <xsl:variable name="corporateBody-count" select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
-        <h2>Named Identities (<xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>)</h2>
-        <h3>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</h3>
+       <xsl:variable name="corporateBody-count" 
+            select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
+        <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/> names found in archival collections</h2>
+        <!-- p>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</p -->
+  <h3>All Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('numbers and symbols') else $facet-identityAZ"/></h3>
 
         <div class="AZletters">
         <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
@@ -173,7 +254,7 @@
       <!-- otherwise continue on with the HTML template -->
       <xsl:otherwise>
         <xsl:element name="{name(.)}">
-          <xsl:for-each select="@*">
+          <xsl:for-each select="@*[namespace-uri='']">
             <xsl:attribute name="{name(.)}">
               <xsl:value-of select="."/>
             </xsl:attribute>
@@ -204,9 +285,8 @@
     <xsl:param name="path" select="@path"/>
       <div class="{meta/facet-entityType}">
       <xsl:variable name="href">
-        <xsl:call-template name="dynaxml.url">
-          <xsl:with-param name="path" select="$path"/>
-        </xsl:call-template>
+          <xsl:text>/xtf/view?docId=</xsl:text>
+          <xsl:value-of select="replace(replace(editURL:protectValue($path),'^default:',''),'\s','+')"/>
       </xsl:variable>
       <a>
         <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
@@ -249,7 +329,7 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
-      <xsl:text> CPF Records</xsl:text>
+      <xsl:text> EAC-CPF Records</xsl:text>
     </xsl:element>
   </xsl:template>
 
@@ -257,6 +337,11 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:apply-templates select="$docHits" mode="result"/>
+      <xsl:if test="number(($page)/crossQueryResult/@totalDocs) &gt; 2500">
+      <div class="result">
+        <xsl:value-of select="format-number(number(($page)/crossQueryResult/@totalDocs) - 2500,'###,###')"/> not shown
+      </div>
+      </xsl:if>
     </xsl:element>
   </xsl:template>
 
@@ -277,9 +362,8 @@
     <div class="result">
       <div class="{meta/facet-entityType}">
       <xsl:variable name="href">
-        <xsl:call-template name="dynaxml.url">
-          <xsl:with-param name="path" select="$path"/>
-        </xsl:call-template>
+          <xsl:text>/xtf/view?docId=</xsl:text>
+          <xsl:value-of select="replace(replace(editURL:protectValue($path),'^default:',''),'\s','+')"/>
       </xsl:variable>
       <a>
         <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
@@ -296,11 +380,11 @@
       <xsl:apply-templates mode="result"/>
       <xsl:if test="@totalGroups &gt; 15">
         <li class="more">
-          <xsl:text>see all </xsl:text>
           <xsl:value-of select="@totalGroups"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="replace(@field,'facet-','')"/>
           <xsl:text>s</xsl:text>
+          <xsl:text> not shown</xsl:text>
         </li>
       </xsl:if>
     </ul>
@@ -447,7 +531,7 @@
 
   <!-- identity transform copies HTML from the layout file -->
 
-  <xsl:template match="*" mode="html-template">
+  <xsl:template match="*" mode="html-template sectionType-selected">
     <xsl:element name="{name(.)}">
       <xsl:for-each select="@*">
         <xsl:attribute name="{name(.)}">
