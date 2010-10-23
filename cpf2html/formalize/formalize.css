@@ -41,18 +41,6 @@
 /* `UI Consistency
 ----------------------------------------------------------------------------------------------------*/
 
-/*
-	Separate rule for Firefox.
-	Cannot stack with WebKit's.
-*/
-.placeholder_text {
-	color: #777 !important;
-}
-
-::-webkit-input-placeholder {
-	color: #777;
-}
-
 ::-moz-focus-inner {
 	border: 0;
 }
@@ -77,7 +65,7 @@ input[type=button] {
 	-moz-border-radius: 15px;
 	-webkit-border-radius: 15px;
 	border-radius: 15px;
-	background: #ddd url(./button.png) repeat-x;
+	background: #ddd url(../images/button.png) repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(1, #ddd));
 	background: -moz-linear-gradient(top center, #fff 0%, #ddd 100%);
 	border: 1px solid;
@@ -99,7 +87,7 @@ button[disabled],
 input[type=reset][disabled],
 input[type=submit][disabled],
 input[type=button][disabled] {
-	color: #777;
+	color: #888;
 }
 
 textarea,
@@ -140,6 +128,19 @@ input[type=week] {
 	*height: auto;
 }
 
+/*
+	Separate rule for Firefox.
+	Cannot stack with WebKit's.
+*/
+input.placeholder_text,
+textarea.placeholder_text {
+	color: #888;
+}
+
+::-webkit-input-placeholder {
+	color: #888;
+}
+
 textarea[disabled],
 select[disabled],
 input[type=date][disabled],
@@ -156,7 +157,7 @@ input[type=time][disabled],
 input[type=url][disabled],
 input[type=week][disabled] {
 	background-color: #eee;
-	color: #777;
+	color: #888;
 }
 
 button:focus,
@@ -177,7 +178,7 @@ textarea:active {
 
 .is_webkit select {
 	/* Tweaks for Safari + Chrome. */
-	background-image: url(./select_arrow.gif);
+	background-image: url(../images/select_arrow.gif);
 	background-repeat: no-repeat;
 	background-position: right center;
 	padding-right: 20px;
@@ -233,7 +234,7 @@ optgroup {
 
 .ie6_button,
 * html button {
-	background: #ddd url(./button.png) repeat-x;
+	background: #ddd url(../images/button.png) repeat-x;
 	border: 1px solid;
 	border-color: #ddd #bbb #999;
 	cursor: pointer;
@@ -257,9 +258,10 @@ optgroup {
 	vertical-align: top;
 }
 
+.placeholder_text,
 .ie6_input_disabled,
 .ie6_button_disabled {
-	color: #777;
+	color: #888;
 }
 
 .ie6_input_disabled {
