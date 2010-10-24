@@ -19,10 +19,18 @@ function _loadUserVoice() {
 }
 _loadSuper = window.onload;
 window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
-// track external links
+
+// function unloadAct() { alert("hey"); }
+// window.onunload = unloadAct;
+
 $(document).ready(function(){
+  // track external links
   $("a[href^='http://']").click(function(){
     _gaq.push( ['snak._trackPageview','/outgoing/'+ $(this).attr('href')] );
+  });
+  // track raw XML views
+  $("a[title='raw XML']").click(function () {
+        _gaq.push( ['snak._trackPageview','/viewsource'+this.pathname+this.search] );
   });
 });
 // google async call
