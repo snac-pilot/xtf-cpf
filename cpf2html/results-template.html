@@ -24,7 +24,7 @@ tranformed elements
 <script tmpl:condition="autocomplete">
   $(function() {
     $("input#userInput").autocomplete({
-      source: "/xtf/search?autocomplete=yes;callback=?",  /* JSONP '?' turns to callback; term=letters gets added */
+      source: "",  /* JSONP '?' turns to callback; term=letters gets added */
       minLength: 3,
       delay: 250
     }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
@@ -39,8 +39,14 @@ tranformed elements
 </head>
 <body>
 <div class="main">
-<div class="g960">
-<h1 class="page-header" id="top">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
+<div class="g960 page-header">
+<h1 id="top">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
+<ul tmpl:replace-markup="navigation">
+    <li>All Names</li>
+    <li>Person Names</li>
+    <li>Family Names</li>
+    <li>Corporate Body Names</li>
+</ul>
 <form methon="GET" action="/xtf/search" class="cpfSearch">
 <div class="top-facets" tmpl:condition="top-facets">top facets</div>
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input id="userInput" type="text" size="27" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
