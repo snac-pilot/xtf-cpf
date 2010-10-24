@@ -139,7 +139,9 @@ tranformed elements
     <xsl:if test="$existDates">
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      (<xsl:apply-templates select="$existDates" mode="eac"/>)
+      <xsl:text>(</xsl:text>
+      <xsl:apply-templates select="$existDates" mode="eac"/>
+      <xsl:text>)</xsl:text>
     <xsl:apply-templates select="
       ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
       ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
@@ -324,11 +326,11 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:dateRange" mode="eac">
-    <label title="life dates">
+    <time title="life dates">
     <xsl:value-of select="eac:fromDate"/>
     <xsl:text> - </xsl:text>
     <xsl:value-of select="eac:toDate"/>
-    </label>
+    </time>
   </xsl:template>
 
   <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
@@ -387,7 +389,7 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:chronList" mode="eac">
-    <dl><xsl:apply-templates select="eac:chronItem" mode="eac"/></dl>
+    <div class="{local-name()}"><xsl:apply-templates select="eac:chronItem" mode="eac"/></div>
   </xsl:template>
 
   <xsl:template match="eac:p" mode="eac">
@@ -395,17 +397,22 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:chronItem" mode="eac">
-    <dt><xsl:apply-templates select="eac:date|eac:dateRange" mode="eac"/></dt>
-    <dd><xsl:apply-templates select="eac:placeEntry|eac:event" mode="eac"/></dd>
+    <div itemscope="itemscope">
+      <xsl:apply-templates select="eac:date|eac:dateRange" mode="eac"/>
+      <xsl:apply-templates select="eac:placeEntry|eac:event" mode="eac"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="eac:placeEntry[parent::eac:localDescription[@localType='VIAF:nationality']]" mode="eac">
     <xsl:value-of select="iso:lookup(@countryCode)"/>
   </xsl:template>
 
-  <xsl:template match="eac:placeEntry[parent::eac:chronItem]" mode="eac">
-    <span class="placeEntry"><xsl:apply-templates mode="eac"/></span>
-    <xsl:text> </xsl:text>
+  <xsl:template match="eac:event[parent::eac:chronItem]|eac:placeEntry[parent::eac:chronItem]" mode="eac">
+    <div itemprop="{local-name()}"><xsl:apply-templates mode="eac"/></div>
+  </xsl:template>
+
+  <xsl:template match="eac:date[parent::eac:chronItem]|eac:dateRange[parent::eac:chronItem]" mode="eac">
+    <time itemprop="{local-name()}"><xsl:apply-templates mode="eac"/></time>
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
