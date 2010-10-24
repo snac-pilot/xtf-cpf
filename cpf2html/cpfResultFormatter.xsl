@@ -21,7 +21,7 @@
    <!-- Output                                                                 -->
    <!-- ====================================================================== -->
   
-  <xsl:output method="xhtml" indent="no"
+  <xsl:output method="xhtml" indent="yes"
     encoding="UTF-8" media-type="text/html; charset=UTF-8"
     omit-xml-declaration="yes"
     exclude-result-prefixes="#all"/>
@@ -62,7 +62,7 @@
 
   <xsl:template match="*:h1" mode="html-template">
     <xsl:choose>
-      <xsl:when test="$text='' and ($sectionType='cpfdescription' or $sectionType='' ) and not($page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')])">
+      <xsl:when test="$text='' and ($sectionType='cpfdescription' or $sectionType='' ) and not($page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]) and not($facet-entityType) ">
         <h1 title="prototype historical resource">
           <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
           <xsl:apply-templates mode="html-template"/>
@@ -86,7 +86,7 @@
   <xsl:template match="*[@tmpl:change-value='html-title']" mode="html-template">
     <title>
       <xsl:text>Find Records: </xsl:text>
-      <xsl:value-of select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]/@value, $text"/>
+      <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType), $page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]/@value, $text"/>
     </title>
   </xsl:template>
 
@@ -179,7 +179,7 @@
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="show-xml"]' mode="html-template">
-    <a title="raw xml" href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
+    <a title="raw XML" href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
   </xsl:template>
 
   <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
@@ -275,7 +275,7 @@
             select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
         <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names from archival collections</h2>
+            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names</h2>
 
   <h3><xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('0-9') else $facet-identityAZ"/></h3>
 
@@ -309,12 +309,12 @@
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
      <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
-      <a href="/xtf/search?{editURL:set(editURL:set('','facet-identityAZ', @value),'facet-entityType',$facet-entityType)}">
+      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{editURL:set(editURL:set('','facet-identityAZ', @value),'facet-entityType',$facet-entityType)}">
         <xsl:value-of select="@value"/>
       </a>
      </xsl:when> 
      <xsl:otherwise>
-        <xsl:value-of select="@value"/>
+        <span title="{format-number(@totalDocs,'###,###')}"><xsl:value-of select="@value"/></span>
      </xsl:otherwise>
     </xsl:choose>
     <xsl:text>&#160;</xsl:text>
@@ -343,13 +343,29 @@
   <xsl:template match='*[@tmpl:replace-markup="entityType"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-entityType']" mode="result"/>
   </xsl:template>
-
+  
+  <xsl:variable name="occupations" select="($page)/crossQueryResult/facet[@field='facet-occupation']"/>
+  <xsl:template match="*[@tmpl:condition='occupations']" mode="html-template">
+    <xsl:if test="($occupations)/*">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="occupations"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-occupation']" mode="result"/>
   </xsl:template>
 
+  <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>
+  <xsl:template match="*[@tmpl:condition='subjects']" mode="html-template">
+    <xsl:if test="($subjects)/*">
+      <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="subjects"]' mode="html-template">
-      <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-localDescription']" mode="result"/>
+      <xsl:apply-templates select="$subjects" mode="result"/>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="subjects"]' mode="html-template">
@@ -368,7 +384,9 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
-      <xsl:text> EAC-CPF Records</xsl:text>
+      <xsl:text> </xsl:text>
+      <span title="Encoded Archival Context – Corporate bodies, Persons, and Families">EAC-CPF</span>
+      <xsl:text> Records</xsl:text>
     </xsl:element>
   </xsl:template>
 
@@ -583,7 +601,7 @@
    
 </xsl:stylesheet>
    <!--
-      Copyright (c) 2008, Regents of the University of California
+      Copyright (c) 2010, Regents of the University of California
       All rights reserved.
       
       Redistribution and use in source and binary forms, with or without 
