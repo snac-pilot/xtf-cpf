@@ -36,7 +36,8 @@
    <xsl:param name="http.URL"/>
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
-   <xsl:param name="facet-identityAZ" select="'0'"/>
+   <xsl:param name="facet-entityType"/>
+   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -45,6 +46,7 @@
   <!-- keep gross layout in an external file -->
   <xsl:variable name="layout" select="document('results-template.html')"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
+  <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
 
   <!-- load input XML into page variable -->
   <xsl:variable name="page" select="/"/>
@@ -84,7 +86,7 @@
   <xsl:template match="*[@tmpl:change-value='html-title']" mode="html-template">
     <title>
       <xsl:text>Find Records: </xsl:text>
-      <xsl:value-of select="$text"/>
+      <xsl:value-of select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]/@value, $text"/>
     </title>
   </xsl:template>
 
@@ -92,11 +94,20 @@
     <xsl:choose>
       <xsl:when test="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]"/>
       <xsl:otherwise>
+<xsl:variable name="autoUrl">
+  <xsl:text>/xtf/search?autocomplete=yes;</xsl:text>
+  <xsl:if test="$facet-entityType">
+    <xsl:text>facet-entityType=</xsl:text>
+    <xsl:value-of select="$facet-entityType"/>
+    <xsl:text>;</xsl:text>
+  </xsl:if>
+  <xsl:text>callback=?</xsl:text>
+</xsl:variable>
+
 <script type="text/javascript">
-<![CDATA[
   $(function() {
     $("input#userInput").autocomplete({
-      source: "/xtf/search?autocomplete=yes;callback=?",  /* JSONP '?' turns to callback; term=letters gets added */
+      source: "<xsl:value-of select="$autoUrl"/>",  /* JSONP '?' turns to callback; term=letters gets added */
       minLength: 3,
       delay: 250
     }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
@@ -106,7 +117,6 @@
       }
     });
   });
-]]>
 </script>
       </xsl:otherwise>
     </xsl:choose>
@@ -174,7 +184,7 @@
 
   <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
     <!-- hidden search elements -->
-    <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]" mode="hidden-facets"/>
+    <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')],$page/crossQueryResult/parameters/param[@name='facet-entityType']" mode="hidden-facets"/>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:attribute name="value">
@@ -227,6 +237,32 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:function name="tmpl:entityTypeLabel">
+    <xsl:param name="entity"/>
+    <xsl:value-of select="if ($entity='') then 'All' 
+                     else if ($entity='person') then 'Person'
+                     else if ($entity='family') then 'Family'
+                     else if ($entity='corporateBody') then 'Corprate Body'
+                        else ''"/>
+  </xsl:function>
+
+  <xsl:template match='*[@tmpl:replace-markup="navigation"]' mode="html-template">
+<ul>
+  <xsl:for-each select="('','person','corporateBody','family')">
+    <xsl:choose>
+      <xsl:when test="$facet-entityType=.">
+        <li class="selected"><a><xsl:value-of select="tmpl:entityTypeLabel(.)"/></a></li>
+      </xsl:when>
+      <xsl:otherwise>
+        <li><a href="/xtf/search?{editURL:set($queryStringClean,'facet-entityType',.)}">
+          <xsl:value-of select="tmpl:entityTypeLabel(.)"/>
+        </a></li>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:for-each>
+</ul>
+  </xsl:template>
+
   <!-- am I a browse page or a results page ? -->
   <xsl:template match='*[@tmpl:process-markup="resultWrapper"]' mode="html-template">
     <xsl:choose>
@@ -237,9 +273,12 @@
        <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
        <xsl:variable name="corporateBody-count" 
             select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
-        <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/> names found in archival collections</h2>
-        <!-- p>People (<xsl:value-of select="format-number($person-count,'#,##0')"/>) | Corporate Bodies (<xsl:value-of select="format-number($corporateBody-count,'#,##0')"/>) | Families (<xsl:value-of select="format-number($family-count,'#,##0')"/>)</p -->
-  <h3>All Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('numbers and symbols') else $facet-identityAZ"/></h3>
+        <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names from archival collections</h2>
+
+  <h3><xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('0-9') else $facet-identityAZ"/></h3>
+
 
         <div class="AZletters">
         <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
@@ -269,8 +308,8 @@
 
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
-     <xsl:when test="not($facet-identityAZ=@value)">
-      <a href="/xtf/search?facet-identityAZ={@value}">
+     <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
+      <a href="/xtf/search?{editURL:set(editURL:set('','facet-identityAZ', @value),'facet-entityType',$facet-entityType)}">
         <xsl:value-of select="@value"/>
       </a>
      </xsl:when> 
@@ -338,7 +377,7 @@
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:apply-templates select="$docHits" mode="result"/>
       <xsl:if test="number(($page)/crossQueryResult/@totalDocs) &gt; 2500">
-      <div class="result">
+      <div class="result more">
         <xsl:value-of select="format-number(number(($page)/crossQueryResult/@totalDocs) - 2500,'###,###')"/> not shown
       </div>
       </xsl:if>
@@ -409,7 +448,6 @@
     <xsl:variable name="field" select="replace(ancestor::facet/@field, 'facet-(.*)', '$1')"/>
     <xsl:variable name="value" select="@value"/>
     <xsl:variable name="nextName" select="editURL:nextFacetParam($queryString, $field)"/>
-    <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
     <xsl:variable name="selectLink" select="
          concat('/xtf/', $crossqueryPath, '?',
                 editURL:set($queryStringClean,

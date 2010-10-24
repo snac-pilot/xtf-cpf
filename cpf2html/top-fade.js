@@ -15,4 +15,10 @@
          _gaq.push(['snak._trackEvent', 'OnPage', 'BackToTop', window.title ]);
          return false;
      });
+     $("li.more").click(function () {
+         _gaq.push(['snak._trackEvent', 'OnPage', 'More Browse ' + this.parentNode.getAttribute("class"), window.title ]);
+     });
+     $("div.more").click(function () {
+         _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
+     });
  });

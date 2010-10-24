@@ -370,8 +370,8 @@ tranformed elements
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
     <li>
-      <a href="/xtf/search?f1-localDescription={normalize-space($value)}">
-        <xsl:value-of select="$value"/>
+      <a href="/xtf/search?f1-localDescription={normalize-space(replace($value,'^VIAF:',''))}">
+        <xsl:value-of select="replace($value,'^VIAF:','')"/>
       </a>
     </li>
   </xsl:template>

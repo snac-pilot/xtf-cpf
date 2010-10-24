@@ -41,7 +41,7 @@
 
   <!-- add metadata to XTF index -->
   <xsl:template name="get-meta">
-    <xtf:meta>
+    <meta xmlns="">
       <xsl:apply-templates select="/eac:eac-cpf" mode="main-facet"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId" mode="meta"/>
@@ -55,7 +55,7 @@
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:cpfRelation" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:resourceRelation" mode="meta"/>
-    </xtf:meta>
+    </meta>
   </xsl:template>
 
   <xsl:template match="eac:eac-cpf" mode="main-facet">
@@ -118,7 +118,7 @@
   </xsl:template>
 
   <xsl:template match="@localType" mode="meta">
-    <xsl:value-of select="."/>
+    <xsl:value-of select="replace(.,'^VIAF:','')"/>
     <xsl:text> </xsl:text>
   </xsl:template>
 

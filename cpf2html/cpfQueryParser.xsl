@@ -11,7 +11,8 @@
   <xsl:param name="fieldList" select="'identity text'"/>
   <xsl:param name="text"/>
   <xsl:param name="keyword" select="$text"/>
-  <xsl:param name="facet-identityAZ" select="'0'"/>
+  <xsl:param name="facet-entityType"/>
+  <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
   <xsl:param name="autocomplete"/>
    
   <xsl:template match="/">
@@ -57,7 +58,14 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <spellcheck/>
+          <and>
           <xsl:apply-templates/>
+            <xsl:if test="$facet-entityType">
+              <and field="facet-entityType">
+                <term><xsl:value-of select="$facet-entityType"/></term>
+              </and>
+            </xsl:if>
+          </and>
         </query>
       </xsl:otherwise>
     </xsl:choose>
@@ -79,12 +87,20 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           returnMetaFields="facet-identityAZ, facet-entityType, entityId"
           maxDocs="{$maxDocs}">
           <!-- all this does now is trigger the display mode? -->
-            <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity"/>
-            <facet field="facet-person" select="*[1]"/>
-            <facet field="facet-corporateBody" select="*[1]"/>
-            <facet field="facet-family" select="*[1]"/>
-        <and><allDocs/>
-</and>
+          <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>
+          <facet field="facet-person" select="*[1]"/>
+          <facet field="facet-corporateBody" select="*[1]"/>
+          <facet field="facet-family" select="*[1]"/>
+          <xsl:choose>
+            <xsl:when test="$facet-entityType">
+              <and field="facet-entityType">
+                <term><xsl:value-of select="$facet-entityType"/></term>
+              </and>
+            </xsl:when>
+            <xsl:otherwise>
+              <and><allDocs/></and>
+            </xsl:otherwise>
+          </xsl:choose>
         </query>
 
   </xsl:template>
@@ -107,6 +123,11 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
             <and field="identity">
               <xsl:apply-templates select="parameters/param[@name='term']/token" mode="autotitle"/>
             </and>
+            <xsl:if test="$facet-entityType">
+              <and field="facet-entityType">
+                <term><xsl:value-of select="$facet-entityType"/></term>
+              </and>
+            </xsl:if>
           </and>
         </xsl:when>
         <xsl:otherwise> </xsl:otherwise>
