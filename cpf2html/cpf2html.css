@@ -71,8 +71,9 @@ div.home { padding-bottom: .5em; float: left; }
 .view-source { position:absolute;bottom:0; } 
 
 /* .content {} */
-
-.content .placeEntry { font-style: italic; display: block; } 
+.chronList time { font-weight: bold; }
+.chronList div div { margin-left: 1.5em; }
+.chronList div[itemprop=placeEntry] { font-style: italic; } 
 .identity .nationality { font-style: italic; } 
 
 /* various relations need more space
@@ -80,9 +81,9 @@ div.home { padding-bottom: .5em; float: left; }
 */
 .relations div { margin-bottom: .2em; padding: .3em; }
 .relations h3 { margin-bottom: .441em; margin-top: .441em;}
-.AZlist div.person:hover, .relations div.person:hover { background-color: #FFDEAD; }
-.AZlist div.corporateBody:hover, .relations div.corporateBody:hover { background-color: #E0FFFF; }
-.AZlist div.family:hover, .relations div.family:hover { background-color: #DEB887; }
+.relations div.person:hover { background-color: #FFDEAD; }
+.relations div.corporateBody:hover { background-color: #E0FFFF; }
+.relations div.family:hover { background-color: #DEB887; }
 .relations div.archivalRecords:hover { background-color: #F694FF; }
 .relations div.related:hover { background-color: #CEFFAD; }
 
@@ -108,7 +109,7 @@ display: block; float: right; padding-right: 15em; padding-top: .6em; }
 */
 
 .AZletters, .AZlist { padding-bottom: 1em; }
-.AZletters { font-size: 125%; }
+.AZletters { font-size: 140%; }
 
 .results .person .hit, h1 .person, div.home .person { background-color: #FFDEAD; }
 .results .corporateBody .hit, h1 .corporateBody, div.home .corporateBody { background-color: #E0FFFF; }
