@@ -96,8 +96,10 @@ div.home { padding-bottom: .5em; float: left; }
     background-color: #d6e5f4;
     padding: 10px;
     }
-.cpfSearch input[type="text"] { font-size: 1.32em; }
-.cpfSearch input.button { font-size: 1.32em; background-color: #ffffff;}
+.cpfSearch input[type="text"] { font-size: 1.32em; font-family:inherit;}
+.cpfSearch input.button { font-size: 1.32em; background-color: #ffffff; 
+font-family: inherit;
+}
 
 /* .cpfSearch div.top-facets { float: right; } */
 .cpfSearch .advancedSearch { filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; 
