@@ -21,7 +21,7 @@
    <!-- Output                                                                 -->
    <!-- ====================================================================== -->
 
-   <xsl:output method="xhtml" indent="no" 
+   <xsl:output method="xhtml" indent="yes" 
       encoding="UTF-8" media-type="text/html; charset=UTF-8" 
       doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
       doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
@@ -245,7 +245,7 @@
     <xsl:value-of select="if ($entity='') then 'All' 
                      else if ($entity='person') then 'Person'
                      else if ($entity='family') then 'Family'
-                     else if ($entity='corporateBody') then 'Corprate Body'
+                     else if ($entity='corporateBody') then 'Corporate Body'
                         else ''"/>
   </xsl:function>
 
