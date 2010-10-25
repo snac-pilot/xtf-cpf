@@ -275,7 +275,12 @@
             select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
         <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names</h2>
+          <xsl:if test="$facet-entityType">
+            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> 
+            <xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:text>Names</xsl:text>
+        </h2>
 
   <h3><xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('0-9') else $facet-identityAZ"/></h3>
 
