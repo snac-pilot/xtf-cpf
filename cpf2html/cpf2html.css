@@ -19,7 +19,6 @@ div.home { padding-bottom: .5em; float: left; }
   color: White;
   float: left;
   width: 100%;
-  font-family: arial, helvetica, sans-serif;
 }
 
 .page-header ul li { display: inline; }
@@ -36,7 +35,7 @@ div.home { padding-bottom: .5em; float: left; }
 .page-header ul li.selected a {
   padding: 0.2em 1em;
   background-color: #d6e5f4;
-  color: 000;
+  color: #000;
   text-decoration: none;
   float: left;
   border-right: 1px solid #fff;
@@ -102,7 +101,10 @@ div.home { padding-bottom: .5em; float: left; }
 
 /* .cpfSearch div.top-facets { float: right; } */
 .cpfSearch .advancedSearch { filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; 
-display: block; float: right; padding-right: 15em; padding-top: .6em; } 
+padding-left: 4em;
+float: right; padding-top: .6em; 
+position: absolute;
+} 
 
 /*
 .cpfSearch div.main-search { padding-right: 4em; padding-top: .3em; }
