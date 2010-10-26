@@ -143,10 +143,10 @@
   </xsl:template>
  
   <xsl:template match="param" mode="top-facets">
-    <div class="tooltip" title="search limit">
+    <div class="facet-limit" title="search limit">
+      <a class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
       <xsl:value-of select="@value"/>
       <xsl:text>&#160;</xsl:text>
-      <a class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
     </div>
   </xsl:template>
 
@@ -401,10 +401,6 @@
       <xsl:apply-templates select="$subjects" mode="result"/>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:replace-markup="subjects"]' mode="html-template">
-      <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-localDescription']" mode="result"/>
-  </xsl:template>
-
   <xsl:template match='*[@tmpl:replace-markup="cpfRelation"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-cpfRelation']" mode="div-result"/>
   </xsl:template>
@@ -501,8 +497,8 @@
     <xsl:variable name="nextName" select="editURL:nextFacetParam($queryString, $field)"/>
     <xsl:variable name="selectLink" select="
          concat('/xtf/', $crossqueryPath, '?',
-                editURL:set($queryStringClean,
-                            $nextName, $value))">
+                editURL:remove(editURL:set($queryStringClean,
+                            $nextName, $value),'facet-identityAZ'))">
     </xsl:variable>
 
     <xsl:variable name="clearLink" select="
