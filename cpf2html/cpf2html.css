@@ -111,6 +111,8 @@ float: right; padding-top: 0.6em;
 position: absolute;
 } 
 
+.cpfSearch .advancedSearch option.default { font-weight: bold; }
+
 /*
 .cpfSearch div.main-search { padding-right: 4em; padding-top: .3em; }
 */
