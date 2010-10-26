@@ -164,6 +164,8 @@ div.result div:last-child { font-size: 80%; }
   top: 1em;
   right: 1em;
   display: none;
+  height: 100px;
+  line-height: 200%;
  } 
 
    .return-top a:hover { text-decoration: overline; }
