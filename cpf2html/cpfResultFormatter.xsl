@@ -306,13 +306,15 @@
 
 
         <div class="AZletters">
-        <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
+          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
         </div>
 
           <div class="AZlist">
           <!-- process the results -->
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit" mode="AZlist"/>
           </div>
+
+
         </div><!-- end g480 -->
         <div class="g240">
           <h2>Top Occupations</h2>
@@ -321,6 +323,11 @@
         <div class="g240">
           <h2>Top Subjects</h2>
           <xsl:call-template name="browse-subjects"/>
+        </div>
+<div class="clear">&#160;</div>
+
+        <div class="g480 AZletters">
+          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
         </div>
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->
