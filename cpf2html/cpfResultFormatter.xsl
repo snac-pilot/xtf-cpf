@@ -212,7 +212,10 @@
         </xsl:attribute>
       </xsl:for-each>
       <xsl:apply-templates mode="sectionType-selected"/>
-      <xsl:if test="$sectionType='cpfdescription'">
+      <xsl:if test="
+        $sectionType='cpfdescription' 
+        or editURL:remove(editURL:remove($queryStringClean,'facet-identityAZ'),'facet-entityType')=''
+      ">
         <script>
   $("span.advancedSearch").hide();
   $("form.cpfSearch").hoverIntent(function () {
