@@ -495,9 +495,14 @@
     <xsl:variable name="field" select="replace(ancestor::facet/@field, 'facet-(.*)', '$1')"/>
     <xsl:variable name="value" select="@value"/>
     <xsl:variable name="nextName" select="editURL:nextFacetParam($queryString, $field)"/>
+    <xsl:variable name="queryStringCleanHomePage" select="
+      if ($sectionType)
+      then $queryStringClean
+      else editURL:set($queryStringClean,'sectionType', 'cpfdescription')
+    "/>
     <xsl:variable name="selectLink" select="
          concat('/xtf/', $crossqueryPath, '?',
-                editURL:remove(editURL:set($queryStringClean,
+                editURL:remove(editURL:set($queryStringCleanHomePage,
                             $nextName, $value),'facet-identityAZ'))">
     </xsl:variable>
 
