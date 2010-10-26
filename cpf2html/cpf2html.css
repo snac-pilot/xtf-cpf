@@ -110,8 +110,17 @@ padding-left: 4em;
 float: right; padding-top: 0.6em; 
 position: absolute;
 } 
+form.cpfSearch div.facet-limit { 
+  border: 1px solid #000; 
+  background-color: #FFF;
+  margin-bottom: 0.633em; 
+  width: 220px;
+}
+form.cpfSearch div.top-facets { clear: both; }
 
 .cpfSearch .advancedSearch option.default { font-weight: bold; }
+
+.x { padding: 0.33em; }
 
 /*
 .cpfSearch div.main-search { padding-right: 4em; padding-top: .3em; }
