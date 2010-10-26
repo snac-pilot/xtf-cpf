@@ -21,7 +21,7 @@
    <!-- Output                                                                 -->
    <!-- ====================================================================== -->
 
-   <xsl:output method="xhtml" indent="yes" 
+   <xsl:output method="xhtml" indent="no" 
       encoding="UTF-8" media-type="text/html; charset=UTF-8" 
       doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
       doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
@@ -108,12 +108,14 @@
 </xsl:variable>
 
 <script type="text/javascript">
-  $(function() {
+/*jslint indent: 2 */
+/*global $ */
+  $(function () {
     $("input#userInput").autocomplete({
       source: "<xsl:value-of select="$autoUrl"/>",  /* JSONP '?' turns to callback; term=letters gets added */
       minLength: 3,
       delay: 250
-    }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
+    }).keydown(function (e) {            /* http://stackoverflow.com/questions/3785993/ */
       if (e.keyCode === 13) {
         $(this).autocomplete("close");
         $(this).closest('form').trigger('submit');

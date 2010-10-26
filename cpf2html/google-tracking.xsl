@@ -11,8 +11,10 @@
   <xsl:template name="google-tracking-code">
     <!-- http://code.google.com/apis/analytics/docs/gaJS/gaJSApi_gaq.html -->
     <script type="text/javascript">
+/*jslint nomen: false */
 var _gaq = _gaq || [];
-_gaq.push(['_gat._anonymizeIp'],['snak._setAccount', '<xsl:value-of select="document('UA-code.xml')/UA"/>'],['snak._trackPageview']);
+_gaq.push(['_gat._anonymizeIp'], ['snak._setAccount', '<xsl:value-of select="document('UA-code.xml')/UA"/>'], ['snak._trackPageview']);
+/*jslint nomen: true */
     </script>
   </xsl:template>
 </xsl:stylesheet>
