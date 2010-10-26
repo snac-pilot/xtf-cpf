@@ -25,11 +25,4 @@ $(function () {
   $("div.more").click(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
   });
-  //
-  $("span.advancedSearch").hide();
-  $("form.cpfSearch").hoverIntent(function () { 
-    $("span.advancedSearch").css("display", "inline"); 
-  }, function () { 
-    $("span.advancedSearch").fadeOut(); 
-  });
 });

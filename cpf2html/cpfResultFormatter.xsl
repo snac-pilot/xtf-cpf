@@ -212,6 +212,19 @@
         </xsl:attribute>
       </xsl:for-each>
       <xsl:apply-templates mode="sectionType-selected"/>
+      <xsl:if test="$sectionType='cpfdescription'">
+        <script>
+  $("span.advancedSearch").hide();
+  $("form.cpfSearch").hoverIntent(function () {
+    $("span.advancedSearch").css("display", "inline");
+  }, function () {
+    console.log($("span.advancedSearch select").val());
+    if ($("span.advancedSearch select").val() === 'cpfdescription') {
+      $("span.advancedSearch").fadeOut();
+    }
+  });
+        </script>
+      </xsl:if>
     </xsl:element>
   </xsl:template>
 
