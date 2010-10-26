@@ -221,7 +221,6 @@
   $("form.cpfSearch").hoverIntent(function () {
     $("span.advancedSearch").css("display", "inline");
   }, function () {
-    console.log($("span.advancedSearch select").val());
     if ($("span.advancedSearch select").val() === 'cpfdescription') {
       $("span.advancedSearch").fadeOut();
     }
