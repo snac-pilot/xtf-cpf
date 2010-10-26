@@ -6,6 +6,7 @@
   xmlns:xtf="http://cdlib.org/xtf"
   xmlns:xs="http://www.w4.org/2001/XMLSchema" 
   xmlns:iso="iso:/3166"
+  xmlns:CharUtils="java:org.cdlib.xtf.xslt.CharUtils"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -81,7 +82,7 @@
 
     <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
-      <xsl:value-of select="$identity"/>
+      <xsl:value-of select="CharUtils:applyAccentMap('../conf/accentFolding/accentMap.txt', $identity)"/>
     </sort-identity>
     <!-- for A .. Z browse -->
     <facet-identityAZ xtf:meta="true" xtf:tokenize="no">
