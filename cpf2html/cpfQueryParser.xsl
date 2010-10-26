@@ -91,6 +91,8 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           <facet field="facet-person" select="*[1]"/>
           <facet field="facet-corporateBody" select="*[1]"/>
           <facet field="facet-family" select="*[1]"/>
+          <facet field="facet-occupation" select="*[1-100]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-localDescription" select="*[1-100]" sortGroupsBy="{$sortGroupsBy}"/>
           <xsl:choose>
             <xsl:when test="$facet-entityType">
               <and field="facet-entityType">
