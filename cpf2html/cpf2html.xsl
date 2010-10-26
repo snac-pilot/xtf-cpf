@@ -362,7 +362,7 @@ tranformed elements
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
     <li>
-      <a href="/xtf/search?f1-occupation={normalize-space($value)}">
+      <a href="/xtf/search?sectionType=cpfdescription&amp;f1-occupation={normalize-space($value)}">
         <xsl:value-of select="$value"/>
       </a>
     </li>
@@ -375,7 +375,7 @@ tranformed elements
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
     <li>
-      <a href="/xtf/search?f1-localDescription={normalize-space(replace($value,'^VIAF:',''))}">
+      <a href="/xtf/search?sectionType=cpfdescription&amp;f1-localDescription={normalize-space(replace($value,'^VIAF:',''))}">
         <xsl:value-of select="replace($value,'^VIAF:','')"/>
       </a>
     </li>
