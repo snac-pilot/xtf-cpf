@@ -120,6 +120,8 @@ form.cpfSearch div.top-facets { clear: both; }
 
 .cpfSearch .advancedSearch option.default { font-weight: bold; }
 
+.occupation li.selected, .localDescription li.selected { font-weight: bold; }
+.occupation li.selected a, .localDescription li.selected a { font-weight: normal; }
 .x { padding: 0.33em; }
 
 /*
