@@ -1,9 +1,11 @@
+@charset "UTF-8";
+
 a[href^="http://"]:after { content: " ↗"; }
 .hit { background-color: yellow; }
 
 /* css order tries to match source order basically */
 
-div.home { padding-bottom: .5em; float: left; }
+div.home { padding-bottom: 0.5em; float: left; }
 
 .actions { float: right; }
 
@@ -16,7 +18,7 @@ div.home { padding-bottom: .5em; float: left; }
   padding-left: 0;
   margin-left: 0;
   background-color: #036;
-  color: White;
+  color: #fff;
   float: left;
   width: 100%;
 }
@@ -26,7 +28,7 @@ div.home { padding-bottom: .5em; float: left; }
 .page-header ul li a {
   padding: 0.2em 1em;
   background-color: #036;
-  color: White;
+  color: #fff;
   text-decoration: none;
   float: left;
   border-right: 1px solid #fff;
@@ -48,9 +50,9 @@ div.home { padding-bottom: .5em; float: left; }
 
 
 /* identity section elements need to get closer than defaults */
-.identity h1 { margin-bottom: .3em; }
+.identity h1 { margin-bottom: 0.3em; }
 /* .identity .id { margin-left: .3em; }
-.identity .description { margin-left: .3em; } */
+.identity .description { margin-left: 0.3em; } */
 .identity .gender, .identity .nationality { padding-left: 3em; }
 
 .identity div.extra-names span { white-space: nowrap; }
@@ -59,7 +61,7 @@ div.home { padding-bottom: .5em; float: left; }
           div.extra-names { text-overflow: ellipsis; white-space: nowrap;
 	width: 100%;
 	overflow: hidden;}
-.identity .authorizedForm, .arcrole { font-size: .8em; color: #8d8a72; }
+.identity .authorizedForm, .arcrole { font-size: 0.8em; color: #8d8a72; }
  
 .identity .person { background-color: #FFDEAD; }
 .identity .corporateBody { background-color: #E0FFFF; }
@@ -78,8 +80,8 @@ div.home { padding-bottom: .5em; float: left; }
 /* various relations need more space
    values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
 */
-.relations div { margin-bottom: .2em; padding: .3em; }
-.relations h3 { margin-bottom: .441em; margin-top: .441em;}
+.relations div { margin-bottom: 0.2em; padding: 0.3em; }
+.relations h3 { margin-bottom: 0.441em; margin-top: 0.441em;}
 .relations div.person:hover { background-color: #FFDEAD; }
 .relations div.corporateBody:hover { background-color: #E0FFFF; }
 .relations div.family:hover { background-color: #DEB887; }
@@ -104,7 +106,7 @@ font-family: inherit;
 /* .cpfSearch div.top-facets { float: right; } */
 .cpfSearch .advancedSearch { filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; 
 padding-left: 4em;
-float: right; padding-top: .6em; 
+float: right; padding-top: 0.6em; 
 position: absolute;
 } 
 
@@ -119,7 +121,7 @@ position: absolute;
 .results .corporateBody .hit, h1 .corporateBody, div.home .corporateBody { background-color: #E0FFFF; }
 .results .family .hit, h1 .family, div.home .family { background-color: #DEB887; }
 
-div.result, .relations div { margin-bottom: .4em; padding-top: .3em; padding-botton: .3em; }
+div.result, .relations div { margin-bottom: 0.4em; padding-top: 0.3em; padding-bottom: 0.3em; }
 .relations div div { 
 padding: 0; margin-bottom: 0;
 }
@@ -136,7 +138,7 @@ div.result:hover {
 border-style: solid;
 }
 
-.results h3, .relations h3 { margin-bottom: .441em; margin-top: .441em;}
+.results h3, .relations h3 { margin-bottom: 0.441em; margin-top: 0.441em;}
 
 div.result div:first-child { font-size: 140%; }
 div.result div:last-child { font-size: 80%; }
