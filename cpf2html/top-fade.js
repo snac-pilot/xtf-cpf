@@ -10,7 +10,6 @@ $(function () {
       $('.return-top').fadeOut();
     }
   });
-
   $('.return-top').click(function () {
     $('body,html').animate({
       scrollTop: 0
@@ -19,11 +18,18 @@ $(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'BackToTop', window.title ]);
     return false;
   });
-    // other GA event tracker
+  // other GA event tracker
   $("li.more").click(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Browse ' + this.parentNode.getAttribute("class"), window.title ]);
   });
   $("div.more").click(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
+  });
+  //
+  $("span.advancedSearch").hide();
+  $("form.cpfSearch").hoverIntent(function () { 
+    $("span.advancedSearch").css("display", "inline"); 
+  }, function () { 
+    $("span.advancedSearch").fadeOut(); 
   });
 });

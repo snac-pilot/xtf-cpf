@@ -18,6 +18,7 @@ tranformed elements
 <link rel="stylesheet" href="/xtf/cpf2html/formalize/formalize.css" type="text/css" media="screen, projection"></link>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"/>
 <script src="/xtf/cpf2html/formalize/formalize.js"/>
+<script src="/xtf/cpf2html/jquery.hoverIntent.minified.js"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"/>
 
 <title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
@@ -52,7 +53,7 @@ tranformed elements
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input id="userInput" type="text" size="27" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
 <input class="button" title="full text" type="submit" value="search"/>
 <span class="advancedSearch" title="Advanced Search" tmpl:process-markup="sectionType"> 
-&#160;&#160;Limit to
+Limit to <a title="EAC tag library" class="noarrow" href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html">Section</a>
 <!-- process-markup is programed to add selected="selected" -->
 <select name="sectionType">
 <option value="">eac-cpf</option>
@@ -69,7 +70,7 @@ tranformed elements
 <option value="cpfrelation">&#160;&#160;&#160;&#160;&#160;&#160;cpfRelation</option>
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
-&#160;<a title="new window / search categories match elements in this document" target="_blank" href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html#d1e224">EAC-CPF Tag</a>
+&#160;<!-- a title="new window / search categories match elements in this document" target="_blank" href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html#d1e224">EAC-CPF Tag</a -->
 </span>
 <div tmpl:condition="spelling"/>
 </form>
