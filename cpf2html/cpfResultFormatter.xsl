@@ -288,7 +288,7 @@
     <xsl:choose>
       <!-- Browse Identities -->
       <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
-        <div class="g960">
+        <div class="g480">
        <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalGroups)"/> 
        <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
        <xsl:variable name="corporateBody-count" 
@@ -313,7 +313,15 @@
           <!-- process the results -->
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit" mode="AZlist"/>
           </div>
-        </div><!-- end g960 -->
+        </div><!-- end g480 -->
+        <div class="g240">
+          <h2>Occupations</h2>
+          <xsl:call-template name="browse-occupations"/>
+        </div>
+        <div class="g240">
+          <h2>Subjects</h2>
+          <xsl:call-template name="browse-subjects"/>
+        </div>
       </xsl:when>
       <!-- otherwise continue on with the HTML template -->
       <xsl:otherwise>
@@ -377,7 +385,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template match='*[@tmpl:replace-markup="occupations"]' mode="html-template">
+  <xsl:template match='*[@tmpl:replace-markup="occupations"]' mode="html-template" name="browse-occupations">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-occupation']" mode="result"/>
   </xsl:template>
 
@@ -389,7 +397,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template match='*[@tmpl:replace-markup="subjects"]' mode="html-template">
+  <xsl:template match='*[@tmpl:replace-markup="subjects"]' mode="html-template" name="browse-subjects">
       <xsl:apply-templates select="$subjects" mode="result"/>
   </xsl:template>
 
