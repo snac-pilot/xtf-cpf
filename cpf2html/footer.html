@@ -7,37 +7,56 @@
 <script type="text/javascript">
 // uservoice setup
 var uservoiceOptions = {
-  /* required */ key: 'eaclab', host: 'eaclab.uservoice.com', forum: '80807', showTab: true,  
-  /* optional */ alignment: 'right', background_color:'#036', text_color: 'white', hover_color: '#06C', lang: 'en'
+  /* required */ 
+  key: 'eaclab', 
+  host: 'eaclab.uservoice.com', 
+  forum: '80807', 
+  showTab: true,  
+  /* optional */ 
+  alignment: 'right', 
+  background_color: '#036', 
+  text_color: 'white', 
+  hover_color: '#06C', 
+  lang: 'en'
 };
 // uservoice async 
+/*jslint nomen: false*/
 function _loadUserVoice() {
   var s = document.createElement('script');
   s.setAttribute('type', 'text/javascript');
-  s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
+  s.setAttribute('src', ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
   document.getElementsByTagName('head')[0].appendChild(s);
 }
-_loadSuper = window.onload;
-window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+/*global window */
+var _loadSuper = window.onload;
+window.onload = (typeof window.onload !== 'function') ? 
+  _loadUserVoice : function () { 
+    _loadSuper(); 
+    _loadUserVoice(); 
+  };
 
 // function unloadAct() { alert("hey"); }
 // window.onunload = unloadAct;
 
-$(document).ready(function(){
+$(document).ready(function () {
   // track external links
-  $("a[href^='http://']").click(function(){
-    _gaq.push( ['snak._trackPageview','/outgoing/'+ $(this).attr('href')] );
+  $("a[href^='http://']").click(function () {
+    _gaq.push(['snak._trackPageview', '/outgoing/' + $(this).attr('href')]);
   });
   // track raw XML views
   $("a[title='raw XML']").click(function () {
-        _gaq.push( ['snak._trackPageview','/viewsource'+this.pathname+this.search] );
-  });
+        _gaq.push(['snak._trackPageview', '/viewsource' + this.pathname + this.search]);
+      });
 });
+/*jslint nomen: true, onevar: false */
 // google async call
-(function() {
-    var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-   </script>
+(function () {
+    var ga = document.createElement('script');     
+    ga.type = 'text/javascript'; 
+    ga.async = true;
+    ga.src = ('https:' === document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; 
+    s.parentNode.insertBefore(ga, s);
+  }());
+</script>
 </div>
