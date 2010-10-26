@@ -315,11 +315,11 @@
           </div>
         </div><!-- end g480 -->
         <div class="g240">
-          <h2>Occupations</h2>
+          <h2>Top Occupations</h2>
           <xsl:call-template name="browse-occupations"/>
         </div>
         <div class="g240">
-          <h2>Subjects</h2>
+          <h2>Top Subjects</h2>
           <xsl:call-template name="browse-subjects"/>
         </div>
       </xsl:when>
