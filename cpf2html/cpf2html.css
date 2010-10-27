@@ -106,7 +106,7 @@ font-family: inherit;
 
 /* .cpfSearch div.top-facets { float: right; } */
 .cpfSearch .advancedSearch { filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; 
-padding-left: 4em;
+padding-left: 1em;
 float: right; padding-top: 0.6em; 
 position: absolute;
 } 
@@ -130,6 +130,8 @@ form.cpfSearch div.top-facets { clear: both; }
 
 .AZletters, .AZlist { padding-bottom: 1em; }
 .AZletters { font-size: 140%; }
+.AZlist div { text-indent: -1.5em;
+padding-left: 1.5em; }
 
 .results .person .hit, h1 .person, div.home .person { background-color: #FFDEAD; }
 .results .corporateBody .hit, h1 .corporateBody, div.home .corporateBody { background-color: #E0FFFF; }
@@ -150,7 +152,7 @@ div.result:hover {
   -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
   border-width: 1px;
   border-color: #000; 
-border-style: solid;
+  border-style: solid;
 }
 
 .results h3, .relations h3 { margin-bottom: 0.441em; margin-top: 0.441em;}
