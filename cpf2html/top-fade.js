@@ -27,7 +27,6 @@ $(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
   });
   $("div.results").click(function () {
-    _gaq.push(['snak._trackEvent', 'OnPage', 'Div Click', window.title ]);
     window.location=$("div.result").children("div").children("a").attr("href")
   });
 });
