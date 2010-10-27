@@ -1,3 +1,4 @@
+/* javascript for the search page only */
 /*jslint indent:2, nomen: false */
 /*global $ window _gaq */
 /* http://agyuku.net/2009/05/back-to-top-link-using-jquery/ */
@@ -24,5 +25,9 @@ $(function () {
   });
   $("div.more").click(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
+  });
+  $("div.results").click(function () {
+    _gaq.push(['snak._trackEvent', 'OnPage', 'Div Click', window.title ]);
+    window.location=$("div.result").children("div").children("a").attr("href")
   });
 });
