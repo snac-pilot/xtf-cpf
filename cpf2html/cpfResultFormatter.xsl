@@ -107,7 +107,7 @@
   <xsl:text>callback=?</xsl:text>
 </xsl:variable>
 
-<script type="text/javascript">
+<script>
 /*jslint indent: 2 */
 /*global $ */
   $(function () {
@@ -217,12 +217,12 @@
         or editURL:remove(editURL:remove($queryStringClean,'facet-identityAZ'),'facet-entityType')=''
       ">
         <script>
-  $("span.advancedSearch").hide();
+  $("label.advancedSearch").hide();
   $("form.cpfSearch").hoverIntent(function () {
-    $("span.advancedSearch").css("display", "inline");
+    $("label.advancedSearch").css("display", "inline");
   }, function () {
-    if ($("span.advancedSearch select").val() === 'cpfdescription') {
-      $("span.advancedSearch").fadeOut();
+    if ($("label.advancedSearch select").val() === 'cpfdescription') {
+      $("label.advancedSearch").fadeOut();
     }
   });
         </script>

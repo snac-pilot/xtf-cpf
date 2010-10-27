@@ -55,8 +55,8 @@ tranformed elements
 <div class="top-facets" tmpl:condition="top-facets">top facets</div>
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input id="userInput" type="text" size="27" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
 <input class="button" title="full text" type="submit" value="search"/>
-<span class="advancedSearch" title="Advanced Search" tmpl:process-markup="sectionType"> 
-Limit to <a title="EAC tag library" class="noarrow" target="_blank" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">Section</a>
+<label class="advancedSearch" title="Advanced Search" tmpl:process-markup="sectionType"> 
+Limit to <a title="EAC tag library" class="noarrow" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">section</a>
 <!-- process-markup is programed to add selected="selected" -->
 <select name="sectionType">
 <option value="">eac-cpf</option>
@@ -74,7 +74,7 @@ Limit to <a title="EAC tag library" class="noarrow" target="_blank" href="https:
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
 &#160;<!-- a title="new window / search categories match elements in this document" target="_blank" href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html#d1e224">EAC-CPF Tag</a -->
-</span>
+</label>
 <div tmpl:condition="spelling"/>
 </form>
 </div>
