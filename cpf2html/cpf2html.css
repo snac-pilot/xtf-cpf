@@ -25,7 +25,7 @@ div.home { padding-bottom: 0.5em; float: left; }
 }
 
 .page-header ul li { display: inline; }
-
+.page-header ul li:first-child a { font-weight: bold; }
 .page-header ul li a {
   padding: 0.2em 1em;
   background-color: #036;
