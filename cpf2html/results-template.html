@@ -63,7 +63,7 @@ tranformed elements
 <a tmpl:condition="search" href="/xtf/search">☒ </a><input id="userInput" type="text" size="27" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" tmpl:add-value="search"/>
 <input class="button" title="full text" type="submit" value="search"/>
 <label class="advancedSearch" title="Advanced Search" tmpl:process-markup="sectionType"> 
-Limit to <a title="EAC tag library" class="noarrow" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">section</a>
+<i>advanced</i>… limit to <a title="EAC tag library" class="noarrow" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">section</a>
 <!-- process-markup is programed to add selected="selected" -->
 <select name="sectionType">
 <option value="">eac-cpf</option>
@@ -80,37 +80,22 @@ Limit to <a title="EAC tag library" class="noarrow" href="https://spreadsheets.g
 <option value="cpfrelation">&#160;&#160;&#160;&#160;&#160;&#160;cpfRelation</option>
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
-&#160;<!-- a title="new window / search categories match elements in this document" target="_blank" href="http://www3.iath.virginia.edu/eac/cpf/tagLibrary/cpfTagLibrary.html#d1e224">EAC-CPF Tag</a -->
 </label>
 <div tmpl:condition="spelling"/>
 </form>
 </div>
 <div class="clear">&#160;</div> 
 <div tmpl:process-markup="resultWrapper">
-<div class="g240">
+<div tmpl:condition="refine-browse" class="g240 refine-browse">
 <!-- h2>RecordLevel</h2>
 <ul tmpl:replace-markup="recordLevel">
 <li>sparse	 (239)</li>
 <li>hasDescription	 (95)</li>
 </ul -->
-
+<p><i>narrow results by</i></p>
 <h2 tmpl:condition="occupations">Occupation</h2>
 <ul tmpl:replace-markup="occupations">
 <li>Abolitionists. (5) </li>
-<li>Accountants. (1) </li>
-<li>Actors (5) </li>
-<li>Actresses. (4) </li>
-<li>Administrators. (6) </li>
-<li>Advertising executives (1) </li>
-<li>Advertising executives. (1) </li>
-<li>Aerospace engineers. (1) </li>
-<li>Air Force officers. (5) </li>
-<li>Aircraft manufacturers. (1) </li>
-<li>Ambassadors. (2) </li>
-<li>Anthropologists. (1) </li>
-<li>Archaeologists. (1) </li>
-<li>Architects. (6)</li>
-<li>Architectural historians. (1) </li>
 <li class="more">more (totalGroups 346)
 </li>
 </ul>
