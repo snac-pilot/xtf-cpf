@@ -123,7 +123,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           <and maxSnippets="0">
             <!-- additional search limits -->
             <and field="identity">
-              <xsl:apply-templates select="parameters/param[@name='term']/token" mode="autotitle"/>
+              <xsl:apply-templates select="parameters/param[@name='term']/token[@isWord='yes']" mode="autotitle"/>
             </and>
             <xsl:if test="$facet-entityType">
               <and field="facet-entityType">
@@ -150,7 +150,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
   </xsl:template>
 
   <xsl:template match="token" mode="autotitle">
-    <term><xsl:value-of select="@value"/></term>
+      <term><xsl:value-of select="@value"/></term>
   </xsl:template>
 
    
