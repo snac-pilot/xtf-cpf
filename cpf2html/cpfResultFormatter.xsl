@@ -316,11 +316,11 @@
 
 
         </div><!-- end g480 -->
-        <div class="g240">
+        <div class="g240 top-browse">
           <h2>Top Occupations</h2>
           <xsl:call-template name="browse-occupations"/>
         </div>
-        <div class="g240">
+        <div class="g240 top-browse">
           <h2>Top Subjects</h2>
           <xsl:call-template name="browse-subjects"/>
         </div>
@@ -385,6 +385,20 @@
   </xsl:template>
   
   <xsl:variable name="occupations" select="($page)/crossQueryResult/facet[@field='facet-occupation']"/>
+  <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>
+  <xsl:template match="*[@tmpl:condition='refine-browse']" mode="html-template">
+    <xsl:choose>
+      <xsl:when test="($occupations)/* and ($subjects)/*">
+        <xsl:call-template name="keep-going">
+          <xsl:with-param name="node" select="."/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="g240">&#160;</div>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="*[@tmpl:condition='occupations']" mode="html-template">
     <xsl:if test="($occupations)/*">
       <xsl:call-template name="keep-going">
@@ -396,7 +410,6 @@
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-occupation']" mode="result"/>
   </xsl:template>
 
-  <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>
   <xsl:template match="*[@tmpl:condition='subjects']" mode="html-template">
     <xsl:if test="($subjects)/*">
       <xsl:call-template name="keep-going">
@@ -443,7 +456,7 @@
     <xsl:param name="node"/>
     <xsl:element name="{name($node)}">
       <xsl:for-each select="$node/@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:apply-templates select="($node)/*|($node)/text()"/>
+      <xsl:apply-templates select="($node)/*|($node)/text()" mode="html-template"/>
     </xsl:element>
   </xsl:template>
 
