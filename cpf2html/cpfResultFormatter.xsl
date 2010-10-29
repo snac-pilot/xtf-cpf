@@ -144,7 +144,7 @@
  
   <xsl:template match="param" mode="top-facets">
     <div class="facet-limit" title="search limit">
-      <a class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
+      <a title="remove {@value}" class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
       <xsl:value-of select="@value"/>
       <xsl:text>&#160;</xsl:text>
     </div>
@@ -538,7 +538,7 @@
             <xsl:value-of select="($node)/$value"/>
           <xsl:apply-templates select="$node" mode="afterGroupValue"/>
           <xsl:text> </xsl:text>
-          <a class="x" href="{$clearLink}">☒ </a>
+          <a class="x" title="remove {($node)/$value}" href="{$clearLink}">☒ </a>
         </xsl:when>
         <xsl:otherwise>
           <a href="{$selectLink}"><xsl:value-of select="@value"/></a>
