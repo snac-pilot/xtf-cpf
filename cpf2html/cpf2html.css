@@ -109,6 +109,17 @@ div.home { padding-bottom: 0.5em; float: left; }
 .chronList div[itemprop=placeEntry] { font-style: italic; } 
 .identity .nationality { font-style: italic; } 
 
+div.biogHist:first-child { 
+  border-top: 0; 
+  padding-top: 0em;
+} 
+
+div.biogHist { 
+  border-top: 1px solid #000; 
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
 /* various relations need more space
    values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
 */

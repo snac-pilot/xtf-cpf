@@ -274,7 +274,8 @@ tranformed elements
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
-    <xsl:apply-templates select="$biogHist" mode="eac"/>
+    <!-- contain div is to get :first-child to work -->
+    <div><xsl:apply-templates select="$biogHist" mode="eac"/></div>
   </xsl:template>
 
   <xsl:variable name="generalContext" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:generalContext"/>
@@ -388,7 +389,7 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:biogHist" mode="eac">
-    <div><xsl:apply-templates mode="eac"/></div>
+   <div class="biogHist"><xsl:apply-templates mode="eac"/></div>
   </xsl:template>
 
   <xsl:template match="eac:chronList" mode="eac">
