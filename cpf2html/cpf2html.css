@@ -11,19 +11,33 @@ div.home { padding-bottom: 0.5em; float: left; }
 .actions { float: right; }
 
 .page-header h1 a:hover { text-decoration: none; }
+.page-header h1 { padding-top: 10px; float: left; padding-bottom: 10px; }
+
+#logo { 
+  float: right; 
+  clear: both; 
+  background-image:url('http://socialarchive.iath.virginia.edu/images/paperdolls_mask_smaller2.jpg'); height: 52px; width: 127px; 
+  margin-left: .5em;
+  font-size: 150%;
+  text-align: right;
+}
+
+#logo a, #logo span { background: transparent url('white.png') repeat;} 
+#logo a { font-weight: bold; }
 
 /* tabs http://css.maxdesign.com.au/listamatic/horizontal03.htm */
 
 .page-header ul {
   padding-left: 0;
   margin-left: 0;
+  margin-right: 0; 
+  padding-left: 0;
   background-color: #036;
   color: #fff;
   float: left;
   width: 100%;
 }
 .page-header > a.noarrow:hover { text-decoration: none; } 
-.page-header > a > img { margin-left: -5px; }
 
 .page-header ul li { display: inline; }
 .page-header ul li:first-child a { font-weight: bold; }
