@@ -68,6 +68,14 @@ div.home { padding-bottom: 0.5em; float: left; }
   -moz-box-shadow: -5px -5px 15px #CCC; /* Firefox */
   -webkit-box-shadow: -5px -5px 15px #CCC; /* Safari, Chrome */
   box-shadow: -5px -5px 15px #CCC; /* CSS3 */
+
+  /* background-color, zoom, and filter are for IE /*
+  /* http://ole-laursen.blogspot.com/2009/08/using-css3-box-shadow-with-ie.html */
+  background-color: #fff;
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696', Direction=315, Strength=3);
+
+
 }
 .top-browse h2 { padding: 0.25em; }
 .g480 h3 { border-bottom: 2px solid #000; }
