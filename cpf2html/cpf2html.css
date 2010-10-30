@@ -77,9 +77,9 @@ div.home { padding-bottom: 0.5em; float: left; }
 
 
 }
-.top-browse h2 { padding: 0.25em; }
+.top-browse h2 { padding-top: 3px; padding-left: 3px; }
 .g480 h3 { border-bottom: 2px solid #000; }
-.refine-browse { border: 1px solid #ddd; } 
+.refine-browse { border: 1px solid #ddd; margin-bottom: 1em; padding-left: 2px; } 
 
 /* identity section elements need to get closer than defaults */
 .identity h1 { margin-bottom: 0.3em; }
