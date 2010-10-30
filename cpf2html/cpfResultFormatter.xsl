@@ -388,7 +388,7 @@
   <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>
   <xsl:template match="*[@tmpl:condition='refine-browse']" mode="html-template">
     <xsl:choose>
-      <xsl:when test="($occupations)/* and ($subjects)/*">
+      <xsl:when test="($occupations)/* or ($subjects)/*">
         <xsl:call-template name="keep-going">
           <xsl:with-param name="node" select="."/>
         </xsl:call-template>
@@ -480,6 +480,8 @@
       <div><xsl:apply-templates select="snippet" mode="text"/></div>
     </div>
   </xsl:template>
+
+  <xsl:template match="facet[@totalDocs='0']" mode="result"/>
 
   <xsl:template match="facet" mode="result">
     <ul class="{replace(@field,'facet-','')}">
