@@ -117,8 +117,8 @@
   </xsl:template>
 
   <xsl:template match="eac:occupation" mode="meta">
-    <occupation xtf:meta="yes"><xsl:value-of select="eac:term"/></occupation>
-    <facet-occupation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:term"/></facet-occupation>
+    <occupation xtf:meta="yes"><xsl:apply-templates mode="meta" select="eac:term"/></occupation>
+    <facet-occupation xtf:facet="yes" xtf:meta="yes"><xsl:apply-templates select="eac:term" mode="meta"/></facet-occupation>
   </xsl:template>
 
   <xsl:template match="eac:localDescription" mode="meta">
@@ -136,7 +136,10 @@
   </xsl:template>
 
   <xsl:template match="eac:term" mode="meta">
-    <xsl:value-of select="."/>
+    <xsl:value-of select="replace(replace(.
+      ,'[^\w]+$','')
+      ,'--.*$','')
+    "/>
   </xsl:template>
 
   <xsl:template match="eac:placeEntry" mode="meta">

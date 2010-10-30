@@ -321,6 +321,13 @@ tranformed elements
 
   <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
     <xsl:call-template name="google-tracking-code"/>
+<xsl:text disable-output-escaping="yes">
+<![CDATA[
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+]]>
+</xsl:text>
   </xsl:template>
 
   <!-- templates that format EAC to HTML -->
@@ -362,9 +369,22 @@ tranformed elements
     <xsl:variable name="value">
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
+    <xsl:variable name="normalValue" 
+      select="replace(replace(normalize-space(.)
+      ,'[^\w]+$','')
+      ,'--.*$','')
+    "/>
+    <xsl:variable name="href">
+      <xsl:text>/xtf/search?sectionType=cpfdescription&amp;f1-occupation=</xsl:text>
+      <xsl:value-of select="$normalValue"/>
+      <xsl:if test="matches($value,'--.*')">
+        <xsl:text>&amp;text=</xsl:text>
+        <xsl:value-of select="normalize-space($value)"/>
+      </xsl:if>
+    </xsl:variable>
     <li>
-      <a href="/xtf/search?sectionType=cpfdescription&amp;f1-occupation={normalize-space($value)}">
-        <xsl:value-of select="$value"/>
+      <a href="{$href}">
+        <xsl:value-of select="replace($value,'--','-&#173;-')"/>
       </a>
     </li>
   </xsl:template>
@@ -375,9 +395,23 @@ tranformed elements
       <xsl:text> </xsl:text>
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
+    <xsl:variable name="normalValue" 
+      select="replace(replace(replace(normalize-space(.)
+      ,'[^\w]+$','')
+      ,'--.*$','')
+      ,'^VIAF:','')
+    "/>
+    <xsl:variable name="href">
+      <xsl:text>/xtf/search?sectionType=cpfdescription&amp;f1-localDescription=</xsl:text>
+      <xsl:value-of select="normalize-space($normalValue)"/>
+      <xsl:if test="matches($value,'--.*')">
+        <xsl:text>&amp;text=</xsl:text>
+        <xsl:value-of select="replace(normalize-space($value),'^VIAF:','')"/>
+      </xsl:if>
+    </xsl:variable>
     <li>
-      <a href="/xtf/search?sectionType=cpfdescription&amp;f1-localDescription={normalize-space(replace($value,'^VIAF:',''))}">
-        <xsl:value-of select="replace($value,'^VIAF:','')"/>
+      <a href="{$href}">
+        <xsl:value-of select="replace(replace($value,'^VIAF:',''),'--','-&#173;-')"/>
       </a>
     </li>
   </xsl:template>
