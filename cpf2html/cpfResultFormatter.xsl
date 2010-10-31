@@ -144,7 +144,8 @@
  
   <xsl:template match="param" mode="top-facets">
     <div class="facet-limit" title="search limit">
-      <a title="remove {@value}" class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒ </a>
+      <a title="remove {@value}" class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒</a>
+      <xsl:text>&#160;</xsl:text>
       <xsl:value-of select="@value"/>
       <xsl:text>&#160;</xsl:text>
     </div>
@@ -317,11 +318,11 @@
 
         </div><!-- end g480 -->
         <div class="g240 top-browse">
-          <h2>Top Occupations</h2>
+          <h2 title="browse">Top Occupations</h2>
           <xsl:call-template name="browse-occupations"/>
         </div>
         <div class="g240 top-browse">
-          <h2>Top Subjects</h2>
+          <h2 title="browse">Top Subjects</h2>
           <xsl:call-template name="browse-subjects"/>
         </div>
 <div class="clear">&#160;</div>
