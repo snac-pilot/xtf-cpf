@@ -208,8 +208,9 @@ tranformed elements
     <xsl:apply-templates select="$occupations" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="localDescriptions" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions
-        | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription"/>
+  <xsl:variable name="localDescriptions" select="
+          ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions
+        | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[not(starts-with(@localType,'VIAF'))]"/>
 
   <xsl:template match='*[@tmpl:condition="localDescriptions"]'>
     <xsl:if test="($localDescriptions)">
@@ -416,7 +417,7 @@ tranformed elements
     </li>
   </xsl:template>
 
-  <xsl:template match="eac:localDescription | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
+  <xsl:template match="eac:localDescription[not(starts-with(@localType,'VIAF'))] | eac:occupation | eac:function | eac:mandate | eac:place" mode="eac">
     <ul>
       <xsl:apply-templates select="." mode="eac-inlist"/>
     </ul>
