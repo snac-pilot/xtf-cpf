@@ -273,6 +273,11 @@ tranformed elements
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
     </xsl:if>
+    <xsl:if test="not($biogHist)">
+      <xsl:call-template name="placeholder">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
     <!-- contain div is to get :first-child to work -->
