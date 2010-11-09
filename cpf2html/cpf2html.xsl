@@ -174,7 +174,8 @@ tranformed elements
     <xsl:param name="node"/>
     <xsl:element name="{name($node)}">
       <xsl:for-each select="$node/@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:text>&#160;</xsl:text>
+      <xsl:attribute name="class" select="'placeholder'"/>
+<xsl:value-of select="$node/text()"/>
     </xsl:element>
   </xsl:template>
 
@@ -215,6 +216,11 @@ tranformed elements
   <xsl:template match='*[@tmpl:condition="localDescriptions"]'>
     <xsl:if test="($localDescriptions)">
       <xsl:call-template name="keep-going">
+        <xsl:with-param name="node" select="."/>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:if test="not($localDescriptions)">
+      <xsl:call-template name="placeholder">
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
     </xsl:if>
@@ -299,6 +305,17 @@ tranformed elements
 
   <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
 
+  <xsl:template match="*[@tmpl:replace-markup='sameAs']">
+    <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
+    <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1/')"/>
+    <xsl:if test="$VIAF">
+      <div class="related">
+        <div class="arcrole">sameAs</div>
+        <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match='*[@tmpl:condition="relations"]'>
     <xsl:if test="($relations)">
       <xsl:call-template name="keep-going">
@@ -308,14 +325,6 @@ tranformed elements
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
     <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[@xlink:role='archivalRecords']" />
-    <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
-    <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1/')"/>
-    <xsl:if test="$VIAF">
-      <div class="related">
-        <div class="arcrole">sameAs</div>
-        <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
-      </div>
-    </xsl:if>
     <xsl:if test="$archivalRecords">
       <h3>Archival Collections</h3>
       <xsl:apply-templates select="($archivalRecords)[contains(@xlink:arcrole,'creatorOf')] , 
@@ -377,7 +386,7 @@ tranformed elements
     </xsl:variable>
     <xsl:variable name="normalValue" 
       select="replace(replace(normalize-space(.)
-      ,'[^\w]+$','')
+      ,'[^\w\)]+$','')
       ,'--.*$','')
     "/>
     <xsl:variable name="href">
@@ -403,7 +412,7 @@ tranformed elements
     </xsl:variable>
     <xsl:variable name="normalValue" 
       select="replace(replace(replace(normalize-space(.)
-      ,'[^\w]+$','')
+      ,'[^\w\)]+$','')
       ,'--.*$','')
       ,'^VIAF:','')
     "/>
