@@ -13,6 +13,7 @@
   <!-- preFilter for eac-cpf in XTF -->
 
   <xsl:include href="iso_3166.xsl"/>
+  <xsl:include href="iso_639-2.xsl"/>
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
@@ -32,9 +33,6 @@
     <xsl:copy>
       <xsl:namespace name="xtf" select="'http://cdlib.org/xtf'"/>
       <xsl:copy-of select="@*"/>
-      <xsl:if test="$hasDescription = 'true'">
-        <xsl:attribute name="xtf:wordBoost" select="'1.0'"/>
-      </xsl:if>
       <xsl:call-template name="get-meta"/>
       <xsl:apply-templates/>
     </xsl:copy>
@@ -62,8 +60,8 @@
   <xsl:template match="eac:eac-cpf" mode="main-facet">
     <facet-recordLevel xtf:facet="yes" xtf:meta="yes">
       <xsl:choose>
-        <xsl:when test="eac:cpfDescription/eac:description">
-          <xsl:text>hasDescription</xsl:text>
+        <xsl:when test="eac:cpfDescription/eac:description/eac:biogHist">
+          <xsl:text>hasBiogHist</xsl:text>
         </xsl:when>
         <xsl:otherwise>
           <xsl:text>sparse</xsl:text>
@@ -112,8 +110,12 @@
 
   <xsl:template match="eac:nameEntry" mode="meta">
     <identity xtf:meta="yes">
-      <xsl:value-of select="eac:part"/>
+      <xsl:value-of select="normalize-space(replace(replace(eac:part,
+                            '([^0-9]|,*)([0-9].*)','$1 $2'),
+                            '(,|\.)([^ ])','$1 $2'))"/>
     </identity>
+                            <!-- http://gskinner.com/RegExr/?2sgb9 -->
+                            <!-- http://gskinner.com/RegExr/?2sgbc -->
   </xsl:template>
 
   <xsl:template match="eac:occupation" mode="meta">
@@ -137,7 +139,7 @@
 
   <xsl:template match="eac:term" mode="meta">
     <xsl:value-of select="replace(replace(.
-      ,'[^\w]+$','')
+      ,'[^\w\)]+$','')
       ,'--.*$','')
     "/>
   </xsl:template>
@@ -226,6 +228,13 @@
           else (eac:nameEntry)
       "/>
       <xsl:apply-templates select="@*|eac:descriptiveNote|eac:entityId|eac:entityType|eac:nameEntryParallel|$deDuplicateNameEntry"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="eac:language[@languageCode][not(text())]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:value-of select="iso:langLookup(@languageCode)"/>
     </xsl:copy>
   </xsl:template>
 
