@@ -1,0 +1,3 @@
+create data file like this
+wget "http://downloads.dbpedia.org/3.5.1/en/persondata_en.nt.bz2"
+bzcat persondata_en.nt.bz2 | awk '{ print $1 }' | uniq > persondata-uniq
