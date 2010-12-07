@@ -139,19 +139,27 @@ tranformed elements
 
   <xsl:template match='*[@tmpl:change-value="dateRange"]'><!-- plus VIAF gender nationality; languages Used -->
     <xsl:variable name="existDates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates"/>
-    <xsl:if test="$existDates">
-    <xsl:element name="{name()}">
-      <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:text>(</xsl:text>
-      <xsl:apply-templates select="$existDates" mode="eac"/>
-      <xsl:text>)</xsl:text>
-    <xsl:apply-templates select="
-      ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
-      ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
-      mode="viaf-extra" />
-    <xsl:apply-templates select="$page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:languageUsed" mode="viaf-extra"/>
-    </xsl:element>
-    </xsl:if>
+
+    <xsl:choose>
+      <xsl:when test="$existDates">
+        <xsl:element name="{name()}">
+          <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+          <xsl:text>(</xsl:text>
+          <xsl:apply-templates select="$existDates" mode="eac"/>
+          <xsl:text>)</xsl:text>
+        <xsl:apply-templates select="
+          ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
+          ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
+          mode="viaf-extra" />
+        <xsl:apply-templates select="$page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:languageUsed" mode="viaf-extra"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="placeholder">
+          <xsl:with-param name="node" select="."/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="eac:localDescription[@localType='VIAF:nationality']" mode="viaf-extra">
