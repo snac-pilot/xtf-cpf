@@ -385,6 +385,10 @@
   <xsl:template match='*[@tmpl:replace-markup="entityType"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-entityType']" mode="result"/>
   </xsl:template>
+
+  <xsl:template match='*[@tmpl:replace-markup="version"]' mode="html-template">
+    <xsl:value-of select="document('VERSION')"/>
+  </xsl:template>
   
   <xsl:variable name="occupations" select="($page)/crossQueryResult/facet[@field='facet-occupation']"/>
   <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>

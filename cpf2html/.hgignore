@@ -2,3 +2,4 @@
 ^spreadsheets-code.xml$
 ^test/.*\.(xml|html)$
 ^test/rhino1_7R2.*
+^VERSION$

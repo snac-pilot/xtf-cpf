@@ -67,6 +67,7 @@ tranformed elements
   <xsl:template match="*:footer">
 <div class="clear">&#160;</div>
     <xsl:copy-of select="$footer"/>
+    <xsl:value-of select="document('VERSION')"/>
   </xsl:template>
 
   <!-- templates that hook the html template to the EAC -->
