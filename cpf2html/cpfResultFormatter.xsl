@@ -387,7 +387,7 @@
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="version"]' mode="html-template">
-    <xsl:value-of select="document('VERSION')"/>
+    <xsl:copy-of select="document('VERSION')"/>
   </xsl:template>
   
   <xsl:variable name="occupations" select="($page)/crossQueryResult/facet[@field='facet-occupation']"/>
