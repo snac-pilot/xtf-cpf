@@ -229,7 +229,7 @@
       "/ -->
       <xsl:variable 
         name="deDuplicateNameEntry" 
-        select="eac:nameEntry[not(eac:part=following::eac:nameEntry/eac:part)]
+        select="eac:nameEntry[not(eac:part=preceding::eac:nameEntry/eac:part)]
       "/>
       <xsl:apply-templates select="@*|eac:descriptiveNote|eac:entityId|eac:entityType|eac:nameEntryParallel|$deDuplicateNameEntry"/>
     </xsl:copy>
