@@ -104,7 +104,7 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="extra-names"]'>
-    <xsl:variable name="extra-names" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()>1]"/>
+    <xsl:variable name="extra-names" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()&gt;1]"/>
     <xsl:if test="$extra-names">
       <xsl:element name="{name()}">
         <xsl:attribute name="title" select="'alternative forms of name'"/>
@@ -122,9 +122,9 @@ tranformed elements
   <xsl:template match="eac:nameEntry" mode="extra-names">
     <xsl:text>
 </xsl:text>
-    <span>
+    <div>
       <xsl:apply-templates select="eac:part, eac:authorizedForm" mode="extra-names"/>
-    </span>
+    </div>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="entityId"]'>
@@ -137,7 +137,7 @@ tranformed elements
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:change-value="dateRange"]'><!-- plus VIAF gender nationality -->
+  <xsl:template match='*[@tmpl:change-value="dateRange"]'><!-- plus VIAF gender nationality; languages Used -->
     <xsl:variable name="existDates" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates"/>
     <xsl:if test="$existDates">
     <xsl:element name="{name()}">
@@ -149,6 +149,7 @@ tranformed elements
       ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
       ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
       mode="viaf-extra" />
+    <xsl:apply-templates select="$page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:languageUsed" mode="viaf-extra"/>
     </xsl:element>
     </xsl:if>
   </xsl:template>
@@ -159,6 +160,10 @@ tranformed elements
 
   <xsl:template match="eac:localDescription[@localType='VIAF:gender']" mode="viaf-extra">
     <span title="gender" class="gender"><xsl:apply-templates mode="eac"/>&#160;</span>
+  </xsl:template>
+
+  <xsl:template match="eac:languageUsed" mode="viaf-extra">
+    <span title="language used" class="languageUsed"><xsl:apply-templates mode="eac"/>&#160;</span>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
@@ -175,7 +180,7 @@ tranformed elements
     <xsl:element name="{name($node)}">
       <xsl:for-each select="$node/@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:attribute name="class" select="'placeholder'"/>
-<xsl:value-of select="$node/text()"/>
+&#160;
     </xsl:element>
   </xsl:template>
 
@@ -305,13 +310,22 @@ tranformed elements
 
   <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
 
-  <xsl:template match="*[@tmpl:replace-markup='sameAs']">
+  <xsl:template match="*[@tmpl:replace-markup='sameAs']" name="sameAs">
     <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
     <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1/')"/>
+    <xsl:variable name="dbpedia" select="($page)/eac:eac-cpf/*:meta/*:dbpedia[text()]"/>
+    <xsl:variable name="wikipedia" select="replace($dbpedia, '^http://dbpedia.org/resource/', 'http://en.wikipedia.org/wiki/')"/>
     <xsl:if test="$VIAF">
-      <div class="related">
-        <div class="arcrole">sameAs</div>
-        <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
+      <h3><span><a href="#">Linked Data (<xsl:value-of select="count($VIAF) + count($dbpedia)"/>)</a></span></h3>
+      <div>
+        <div class="related">
+          <div class="arcrole">sameAs</div>
+          <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
+        </div>
+        <div class="related">
+          <div><a href="{$dbpedia}"><xsl:value-of select="replace($dbpedia,'^http://','')"/></a></div>
+          <div><a href="{$wikipedia}"><xsl:value-of select="replace($wikipedia,'^http://','')"/></a></div>
+        </div>
       </div>
     </xsl:if>
   </xsl:template>
@@ -324,14 +338,38 @@ tranformed elements
     </xsl:if>
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
+   <div>
     <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[@xlink:role='archivalRecords']" />
+    <xsl:variable name="archivalRecords-creatorOf" select="($archivalRecords)[contains(@xlink:arcrole, 'creatorOf')]"/>
+    <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
     <xsl:if test="$archivalRecords">
-      <h3>Archival Collections</h3>
-      <xsl:apply-templates select="($archivalRecords)[contains(@xlink:arcrole,'creatorOf')] , 
-                                   ($archivalRecords)[not(contains(@xlink:arcrole,'creatorOf'))]" mode="eac"/>
+        <h3><span><a href="#">Archival Collections (<xsl:value-of select="count($archivalRecords)"/>)</a></span></h3>
+<div>
+  <ul>
+    <xsl:if test="$archivalRecords-creatorOf">
+      <li><a href="#creatorOf">creatorOf (<xsl:value-of select="count($archivalRecords-creatorOf)"/>)</a></li>
     </xsl:if>
-    <xsl:apply-templates select="$relations" mode="eac"/>
-    <xsl:apply-templates select="($relations)/*[eac:cpfRelation]" mode="eac"/>
+    <xsl:if test="$archivalRecords-referencedIn">
+      <li><a href="#referencedIn">referencedIn (<xsl:value-of select="count($archivalRecords-referencedIn)"/>)</a></li>
+    </xsl:if>
+  </ul>
+  <div id="creatorOf">
+        <xsl:apply-templates select="($archivalRecords-creatorOf)" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+        </xsl:apply-templates>
+  </div>
+  <div id="referencedIn">
+        <xsl:apply-templates select="($archivalRecords-referencedIn)" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+        </xsl:apply-templates>
+  </div>
+</div>
+    </xsl:if>
+    <xsl:apply-templates select="$relations| ($relations)/*[eac:cpfRelation]" mode="eac">
+      <xsl:sort select="eac:relationEntry"/>
+    </xsl:apply-templates>
+    <xsl:call-template name="sameAs"/>
+   </div>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
@@ -449,6 +487,18 @@ tranformed elements
     <p><xsl:apply-templates mode="eac"/></p>
   </xsl:template>
 
+  <xsl:template match="eac:list" mode="eac">
+    <ul><xsl:apply-templates mode="eac"/></ul>
+  </xsl:template>
+
+  <xsl:template match="eac:item" mode="eac">
+    <li><xsl:apply-templates mode="eac"/></li>
+  </xsl:template>
+
+  <xsl:template match="eac:citation" mode="eac">
+    <small><xsl:apply-templates mode="eac"/></small>
+  </xsl:template>
+
   <xsl:template match="eac:chronItem" mode="eac">
     <div itemscope="itemscope">
       <xsl:apply-templates select="eac:date|eac:dateRange" mode="eac"/>
@@ -469,13 +519,34 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match="eac:relations" mode="eac">
-    <xsl:if test="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']"><h3>People</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']" mode="eac"/>
-    <xsl:if test="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']"><h3>Corporate Bodies</h3></xsl:if>
-    <xsl:apply-templates select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']" mode="eac"/>
+    <xsl:variable name="people" select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family']"/>
+    <xsl:if test="$people">
+      <h3><span><a href="#">People (<xsl:value-of select="count($people)"/>)</a></span></h3>
+      <div>
+        <xsl:apply-templates select="$people" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </div>
+    </xsl:if>
+    <xsl:variable name="corporateBodies" select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']">
+    </xsl:variable>
+    <xsl:if test="$corporateBodies">
+      <h3><span><a href="#">Corporate Bodies (<xsl:value-of select="count($corporateBodies)"/>)</a></span></h3>
+      <div>
+        <xsl:apply-templates select="$corporateBodies" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </div>
+    </xsl:if>
     <xsl:variable name="resources" select="eac:resourceRelation[not(@xlink:role='archivalRecords')]"/>
-    <xsl:if test="$resources"><h3>Resources</h3></xsl:if>
-    <xsl:apply-templates select="$resources" mode="eac"/>
+    <xsl:if test="$resources">
+      <h3><span><a href="#">Resources (<xsl:value-of select="count($resources)"/>)</a></span></h3>
+      <div>
+        <xsl:apply-templates select="$resources" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+        </xsl:apply-templates>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
@@ -486,17 +557,19 @@ tranformed elements
                  else 'related'}">
       <xsl:choose>
         <xsl:when test="@xlink:href">
-          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
           <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
           <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
           <xsl:if test="$extra-info">
             <div>
-              <xsl:apply-templates select="$extra-info" mode="eac"/>
+              <xsl:apply-templates select="$extra-info" mode="eac">
+                <xsl:sort/>
+              </xsl:apply-templates>
             </div>
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
           <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)};browse=">
           <xsl:value-of select="eac:relationEntry"/>
           </a>

@@ -12,11 +12,11 @@ tranformed elements
 <head>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection, print"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/golden-min.css" type="text/css" media="screen, projection, print"></link>
-<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography-min.css" type="text/css" media="screen, projection, print"></link>
-<link rel="stylesheet" href="/xtf/cpf2html/cpf2html.css" type="text/css" media="screen, projection"></link>
-<link rel="stylesheet" href="/xtf/cpf2html/formalize/formalize.css" type="text/css" media="screen, projection"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography.css" type="text/css" media="screen, projection, print"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/cpf2html.css" type="text/css" media="screen, projection, print"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/formalize/formalize.css" type="text/css" media="screen, projection, print"></link>
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"></link>
-
+<link  href="//fonts.googleapis.com/css?family=Reenie+Beanie:regular&amp;subset=latin" rel="stylesheet" type="text/css" ></link>
 <!-- scripts -->
 <!-- script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"/>
@@ -44,11 +44,18 @@ tranformed elements
 <body>
 <div class="main">
 <div class="g960 page-header">
+   <div class="starburst"><span><span><span>
+<div>&#160;</div>
+<div>PROTOTYPE</div>
+<div>&#160;</div>
+   </span></span></span>
+</div>
+
 <div>
 <div id="logo">
 <a href="http://socialarchive.iath.virginia.edu/" class="noarrow">SNAC</a>
 <span>prototype</span></div>
-<h1>Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
+<h1 class="home">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
 <div class="clear"></div>
 </div>
 <!-- div class="clear">&#160;</div -->
@@ -92,7 +99,7 @@ tranformed elements
 <li>sparse	 (239)</li>
 <li>hasDescription	 (95)</li>
 </ul -->
-<p><i>narrow results by</i></p>
+<p class="label">narrow results by</p>
 <h2 tmpl:condition="occupations">Occupation</h2>
 <ul tmpl:replace-markup="occupations">
 <li>Abolitionists. (5) </li>
@@ -161,6 +168,7 @@ ter
   <div class="g960">
     <div class="return-top"><a title="return to top" href="#top">⇧</a></div>
     <footer/>
+<div class="version" tmpl:replace-markup="version">Code version; data version</div>
   </div>
 
 </div>

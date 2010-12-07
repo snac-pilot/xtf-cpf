@@ -12,17 +12,31 @@ tranformed elements
 <head>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/reset-min.css" type="text/css" media="screen, projection, print"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/golden-min.css" type="text/css" media="screen, projection, print"></link>
-<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography-min.css" type="text/css" media="screen, projection, print"></link>
+<link rel="stylesheet" href="/xtf/cpf2html/golden-grid-css/typography.css" type="text/css" media="screen, projection, print"></link>
+<!-- link  href="//fonts.googleapis.com/css?family=Reenie+Beanie:regular&amp;subset=latin" rel="stylesheet" type="text/css" ></link -->
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"></link>
 <link rel="stylesheet" href="/xtf/cpf2html/cpf2html.css" type="text/css" media="screen, projection, print"></link>
-<title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
+<link  href="//fonts.googleapis.com/css?family=Reenie+Beanie:regular&amp;subset=latin" rel="stylesheet" type="text/css" ></link>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js" type="text/javascript"/>
+<title tmpl:change-value="html-title">Eckart, Carl, 1902- [DLC.ms001014.c]</title>
 <script tmpl:replace-markup="google-tracking-code"/>
 </head>
 
 <body>
 <div class="main">
 <div class="header g960">
-<div class="home"><a title="new search" href="/xtf/search">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</a></div>
+   <div class="starburst"><span><span><span>
+<div>&#160;</div>
+<div>PROTOTYPE</div>
+<div>&#160;</div>
+   </span></span></span>
+</div>
+<div class="home">
+<a title="new search" href="/xtf/search">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</a>
+</div>
+
 <div tmpl:change-value="actions" class="actions">show XML | report issue</div>
 <div class="clear">&#160;</div>
 </div>
@@ -41,7 +55,6 @@ tranformed elements
 <li>Oceanographers.</li>
 <li>Physicists.</li>
 </ul>
-
 <h2 tmpl:condition="localDescriptions">Subjects</h2>
 <ul tmpl:replace-markup="localDescriptions">
 <li>Atomic bomb.</li>
@@ -96,6 +109,7 @@ tranformed elements
 <div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
 <div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
 &#160;
+<div tmpl:replace-markup="sameAs">HEY</div>
 </div>
  </div>
 
@@ -104,6 +118,7 @@ tranformed elements
 <footer>feets</footer>
 </div>
  </div>
-
+<script src="/xtf/cpf2html/html-template.js">
+</script>
 </body>
 </html>

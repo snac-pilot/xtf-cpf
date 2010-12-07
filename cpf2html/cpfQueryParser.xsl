@@ -84,7 +84,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           maxSnippets="0"
           style="{$stylesheet}"
           startDoc="{$startDoc}"
-          returnMetaFields="facet-identityAZ, facet-entityType, entityId"
+          returnMetaFields="facet-identityAZ, facet-recordLevel, facet-entityType, entityId"
           maxDocs="{$maxDocs}">
           <!-- all this does now is trigger the display mode? -->
           <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>
