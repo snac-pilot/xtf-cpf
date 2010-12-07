@@ -220,12 +220,16 @@
       </xsl:choose>
       <!-- xsl:apply-templates select="@*|node()"/ -->
       <!-- //preceding::item/preceding::item[not(.=preceding-sibling::item)]/text() -->
-      <xsl:variable 
+      <!-- xsl:variable 
         name="deDuplicateNameEntry" 
         select="
           if (eac:nameEntry/preceding::eac:nameEntry[not(.=preceding-sibling::eac:nameEntry)])
           then (eac:nameEntry/preceding::eac:nameEntry[not(.=preceding-sibling::eac:nameEntry)])
           else (eac:nameEntry)
+      "/ -->
+      <xsl:variable 
+        name="deDuplicateNameEntry" 
+        select="eac:nameEntry[not(eac:part=following::eac:nameEntry/eac:part)]
       "/>
       <xsl:apply-templates select="@*|eac:descriptiveNote|eac:entityId|eac:entityType|eac:nameEntryParallel|$deDuplicateNameEntry"/>
     </xsl:copy>

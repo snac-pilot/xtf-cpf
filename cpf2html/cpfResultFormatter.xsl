@@ -363,7 +363,7 @@
 
   <xsl:template match="docHit" mode="AZlist">
     <xsl:param name="path" select="@path"/>
-      <div class="{meta/facet-entityType}">
+      <div class="{meta/facet-entityType}{if (meta/facet-recordLevel[text()='hasBiogHist']) then (' hasBiogHist') else ('')}">
       <xsl:variable name="href">
           <xsl:text>/xtf/view?docId=</xsl:text>
           <xsl:value-of select="replace(replace(editURL:protectValue($path),'^default:',''),'\s','+')"/>
@@ -372,7 +372,8 @@
         <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
         <xsl:value-of select="replace(meta/facet-identityAZ,'^.::','')"/>
       </a>
-      </div>
+      </div><xsl:text>
+</xsl:text>
   </xsl:template>
 
   <!-- results page -->
