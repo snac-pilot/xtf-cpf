@@ -72,7 +72,7 @@
    
    <xsl:template match="/">
       
-      <xsl:variable name="stylesheet" select="'style/crossQuery/resultFormatter/default/resultFormatter.xsl'"/>
+      <xsl:variable name="stylesheet" select="'style/crossQuery/resultFormatter.xsl'"/>
       
       <!-- The top-level query element tells what stylesheet will be used to
          format the results, which document to start on, and how many documents
@@ -97,10 +97,7 @@
                   </xsl:when>
                   <xsl:when test="$sort='publisher'">
                      <xsl:value-of select="'sort-publisher,sort-title,sort-year'"/>
-                  </xsl:when>     
-                  <xsl:when test="$sort='rss'">
-                     <xsl:value-of select="'-sort-date,sort-title'"/>
-                  </xsl:when>         
+                  </xsl:when>              
                </xsl:choose>
             </xsl:attribute>
          </xsl:if>
