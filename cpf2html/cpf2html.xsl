@@ -90,6 +90,7 @@ tranformed elements
         <div><a title="form in new window/tab" target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">note data issue</a></div>
       </xsl:if>
       <a title="raw XML" href="/xtf/data/{escape-html-uri($docId)}">view source EAC-CPF</a>
+      <div><a href="/xtf/search?mode=rnd">random record</a></div>
     </xsl:element>
   </xsl:template>
 

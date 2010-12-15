@@ -12,19 +12,13 @@
 
   <xsl:template match="/">
     <xsl:choose>
-      <xsl:when test="$rmode">
-        <xsl:variable name="file" 
-          select="replace(crossQueryResult/docHit/@path,'^default:','')"/>
-          <redirect:send 
-            url="/xtf/view?docId={$file}" 
-            xsl:extension-element-prefixes="redirect" />
+      <xsl:when test="not($rmode)">
+        <xsl:variable name="rnd" select="round(number(/crossQueryResult/@totalDocs) * math:random())"/>
+        <redirect:send url="/xtf/search?mode=rnd&amp;rmode={$rnd}" xsl:extension-element-prefixes="redirect" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable 
-          name="rnd" 
-          select="round(number(/crossQueryResult/@totalDocs) * math:random())" 
-        />
-        <redirect:send url="/xtf/search?mode=rnd&amp;rmode={$rnd}" xsl:extension-element-prefixes="redirect" />
+        <xsl:variable name="docId" select="replace(crossQueryResult/docHit/@path,'^default:','')"/>
+        <redirect:send url="/xtf/view?docId={$docId}" xsl:extension-element-prefixes="redirect" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
