@@ -29,19 +29,4 @@
     </xsl:choose>
   </xsl:template>
 
-
-  <!-- identity transform copies HTML from the layout file -->
-  <xsl:template match="*">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-
-
-
 </xsl:stylesheet>
