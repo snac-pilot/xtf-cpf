@@ -39,7 +39,7 @@ import org.apache.lucene.util.Prime;
  *
  * @author Martin Haye
  */
-public class StringHash<T> 
+public class StringHash<T>
 {
   private final int hashSize;
   private final Ent[] ents;
