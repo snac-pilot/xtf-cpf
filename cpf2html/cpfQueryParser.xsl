@@ -14,12 +14,16 @@
   <xsl:param name="facet-entityType"/>
   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
   <xsl:param name="autocomplete"/>
+  <xsl:param name="mode"/>
    
   <xsl:template match="/">
     <xsl:variable name="browse" 
       select="if ($keyword='' and not(/parameters/param[matches(@name, '^f[0-9]+-')])) then ('yes') else ('no')"/>
       <!-- select="if ($keyword='') then ('yes') else ('no')"/ -->
     <xsl:choose>
+      <xsl:when test="$mode = 'rnd'">
+        <xsl:apply-templates select="." mode="rnd"/>
+      </xsl:when>
       <xsl:when test="$autocomplete">
         <xsl:apply-templates select="." mode="autocomplete"/>
       </xsl:when>
@@ -153,6 +157,19 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
       <term><xsl:value-of select="@value"/></term>
   </xsl:template>
 
+  <!-- random record, based on discussion on xtf-user 
+    https://groups.google.com/d/msg/xtf-user/sGbbleerHeM/VD9YbWIC8NwJ -->
+
+  <xsl:template match="/" mode="rnd">
+    <xsl:variable 
+      name="startDoc"
+      select="if ($rmode) then ($rmode) else 1"
+    /> 
+    <query indexPath="index" termLimit="1000" workLimit="20000000" 
+      style="cpf2html/rnd.xsl" maxDocs="1" startDoc="{$startDoc}" >
+      <allDocs/>
+    </query>
+  </xsl:template>
    
    <!-- ====================================================================== -->
    <!-- Parameters Template                                                    -->
