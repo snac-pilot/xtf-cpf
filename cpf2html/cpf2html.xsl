@@ -322,7 +322,7 @@ tranformed elements
 
   <xsl:template match="*[@tmpl:replace-markup='sameAs']" name="sameAs">
     <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
-    <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1/')"/>
+    <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1')"/>
     <xsl:variable name="dbpedia" select="($page)/eac:eac-cpf/*:meta/*:dbpedia[text()]"/>
     <xsl:variable name="wikipedia" select="replace($dbpedia, '^http://dbpedia.org/resource/', 'http://en.wikipedia.org/wiki/')"/>
     <xsl:if test="$VIAF">
@@ -330,7 +330,7 @@ tranformed elements
       <div>
         <div class="related">
           <div class="arcrole">sameAs</div>
-          <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="$viafUrl"/></a>
+          <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="http://$viafUrl"/></a>
         </div>
         <div class="related">
           <div><a href="{$dbpedia}"><xsl:value-of select="replace($dbpedia,'^http://','')"/></a></div>
