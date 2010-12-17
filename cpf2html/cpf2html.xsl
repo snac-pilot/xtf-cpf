@@ -330,11 +330,11 @@ tranformed elements
       <div>
         <div class="related">
           <div class="arcrole">sameAs</div>
-          <a title="Virtual International Authority File" href="http://{$viafUrl}"><xsl:value-of select="http://$viafUrl"/></a>
+          <a title="Virtual International Authority File" href="http://{$viafUrl}">http://<xsl:value-of select="$viafUrl"/></a>
         </div>
         <div class="related">
-          <div><a href="{$dbpedia}"><xsl:value-of select="replace($dbpedia,'^http://','')"/></a></div>
-          <div><a href="{$wikipedia}"><xsl:value-of select="replace($wikipedia,'^http://','')"/></a></div>
+          <div><a href="{$dbpedia}"><xsl:value-of select="$dbpedia"/></a></div>
+          <div><a href="{$wikipedia}"><xsl:value-of select="$wikipedia"/></a></div>
         </div>
       </div>
     </xsl:if>
