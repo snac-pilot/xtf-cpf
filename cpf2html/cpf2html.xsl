@@ -106,7 +106,10 @@ tranformed elements
   </xsl:template>
 
   <xsl:template match='*[@tmpl:change-value="extra-names"]'>
-    <xsl:variable name="extra-names" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[position()&gt;1]"/>
+    <xsl:variable 
+      name="extra-names" 
+      select="($page)/eac:eac-cpf/meta/identity[position()>1][not(.=preceding::identity)]"
+      xmlns=""/>
     <xsl:if test="$extra-names">
       <xsl:element name="{name()}">
         <xsl:attribute name="title" select="'alternative forms of name'"/>
@@ -114,6 +117,14 @@ tranformed elements
         <xsl:apply-templates select="$extra-names" mode="extra-names"/>
       </xsl:element>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="identity" mode="extra-names">
+    <xsl:text>
+</xsl:text>
+    <div>
+      <xsl:value-of select="."/>
+    </div>
   </xsl:template>
 
   <xsl:template match="eac:authorizedForm" mode="extra-names">
