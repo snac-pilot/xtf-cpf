@@ -230,6 +230,12 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
          </and>
          <and field="text" maxSnippets="3" maxContext="60">
             <xsl:apply-templates/>
+            <!-- If there is a sectionType parameter, process it -->
+            <xsl:if test="(//param[@name='sectionType']/@value != '')">
+               <sectionType>
+                  <xsl:apply-templates select="//param[@name='sectionType']/*"/>
+               </sectionType>
+            </xsl:if>
          </and>
       </or>
    </xsl:template>
