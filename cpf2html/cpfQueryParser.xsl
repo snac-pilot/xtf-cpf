@@ -218,6 +218,22 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
       
    </xsl:template>
 
+   <!-- make text= act like keywords -->
+
+   <xsl:template match="param[@name = 'text']">
+      <or>
+         <and fields="{replace($fieldList, 'text ?', '')}"
+              slop="10"
+              maxMetaSnippets="0"
+              maxContext="60">
+            <xsl:apply-templates/>
+         </and>
+         <and field="text" maxSnippets="3" maxContext="60">
+            <xsl:apply-templates/>
+         </and>
+      </or>
+   </xsl:template>
+
    <!-- ====================================================================== -->
    <!-- Facet Query Template                                                   -->
    <!-- ====================================================================== -->
