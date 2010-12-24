@@ -40,7 +40,7 @@
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
    <xsl:param name="facet-entityType"/>
-   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
+   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else ''"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -65,7 +65,7 @@
 
   <xsl:template match="*:h1" mode="html-template">
     <xsl:choose>
-      <xsl:when test="$text='' and ($sectionType='cpfdescription' or $sectionType='' ) and not($page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]) and not($facet-entityType) ">
+      <xsl:when test="$text='' and ($sectionType='cpfdescription' or $sectionType='' ) and not($page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]) and not($facet-entityType) and not($facet-identityAZ)">
         <h1 title="prototype historical resource">
           <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
           <xsl:apply-templates mode="html-template"/>
@@ -303,6 +303,7 @@
           <xsl:text>Names</xsl:text>
         </h2>
 
+
   <h3><xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('0-9') else $facet-identityAZ"/></h3>
 
 
@@ -312,7 +313,38 @@
 
           <div class="AZlist">
           <!-- process the results -->
+          <xsl:choose>
+            <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit" mode="AZlist"/>
+            </xsl:when>
+            <xsl:otherwise>
+
+              <h3>Featured Records</h3>
+
+ 
+
+<div class="person"><a href="/xtf/view?docId=Bernstein+Leonard-cr.xml">Bernstein, Leonard, 1918-</a></div>
+<div class="person"><a href="/xtf/view?docId=Buffalo+Bill+1846-1917-cr.xml">Buffalo Bill, 1846-1917.</a></div> 
+<div class="person"><a href="/xtf/view?docId=Bush+Vannevar+1890-1974-cr.xml">Bush, Vannevar, 1890-1974.</a></div>
+<div class="person"><a href="/xtf/view?docId=Eames+Ray-cr.xml">Eames, Ray, 1912-1988.</a></div>
+<div class="person"><a href="/xtf/view?docId=Eisenhower+Dwight+D+Dwight+David+1890-1969-cr.xml">Eisenhower, Dwight D. (Dwight David), 1890-1969.</a></div>
+<div class="person"><a href="/xtf/view?docId=Feynman+Richard+P-cr.xml">Feynman, Richard Phillips, 1918-1988.</a></div>
+<div class="person"><a href="/xtf/view?docId=Fitzgerald+Ella-cr.xml">Fitzgerald, Ella, 1918-1996</a></div>
+<div class="person"><a href="/xtf/view?docId=Franklin+Benjamin+1706-1790-cr.xml">Franklin, Benjamin, 1706-1790.</a></div>
+<div class="person"><a href="/xtf/view?docId=Ishigo+Estelle-cr.xml">Ishigo, Estelle.</a></div>
+<div class="person"><a href="/xtf/view?docId=Luce+Clare+Boothe+1903-1987-cr.xml">Luce, Clare Boothe, 1903-1987.</a></div>
+<div class="person"><a href="/xtf/view?docId=Oppenheimer+J+Robert+1904-1967-cr.xml">Oppenheimer, J. Robert, 1904-1967.</a></div>
+<div class="family"><a href="/xtf/view?docId=Robbins+family-cr.xml">Robbins family</a></div>
+<div class="corporateBody"><a href="/xtf/view?docId=Royal+Chicano+Air+Force-cr.xml">Royal Chicano Air Force.</a></div>
+<div class="corporateBody"><a href="/xtf/view?docId=San+Francisco+AIDS+Foundation-cr.xml">San Francisco AIDS Foundation.</a></div>
+<div class="corporateBody"><a href="/xtf/view?docId=Sierra+Club-cr.xml">Sierra Club.</a></div>
+<div class="person"><a href="/xtf/view?docId=Viramontes+Helena+Maria+1954--cr.xml">Viramontes, Helena Maria, 1954-</a></div>
+<div class="person"><a href="/xtf/view?docId=Washington+George+1732-1799-cr.xml">Washington, George, 1732-1799.</a></div>
+<div class="person"><a href="/xtf/view?docId=Whitman+Walt+1819-1892-cr.xml">Whitman, Walt, 1819-1892.</a></div>
+<div class="person"><a href="/xtf/view?docId=Wright+Lloyd+1890-1978-cr.xml">Wright, Lloyd, 1890-1978.</a></div>
+
+            </xsl:otherwise>
+           </xsl:choose>
           </div>
 
 
