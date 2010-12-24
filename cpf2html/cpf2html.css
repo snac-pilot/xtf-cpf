@@ -212,10 +212,10 @@ form.cpfSearch div.top-facets { clear: both; }
 .AZlist div { text-indent: -1.5em;
 padding-left: 1.5em; }
 .AZlist .hasBiogHist { font-weight: bold; font-size: 111%; }
-
-.results .person .hit, h1 .person, div.home .person { background-color: #FFDEAD; }
-.results .corporateBody .hit, h1 .corporateBody, div.home .corporateBody { background-color: #E0FFFF; }
-.results .family .hit, h1 .family, div.home .family { background-color: #DEB887; }
+.AZlist h1 { border-bottom: 2px solid black; padding-bottom:2px; } 
+.results .person .hit, h1 .person, .home .person { background-color: #FFDEAD; }
+.results .corporateBody .hit, h1 .corporateBody, .home .corporateBody { background-color: #E0FFFF; }
+.results .family .hit, h1 .family, .home .family { background-color: #DEB887; }
 
 
 div.result { margin-bottom: 0.4em; padding-top: 0.3em; padding-bottom: 0.3em; }
