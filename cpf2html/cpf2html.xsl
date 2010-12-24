@@ -578,7 +578,6 @@ tranformed elements
                  else 'related'}">
       <xsl:choose>
         <xsl:when test="@xlink:href">
-          <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
           <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
           <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
           <xsl:if test="$extra-info">
@@ -593,6 +592,7 @@ tranformed elements
           <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
           <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)};browse=">
           <xsl:value-of select="eac:relationEntry"/>
+          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
@@ -600,7 +600,7 @@ tranformed elements
   </xsl:template>
  
   <xsl:template match="@xlink:arcrole" mode="arcrole">
-            <div class="arcrole"><xsl:value-of select="."/></div>
+            <span class="arcrole"><xsl:value-of select="."/></span>
   </xsl:template>
 
   <xsl:template match="ead:repository" mode="eac">
