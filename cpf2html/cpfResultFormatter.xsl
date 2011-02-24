@@ -41,6 +41,8 @@
    <!-- xsl:param name="keyword" select="$text"/ -->
    <xsl:param name="facet-entityType"/>
    <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else ''"/>
+   <xsl:param name="recordId-merge"/>
+   <xsl:param name="recordId-eac-merge"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -333,6 +335,7 @@
 <div class="person"><a href="/xtf/view?docId=Franklin+Benjamin+1706-1790-cr.xml">Franklin, Benjamin, 1706-1790.</a></div>
 <div class="person"><a href="/xtf/view?docId=Ishigo+Estelle-cr.xml">Ishigo, Estelle.</a></div>
 <div class="person"><a href="/xtf/view?docId=Luce+Clare+Boothe+1903-1987-cr.xml">Luce, Clare Boothe, 1903-1987.</a></div>
+<div class="person"><a href="/xtf/view?docId=Millikan+Robert+Andrews+1868-1953-cr.xml">Millikan, Robert Andrews, 1868-1953.</a></div>
 <div class="person"><a href="/xtf/view?docId=Oppenheimer+J+Robert+1904-1967-cr.xml">Oppenheimer, J. Robert, 1904-1967.</a></div>
 <div class="family"><a href="/xtf/view?docId=Robbins+family-cr.xml">Robbins family</a></div>
 <div class="corporateBody"><a href="/xtf/view?docId=Royal+Chicano+Air+Force-cr.xml">Royal Chicano Air Force.</a></div>
@@ -382,7 +385,11 @@
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
      <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
-      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{editURL:set(editURL:set('','facet-identityAZ', @value),'facet-entityType',$facet-entityType)}">
+      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{
+           editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
+                                                    'facet-entityType',$facet-entityType),
+                                                      'recordId-merge',$recordId-merge),
+                                              'recordId-eac-merge',$recordId-eac-merge) }">
         <xsl:value-of select="@value"/>
       </a>
      </xsl:when> 

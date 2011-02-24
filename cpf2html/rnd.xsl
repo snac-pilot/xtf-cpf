@@ -9,12 +9,22 @@
   xmlns:math="java:java.lang.Math">
 
   <xsl:param name="rmode"/>
+  <xsl:param name="facet-entityType"/>
+  <xsl:param name="recordId-merge"/>
+  <xsl:param name="recordId-eac-merge"/>
 
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="not($rmode)">
         <xsl:variable name="rnd" select="round(number(/crossQueryResult/@totalDocs) * math:random())"/>
-        <redirect:send url="/xtf/search?mode=rnd&amp;rmode={$rnd}" xsl:extension-element-prefixes="redirect" />
+        <xsl:variable name="limit"><xsl:value-of 
+                                         select="if ($facet-entityType) then concat('&amp;facet-entityType=',$facet-entityType)
+                                         else if ($recordId-merge eq 'true') then '&amp;recordId-merge=true'
+                                         else if ($recordId-eac-merge eq 'true') then '&amp;recordId-eac-merge=true'
+                                         else ''" />
+        </xsl:variable>
+        <redirect:send url="/xtf/search?mode=rnd&amp;rmode={$rnd}{$limit}"
+                xsl:extension-element-prefixes="redirect" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="docId" select="replace(crossQueryResult/docHit/@path,'^default:','')"/>
