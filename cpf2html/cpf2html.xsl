@@ -40,6 +40,7 @@ tranformed elements
   <!-- options -->
   <xsl:param name="showXML"/>
   <xsl:param name="docId"/>
+  <xsl:param name="mode"/>
 
   <!-- in dynaXML-config put
 	<spreadsheets formkey="XXXX"/>
@@ -53,7 +54,7 @@ tranformed elements
 
 
   <!-- keep gross layout in an external file -->
-  <xsl:variable name="layout" select="document('html-template.html')"/>
+  <xsl:variable name="layout" select="document(if ($mode='dracula') then 'dracula-rexster.html' else 'html-template.html')"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
@@ -62,6 +63,14 @@ tranformed elements
   <!-- apply templates on the layout file; rather than walking the input XML -->
   <xsl:template match="/">
     <xsl:apply-templates select="($layout)//*[local-name()='html']"/>
+  </xsl:template>
+
+  <xsl:template match='script[@tmpl:replace="identity-script"]'>
+<script>
+<xsl:text>var identity = "</xsl:text>
+<xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
+<xsl:text>";</xsl:text>
+</script>
   </xsl:template>
 
   <xsl:template match="*:footer">
@@ -91,6 +100,7 @@ tranformed elements
       </xsl:if>
       <a title="raw XML" href="/xtf/data/{escape-html-uri($docId)}">view source EAC-CPF</a>
       <div><a href="/xtf/search?mode=rnd">random record</a></div>
+      <div><a href="/xtf/view?mode=dracula&amp;docId={escape-html-uri($docId)}">graph demo</a></div>
     </xsl:element>
   </xsl:template>
 
