@@ -13,6 +13,9 @@
   <xsl:param name="keyword" select="$text"/>
   <xsl:param name="facet-entityType"/>
   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
+  <xsl:param name="recordIds"/>
+  <xsl:param name="recordId-merge"/>
+  <xsl:param name="recordId-eac-merge"/>
   <xsl:param name="autocomplete"/>
   <xsl:param name="mode"/>
    
@@ -23,6 +26,9 @@
     <xsl:choose>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
+      </xsl:when>
+      <xsl:when test="$recordIds">
+        <xsl:apply-templates select="." mode="recordsIds"/>
       </xsl:when>
       <xsl:when test="$autocomplete">
         <xsl:apply-templates select="." mode="autocomplete"/>
@@ -103,6 +109,16 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
                 <term><xsl:value-of select="$facet-entityType"/></term>
               </and>
             </xsl:when>
+            <xsl:when test="$recordId-merge='true'">
+              <and field="recordId-merge">
+                <term>true</term>
+              </and>
+            </xsl:when>
+            <xsl:when test="$recordId-eac-merge='true'">
+              <and field="recordId-eac-merge">
+                <term>true</term>
+              </and>
+            </xsl:when>
             <xsl:otherwise>
               <and><allDocs/></and>
             </xsl:otherwise>
@@ -167,7 +183,36 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
     /> 
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       style="cpf2html/rnd.xsl" maxDocs="1" startDoc="{$startDoc}" >
-      <allDocs/>
+          <xsl:choose>
+            <xsl:when test="$facet-entityType">
+              <and field="facet-entityType">
+                <term><xsl:value-of select="$facet-entityType"/></term>
+              </and>
+            </xsl:when>
+            <xsl:when test="$recordId-merge='true'">
+              <and field="recordId-merge">
+                <term>true</term>
+              </and>
+            </xsl:when>
+            <xsl:when test="$recordId-eac-merge='true'">
+              <and field="recordId-eac-merge">
+                <term>true</term>
+              </and>
+            </xsl:when>
+            <xsl:otherwise>
+              <and><allDocs/></and>
+            </xsl:otherwise>
+          </xsl:choose>
+    </query>
+  </xsl:template>
+  
+  <xsl:template match="/" mode="recordsIds">
+    <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
+    <query indexPath="index" termLimit="1000" workLimit="20000000" 
+      style="{$stylesheet}" maxDocs="1" startDoc="{$startDoc}" >
+      <and field="recordIds">
+        <term><xsl:value-of select="$recordIds"/></term>
+      </and>
     </query>
   </xsl:template>
    

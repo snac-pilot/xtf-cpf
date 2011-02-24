@@ -42,6 +42,7 @@
   <xsl:template name="get-meta">
     <meta xmlns="">
       <xsl:apply-templates select="/eac:eac-cpf" mode="main-facet"/>
+      <xsl:apply-templates select="/eac:eac-cpf/eac:control" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:existDates/eac:dateRange/eac:fromDate" mode="meta"/>
@@ -71,6 +72,22 @@
     <facet-entityType xtf:facet="yes" xtf:meta="yes">
       <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
     </facet-entityType>
+  </xsl:template>
+
+  <xsl:template match="eac:control" mode="meta">
+    <xsl:if test="count(eac:otherRecordId) &gt; 0">
+      <recordId-merge xtf:meta="true">true</recordId-merge>
+    </xsl:if>
+    <xsl:if test="count(eac:otherRecordId[not(@localType='VIAFId')][not(@localType='dbpedia')]) &gt; 0">
+      <recordId-eac-merge xtf:meta="true">true</recordId-eac-merge>
+    </xsl:if>
+    <xsl:apply-templates select="eac:recordId|eac:otherRecordId" mode="meta"/>
+  </xsl:template>
+
+  <xsl:template match="eac:recordId|eac:otherRecordId" mode="meta">
+    <recordIds xtf:meta="true" xtf:tokenize="no">
+      <xsl:value-of select="."/>
+    </recordIds>
   </xsl:template>
 
   <xsl:template match="eac:identity" mode="meta">
@@ -108,14 +125,20 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="eac:nameEntry" mode="meta">
-    <identity xtf:meta="yes">
+  <xsl:template match="eac:nameEntry[position()>1]" mode="meta">
+    <identity xtf:meta="yes"><!-- temp fix for no spaces between subfiled issues -->
       <xsl:value-of select="normalize-space(replace(replace(eac:part,
                             '([^0-9]|,*)([0-9].*)','$1 $2'),
                             '(,|\.)([^ ])','$1 $2'))"/>
     </identity>
                             <!-- http://gskinner.com/RegExr/?2sgb9 -->
                             <!-- http://gskinner.com/RegExr/?2sgbc -->
+  </xsl:template>
+
+  <xsl:template match="eac:nameEntry[1]" mode="meta">
+    <identity xtf:meta="yes">
+      <xsl:value-of select="eac:part"/>
+    </identity>
   </xsl:template>
 
   <xsl:template match="eac:occupation" mode="meta">
