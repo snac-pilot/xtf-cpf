@@ -30,13 +30,11 @@ package org.cdlib.xtf.test;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 import java.io.BufferedReader;
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,8 +104,8 @@ public class RegressTest
   int nRun = 0;
   int nSucceeded = 0;
   String baseDir;
-  File filterDir;
-  File filterFile;
+  VFile filterDir;
+  VFile filterFile;
   LinkedList failedTests = new LinkedList();
   static Configuration config = new Configuration();
   static { config.setNamePool(NamePool.getDefaultNamePool()); }
@@ -153,9 +151,9 @@ public class RegressTest
       // If a specific test was specified, set that as a filter.
       if (args.length > 0) 
       {
-        filterFile = new File(args[0]).getAbsoluteFile();
+        filterFile = VFile.create(args[0]).getAbsoluteFile();
         if (!filterFile.exists())
-          filterFile = new File(args[0] + "-in.xml").getAbsoluteFile();
+          filterFile = VFile.create(args[0] + "-in.xml").getAbsoluteFile();
         if (!filterFile.exists()) {
           Trace.error("Unable to locate " + args[0]);
           System.exit(1);
@@ -172,7 +170,7 @@ public class RegressTest
       // Start from the working directory, and scan for regress 
       // sub-directories.
       //
-      processDir(new File(System.getProperty("user.dir")), new LinkedList());
+      processDir(VFile.create(System.getProperty("user.dir")), new LinkedList());
     }
     catch (Exception e) {
       Trace.error("Unexpected regress error: " + e);
@@ -193,7 +191,7 @@ public class RegressTest
     }
   } // run()
 
-  private void processDir(File curFile, LinkedList inFiles)
+  private void processDir(VFile curFile, LinkedList inFiles)
     throws IOException 
   {
     if (baseDir == null)
@@ -214,7 +212,7 @@ public class RegressTest
       // And process each of them.
       LinkedList newInFiles = new LinkedList();
       for (int i = 0; i < list.size(); i++)
-        processDir(new File(curFile, (String)list.get(i)), newInFiles);
+        processDir(VFile.create(curFile, (String)list.get(i)), newInFiles);
 
       // If we have some input files for tests to run, run them now.
       if (newInFiles.isEmpty())
@@ -248,14 +246,14 @@ public class RegressTest
    *
    * @param configFile    Path to the config file.
    */
-  private void index(File configFile)
+  private void index(VFile configFile)
     throws IOException 
   {
     String dir = configFile.getParentFile().toString();
-    System.setProperty("user.dir", new File(dir).getAbsolutePath());
+    System.setProperty("user.dir", VFile.create(dir).getAbsolutePath());
 
     // Blow away the old index directory.
-    File indexDir = new File(dir, "IndexDB");
+    VFile indexDir = VFile.create(dir, "IndexDB");
     Path.deleteDir(indexDir);
 
     // Set the xtf.home property to the regression directory.
@@ -276,7 +274,7 @@ public class RegressTest
   {
     // Process each test in turn.
     while (!inFiles.isEmpty()) {
-      File inFile = (File)inFiles.removeFirst();
+      VFile inFile = (VFile)inFiles.removeFirst();
       runTest(inFile);
     }
   }
@@ -291,7 +289,7 @@ public class RegressTest
     return "\"" + in + "\"";
   }
 
-  private void runTest(File inFile)
+  private void runTest(VFile inFile)
     throws IOException 
   {
     ++nRun;
@@ -303,7 +301,7 @@ public class RegressTest
     Trace.info("Running test " + chopPath(inFilePath) + "...");
 
     String testFilePath = formPath(inFilePath, "actual");
-    File testFile = new File(testFilePath);
+    VFile testFile = VFile.create(testFilePath);
 
     // Make sure the test directory exists. If not, create it.
     Path.createPath(testFile.getParent());
@@ -333,7 +331,7 @@ public class RegressTest
       indexWarmer = new IndexWarmer(Path.normalizePath(dir), 5);
       processor.setIndexWarmer(indexWarmer);
       QueryRequest request = new QueryRequestParser().parseRequest(queryDoc,
-                                                                   new File(dir));
+          VFile.create(dir));
 
       if (inSpec.indexOf("regress-search-tree") >= 0) 
       {
@@ -351,10 +349,10 @@ public class RegressTest
         // Calculate the persistent path.
         String configPath = Path.normalizeFileName(dir + "/" +
                                                    "IndexConfig.xml");
-        File lazyFile = IndexUtil.calcLazyPath(inFile.getParentFile(),
-                                               new File(configPath),
+        VFile lazyFile = IndexUtil.calcLazyPath(inFile.getParentFile(),
+                                               VFile.create(configPath),
                                                "all",
-                                               new File(docPath),
+                                               VFile.create(docPath),
                                                false);
 
         // Locate the display stylesheet, and get its configuration
@@ -376,9 +374,9 @@ public class RegressTest
         // we don't really care exactly what the scores are.
         //
         String docKey = IndexUtil.calcDocKey(inFile.getParentFile(),
-                                             new File(configPath),
+                                             VFile.create(configPath),
                                              "all",
-                                             new File(docPath));
+                                             VFile.create(docPath));
         StructuredStore treeStore = StructuredFile.open(lazyFile);
         SearchTree tree = new SearchTree(config, docKey, treeStore);
         tree.suppressScores(true);
@@ -405,8 +403,7 @@ public class RegressTest
       }
     }
     catch (Exception e) {
-      PrintWriter out = new PrintWriter(
-        new OutputStreamWriter(new FileOutputStream(testFile), "UTF-8"));
+      PrintWriter out = new PrintWriter(testFile.openWriter());
       out.println("Exception encountered:\n" + e);
       out.close();
     }
@@ -419,7 +416,7 @@ public class RegressTest
 
     // See if there's a gold file, and if so, compare it.
     String goldFilePath = formPath(inFilePath, "gold");
-    File goldFile = new File(goldFilePath);
+    VFile goldFile = VFile.create(goldFilePath);
     if (!goldFile.exists()) {
       Trace.info("Missing gold file. Test result was:\n" + readFile(testFile));
       Trace.error(
@@ -449,7 +446,7 @@ public class RegressTest
   }
 
   /** Writes the hits in a very simple format to the output file */
-  private void writeHits(File outFile, QueryResult result)
+  private void writeHits(VFile outFile, QueryResult result)
     throws IOException 
   {
     // Use the normal CrossQuery method to structure the hits
@@ -466,8 +463,7 @@ public class RegressTest
     str = str.replaceAll("(<suggestion.*) score=\"[0-9.]+\"", "$1");
 
     // Now we're ready to write the file.
-    PrintWriter out = new PrintWriter(
-      new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+    PrintWriter out = new PrintWriter(outFile.openWriter());
     out.println(str);
     out.close();
   } // writeHits()
@@ -479,7 +475,7 @@ public class RegressTest
    * @param result        Hits resulting from the query request
    * @param displayStyle  Path of the resultFormatter stylesheet
    */
-  protected void formatHits(File outFile, QueryResult result,
+  protected void formatHits(VFile outFile, QueryResult result,
                             String displayStyle)
     throws Exception 
   {
@@ -501,18 +497,16 @@ public class RegressTest
       trans.setErrorListener(new XTFSaxonErrorListener());
 
     // Do it!
-    FileOutputStream out = new FileOutputStream(outFile);
+    OutputStream out = outFile.openOutputStream();
     trans.transform(sourceDoc, new StreamResult(out));
     out.close();
   } // formatHits()
 
   /** Writes the search tree to a file */
-  private void writeTree(File outFile, SearchTree tree)
+  private void writeTree(VFile outFile, SearchTree tree)
     throws IOException 
   {
-    OutputStreamWriter ow = new OutputStreamWriter(new FileOutputStream(outFile),
-                                                   "UTF-8");
-    PrintWriter out = new PrintWriter(ow);
+    PrintWriter out = new PrintWriter(outFile.openWriter());
     String strVersion = XMLWriter.toString(tree);
     out.println(strVersion);
     out.close();
@@ -526,7 +520,7 @@ public class RegressTest
    * @param tree          Tree to output from
    * @param displaySheet  The resultFormatter stylesheet
    */
-  protected void formatTree(File outFile, SearchTree tree, PreparedStylesheet displaySheet)
+  protected void formatTree(VFile outFile, SearchTree tree, PreparedStylesheet displaySheet)
     throws Exception 
   {
     // Make a transformer for this specific query.
@@ -546,7 +540,7 @@ public class RegressTest
       trans.setErrorListener(new XTFSaxonErrorListener());
 
     // Do it!
-    FileOutputStream out = new FileOutputStream(outFile);
+    OutputStream out = outFile.openOutputStream();
     trans.transform(tree, new StreamResult(out));
     out.close();
   } // formatHits()
@@ -602,7 +596,7 @@ public class RegressTest
     return false;
   } // sameResults()
 
-  private boolean filesEqual(File file1, File file2)
+  private boolean filesEqual(VFile file1, VFile file2)
     throws IOException 
   {
     String s1 = readFile(file1);
@@ -610,11 +604,10 @@ public class RegressTest
     return sameResults(s1, s2);
   } // filesEqual()
 
-  private String readFile(File file)
+  private String readFile(VFile file)
     throws IOException 
   {
-    InputStreamReader reader = new InputStreamReader(new FileInputStream(file),
-                                                     "UTF-8");
+    Reader reader = file.openReader();
     int size = (int)file.length();
     char[] buf = new char[size + 1];
     int got = reader.read(buf);

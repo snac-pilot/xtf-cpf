@@ -58,6 +58,7 @@ class IpList
     }
 
     /** Constructs an IP address from the four numeric components */
+    @SuppressWarnings("unused")
     IpAddr(int c0, int c1, int c2, int c3) {
       components[0] = c0;
       components[1] = c1;
@@ -72,6 +73,7 @@ class IpList
      * @param other     The IP address to compare to
      * @param nComps    How many components to compare (1-4)
      */
+    @SuppressWarnings("unused")
     boolean componentsEqual(IpAddr other, int nComps) 
     {
       for (int i = 0; i < nComps; i++) {

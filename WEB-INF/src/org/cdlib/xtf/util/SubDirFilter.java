@@ -30,7 +30,7 @@ package org.cdlib.xtf.util;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -59,7 +59,7 @@ public class SubDirFilter
   /**
    * Adds a directory to the set.
    */
-  public void add(File dirFile) {
+  public void add(VFile dirFile) {
     targets.add(dirFile.toString());
     for (String a : ancestorOrSelf(dirFile)) {
       if (!ancestors.add(a))
@@ -90,14 +90,14 @@ public class SubDirFilter
    * having an ancestor or descendant within the set.
    */
   public boolean approve(String dir) {
-    return approve(new File(Path.normalizePath(dir)));
+    return approve(VFile.create(Path.normalizePath(dir)));
   }
   
   /**
    * Checks if the given directory is in the set, where "in" is defined as
    * having an ancestor or descendant within the set.
    */
-  public boolean approve(File dirFile)
+  public boolean approve(VFile dirFile)
   {
     // If this dir has descendants in the set, yes.
     if (ancestors.contains(dirFile.toString()))
@@ -116,7 +116,7 @@ public class SubDirFilter
   /**
    * Make a list of the directory and all its ancestors.
    */
-  private ArrayList<String> ancestorOrSelf(File dir)
+  private ArrayList<String> ancestorOrSelf(VFile dir)
   {
     ArrayList<String> list = new ArrayList();
     boolean found = false;

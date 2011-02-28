@@ -35,11 +35,10 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -597,9 +596,9 @@ public class XMLTextProcessor extends DefaultHandler
       String accentMapName = doc.get("accentMap");
       if (accentMapName != null && accentMapName.length() > 0) 
       {
-        File accentMapFile = new File(
+        VFile accentMapFile = VFile.create(
           Path.normalizePath(indexPath + accentMapName));
-        InputStream stream = new FileInputStream(accentMapFile);
+        InputStream stream = accentMapFile.openInputStream();
 
         if (accentMapName.endsWith(".gz"))
           stream = new GZIPInputStream(stream);
@@ -614,9 +613,9 @@ public class XMLTextProcessor extends DefaultHandler
       String pluralMapName = doc.get("pluralMap");
       if (pluralMapName != null && pluralMapName.length() > 0) 
       {
-        File pluralMapFile = new File(
+        VFile pluralMapFile = VFile.create(
           Path.normalizePath(indexPath + pluralMapName));
-        InputStream stream = new FileInputStream(pluralMapFile);
+        InputStream stream = pluralMapFile.openInputStream();
 
         if (pluralMapName.endsWith(".gz"))
           stream = new GZIPInputStream(stream);
@@ -707,7 +706,7 @@ public class XMLTextProcessor extends DefaultHandler
     try 
     {
       // Delete the old directory.
-      Path.deleteDir(new File(indexPath));
+      Path.deleteDir(VFile.create(indexPath));
 
       // First, make the index.
       Directory indexDir = NativeFSDirectory.getDirectory(indexPath);
@@ -753,8 +752,8 @@ public class XMLTextProcessor extends DefaultHandler
       throws IOException 
   {
     if (filePath != null && filePath.length() > 0) { 
-      File sourceFile = new File(Path.resolveRelOrAbs(xtfHomePath, filePath));
-      File targetFile = new File(new File(indexPath), sourceFile.getName());
+      VFile sourceFile = VFile.create(Path.resolveRelOrAbs(xtfHomePath, filePath));
+      VFile targetFile = VFile.create(VFile.create(indexPath), sourceFile.getName());
       Path.copyFile(sourceFile, targetFile);
       doc.add(new Field(fieldName, sourceFile.getName(), Field.Store.YES, Field.Index.NO));
     }
@@ -854,7 +853,7 @@ public class XMLTextProcessor extends DefaultHandler
    *                    no match was found.
    *
    */
-  public boolean removeSingleDoc(File srcFile, String key)
+  public boolean removeSingleDoc(VFile srcFile, String key)
     throws ParserConfigurationException, SAXException, IOException 
   {
     // Oddly, we need an IndexReader to delete things from a Lucene index.
@@ -871,7 +870,7 @@ public class XMLTextProcessor extends DefaultHandler
       // Delete the old lazy file, if any. Might as well delete any
       // empty parent directories as well.
       //
-      File lazyFile = IndexUtil.calcLazyPath(new File(xtfHomePath),
+      VFile lazyFile = IndexUtil.calcLazyPath(VFile.create(xtfHomePath),
                                              indexInfo,
                                              srcFile,
                                              false);
@@ -1008,15 +1007,12 @@ public class XMLTextProcessor extends DefaultHandler
     accumText = new StringBuffer(bufStartSize);
     compactedAccumText = new StringBuffer(bufStartSize);
 
-    // Calculate the total size of files in the queue
-    long totalSize = 0;
-    for (Iterator iter = fileQueue.iterator(); iter.hasNext();) {
-      FileQueueEntry ent = (FileQueueEntry)iter.next();
-      totalSize += ent.idxSrc.totalSize();
-    }
-    if (totalSize < 1)
-      totalSize = 1; // avoid divide-by-zero problems
-    long processedSize = 0;
+    // Calculate the total number of files in the queue.
+    // Note that we used to do the percent done based on file sizes, but this was
+    // very inefficient for network resources, and front-loaded all the fetches.
+    //
+    long totalFiles = fileQueue.size();
+    long processedFiles = 0;
 
     final int recordBatchSize = 100;
 
@@ -1046,8 +1042,10 @@ public class XMLTextProcessor extends DefaultHandler
       {
         while ((idxRec = idxFile.nextRecord()) != null) 
         {
-          long fileBytesDone = idxRec.percentDone() * idxFile.totalSize() / 100;
-          int percentDone = (int)((processedSize + fileBytesDone) * 100 / totalSize);
+          float basePercentDone = processedFiles * 100 / Math.max(1, totalFiles);
+          float recordRange = 100 / Math.max(1, totalFiles);
+          float recordAdd = idxRec.percentDone() * recordRange / 100;
+          int percentDone = (int) (basePercentDone + recordAdd);
           int recordNum = idxRec.recordNum();
 
           // Print out a nice message to keep the user informed of
@@ -1085,7 +1083,7 @@ public class XMLTextProcessor extends DefaultHandler
       if (printDone)
         Trace.more(Trace.info, "Done.");
 
-      processedSize += idxFile.totalSize();
+      processedFiles++;
     }
   } // processQueuedTexts()
 
@@ -3539,7 +3537,7 @@ public class XMLTextProcessor extends DefaultHandler
     }
 
     // Determine when the file was last modified.
-    File srcPath = curIdxSrc.path();
+    VFile srcPath = curIdxSrc.path();
     if (srcPath != null) 
     {
       String fileDateStr = DateTools.timeToString(
@@ -3649,9 +3647,9 @@ public class XMLTextProcessor extends DefaultHandler
   {
     try 
     {
-      File tokFieldsFile = new File(
+      VFile tokFieldsFile = VFile.create(
           Path.normalizePath(indexPath + "tokenizedFields.txt"));
-      FileWriter writer = new FileWriter(tokFieldsFile, true /*append*/);
+      Writer writer = tokFieldsFile.openWriter(true /*append*/);
       writer.append(field + "\n");
       writer.close();
     }
@@ -3739,7 +3737,7 @@ public class XMLTextProcessor extends DefaultHandler
       String indexDateStr = doc.get("fileDate");
 
       // See what the date is on the actual source file right now.
-      File srcPath = srcInfo.path();
+      VFile srcPath = srcInfo.path();
       String fileDateStr = DateTools.timeToString(
         srcPath.lastModified(), 
         DateTools.Resolution.MILLISECOND);
@@ -3750,7 +3748,7 @@ public class XMLTextProcessor extends DefaultHandler
         // Delete the old lazy file, if any. Might as well delete any
         // empty parent directories as well.
         //
-        File lazyFile = IndexUtil.calcLazyPath(new File(xtfHomePath),
+        VFile lazyFile = IndexUtil.calcLazyPath(VFile.create(xtfHomePath),
                                                indexInfo,
                                                srcPath,
                                                false);
@@ -3896,7 +3894,7 @@ public class XMLTextProcessor extends DefaultHandler
     //
     if (indexInfo.createSpellcheckDict) {
       if (spellWriter == null) {
-        spellWriter = SpellWriter.open(new File(indexPath + "spellDict/"));
+        spellWriter = SpellWriter.open(VFile.create(indexPath + "spellDict/"));
         spellWriter.setStopwords(stopSet);
         spellWriter.setMinWordFreq(3);
       }

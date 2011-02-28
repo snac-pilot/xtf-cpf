@@ -4,8 +4,27 @@ iText version: 2.1.7
   Note: We cannot use 5.x iText since its Aferro GPL is incompatible with BSD/LGPL/Apache.
         Can I just complain here how evil it is to take a free tool and commercialize it?
 
+Lucene version 2.1.0
+  lucene-core.jar
+
 PDFBox version: 1.1.0
   pdfBox.jar
 
 FontBox version: 1.1.0
   fontBox.jar
+
+FOP version 0.94
+  fop-core.jar
+  fop-libs.jar
+
+Pairtree version: 1.1.1
+  pairtree.jar
+
+POI version: 3.0.2-FINAL
+  poi.jar
+
+Saxon-B: version 8.9
+  saxonb.jar
+
+TextMining Extractors: version 1.0
+  tm-extractors.jar

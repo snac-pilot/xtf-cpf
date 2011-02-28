@@ -110,22 +110,32 @@
    
    <xsl:template match="file">
       <xsl:variable name="dirPath" select="parent::*/@dirPath"/>
+      <xsl:variable name="fileName" select="@fileName"/>
+      <xsl:variable name="file" select="concat($dirPath,$fileName)"/>
+      
       <xsl:choose>
          <!-- XML files -->
          <xsl:when test="ends-with(@fileName, '.xml')">
             
             <xsl:choose>
-               <!-- Skip document-less METS and DC files -->
-               <xsl:when test="ends-with(@fileName, '.mets.xml') or ends-with(@fileName, '.dc.xml')"/>
-
-               <!-- Skip bookreader page files -->
-               <xsl:when test="matches($dirPath, '^.*bookreader') and matches(@fileName, '\d{8}\.xml')"/>
+               
+               <!-- Only process DC if it is of type image -->
+               <xsl:when test="ends-with(@fileName, '.dc.xml')">
+                  <xsl:variable name="dcFile" select="document($file)"/>
+                  <xsl:if test="$dcFile//type='image'">
+                     <indexFile fileName="{$fileName}"
+                        preFilter="style/textIndexer/image/imagePreFilter.xsl"
+                        displayStyle="style/dynaXML/docFormatter/image/imageDocFormatter.xsl"/>
+                  </xsl:if>
+               </xsl:when>
+               
+               <!-- Skip METS file if it's next to a DC file -->
+               <xsl:when test="ends-with(@fileName, '.mets.xml') and 
+                               parent::*/file[ends-with(@fileName, '.dc.xml')]">
+               </xsl:when>
                
                <!-- All other XML files -->
                <xsl:otherwise>
-                  
-                  <xsl:variable name="fileName" select="@fileName"/>
-                  <xsl:variable name="file" select="concat($dirPath,$fileName)"/>
                   
                   <!-- We need to determine what kind of XML file we're looking at. XTF provides a
                        handy function that quickly reads in only the first part of an XML file
@@ -147,6 +157,20 @@
                      <xsl:variable name="ns" select="namespace-uri(*[1])"/>
                      
                      <xsl:choose>
+                        <!-- XML files to skip -->
+                        <!-- bookreader page files -->
+                        <xsl:when test="matches($root-element-name, 'DjVuXML')"/>
+                        <!-- tiled image content files -->
+                        <xsl:when test="matches($root-element-name, 'ppad:tiled-image')"/>
+                        <!-- Look for bookreader METS XML -->
+                        <xsl:when test="matches($root-element-name,'^METS')">
+                           <xsl:variable name="metsData" select="document($file)"/>
+                           <xsl:if test="$metsData//*:book">
+                              <indexFile fileName="{$fileName}"
+                                 preFilter="style/textIndexer/bookreader/bookPreFilter.xsl"
+                                 displayStyle="style/dynaXML/docFormatter/bookreader/bookDocFormatter.xsl"/>
+                           </xsl:if>
+                        </xsl:when>
                         <!-- Look for EAD XML files -->
                         <xsl:when test="matches($root-element-name,'^ead$') or
                                         matches($pid,'EAD') or 
@@ -174,25 +198,12 @@
                               preFilter="style/textIndexer/tei/teiPreFilter.xsl"
                               displayStyle="style/dynaXML/docFormatter/tei/teiDocFormatter.xsl"/>
                         </xsl:when>
-                        <!-- DjVu files are typically subordinate to a main doc -->
-                        <xsl:when test="matches($root-element-name, 'DjVuXML')">
-                           <!-- skip -->
-                        </xsl:when>
-                        <!-- Look for METS-encoded scanned books, skip other METS files as likely subordinate -->
-                        <xsl:when test="matches($root-element-name,'^METS')">
-                           <xsl:variable name="metsData" select="document($file)"/>
-                           <xsl:if test="$metsData//*:book">
-                              <indexFile fileName="{$fileName}"
-                                 preFilter="style/textIndexer/bookreader/bookPreFilter.xsl"
-                                 displayStyle="style/dynaXML/docFormatter/bookreader/bookDocFormatter.xsl"/>
-                           </xsl:if>
-                        </xsl:when>
                         <!-- Default processing for XML files -->
                         <xsl:otherwise>
-                           <indexFile fileName="{$fileName}" 
+                           <!--<indexFile fileName="{$fileName}" 
                               type="XML"
                               preFilter="style/textIndexer/default/defaultPreFilter.xsl"/>
-                           <xsl:message select="'Unrecognized XML structure. Indexing using the default preFilter.'"/>
+                           <xsl:message select="'Unrecognized XML structure. Indexing using the default preFilter.'"/>-->
                         </xsl:otherwise>
                      </xsl:choose>
                   </xsl:for-each>
@@ -222,7 +233,8 @@
          </xsl:when>
          
          <!-- Plain text files. Exception: skip book/*.txt as they're typically subordinate. -->
-         <xsl:when test="ends-with(@fileName, '.txt') and not(matches($dirPath, '/bookreader/'))">
+         <xsl:when test="ends-with(@fileName, '.txt') and not(matches($dirPath, '/bookreader/')) 
+                         and not(matches($fileName, 'mrt-erc.txt'))">
             <indexFile fileName="{@fileName}" 
                type="text"
                preFilter="style/textIndexer/default/defaultPreFilter.xsl"/>

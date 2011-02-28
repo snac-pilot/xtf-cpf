@@ -3,8 +3,6 @@
    xmlns="http://www.w3.org/1999/xhtml"
    version="2.0">
    
-   
-   
    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
    <!-- Search forms stylesheet                                                -->
    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -357,6 +355,7 @@
                               <option value="">All</option>
                               <option value="ead">EAD</option>
                               <option value="html">HTML</option>
+                              <option value="image">Image</option>
                               <option value="word">Word</option>
                               <option value="nlm">NLM</option>
                               <option value="pdf">PDF</option>

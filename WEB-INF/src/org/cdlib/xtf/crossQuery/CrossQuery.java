@@ -29,7 +29,7 @@ package org.cdlib.xtf.crossQuery;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.SocketException;
@@ -393,7 +393,7 @@ public class CrossQuery extends TextServlet
 
     // Process it to generate result document hits
     QueryRequest queryReq = new QueryRequestParser().parseRequest(queryReqDoc,
-      new File(
+      VFile.create(
         getRealPath("")));
 
     // Fill in the auxiliary info

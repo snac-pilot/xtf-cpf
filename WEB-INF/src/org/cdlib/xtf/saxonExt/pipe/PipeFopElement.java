@@ -31,8 +31,7 @@ package org.cdlib.xtf.saxonExt.pipe;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -157,7 +156,7 @@ public class PipeFopElement extends ElementWithContent
                        /*backward-compatibility:*/ getAttribStr("appendPDF", context, null));
       
       // Resolve it to a full path.
-      File fileToMerge = null;
+      VFile fileToMerge = null;
       if (nameToMerge != null) {
         fileToMerge = FileUtils.resolveFile(context, nameToMerge);
         if (!fileToMerge.canRead())
@@ -388,7 +387,7 @@ public class PipeFopElement extends ElementWithContent
      */
     private void mergePdf(XPathContext context, 
                            byte[] origPdfData, 
-                           File fileToAppend,
+                           VFile fileToAppend,
                            MergeMode mergeMode, 
                            MergeAt mergeAt, 
                            OutputStream outStream)
@@ -402,7 +401,7 @@ public class PipeFopElement extends ElementWithContent
       
       // Read in the PDF that FOP generated and the one we're merging
       readers[0] = new PdfReader(origPdfData);
-      readers[1] = new PdfReader(new BufferedInputStream(new FileInputStream(fileToAppend)));
+      readers[1] = new PdfReader(new BufferedInputStream(fileToAppend.openInputStream()));
       
       // Perform processing that's identical for both
       for (int i=0; i<2; i++) 
