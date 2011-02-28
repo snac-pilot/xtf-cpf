@@ -29,8 +29,7 @@ package org.cdlib.xtf.saxonExt.pipe;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -83,7 +82,7 @@ public class PipeFileElement extends ElementWithContent
     {
       // Build the full path.
       String path = attribs.get("path").evaluateAsString(context);
-      File file = FileUtils.resolveFile(context, path);
+      VFile file = FileUtils.resolveFile(context, path);
       
       // Make sure it's readable.
       if (!file.canRead()) {
@@ -117,14 +116,14 @@ public class PipeFileElement extends ElementWithContent
   }
   
   /** Utility method to copy the contents of a file into an output stream */
-  public static void copyFileToStream(File inFilePath, OutputStream outStream) 
+  public static void copyFileToStream(VFile inFilePath, OutputStream outStream) 
     throws IOException
   {
     InputStream fileIn = null;
     byte[] buf = null;
     try
     {
-      fileIn = new FileInputStream(inFilePath);
+      fileIn = inFilePath.openInputStream();
       buf = PipeBufferPool.allocBuffer();
       int got;
       while ((got = fileIn.read(buf)) >= 0)

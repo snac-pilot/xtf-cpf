@@ -29,10 +29,8 @@ package org.cdlib.xtf.dynaXML;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
-import java.io.FileOutputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.SocketException;
 import java.util.Iterator;
@@ -239,7 +237,7 @@ public class DynaXML extends TextServlet
       }
       else {
         // Check that the document actually exists.
-        File docFile = new File(docReq.source);
+        VFile docFile = VFile.create(docReq.source);
         if (!docFile.canRead())
           throw new InvalidDocumentException();
       }
@@ -357,7 +355,7 @@ public class DynaXML extends TextServlet
         info.authSpecs.add(authenticator.processAuthTag(el));
       else if (tagName.equals("query")) {
         info.query = new QueryRequestParser().parseRequest(el.getWrappedNode(),
-                                                           new File(getRealPath("")));
+            VFile.create(getRealPath("")));
       }
       else if (tagName.equalsIgnoreCase("preFilter"))
         info.preFilter = getRealPath(el.attrValue("path"));
@@ -525,10 +523,9 @@ public class DynaXML extends TextServlet
       // Debugging: dump search tree.
       if (dump && sourceDoc instanceof SearchTree) {
         ((SearchTree)sourceDoc).pruneUnused();
-        File file = new File("C:\\tmp\\tree.dump");
+        VFile file = VFile.create("C:\\tmp\\tree.dump");
         Trace.info("Dumping " + file.getAbsolutePath());
-        PrintWriter outWriter = new PrintWriter(
-          new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+        PrintWriter outWriter = new PrintWriter(file.openWriter());
         outWriter.println(XMLWriter.toString(sourceDoc));
         outWriter.close();
       }
@@ -599,7 +596,7 @@ public class DynaXML extends TextServlet
 
       // Can't find a lazy store... does the original source file exist?
       if (!docReq.source.startsWith("http://")) {
-        File srcFile = new File(docReq.source);
+        VFile srcFile = VFile.create(docReq.source);
         if (!srcFile.isFile() || !srcFile.canRead())
           throw new InvalidDocumentException();
       }
@@ -622,10 +619,10 @@ public class DynaXML extends TextServlet
     // a normal lazy tree.
     //
     if (docReq.query != null && docReq.query.query != null) {
-      String docKey = IndexUtil.calcDocKey(new File(getRealPath("")),
-                                           new File(docReq.indexConfig),
+      String docKey = IndexUtil.calcDocKey(VFile.create(getRealPath("")),
+                                           VFile.create(docReq.indexConfig),
                                            docReq.indexName,
-                                           new File(docReq.source));
+                                           VFile.create(docReq.source));
       SearchTree tree = new SearchTree(config, docKey, lazyStore);
       tree.search(createQueryProcessor(), docReq.query);
       sourceDoc = tree;
@@ -635,6 +632,11 @@ public class DynaXML extends TextServlet
       builder.setNamePool(NamePool.getDefaultNamePool());
       sourceDoc = builder.load(lazyStore);
     }
+    
+    // Set a proper system ID on the resulting tree. It should refer to the original
+    // file, not our searchified/lazified version.
+    //
+    sourceDoc.setSystemId(VFile.create(docReq.source).toURI().toString());
 
     // We want to print out any indexes being created, because
     // they should have all been done by the textIndexer.

@@ -20,14 +20,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.lucene.util.Hash64;
 import org.apache.lucene.util.IntList;
 import org.apache.lucene.util.LongList;
+
+import org.cdlib.xtf.util.VFile;
 
 /**
  * A fast, simple, in-memory data structure for holding frequency data used
@@ -139,19 +138,19 @@ class FreqData
 
   /**
    * Append sorted counts from an input stream that were saved by
-   * {@link #save(File)}.
+   * {@link #save(VFile)}.
    *
-   * @param f             File to load from
+   * @param f             VFile to load from
    * @throws IOException  if anything goes wrong
    */
-  public void add(File f)
+  public void add(VFile f)
     throws IOException 
   {
     int prevSize = keys.size();
 
     // Open the file
     DataInputStream s = new DataInputStream(
-      new BufferedInputStream(new FileInputStream(f)));
+      new BufferedInputStream(f.openInputStream()));
 
     try 
     {
@@ -197,12 +196,12 @@ class FreqData
 
   /**
    * Save sorted counts to an input stream. These can later be loaded by
-   * {@link #add(File)}.
+   * {@link #add(VFile)}.
    *
-   * @param f             File to write to (existing contents are replaced)
+   * @param f             VFile to write to (existing contents are replaced)
    * @throws IOException  if anything goes wrong
    */
-  public void save(File f)
+  public void save(VFile f)
     throws IOException 
   {
     // Make sure the data is in sorted order
@@ -210,7 +209,7 @@ class FreqData
 
     // Open the file
     DataOutputStream s = new DataOutputStream(
-      new BufferedOutputStream(new FileOutputStream(f)));
+      new BufferedOutputStream(f.openOutputStream()));
 
     // Write out the data
     try 

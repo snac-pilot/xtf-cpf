@@ -29,7 +29,7 @@ package org.cdlib.xtf.dynaXML;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,15 +116,15 @@ public class DefaultDocLocator implements DocLocator
       return null;
 
     // If it's a directory, something went wrong. No lazy file for sure.
-    File sourceFile = new File(sourcePath);
+    VFile sourceFile = VFile.create(sourcePath);
     if (!sourceFile.isFile())
       return null;
 
     // Figure out where the lazy file is (or should be.)
-    File lazyFile = calcLazyPath(new File(servlet.getRealPath("")),
-                                 new File(indexConfigPath),
+    VFile lazyFile = calcLazyPath(VFile.create(servlet.getRealPath("")),
+                                 VFile.create(indexConfigPath),
                                  indexName,
-                                 new File(sourcePath),
+                                 VFile.create(sourcePath),
                                  false);
       
     // Get the config flag telling us whether we're allowed to build lazy
@@ -163,7 +163,7 @@ public class DefaultDocLocator implements DocLocator
       // Decide whether we need to strip whitespace
       boolean stripWhitespace = false;
       try {
-        stripWhitespace = IndexUtil.getIndexInfo(new File(indexConfigPath),
+        stripWhitespace = IndexUtil.getIndexInfo(VFile.create(indexConfigPath),
                                                  indexName).stripWhitespace;
       }
       catch (Exception e) {
@@ -185,9 +185,9 @@ public class DefaultDocLocator implements DocLocator
    * Wrapper for IndexUtil.calcLazyPath(); useful for derived classes to supply their
    * own implementation.
    */
-  public File calcLazyPath(
-    File xtfHome, File idxConfigFile,
-    String idxName, File srcTextFile,
+  public VFile calcLazyPath(
+    VFile xtfHome, VFile idxConfigFile,
+    String idxName, VFile srcTextFile,
     boolean createDir) throws IOException 
   {
     return IndexUtil.calcLazyPath(xtfHome, idxConfigFile, idxName, srcTextFile, createDir);
@@ -222,7 +222,7 @@ public class DefaultDocLocator implements DocLocator
 
     // Make the input source, and give it a real system ID.
     InputSource inSrc = new InputSource(inStream);
-    inSrc.setSystemId(new File(sourcePath).toURL().toString());
+    inSrc.setSystemId(VFile.create(sourcePath).toURI().toURL().toString());
 
     // All done!
     return inSrc;
@@ -240,7 +240,7 @@ public class DefaultDocLocator implements DocLocator
    * @param stripWhitespace If set, whitespace will be removed between elements
    *                        in the lazy file.
    */
-  private void buildLazyStore(File lazyFile, String sourcePath,
+  private void buildLazyStore(VFile lazyFile, String sourcePath,
                               Templates preFilter, boolean removeDoctypeDecl,
                               boolean stripWhitespace)
     throws IOException 
@@ -251,7 +251,7 @@ public class DefaultDocLocator implements DocLocator
     Path.createPath(lazyFile.getParent());
     
     // Build a temp file, and when it's finished, rename it.
-    File tmpFile = new File(lazyFile.getAbsolutePath() + ".tmp");
+    VFile tmpFile = VFile.create(lazyFile.getAbsolutePath() + ".tmp");
 
     // While we parse the source document, we're going to also build up 
     // a tree that will be written to the lazy file.
@@ -290,7 +290,7 @@ public class DefaultDocLocator implements DocLocator
                                                                       removeDoctypeDecl));
   
       // Put a proper system ID onto the InputSource.
-      inSrc.setSystemId(new File(sourcePath).toURL().toString());
+      inSrc.setSystemId(VFile.create(sourcePath).toURI().toURL().toString());
   
       // Make a DefaultHandler that will pass events to the lazy receiver.
       LazyPassthru passthru = new LazyPassthru(lazyHandler, stripWhitespace);
@@ -337,7 +337,7 @@ public class DefaultDocLocator implements DocLocator
    * Check if the given lazy file was created after the indexing process
    * (i.e. by this doc locator)
    */
-  private boolean isPostIndexLazyFile(File f)
+  private boolean isPostIndexLazyFile(VFile f)
   {
     StructuredStore store = null;
     SubStoreReader sub = null;

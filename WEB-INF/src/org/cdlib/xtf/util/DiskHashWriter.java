@@ -29,7 +29,7 @@ package org.cdlib.xtf.util;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -150,7 +150,7 @@ public class DiskHashWriter
       // Since we depend on StructuredFile, make sure it passes.
       StructuredFile.tester.test();
 
-      File testFile = new File("DiskHashTest.sf");
+      VFile testFile = VFile.create("DiskHashTest.sf");
       StructuredFile f = null;
 
       try 

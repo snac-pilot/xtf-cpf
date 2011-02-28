@@ -35,7 +35,7 @@ package org.cdlib.xtf.textEngine;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -287,7 +287,7 @@ public class DefaultQueryProcessor extends QueryProcessor
     //
     final BoostSet boostSet = (req.boostSetParams == null) ? null
       : BoostSet.getCachedSet(indexReader,
-          new File(
+          VFile.create(
             req.boostSetParams.path),
           req.boostSetParams.field);
 

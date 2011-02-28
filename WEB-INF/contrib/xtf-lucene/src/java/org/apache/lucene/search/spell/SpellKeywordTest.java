@@ -36,7 +36,6 @@ package org.apache.lucene.search.spell;
  * as part of the Melvyl Recommender Project.
  */
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,6 +55,7 @@ import org.cdlib.xtf.textEngine.QueryResult;
 import org.cdlib.xtf.textEngine.XtfSearcher;
 import org.cdlib.xtf.textIndexer.tokenizer.ParseException;
 import org.cdlib.xtf.textIndexer.tokenizer.XTFTokenizer;
+import org.cdlib.xtf.util.VFile;
 import org.cdlib.xtf.util.Path;
 
 /**
@@ -90,7 +90,7 @@ public class SpellKeywordTest
     long startTime = System.currentTimeMillis();
 
     // Create a query processor, and open the index.
-    indexDir = Path.resolveRelOrAbs(new File(".").getAbsoluteFile(), "index");
+    indexDir = Path.resolveRelOrAbs(VFile.create(".").getAbsoluteFile(), "index");
     XtfSearcher searcher = new XtfSearcher(indexDir, 30);
 
     // Attach a debug stream to the spell reader.
@@ -205,12 +205,12 @@ public class SpellKeywordTest
     QueryRequestParser parser = new QueryRequestParser();
     Source src = new StreamSource(new StringReader(buf.toString()));
     QueryRequest req = parser.parseRequest(src,
-                                           new File(".").getAbsoluteFile(),
+                                           VFile.create(".").getAbsoluteFile(),
                                            indexDir);
 
     // Now process the query.
     DefaultQueryProcessor queryProcessor = new DefaultQueryProcessor();
-    queryProcessor.setXtfHome(new File(".").getAbsoluteFile().toString());
+    queryProcessor.setXtfHome(VFile.create(".").getAbsoluteFile().toString());
     QueryResult res = queryProcessor.processRequest(req);
 
     // See if it made a spelling suggestion. If not, return the original.

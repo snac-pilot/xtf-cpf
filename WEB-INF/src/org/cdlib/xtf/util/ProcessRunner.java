@@ -254,6 +254,7 @@ public class ProcessRunner
   {
     private OutputStream outStream;
     private byte[] bytes;
+    @SuppressWarnings("unused")
     public Throwable error;
     public boolean done = false;
 
@@ -296,6 +297,7 @@ public class ProcessRunner
     private InputStream inStream;
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream(100);
     public byte[] outBytes = new byte[0];
+    @SuppressWarnings("unused")
     public Throwable error;
     public boolean done = false;
 

@@ -64,6 +64,12 @@
       exclude-result-prefixes="#all"/>
    
    <!-- ====================================================================== -->
+   <!-- Servlet Parameters                                                     -->
+   <!-- ====================================================================== -->
+   
+   <xsl:param name="dataDir.relToXTF"/>  <!-- specified in crossQuery.conf -->
+   
+   <!-- ====================================================================== -->
    <!-- Local Parameters                                                       -->
    <!-- ====================================================================== -->
    
@@ -215,14 +221,14 @@
                         </xsl:choose>
                      </td>
                      <td class="right">
-                        <xsl:if test="docHit">
-                           <xsl:variable name="cleanString" select="replace(replace($queryString,';*smode=docHits',''),'^;','')"/>
-                           <span style="vertical-align:bottom"><img src="{$icon.path}/i_rss.png" alt="rss icon"/></span>
-                           <xsl:text>&#160;</xsl:text>
-                           <a href="search?{$cleanString};docsPerPage=100;rmode=rss;sort=rss">RSS</a>
-                           <xsl:text>&#160;|&#160;</xsl:text>
-                        </xsl:if>
                         <xsl:if test="$smode != 'showBag'">
+                           <xsl:if test="docHit">
+                              <xsl:variable name="cleanString" select="replace(replace($queryString,';*smode=docHits',''),'^;','')"/>
+                              <span style="vertical-align:bottom"><img src="{$icon.path}/i_rss.png" alt="rss icon"/></span>
+                              <xsl:text>&#160;</xsl:text>
+                              <a href="search?{$cleanString};docsPerPage=100;rmode=rss;sort=rss">RSS</a>
+                              <xsl:text>&#160;|&#160;</xsl:text>
+                           </xsl:if>
                            <a href="{$xtfURL}{$crossqueryPath}?{$modifyString}">
                               <xsl:text>Modify Search</xsl:text>
                            </a>
@@ -606,6 +612,24 @@ Item number <xsl:value-of select="$num"/>:
          </xsl:choose>
       </xsl:variable>
       
+      <xsl:variable name="href">
+         <xsl:choose>
+            <xsl:when test="matches(meta/display, 'dynaxml')">
+               <xsl:call-template name="dynaxml.url">
+                  <xsl:with-param name="path" select="$path"/>
+               </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:call-template name="rawDisplay.url">
+                  <xsl:with-param name="path" select="$path"/>
+               </xsl:call-template>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      
+      <xsl:variable name="type" select="meta/type[1]"/>
+      <xsl:variable name="thumbPath" select="concat($href, ';doc.view=thumbnail')"/>
+      
       <div id="main_{@rank}" class="docHit">    
          <table>          
             <tr>
@@ -633,7 +657,14 @@ Item number <xsl:value-of select="$num"/>:
                      <xsl:otherwise>none</xsl:otherwise>
                   </xsl:choose>
                </td>
-               <td class="col4">
+               <td class="col4" rowspan="6">
+                  <xsl:if test="$type='image'">
+                     <div class="image">
+                        <a href="{$href}">
+                           <img border="0" src="{$thumbPath}"/>
+                        </a>
+                     </div>
+                  </xsl:if>
                   <!-- Add/remove logic for the session bag (only if session tracking enabled) -->
                   <xsl:if test="session:isEnabled()">
                      <xsl:choose>
@@ -702,21 +733,7 @@ Item number <xsl:value-of select="$num"/>:
                   <b>Title:&#160;&#160;</b>
                </td>
                <td class="col3">
-                  <a>
-                     <xsl:attribute name="href">
-                        <xsl:choose>
-                           <xsl:when test="matches(meta/display, 'dynaxml')">
-                              <xsl:call-template name="dynaxml.url">
-                                 <xsl:with-param name="path" select="$path"/>
-                              </xsl:call-template>
-                           </xsl:when>
-                           <xsl:otherwise>
-                              <xsl:call-template name="rawDisplay.url">
-                                 <xsl:with-param name="path" select="$path"/>
-                              </xsl:call-template>
-                           </xsl:otherwise>
-                        </xsl:choose>
-                     </xsl:attribute>
+                  <a href="{$href}">
                      <xsl:choose>
                         <xsl:when test="meta/title">
                            <xsl:apply-templates select="meta/title[1]"/>
@@ -725,13 +742,9 @@ Item number <xsl:value-of select="$num"/>:
                      </xsl:choose>
                   </a>
                   <xsl:text>&#160;</xsl:text>
-                  <xsl:variable name="type" select="meta/type"/>
                   <span class="typeIcon">
                      <img src="{$icon.path}i_{$type}.gif" class="typeIcon"/>
                   </span>
-               </td>
-               <td class="col4">
-                  <xsl:text>&#160;</xsl:text>
                </td>
             </tr>
             <tr>
@@ -751,9 +764,6 @@ Item number <xsl:value-of select="$num"/>:
                      </xsl:otherwise>
                   </xsl:choose>
                </td>
-               <td class="col4">
-                  <xsl:text>&#160;</xsl:text>
-               </td>
             </tr>
             <xsl:if test="meta/subject">
                <tr>
@@ -765,9 +775,6 @@ Item number <xsl:value-of select="$num"/>:
                   </td>
                   <td class="col3">
                      <xsl:apply-templates select="meta/subject"/>
-                  </td>
-                  <td class="col4">
-                     <xsl:text>&#160;</xsl:text>
                   </td>
                </tr>
             </xsl:if>
@@ -782,7 +789,7 @@ Item number <xsl:value-of select="$num"/>:
                      <xsl:value-of select="@totalHits"/> 
                      <xsl:value-of select="if (@totalHits = 1) then ' hit' else ' hits'"/>&#160;&#160;&#160;&#160;
                   </td>
-                  <td class="col3" colspan="2">
+                  <td class="col3">
                      <xsl:apply-templates select="snippet" mode="text"/>
                   </td>
                </tr>
@@ -796,7 +803,7 @@ Item number <xsl:value-of select="$num"/>:
                <td class="col2">
                   <b>Similar&#160;Items:&#160;&#160;</b>
                </td>
-               <td class="col3" colspan="2">
+               <td class="col3">
                   <script type="text/javascript">
                      getMoreLike_<xsl:value-of select="@rank"/> = function() {
                         var span = YAHOO.util.Dom.get('moreLike_<xsl:value-of select="@rank"/>');
@@ -898,24 +905,25 @@ Item number <xsl:value-of select="$num"/>:
       
       <xsl:variable name="path" select="@path"/>
       
+      <xsl:variable name="href">
+         <xsl:choose>
+            <xsl:when test="matches(meta/display, 'dynaxml')">
+               <xsl:call-template name="dynaxml.url">
+                  <xsl:with-param name="path" select="$path"/>
+               </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:call-template name="rawDisplay.url">
+                  <xsl:with-param name="path" select="$path"/>
+               </xsl:call-template>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      
       <li>
          <xsl:apply-templates select="meta/creator[1]"/>
          <xsl:text>. </xsl:text>
-         <a>
-            <xsl:attribute name="href">
-               <xsl:choose>
-                  <xsl:when test="matches(meta/display, 'dynaxml')">
-                     <xsl:call-template name="dynaxml.url">
-                        <xsl:with-param name="path" select="$path"/>
-                     </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                     <xsl:call-template name="rawDisplay.url">
-                        <xsl:with-param name="path" select="$path"/>
-                     </xsl:call-template>
-                  </xsl:otherwise>
-               </xsl:choose>
-            </xsl:attribute>
+         <a href="{$href}">
             <xsl:apply-templates select="meta/title[1]"/>
          </a>
          <xsl:text>. </xsl:text>

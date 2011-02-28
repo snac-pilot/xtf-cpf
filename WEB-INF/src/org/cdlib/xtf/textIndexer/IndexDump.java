@@ -35,7 +35,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -91,7 +91,7 @@ public class IndexDump
       }
 
       cfgInfo.xtfHomePath = Path.normalizePath(cfgInfo.xtfHomePath);
-      if (!new File(cfgInfo.xtfHomePath).isDirectory()) {
+      if (!VFile.create(cfgInfo.xtfHomePath).isDirectory()) {
         Trace.error(
           "Error: xtf.home directory \"" + cfgInfo.xtfHomePath +
           "\" does not exist or cannot be read.");
@@ -137,7 +137,7 @@ public class IndexDump
           else 
           {
             // Make sure the configuration path is absolute
-            if (!(new File(cfgInfo.cfgFilePath).isAbsolute())) {
+            if (!VFile.isAbsolute(cfgInfo.cfgFilePath)) {
               cfgInfo.cfgFilePath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
                                                          cfgInfo.cfgFilePath);
             }

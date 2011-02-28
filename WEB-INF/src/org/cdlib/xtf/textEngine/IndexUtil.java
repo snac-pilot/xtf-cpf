@@ -29,7 +29,7 @@ package org.cdlib.xtf.textEngine;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;
@@ -80,7 +80,7 @@ public class IndexUtil
    * @return                Information for the specified index.
    * @throws Exception      If there is a problem reading the config file.
    */
-  public static IndexInfo getIndexInfo(File idxConfigFile, String idxName)
+  public static IndexInfo getIndexInfo(VFile idxConfigFile, String idxName)
     throws Exception 
   {
     return configCache.find(idxConfigFile, idxName).indexInfo;
@@ -102,8 +102,8 @@ public class IndexUtil
    * @return                    Expected location of the lazy version of the
    *                            source file
    */
-  public static File calcLazyPath(File xtfHome, File idxConfigFile,
-                                  String idxName, File srcTextFile,
+  public static VFile calcLazyPath(VFile xtfHome, VFile idxConfigFile,
+                                  String idxName, VFile srcTextFile,
                                   boolean createDir)
     throws IOException 
   {
@@ -145,18 +145,14 @@ public class IndexUtil
    * @return                Expected location of the lazy version of the
    *                        source file
    */
-  public static File calcLazyPath(File xtfHome, IndexInfo idxInfo,
-                                  File srcTextFile, boolean createDir)
+  public static VFile calcLazyPath(VFile xtfHome, IndexInfo idxInfo,
+                                  VFile srcTextFile, boolean createDir)
     throws IOException 
   {
     // Figure out the part of the source file's path that matches the index
     // data directory.
     //
-    String sourcePath;
-    if (idxInfo.cloneData && srcTextFile.toString().contains("/dataClone/"))
-      sourcePath = Path.normalizePath(idxInfo.indexPath) + "dataClone/" + idxInfo.indexName + "/";
-    else
-      sourcePath = idxInfo.sourcePath;
+    String sourcePath = idxInfo.sourcePath;
     String fullSourcePath = Path.resolveRelOrAbs(xtfHome.toString(), sourcePath);
     String prefix = Path.calcPrefix(srcTextFile.getParent(),
                                     fullSourcePath.toString());
@@ -174,7 +170,7 @@ public class IndexUtil
     String lazyPath = idxInfo.indexPath + "lazy/" + idxInfo.indexName + "/" +
                       after + ".lazy";
     lazyPath = Path.resolveRelOrAbs(xtfHome.toString(), lazyPath);
-    File lazyFile = new File(lazyPath);
+    VFile lazyFile = VFile.create(lazyPath);
 
     // If we've been asked to create the directory, do it now.
     if (createDir) {
@@ -197,8 +193,8 @@ public class IndexUtil
    *
    * @return                    Document key to store or look for in the index
    */
-  public static String calcDocKey(File xtfHome, File idxConfigFile,
-                                  String idxName, File srcTextFile)
+  public static String calcDocKey(VFile xtfHome, VFile idxConfigFile,
+                                  String idxName, VFile srcTextFile)
     throws IOException 
   {
     // First, load the particular index info from the config file (though if
@@ -229,19 +225,14 @@ public class IndexUtil
    *
    * @return                Document key to store or look for in the index
    */
-  public static String calcDocKey(File xtfHomeFile, IndexInfo idxInfo,
-                                  File srcTextFile)
+  public static String calcDocKey(VFile xtfHomeFile, IndexInfo idxInfo,
+                                  VFile srcTextFile)
     throws IOException 
   {
     // Figure out the part of the source file's path that matches the index
     // data directory.
     //
-    String sourcePath;
-    if (idxInfo.cloneData && srcTextFile.toString().contains("/dataClone/"))
-      sourcePath = Path.normalizePath(idxInfo.indexPath) + "dataClone/" + idxInfo.indexName + "/";
-    else
-      sourcePath = idxInfo.sourcePath;
-    
+    String sourcePath = idxInfo.sourcePath;
     String fullSourcePath = Path.resolveRelOrAbs(xtfHomeFile, sourcePath);
     String prefix = Path.calcPrefix(srcTextFile.getParent(), fullSourcePath);
     if (prefix == null) {
