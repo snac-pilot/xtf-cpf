@@ -28,12 +28,12 @@ package org.cdlib.xtf.textIndexer;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,18 +62,18 @@ public class DocSelCache extends HashMap
    * @param  file        The file to load from.
    * @throws IOException If something goes wrong reading the file.
    */
-  public void load(File file) throws IOException
+  public void load(VFile file) throws IOException
   {
     clear();
     
     // Open the file and read it.
-    FileInputStream fis = null;
+    InputStream fis = null;
     InflaterInputStream iis = null;
     ObjectInputStream ois = null;
     
     try 
     {
-      fis = new FileInputStream(file);
+      fis = file.openInputStream();
       iis = new InflaterInputStream(fis);
       ois = new ObjectInputStream(iis);
 
@@ -109,22 +109,22 @@ public class DocSelCache extends HashMap
   /** Save the docSelector cache.
    * @throws IOException 
    */
-  public void save(File file) throws IOException 
+  public void save(VFile file) throws IOException 
   {
     // Skip if not modified.
     if (!modified)
       return;
     
     // Let's keep the old file intact until the new one is ready.
-    File newFile = new File(file.toString() + ".new");
-    FileOutputStream fos = null;
+    VFile newFile = VFile.create(file.toString() + ".new");
+    OutputStream fos = null;
     DeflaterOutputStream dos = null;
     ObjectOutputStream oos = null;
 
     try 
     {
       // First, open the new file.
-      fos = new FileOutputStream(newFile);
+      fos = newFile.openOutputStream();
       dos = new DeflaterOutputStream(fos);
       oos = new ObjectOutputStream(dos);
 

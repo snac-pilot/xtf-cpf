@@ -33,7 +33,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import javax.imageio.ImageIO;
 
 import net.sf.saxon.trans.DynamicError;
@@ -68,7 +68,7 @@ class ImageCache extends GeneratingCache<String, BufferedImage>
     System.setProperty("java.awt.headless", "true");
     
     // Okay, load the image.
-    BufferedImage bi = ImageIO.read(new File(filename));
+    BufferedImage bi = ImageIO.read(VFile.create(filename).getNativeFile());
     bi = remapPalette(bi);
     return bi;
   }

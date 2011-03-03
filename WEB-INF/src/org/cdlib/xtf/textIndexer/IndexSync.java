@@ -30,8 +30,7 @@ package org.cdlib.xtf.textIndexer;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +56,7 @@ public class IndexSync
    * 
    * @throws IOException        If anything goes wrong.
    */
-  public void syncDirs(String indexName, File srcDir, File dstDir) throws IOException
+  public void syncDirs(String indexName, VFile srcDir, VFile dstDir) throws IOException
   {
     SubDirFilter filter = calcFilter(indexName, srcDir, dstDir);
     DirSync dirSync = new DirSync(filter);
@@ -70,7 +69,7 @@ public class IndexSync
    * the whole thing.
    * @throws IOException If anything goes wrong.
    */
-  private SubDirFilter calcFilter(String indexName, File srcDir, File dstDir) 
+  private SubDirFilter calcFilter(String indexName, VFile srcDir, VFile dstDir) 
     throws IOException 
   {
     SubDirFilter filter = new SubDirFilter();
@@ -78,29 +77,26 @@ public class IndexSync
     String srcTime = oldestTime(srcDir);
     String dstTime = oldestTime(dstDir);
     
-    File srcScanFile = new File(srcDir, "scanDirs.list");
-    File dstScanFile = new File(dstDir, "scanDirs.list");
+    VFile srcScanFile = VFile.create(srcDir, "scanDirs.list");
+    VFile dstScanFile = VFile.create(dstDir, "scanDirs.list");
     
     if (srcTime.equals(dstTime) &&
         srcScanFile.canRead() &&
         dstScanFile.canRead())
     {
-      File srcLazyDir = null;
-      File srcCloneDir = null;
-      for (File f : srcDir.listFiles())
+      VFile srcLazyDir = null;
+      for (VFile f : srcDir.listFiles())
       {
         if (!f.isDirectory())
           continue;
         else if (f.getName().equals("lazy"))
           srcLazyDir = f;
-        else if (f.getName().equals("dataClone"))
-          srcCloneDir = f;
         else
           filter.add(f);
       }
       
-      BufferedReader srcScanReader = new BufferedReader(new FileReader(srcScanFile));
-      BufferedReader dstScanReader = new BufferedReader(new FileReader(dstScanFile));
+      BufferedReader srcScanReader = srcScanFile.openBufferedReader();
+      BufferedReader dstScanReader = dstScanFile.openBufferedReader();
       
       // Verify that the files are identical up to the point where dst ends.
       boolean allMatch = true;
@@ -124,10 +120,7 @@ public class IndexSync
             break;
           String scanDir = srcKey.replaceFirst(":", "/");
           if (srcLazyDir != null)
-            filter.add(new File(srcLazyDir, scanDir));
-          if (srcCloneDir != null)
-            filter.add(new File(srcCloneDir, scanDir));
-          
+            filter.add(VFile.create(srcLazyDir, scanDir));
         }
       }
     }
@@ -146,10 +139,10 @@ public class IndexSync
    * Determine the oldest file within a directory (or the dir itself if empty) and
    * return a human-readable version of that time.
    */
-  public static String oldestTime(File dir)
+  public static String oldestTime(VFile dir)
   {
     long min = Long.MAX_VALUE;
-    for (File f : dir.listFiles()) {
+    for (VFile f : dir.listFiles()) {
       if (f.getName().equals("scanDirs.list"))
         continue;
       if (f.lastModified() < min)
@@ -164,10 +157,10 @@ public class IndexSync
    * Determine the newest file within a directory (or the dir itself if empty) and
    * return a human-readable version of that time.
    */
-  public static String newestTime(File dir)
+  public static String newestTime(VFile dir)
   {
     long max = Long.MIN_VALUE;
-    for (File f : dir.listFiles()) {
+    for (VFile f : dir.listFiles()) {
       if (f.getName().equals("scanDirs.list"))
         continue;
       if (f.lastModified() > max)

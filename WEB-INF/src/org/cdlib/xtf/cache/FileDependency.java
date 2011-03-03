@@ -29,7 +29,7 @@ package org.cdlib.xtf.cache;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 
 /**
  * This class represents a dependency on a given file. The dependency becomes
@@ -42,7 +42,7 @@ public class FileDependency extends Dependency
    *
    * @param file  The file to base the dependency on.
    */
-  public FileDependency(File file) {
+  public FileDependency(VFile file) {
     this.file = file;
     this.lastModified = file.lastModified();
   }
@@ -53,7 +53,7 @@ public class FileDependency extends Dependency
    * @param path  Full path to the file on which to base the dependency.
    */
   public FileDependency(String path) {
-    this(new File(path));
+    this(VFile.create(path));
   }
 
   /**
@@ -79,7 +79,7 @@ public class FileDependency extends Dependency
   }
 
   /** The file we're tracking */
-  private File file;
+  private VFile file;
 
   /** When the file was modified */
   private long lastModified;

@@ -35,8 +35,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -52,7 +51,7 @@ import org.xml.sax.InputSource;
 public class PDFIndexSource extends XMLIndexSource 
 {
   /** Constructor -- initializes all the fields */
-  public PDFIndexSource(File pdfFile, String key, Templates[] preFilters,
+  public PDFIndexSource(VFile pdfFile, String key, Templates[] preFilters,
                         Templates displayStyle, StructuredStore lazyStore) 
   {
     super(null, pdfFile, key, preFilters, displayStyle, lazyStore);
@@ -60,19 +59,19 @@ public class PDFIndexSource extends XMLIndexSource
   }
 
   /** Source of PDF data */
-  private File pdfFile;
+  private VFile pdfFile;
 
   /** Transform the PDF file to XML data */
   protected InputSource filterInput()
     throws IOException 
   {
     // Convert the PDF file into an XML string that we can index.
-    InputStream inStream = new FileInputStream(pdfFile);
+    InputStream inStream = pdfFile.openInputStream();
     String pdfXMLStr = PDFToString.convert(inStream);
 
     // And make an InputSource with a proper system ID
     InputSource finalSrc = new InputSource(new StringReader(pdfXMLStr));
-    finalSrc.setSystemId(pdfFile.toURL().toString());
+    finalSrc.setSystemId(pdfFile.toURI().toURL().toString());
     return finalSrc;
   } // filterInput()
 } // class PDFSrcFile

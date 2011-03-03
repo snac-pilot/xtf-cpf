@@ -35,7 +35,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import javax.xml.transform.Templates;
 import org.xml.sax.SAXException;
@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
 public abstract class IndexSource 
 {
   /** Obtain the path to the file (or null if it's not a local file) */
-  public abstract File path();
+  public abstract VFile path();
 
   /** Obtain a unique key for this input file */
   public abstract String key();

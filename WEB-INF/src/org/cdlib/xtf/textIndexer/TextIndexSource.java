@@ -29,11 +29,8 @@ package org.cdlib.xtf.textIndexer;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import javax.xml.transform.Templates;
@@ -48,7 +45,7 @@ import org.xml.sax.InputSource;
 public class TextIndexSource extends XMLIndexSource 
 {
   /** Constructor -- initializes all the fields */
-  public TextIndexSource(File textFile, String key, Templates[] preFilters,
+  public TextIndexSource(VFile textFile, String key, Templates[] preFilters,
                          Templates displayStyle, StructuredStore lazyStore) 
   {
     super(null, textFile, key, preFilters, displayStyle, lazyStore);
@@ -56,7 +53,7 @@ public class TextIndexSource extends XMLIndexSource
   }
 
   /** Source of text data */
-  private File textFile;
+  private VFile textFile;
 
   /** Transform the text file to XML data */
   protected InputSource filterInput()
@@ -65,8 +62,7 @@ public class TextIndexSource extends XMLIndexSource
     // Map XML special characters in the text, and add a dummy
     // top-level element.
     //
-    Reader reader = new BufferedReader(
-      new InputStreamReader(new FileInputStream(textFile), "UTF-8"));
+    Reader reader = textFile.openBufferedReader();
     char[] tmp = new char[1000];
     StringBuffer buf = new StringBuffer(1000);
     while (true) {
@@ -81,7 +77,7 @@ public class TextIndexSource extends XMLIndexSource
 
     // And make an InputSource with a proper system ID
     InputSource finalSrc = new InputSource(new StringReader(str));
-    finalSrc.setSystemId(textFile.toURL().toString());
+    finalSrc.setSystemId(textFile.toURI().toURL().toString());
     return finalSrc;
   } // filterInput()
 } // class TextSrcFile

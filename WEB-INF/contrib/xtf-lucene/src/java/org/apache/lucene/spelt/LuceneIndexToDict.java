@@ -16,7 +16,6 @@ package org.apache.lucene.spelt;
  * limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
@@ -32,6 +31,8 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.ProgressTracker;
+
+import org.cdlib.xtf.util.VFile;
 
 /**
  * Utility class to convert the stored fields of a Lucene index into a spelling
@@ -55,7 +56,7 @@ public class LuceneIndexToDict
    * @param indexDir directory containing the Lucene index
    * @param dictDir directory to receive the spelling dictionary
    */
-  public static void createDict(Directory indexDir, File dictDir)
+  public static void createDict(Directory indexDir, VFile dictDir)
     throws IOException
   {
     createDict(indexDir, dictDir, null);
@@ -72,7 +73,7 @@ public class LuceneIndexToDict
    * @param prog tracker called periodically to display progress
    */
   public static void createDict(Directory indexDir, 
-                                File dictDir, 
+                                VFile dictDir, 
                                 ProgressTracker prog)
     throws IOException
   {
@@ -209,8 +210,8 @@ public class LuceneIndexToDict
     
     try
     {
-      File indexDir = new File(args[0]);
-      File dictDir = new File(args[1]);
+      VFile indexDir = VFile.create(args[0]);
+      VFile dictDir = VFile.create(args[1]);
       
       // We'll want to print out status messages periodically.
       final long startTime = System.currentTimeMillis();
@@ -225,7 +226,7 @@ public class LuceneIndexToDict
       prog.setMinInterval(3000);
       
       // Go for it.
-      createDict(FSDirectory.getDirectory(indexDir), dictDir, prog);
+      createDict(FSDirectory.getDirectory(indexDir.getNativeFile()), dictDir, prog);
       exitVal = 0;
     }
     catch (IOException e) {

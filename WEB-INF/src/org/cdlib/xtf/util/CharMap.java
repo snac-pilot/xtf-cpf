@@ -1,8 +1,7 @@
 package org.cdlib.xtf.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -70,10 +69,10 @@ public class CharMap
   private FastCache cache = new FastCache(CACHE_SIZE);
 
   /** Construct a char map by reading in a file. */
-  public CharMap(File f)
+  public CharMap(VFile f)
     throws IOException 
   {
-    readFile(new BufferedReader(new FileReader(f)));
+    readFile(new BufferedReader(f.openReader()));
   }
 
   /** Construct a char map by reading from an InputStream. */

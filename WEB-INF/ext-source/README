@@ -1,0 +1,4 @@
+How to populate this directory with some useful external sources:
+
+svn co -r 879662 http://svn.apache.org/repos/asf/lucene/dev/trunk/lucene/src/java lucene
+svn co -r 603 https://saxon.svn.sourceforge.net/svnroot/saxon/latest8.9

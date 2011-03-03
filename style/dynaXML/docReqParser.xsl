@@ -77,6 +77,10 @@
    <xsl:param name="query-join" select="'0'"/>
    <xsl:param name="query-exclude" select="'0'"/>
    <xsl:param name="sectionType" select="'0'"/>
+  
+   <!-- Data directory: specify in dynaXML.conf, relative to style/dynaXML/, or absolute -->
+   <xsl:param name="dataDir.relToStyleDynaXML"/> 
+   <xsl:param name="dataDir.relToXTF"/> 
    
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -96,7 +100,7 @@
          "for-each" is a bit of a misnomer, since the stub is a single document
          so the code below runs only once.
       -->
-      <xsl:variable name="file" select="concat('../../data/',$docId)"/>
+      <xsl:variable name="file" select="concat($dataDir.relToStyleDynaXML,$docId)"/>
       <xsl:variable name="stub" select="if ($docId and FileUtils:exists($file)) then FileUtils:readXMLStub($file) else ()"/>
       <xsl:variable name="fileType">
          <xsl:for-each select="$stub">
@@ -105,8 +109,16 @@
             <xsl:variable name="pid" select="unparsed-entity-public-id($root-element-name)"/>
             <xsl:variable name="uri" select="unparsed-entity-uri($root-element-name)"/>
             <xsl:variable name="ns" select="namespace-uri(*[1])"/>
-            
-            <xsl:choose>
+            <xsl:choose>     
+               <!-- Look for METS-encoded scanned books -->
+               <xsl:when test="matches($root-element-name,'^METS') and 
+                  document($file)//*:book">
+                  <xsl:value-of select="'book'"/>
+               </xsl:when>
+               <!-- Look for DC XML files (images) -->
+               <xsl:when test="matches($root-element-name,'^(dc|qdc)')">
+                  <xsl:value-of select="'image'"/>
+               </xsl:when>
                <!-- Look for EAD XML files -->
                <xsl:when test="matches($root-element-name,'^ead$') or
                   matches($pid,'EAD') or 
@@ -128,11 +140,6 @@
                   matches($ns,'tei')">
                   <xsl:value-of select="'tei'"/>
                </xsl:when>
-               <!-- Look for METS-encoded scanned books -->
-               <xsl:when test="matches($root-element-name,'^METS') and 
-                               document($file)//*:book">
-                  <xsl:value-of select="'book'"/>
-               </xsl:when>
                <!-- Default processing for XML files -->
                <xsl:otherwise>
                   <xsl:value-of select="'default'"/>
@@ -148,10 +155,11 @@
       -->
       <style path="{
          if (matches($http.URL, $ercPat)) then 'style/dynaXML/docFormatter/erc/ercDocFormatter.xsl'
+         else if ($fileType = 'book') then 'style/dynaXML/docFormatter/bookreader/bookDocFormatter.xsl'
          else if ($fileType = 'ead') then 'style/dynaXML/docFormatter/ead/eadDocFormatter.xsl'
+         else if ($fileType = 'image') then 'style/dynaXML/docFormatter/image/imageDocFormatter.xsl'
          else if ($fileType = 'nlm') then 'style/dynaXML/docFormatter/nlm/nlmDocFormatter.xsl'
          else if ($fileType = 'tei') then 'style/dynaXML/docFormatter/tei/teiDocFormatter.xsl'
-         else if ($fileType = 'book') then 'style/dynaXML/docFormatter/bookreader/bookDocFormatter.xsl'
          else                             'style/dynaXML/docFormatter/default/docFormatter.xsl'}"/>
       
       <!-- ==================================================================
@@ -159,7 +167,7 @@
          base directory), or an HTTP URL. The referenced XML document is
          parsed and fed into the display stylesheet.
       -->   
-      <source path="{concat('data/',$docId)}"/>
+      <source path="{concat($dataDir.relToXTF,$docId)}"/>
       
       <!-- ==================================================================
          The optional "brand" tag specifies a filesystem path (relative to the

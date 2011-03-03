@@ -31,8 +31,7 @@ package org.cdlib.xtf.textIndexer;
  */
 
 //import java.io.IOException;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -170,7 +169,7 @@ public class XMLConfigParser extends DefaultHandler
     try 
     {
       // Make sure we can access the file.
-      if (!new File(cfgInfo.cfgFilePath).canRead()) {
+      if (!VFile.create(cfgInfo.cfgFilePath).canRead()) {
         Trace.error(
           "Error: unable to read textIndexer config file \"" +
           cfgInfo.cfgFilePath + "\"");
@@ -189,7 +188,7 @@ public class XMLConfigParser extends DefaultHandler
       // as the tag handler. Make sure to convert file to a proper URI,
       // since on Windows weird stuff happens with "C:\blah"
       //
-      xmlParser.parse(new File(cfgInfo.cfgFilePath).toURI().toString(), this);
+      xmlParser.parse(VFile.create(cfgInfo.cfgFilePath).toURI().toString(), this);
     } // try
 
     catch (Throwable t) 
@@ -364,27 +363,10 @@ public class XMLConfigParser extends DefaultHandler
         }
       }
 
-      // Validate the 'clone' attribute if present
+      // Validate the old 'clone' attribute if present
       val = atts.getValue("clone");
-      if (val != null) {
-        if ("yes".equals(val) || "1".equals(val) || "true".equals(val)) {
-          configInfo.indexInfo.cloneData = true;
-          String osName = System.getProperty("os.name");
-          if (osName.indexOf("Windows") >= 0) {
-            Trace.warning(
-                "Warning: data cloning probably will not work due to " +
-                "limitations of Windows filesystem support.");
-          }
-        }
-        else if ("no".equals(val) || "0".equals(val) || "false".equals(val))
-          configInfo.indexInfo.cloneData = false;
-        else {
-          Trace.error(
-            "Unrecognized value for 'clone' attribute of " +
-            "config option: '" + qName + "'");
-          System.exit(1);
-        }
-      }
+      if (val != null && ("yes".equals(val) || "1".equals(val) || "true".equals(val)))
+        Trace.warning("Warning: data cloning was experimental and has been eliminated; clone attribute ignored.");
 
       return;
     }
@@ -453,10 +435,10 @@ public class XMLConfigParser extends DefaultHandler
       else if (path != null && path.length() > 0) 
       {
         path = Path.normalizeFileName(atts.getValue("path"));
-        File file = new File(new File(configInfo.xtfHomePath), path);
+        VFile file = VFile.create(VFile.create(configInfo.xtfHomePath), path);
 
         try {
-          InputStream stream = new FileInputStream(file);
+          InputStream stream = file.openInputStream();
           if (path.endsWith(".gz"))
             stream = new GZIPInputStream(stream);
           Reader reader = new InputStreamReader(stream);

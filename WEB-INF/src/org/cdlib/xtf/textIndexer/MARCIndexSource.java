@@ -36,8 +36,7 @@ package org.cdlib.xtf.textIndexer;
  * as part of the Melvyl Recommender Project.
  */
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -73,7 +72,7 @@ import org.xml.sax.SAXException;
 public class MARCIndexSource extends IndexSource 
 {
   /** Constructor -- initializes all the fields */
-  public MARCIndexSource(File path, String key, Templates[] preFilters,
+  public MARCIndexSource(VFile path, String key, Templates[] preFilters,
                          Templates displayStyle) 
   {
     this.path = path;
@@ -86,7 +85,7 @@ public class MARCIndexSource extends IndexSource
   }
 
   /** Path to the file, or null if it's not a local file. */
-  private File path;
+  private VFile path;
 
   /** Key used to identify this file in the index */
   private String key;
@@ -121,7 +120,7 @@ public class MARCIndexSource extends IndexSource
   private int recordNum = 0;
 
   // inherit JavaDoc
-  public File path() {
+  public VFile path() {
     return path;
   }
 
@@ -221,7 +220,7 @@ public class MARCIndexSource extends IndexSource
 
     // Open the input stream and reader.
     rawStream = new CountedInputStream(
-      new BufferedInputStream(new FileInputStream(path)));
+      new BufferedInputStream(path.openInputStream()));
 
     // The output of the MARC converter will go to an XML handler of our
     // own design.
@@ -244,6 +243,7 @@ public class MARCIndexSource extends IndexSource
     public boolean isDone = false;
 
     /** If an exception occured, it is recorded here */
+    @SuppressWarnings("unused")
     public Throwable error = null;
 
     /** Names of XML namespace prefixes */

@@ -16,10 +16,11 @@ package org.apache.lucene.spelt;
  * limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+
+import org.cdlib.xtf.util.VFile;
 
 /** 
  * Test the {@link FreqData} class 
@@ -47,7 +48,7 @@ public class FreqDataTest extends TestCase
     assertEquals(data.get("bar", "foo"), 7);
     
     // Let's store it in a disk file and make sure we can re-load it accurately
-    File file = File.createTempFile("FreqDataTest", null);
+    VFile file = VFile.createTempFile("FreqDataTest", null);
     try {
       data.save(file);
       FreqData data2 = new FreqData();

@@ -377,14 +377,13 @@ public class FRBRGroupData extends DynamicGroupData
     // Is the total score high enough?
     int totalScore = titleScore + authorScore + dateScore + idScore;
 
-    //if (totalScore >= 150) {
-    if (false) {
+    /*
       outputDisplayKey("Match: ", doc1);
       outputDisplayKey("   vs: ", doc2);
       Trace.debug(
         "     = " + titleScore + "t + " + authorScore + "a + " + dateScore +
         "d + " + idScore + "i = " + totalScore);
-    }
+    */
 
     if (totalScore < 150)
       return false;
@@ -394,7 +393,8 @@ public class FRBRGroupData extends DynamicGroupData
 
   private void debugFieldMatch(String field, int doc1, int doc2) 
   {
-    if (true || Trace.getOutputLevel() != Trace.debug)
+    /*
+    if (Trace.getOutputLevel() != Trace.debug)
       return;
     Trace.debug("Match " + field + ":");
     Trace.tab();
@@ -416,8 +416,10 @@ public class FRBRGroupData extends DynamicGroupData
 
     Trace.untab();
     Trace.untab();
+    */
   }
 
+  @SuppressWarnings("unused")
   private void outputDisplayKey(String title, int doc) 
   {
     int nToSkip = 0;
@@ -753,7 +755,6 @@ public class FRBRGroupData extends DynamicGroupData
   /**
    * Compare two dates for a match.
    */
-  @SuppressWarnings("unused")
   private int scoreDateMatch(IntList list1, IntList list2) 
   {
     // If no date, don't consider it a problem.

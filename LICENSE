@@ -30,6 +30,16 @@ CQL
   The CQL parsing library "cql-java" is included, distributed under the Lesser
   Gnu Public License 2.1. See licenses/CQL_license.txt for details.
 
+iText
+  The iText PDF manipulation library is included for its ability to append one
+  PDF to another. Currently using version 2.1.7 because its Apache license is
+  compatible with XTF, whereas the Affero license of 5.x series is not. See
+  licenses/iText_license.txt for details.
+
+FOP
+  Library used for generating PDF files from XML. The library uses an Apache
+  license. See licenses/FOP_license.txt for details.
+
 Marc4J
   The MARC4J API for working with MARC data is included, distributed under the
   Lesser Gnu Public License 2.1. See licenses/Marc4J_license.txt for details.

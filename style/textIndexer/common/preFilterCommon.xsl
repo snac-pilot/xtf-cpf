@@ -64,7 +64,7 @@
    
    <!-- Process DC -->
    <xsl:template match="*" mode="inmeta">
-      
+
       <!-- Copy all metadata fields -->
       <xsl:for-each select="*">
          <xsl:choose>
@@ -86,7 +86,7 @@
          <xsl:choose>
             <xsl:when test="matches(name(),'date')">
                <dateStamp xtf:meta="true" xtf:tokenize="no">
-                  <xsl:value-of select="concat(parse:year(string(.)),'-01-01')"/>
+                  <xsl:value-of select="concat(parse:year(string(.))[1],'-01-01')"/>
                </dateStamp>
             </xsl:when>
             <xsl:when test="matches(name(),'subject')">

@@ -34,8 +34,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -56,7 +55,7 @@ import org.xml.sax.InputSource;
 public class MSWordIndexSource extends XMLIndexSource 
 {
   /** Constructor -- initializes all the fields */
-  public MSWordIndexSource(File msWordFile, String key, Templates[] preFilters,
+  public MSWordIndexSource(VFile msWordFile, String key, Templates[] preFilters,
                            Templates displayStyle, StructuredStore lazyStore) 
   {
     super(null, msWordFile, key, preFilters, displayStyle, lazyStore);
@@ -64,14 +63,14 @@ public class MSWordIndexSource extends XMLIndexSource
   }
 
   /** Source of MS Word document data */
-  private File msWordFile;
+  private VFile msWordFile;
 
   /** Transform the MS Word file to XML data */
   protected InputSource filterInput()
     throws IOException 
   {
     // Open the Word file and see if we can understand it.
-    InputStream inStream = new FileInputStream(msWordFile);
+    InputStream inStream = msWordFile.openInputStream();
     try 
     {
       // Try to extract the text.
@@ -94,7 +93,7 @@ public class MSWordIndexSource extends XMLIndexSource
 
       // And make an InputSource with a proper system ID
       InputSource finalSrc = new InputSource(new StringReader(outBuf.toString()));
-      finalSrc.setSystemId(msWordFile.toURL().toString());
+      finalSrc.setSystemId(msWordFile.toURI().toURL().toString());
       return finalSrc;
     }
     catch (IOException e) {

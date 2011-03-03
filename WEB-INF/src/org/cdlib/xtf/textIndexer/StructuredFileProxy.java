@@ -29,7 +29,7 @@ package org.cdlib.xtf.textIndexer;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import org.cdlib.xtf.util.Path;
 import org.cdlib.xtf.util.StructuredFile;
@@ -53,13 +53,13 @@ import org.cdlib.xtf.util.SubStoreWriter;
  */
 public class StructuredFileProxy implements StructuredStore 
 {
-  private File finalPath;
-  private File tmpPath;
+  private VFile finalPath;
+  private VFile tmpPath;
   private StructuredFile realStore = null;
 
-  public StructuredFileProxy(File path) {
+  public StructuredFileProxy(VFile path) {
     this.finalPath = path;
-    this.tmpPath = new File(path.toString() + ".tmp");
+    this.tmpPath = VFile.create(path.toString() + ".tmp");
   }
 
   public SubStoreWriter createSubStore(String name)
