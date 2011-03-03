@@ -29,7 +29,7 @@ package org.cdlib.xtf.dynaXML.test;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -188,8 +188,8 @@ public class TestableDynaXML extends DynaXML
     DocLocator loc = new DefaultDocLocator() 
     {
       @Override
-      public File calcLazyPath(File xtfHome, File idxConfigFile,
-                               String idxName, File srcTextFile,
+      public VFile calcLazyPath(VFile xtfHome, VFile idxConfigFile,
+                               String idxName, VFile srcTextFile,
                                boolean createDir) throws IOException
       {
         // If no index directory override, do the usual thing.

@@ -1,8 +1,7 @@
 package org.cdlib.xtf.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,10 +65,10 @@ public class WordMap
   private ArrayList blockHeads = new ArrayList(100);
 
   /** Construct a word map by reading in a file. */
-  public WordMap(File f, CharMap charMap)
+  public WordMap(VFile f, CharMap charMap)
     throws IOException 
   {
-    readFile(new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8")), charMap);
+    readFile(f.openBufferedReader(), charMap);
   }
 
   /** 

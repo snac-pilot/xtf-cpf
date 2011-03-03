@@ -35,7 +35,7 @@ package org.cdlib.xtf.textEngine;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +87,7 @@ public class QueryRequestParser
    * Keeps track of the servlet base directory, used to map relative
    * file paths.
    */
-  private File baseDir;
+  private VFile baseDir;
 
   /**
    * Configuration object used when building trees (only created if
@@ -116,7 +116,7 @@ public class QueryRequestParser
    *
    * @param queryDoc A document containing the query.
    */
-  public QueryRequest parseRequest(Source queryDoc, File baseDir,
+  public QueryRequest parseRequest(Source queryDoc, VFile baseDir,
                                    String defaultIndexPath)
     throws QueryGenException, QueryFormatError 
   {
@@ -159,7 +159,7 @@ public class QueryRequestParser
    *
    * @param queryDoc A document containing the query.
    */
-  public QueryRequest parseRequest(Source queryDoc, File baseDir)
+  public QueryRequest parseRequest(Source queryDoc, VFile baseDir)
     throws QueryGenException, QueryFormatError 
   {
     return parseRequest(queryDoc, baseDir, null);
@@ -171,7 +171,7 @@ public class QueryRequestParser
   } // getSource()
 
   /** Get the base directory from which relative paths are resolved */
-  public File getBaseDir() {
+  public VFile getBaseDir() {
     return baseDir;
   } // getBaseDir()
 
@@ -1696,7 +1696,7 @@ public class QueryRequestParser
 
     if (!path.startsWith("http:") &&
         !newVal.equals("NullStyle.xsl") &&
-        !(new File(path).canRead())) 
+        !(VFile.create(path).canRead())) 
     {
       error(
         "File \"" + newVal + "\" specified in '" + el.name() + "' element " +
@@ -1980,6 +1980,7 @@ public class QueryRequestParser
   {
     public Vector queries = new Vector();
     public Vector nots = new Vector();
+    @SuppressWarnings("unused")
     public String field;
 
     public QueryEntry(String field) {

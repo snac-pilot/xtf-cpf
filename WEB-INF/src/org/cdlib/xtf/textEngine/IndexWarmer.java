@@ -29,7 +29,7 @@ package org.cdlib.xtf.textEngine;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -226,7 +226,7 @@ public class IndexWarmer
         Trace.info(String.format("Warming index [%s]", ent.indexPath));
         Trace.tab();
         
-        File indexPath;
+        VFile indexPath;
         Directory dir;
 
         // For new-style (rotating) warming, we're going to start with the
@@ -310,10 +310,10 @@ public class IndexWarmer
   {
     String      indexPath;
 
-    File currentPath;
-    File pendingPath;
-    File sparePath;
-    File newPath;
+    VFile currentPath;
+    VFile pendingPath;
+    VFile sparePath;
+    VFile newPath;
     
     XtfSearcher curSearcher;
     XtfSearcher newSearcher;
@@ -324,11 +324,11 @@ public class IndexWarmer
     Entry(String indexPath)
     {
       this.indexPath  = indexPath;
-      currentPath     = new File(indexPath);
-      File parentDir  = currentPath.getParentFile();
-      newPath         = new File(parentDir, currentPath.getName() + "-new");
-      sparePath       = new File(parentDir, currentPath.getName() + "-spare");
-      pendingPath     = new File(parentDir, currentPath.getName() + "-pending");
+      currentPath     = VFile.create(indexPath);
+      VFile parentDir = currentPath.getParentFile();
+      newPath         = VFile.create(parentDir, currentPath.getName() + "-new");
+      sparePath       = VFile.create(parentDir, currentPath.getName() + "-spare");
+      pendingPath     = VFile.create(parentDir, currentPath.getName() + "-pending");
     }
   } // class Entry  
 

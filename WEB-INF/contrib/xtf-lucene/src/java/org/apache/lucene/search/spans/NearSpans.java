@@ -257,6 +257,7 @@ class NearSpans implements Spans
       return spans.explain();
     }
 
+    @SuppressWarnings("unused")
     public void collectTerms(Set terms) {
     }
 

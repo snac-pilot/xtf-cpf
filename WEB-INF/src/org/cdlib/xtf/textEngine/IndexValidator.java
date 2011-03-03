@@ -28,7 +28,7 @@ package org.cdlib.xtf.textEngine;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -103,7 +103,7 @@ public class IndexValidator
     try 
     {
       // Read the validation file.
-      File validationFile = new File(indexPath, validationName);
+      VFile validationFile = VFile.create(indexPath, validationName);
       EasyNode root = EasyNode.readXMLFile(validationFile);
       
       // Run the validation.

@@ -29,13 +29,16 @@ package org.cdlib.xtf.servletBase;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import java.io.IOException;
+
+import org.cdlib.xtf.util.VFile;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.FeatureKeys;
@@ -143,7 +146,7 @@ public class StylesheetCache extends GeneratingCache
     try 
     {
       String path = (String)key;
-      File file = new File(path);
+      VFile file = VFile.create(path);
       if (dependencyChecking)
         addDependency(new FileDependency(file));
       if (!path.startsWith("http:") && !file.canRead())
@@ -161,7 +164,7 @@ public class StylesheetCache extends GeneratingCache
       if (path.startsWith("http:"))
         url = path;
       else
-        url = file.toURL().toString();
+        url = file.toURI().toURL().toString();
       Templates x = factory.newTemplates(new SAXSource(new InputSource(url)));
       if (x == null)
         throw new TransformerException("Cannot read stylesheet: " + path);
@@ -196,7 +199,6 @@ public class StylesheetCache extends GeneratingCache
      * @param realResolver  The URIResolver that does the resolution
      */
     DepResolver(GeneratingCache cache, URIResolver realResolver) {
-      this.cache = cache;
       this.realResolver = realResolver;
     }
 
@@ -210,14 +212,26 @@ public class StylesheetCache extends GeneratingCache
     public Source resolve(String href, String base)
       throws TransformerException 
     {
+      // Do some space normalization
       if (href.indexOf(' ') >= 0)
         href = href.replaceAll(" ", "%20");
 
       if (base != null && base.indexOf(' ') >= 0)
         base = base.replaceAll(" ", "%20");
-
-      // First, do the real resolution.
-      Source src = realResolver.resolve(href, base);
+      
+      // Is it a virtual file of any sort?
+      Source src;
+      VFile vf = VFile.createIfPossible(base, href);
+      if (vf != null && vf.isFile() && vf.canRead())
+      {
+        try {
+          src = new StreamSource(vf.openInputStream(), vf.toURI().toString());
+        } catch (IOException e) {
+          throw new TransformerException(e);
+        }
+      }
+      else
+        src = realResolver.resolve(href, base);
 
       // If it's a file, add a dependency on it.
       if (src != null && dependencyReceiver != null) 
@@ -234,9 +248,6 @@ public class StylesheetCache extends GeneratingCache
       // And we're done.
       return src;
     } // resolve()
-
-    /** The cache to add dependencies to */
-    GeneratingCache cache;
 
     /** Does the work of resolving the URI's */
     URIResolver realResolver;
