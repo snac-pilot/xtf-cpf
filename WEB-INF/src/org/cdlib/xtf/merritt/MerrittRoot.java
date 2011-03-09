@@ -100,7 +100,7 @@ public class MerrittRoot extends VAbstractDir
       collections.put(node.attrValue("name"), new CollectionInfo(
           node.attrValue("name"),
           node.attrValue("server"),
-          node.attrValue("id"),
+          node.attrValue("collection"),
           node.attrValue("group"),
           node.attrValue("username"),
           node.attrValue("password")));
