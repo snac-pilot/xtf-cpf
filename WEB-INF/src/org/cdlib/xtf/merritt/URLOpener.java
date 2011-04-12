@@ -69,7 +69,7 @@ public class URLOpener
     URLConnection conn = url.openConnection();
     
     // Add authentication info if supplied
-    if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) 
+    if (username != null && password != null && username.length() > 0 && password.length() > 0) 
     {
       String authString = username + ":" + password;
       String auth64 = new Base64BinaryValue(authString.getBytes("UTF-8")).getStringValue();

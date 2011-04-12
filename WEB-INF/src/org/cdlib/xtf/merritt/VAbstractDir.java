@@ -76,7 +76,7 @@ public abstract class VAbstractDir extends VFile
   public String getPath() {
     if (cachedPath == null) {
       String parentPath = (parent == null) ? "" : parent.getPath();
-      if (parentPath.isEmpty() || parentPath.endsWith("/") || name.startsWith("/"))
+      if (parentPath.length() == 0 || parentPath.endsWith("/") || name.startsWith("/"))
         cachedPath = parentPath + name;
       else
         cachedPath = parentPath + "/" + name;

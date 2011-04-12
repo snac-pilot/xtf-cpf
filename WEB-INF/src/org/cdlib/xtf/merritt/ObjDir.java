@@ -76,7 +76,7 @@ public class ObjDir extends VAbstractDir
   
   public VFile resolve(String childPath)
   {
-    if (childPath == null || childPath.isEmpty())
+    if (childPath == null || childPath.length() == 0)
       return this;
     
     // Pick out the part before the slash and everything after it

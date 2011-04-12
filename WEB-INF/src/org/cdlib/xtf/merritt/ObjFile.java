@@ -110,7 +110,7 @@ public class ObjFile extends VAbstractFile
   
   @Override
   public VFile resolve(String childPath) {
-    assert(childPath == null || childPath.isEmpty());
+    assert(childPath == null || childPath.length() == 0);
     return this;
   }
 }
