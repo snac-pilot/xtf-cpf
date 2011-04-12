@@ -99,7 +99,7 @@ public class Path
         ret = ret.substring(0, 1).toUpperCase() + ret.substring(2);
       
       // Add a trailing slash if not already present.
-      if (!ret.isEmpty() && !ret.endsWith("/"))
+      if (ret.length() > 0 && !ret.endsWith("/"))
         ret += "/";
       
       // All done.
@@ -131,7 +131,7 @@ public class Path
   public final static String normalizeFileName(String path) 
   {
     String ret = normalizePath(path);
-    if (!ret.isEmpty() && ret.endsWith("/"))
+    if (ret.length() > 0 && ret.endsWith("/"))
       ret = ret.substring(0, ret.length() - 1);
     return ret;
   } // normalizeFileName()

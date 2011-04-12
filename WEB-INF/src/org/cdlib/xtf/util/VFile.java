@@ -71,7 +71,7 @@ public abstract class VFile implements Comparable<VFile>
   protected VFile() { } // clients should only create using factory
   
   public static boolean isAbsolute(String path) {
-    if (path == null || path.isEmpty())
+    if (path == null || path.length() == 0)
       return false;
     VNativeFile.register(); // ensure at least one factory
     for (Factory factory : factories.values()) {

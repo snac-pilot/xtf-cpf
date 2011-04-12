@@ -230,7 +230,7 @@ public class MerrittRoot extends VAbstractDir
   
   public VFile resolve(String childPath)
   {
-    if (childPath == null || childPath.isEmpty())
+    if (childPath == null || childPath.length() == 0)
       return this;
     
     // Get the identifier and path
