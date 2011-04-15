@@ -349,9 +349,10 @@ tranformed elements
     <xsl:if test="$VIAF">
       <h3><span><a href="#">Linked Data (<xsl:value-of select="count($VIAF) + count($dbpedia)"/>)</a></span></h3>
       <div>
-        <div class="related">
+        <div class="related" item="item">
+          <link itemprop="about" href="http://socialarchive.iath.virginia.edu/xtf/view?docId={replace(escape-html-uri($docId),'\s','+')}#entity"></link>
           <div class="arcrole">sameAs</div>
-          <a title="Virtual International Authority File" href="http://{$viafUrl}">http://<xsl:value-of select="$viafUrl"/></a>
+          <a itemprop="http://www.w3.org/2002/07/owl#sameAs" title="Virtual International Authority File" href="http://{$viafUrl}">http://<xsl:value-of select="$viafUrl"/></a>
         </div>
         <div class="related">
           <div><a href="{$dbpedia}"><xsl:value-of select="$dbpedia"/></a></div>
