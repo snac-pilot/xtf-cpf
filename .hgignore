@@ -12,3 +12,4 @@
 ^regress/.*/.*\.log$
 .*\.swp$
 .*.orig$
+docs/_*
