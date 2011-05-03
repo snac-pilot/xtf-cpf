@@ -18,6 +18,10 @@ available on the XTF site at:
 
     http://xtf.cdlib.org
 
+To check out the source code for the SNAC XTF branch 
+
+    hg clone https://xtf-cpf.googlecode.com/hg#xtf-cpf
+
 
 Contents:
 
