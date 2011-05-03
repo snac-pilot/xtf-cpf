@@ -13,3 +13,5 @@
 .*\.swp$
 .*.orig$
 docs/_*
+cpf2html/VERSION
+data
