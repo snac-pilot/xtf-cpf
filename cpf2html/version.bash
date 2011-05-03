@@ -2,7 +2,7 @@
 set -eu
 echo "<div class='version'>" > VERSION
 changeset=`hg -q id | sed s,\+$,,`
-echo "<a href=\"http://bitbucket.org/btingle/cpf2html/changeset/$changeset\">$changeset</a>" >> VERSION
+echo "<a href=\"http://code.google.com/p/xtf-cpf/source/detail?r=$changeset\">$changeset</a>" >> VERSION
 hg parents --template '{date|date}' >> VERSION
 echo "—code<div>" >> VERSION
 ls -ald ../data >> VERSION
