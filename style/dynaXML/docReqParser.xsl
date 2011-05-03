@@ -146,13 +146,7 @@
          base directory, to a stylesheet that translates an XML source document
          into an HTML page
       -->
-      <style path="{
-         if (matches($http.URL, $ercPat)) then 'style/dynaXML/docFormatter/erc/ercDocFormatter.xsl'
-         else if ($fileType = 'ead') then 'style/dynaXML/docFormatter/ead/eadDocFormatter.xsl'
-         else if ($fileType = 'nlm') then 'style/dynaXML/docFormatter/nlm/nlmDocFormatter.xsl'
-         else if ($fileType = 'tei') then 'style/dynaXML/docFormatter/tei/teiDocFormatter.xsl'
-         else if ($fileType = 'book') then 'style/dynaXML/docFormatter/bookreader/bookDocFormatter.xsl'
-         else                             'style/dynaXML/docFormatter/default/docFormatter.xsl'}"/>
+      <style path="cpf2html/cpf2html.xsl"/>
       
       <!-- ==================================================================
          The "source" tag specifies a filesystem path (relative to the servlet
@@ -188,11 +182,7 @@
          base directory, to a stylesheet that will be used to build any lazy files
          that weren't built at index time (due to specifying -nobuildlazy).
       -->
-      <preFilter path="{
-         if      ($fileType = 'ead') then 'style/textIndexer/ead/eadPreFilter.xsl'
-         else if ($fileType = 'nlm') then 'style/textIndexer/nlm/nlmPreFilter.xsl'
-         else if ($fileType = 'tei') then 'style/textIndexer/tei/teiPreFilter.xsl'
-         else                             'style/textIndexer/default/defaultPreFilter.xsl'}"/>
+      <preFilter path="cpf2html/cpfXtfPreFilter.xsl"/>
       
       <!-- ==================================================================
          If the user specifies a text query, it needs to be parsed into the
