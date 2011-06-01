@@ -76,4 +76,5 @@ $(document).ready(function() {
     layouter.layout();
     var renderer = new Graph.Renderer.Raphael('canvas', g, width, height);
     renderer.draw();
+    $('#canvas img').hide();
 });
