@@ -71,6 +71,12 @@ tranformed elements
     <xsl:apply-templates select="($layout)//*[local-name()='html']"/>
   </xsl:template>
 
+  <xsl:template match='script[@tmpl:replace="excanvas"]'>
+<xsl:comment>[if IE]>
+&lt;script language="javascript" type="text/javascript" src="/xtf/cpf2html/Jit/Extras/excanvas.js">
+&lt;/script>&lt;![endif]</xsl:comment>
+  </xsl:template>
+
   <xsl:template match='script[@tmpl:replace="identity-script"]'>
 <script>
 <xsl:text>var identity = "</xsl:text>
