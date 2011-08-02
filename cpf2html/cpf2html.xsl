@@ -54,7 +54,13 @@ tranformed elements
 
 
   <!-- keep gross layout in an external file -->
-  <xsl:variable name="layout" select="document(if ($mode='dracula') then 'dracula-rexster.html' else 'html-template.html')"/>
+  <xsl:variable name="layout" select="document(
+    if ($mode='dracula') 
+    then 'dracula-rexster.html' 
+    else if( $mode='RGraph')
+    then 'snac-jit.html' 
+    else 'html-template.html'
+  )"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
@@ -101,6 +107,7 @@ tranformed elements
       <a title="raw XML" href="/xtf/data/{escape-html-uri($docId)}">view source EAC-CPF</a>
       <div><a href="/xtf/search?mode=rnd">random record</a></div>
       <div><a href="/xtf/view?mode=dracula&amp;docId={escape-html-uri($docId)}">graph demo</a></div>
+      <div><a href="/xtf/view?mode=RGraph&amp;docId={escape-html-uri($docId)}">NEW RGraph demo</a></div>
     </xsl:element>
   </xsl:template>
 
