@@ -91,6 +91,21 @@ function init(){
                     }
                 });
             };
+            domElement.onmouseover = function(){
+                domElement.style.color="#000";
+                domElement.style.border="1px solid";
+                domElement.style.zIndex=5;
+                domElement.style.backgroundColor="#fff";
+                domElement.style.paddingLeft="0.1em";
+                //add some function to highlight all the edges that touch this node
+                //log(node.id);
+            };
+            domElement.onmouseout = function(){
+                domElement.style.color="#ccc";
+                domElement.style.border="0";
+                domElement.style.zIndex=0;
+                domElement.style.backgroundColor="transparent";
+            };
         },
         //Change some label dom properties.
         //This method is called each time a label is plotted.
