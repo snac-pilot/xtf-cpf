@@ -1,7 +1,7 @@
 var labelType, useGradients, nativeTextSupport, animate;
 
-// this is a modified version of an example file that came with Nicolas Garcia Belmonte's
-// JavaScript InfoVis Toolkit http://thejit.org/downloads/Jit-2.0.0b.zip
+// this is a modified version of an example file that came with Nicolas Garcia 
+// Belmonte's JavaScript InfoVis Toolkit http://thejit.org/downloads/Jit-2.0.0b.zip
 // http://thejit.org/static/v20/Jit/Examples/RGraph/example1.js
 // http://thejit.org/static/v20/Jit/Examples/RGraph/example1.html
 
@@ -29,7 +29,8 @@ function init(){
     // snac: look up node id
     var nodeId;
     $.ajax({
-      url: "/rex/snac/indices/name-idx?key=identity&value=" + encodeURIComponent(identity),
+      url: "/rex/snac/indices/name-idx?key=identity&value=" 
+          + encodeURIComponent(identity),
       async: false,
       dataType: "json",
       success: function (data) {
@@ -38,7 +39,7 @@ function init(){
         }
       }
     });
-    
+
     //init RGraph
     var rgraph = new $jit.RGraph({
         //Where to append the visualization
@@ -74,14 +75,17 @@ function init(){
             $.ajax({
                 url: "/rex/snac/vertices/" + node.id + "/snac/theJit",
                 success: function(json){
-                    // add the new json graph to the displayed graph
+                    // snac: add the new json graph to the displayed graph
                     rgraph.op.sum(json, {type: 'nothing', id: node.id });
-                    // this trims nodes that are far away from where we are now centered
-                    // should I do this before summing the new graph in, what if a node is at both
-                    // depth 1 and depth 4?
+                    // snac: this trims nodes that are far away from where we
+                    // are now centered should I do this before summing
+                    // the new graph in, what if a node is at both depth
+                    // 1 and depth 4?
                     node.eachLevel(4,5, function(deep) { 
-                        // this setTimeout should give control back to the browser after each node delete
-                        // the idea is to try to prevent UI lockups and "unresponsive script" dialogs
+                        // snac: this setTimeout should give control back to
+                        // the browser after each node delete the idea is
+                        // to try to prevent UI lockups and "unresponsive
+                        // script" dialogs
                         setTimeout(function() {
                             rgraph.graph.removeNode(deep.id);
                             rgraph.labels.clearLabels();
@@ -166,10 +170,41 @@ function init(){
               modes:['polar'],
               duration: 2000
             });
+        // snac: save the image at the original scale for zoomReset
         }
     });
 
-    //end
-    //append information about the root relations in the right column
-    // $jit.id('inner-details').innerHTML = rgraph.graph.getNode(rgraph.root).data.relation;
+    // SNAC panZoomControl
+    var scaleFactor = 1.1;
+    var panSize = 25;
+
+    $('#panUp').click(function(){
+        rgraph.canvas.translate(0, panSize * 1/rgraph.canvas.scaleOffsetY);
+    });
+
+    $('#panLeft').click(function(){
+        rgraph.canvas.translate(panSize * 1/rgraph.canvas.scaleOffsetX, 0);
+    });
+
+    $('#panRight').click(function(){
+        rgraph.canvas.translate(-panSize * 1/rgraph.canvas.scaleOffsetX, 0);
+    });
+
+    $('#panDown').click(function(){
+        rgraph.canvas.translate(0, -panSize * 1/rgraph.canvas.scaleOffsetY);
+    });
+
+    $('#zoomIn').click(function(){
+        rgraph.canvas.scale(scaleFactor,scaleFactor);
+    });
+
+    $('#zoomReset').click(function(){
+        rgraph.canvas.scale(1/rgraph.canvas.scaleOffsetX,1/rgraph.canvas.scaleOffsetY);
+    });
+
+    $('#zoomOut').click(function(){
+        rgraph.canvas.scale(1/scaleFactor,1/scaleFactor);
+    });
+
+
 }
