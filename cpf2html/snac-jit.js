@@ -77,11 +77,10 @@ function init(){
                 success: function(json){
                     // snac: add the new json graph to the displayed graph
                     rgraph.op.sum(json, {type: 'nothing', id: node.id });
+                    rgraph.graph.computeLevels(node.id);
                     // snac: this trims nodes that are far away from where we
-                    // are now centered should I do this before summing
-                    // the new graph in, what if a node is at both depth
-                    // 1 and depth 4?
-                    node.eachLevel(4,5, function(deep) { 
+                    // are now centered 
+                    node.eachLevel(5,6, function(deep) { 
                         // snac: this setTimeout should give control back to
                         // the browser after each node delete the idea is
                         // to try to prevent UI lockups and "unresponsive
@@ -140,11 +139,11 @@ function init(){
                 style.color = "#ccc";
             
             } else if(node._depth == 2){
-                style.fontSize = "0.7em";
+                style.fontSize = "0.8em";
                 style.color = "#ccc";
             
             } else {
-                style.fontSize = "0.6em";
+                style.fontSize = "0.7em";
                 style.color = "#ccc";
             }
 
@@ -170,13 +169,14 @@ function init(){
               modes:['polar'],
               duration: 2000
             });
-        // snac: save the image at the original scale for zoomReset
         }
     });
 
     // SNAC panZoomControl
     var scaleFactor = 1.1;
     var panSize = 25;
+    initialZoom = 1.331;
+    rgraph.canvas.scale(initialZoom,initialZoom);
 
     $('#panUp').click(function(){
         rgraph.canvas.translate(0, panSize * 1/rgraph.canvas.scaleOffsetY);
@@ -199,7 +199,7 @@ function init(){
     });
 
     $('#zoomReset').click(function(){
-        rgraph.canvas.scale(1/rgraph.canvas.scaleOffsetX,1/rgraph.canvas.scaleOffsetY);
+        rgraph.canvas.scale(initialZoom/rgraph.canvas.scaleOffsetX,initialZoom/rgraph.canvas.scaleOffsetY);
     });
 
     $('#zoomOut').click(function(){
