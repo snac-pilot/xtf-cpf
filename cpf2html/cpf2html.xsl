@@ -357,19 +357,30 @@ tranformed elements
   <xsl:template match="*[@tmpl:replace-markup='sameAs']" name="sameAs">
     <xsl:variable name="VIAF" select="($page)/eac:eac-cpf/eac:control/eac:sources/eac:source[starts-with(@xlink:href,'VIAF:')]"/>
     <xsl:variable name="viafUrl" select="replace($VIAF/@xlink:href,'^VIAF:(.*)$','viaf.org/viaf/$1')"/>
-    <xsl:variable name="dbpedia" select="($page)/eac:eac-cpf/*:meta/*:dbpedia[text()]"/>
+    <xsl:variable name="dbpedia" select="($page)/eac:eac-cpf/eac:control/eac:otherRecordId[@localType='dbpedia']"/>
+    <xsl:variable name="dbpediaUrl" select="replace($dbpedia,'^dbpedia:(.*)$','$1')"/>
     <xsl:variable name="wikipedia" select="replace($dbpedia, '^http://dbpedia.org/resource/', 'http://en.wikipedia.org/wiki/')"/>
-    <xsl:if test="$VIAF">
+    <xsl:if test="$VIAF or $dbpedia">
       <h3><span><a href="#">Linked Data (<xsl:value-of select="count($VIAF) + count($dbpedia)"/>)</a></span></h3>
       <div>
-        <div class="related" about="http://socialarchive.iath.virginia.edu/xtf/view?docId={replace(escape-html-uri($docId),'\s','+')}#entity">
-          <div class="arcrole">sameAs</div>
-          <a xmlns:owl="http://www.w3.org/2002/07/owl#" rel="owl:sameAs" title="Virtual International Authority File" href="http://{$viafUrl}">http://<xsl:value-of select="$viafUrl"/></a>
-        </div>
-        <div class="related">
-          <div><a href="{$dbpedia}"><xsl:value-of select="$dbpedia"/></a></div>
-          <div><a href="{$wikipedia}"><xsl:value-of select="$wikipedia"/></a></div>
-        </div>
+        <xsl:if test="$VIAF">
+          <div class="related" about="http://socialarchive.iath.virginia.edu/xtf/view?docId={replace(escape-html-uri($docId),'\s','+')}#entity">
+            <div class="arcrole">sameAs</div>
+              <a xmlns:owl="http://www.w3.org/2002/07/owl#" 
+                  rel="owl:sameAs" 
+                  title="Virtual International Authority File" 
+                  href="http://{$viafUrl}">http://<xsl:value-of select="$viafUrl"/></a>
+          </div>
+        </xsl:if>
+        <xsl:if test="$dbpedia">
+          <div class="related" about="http://socialarchive.iath.virginia.edu/xtf/view?docId={replace(escape-html-uri($docId),'\s','+')}#entity">
+            <div class="arcrole">sameAs</div>
+              <a xmlns:owl="http://www.w3.org/2002/07/owl#" 
+                  rel="owl:sameAs" 
+                  title="DBpedia" 
+                  href="{$dbpediaUrl}"><xsl:value-of select="$dbpediaUrl"/></a>
+          </div>
+        </xsl:if>
       </div>
     </xsl:if>
   </xsl:template>
