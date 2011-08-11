@@ -26,7 +26,4 @@ $(function () {
   $("div.more").click(function () {
     _gaq.push(['snak._trackEvent', 'OnPage', 'More Results', window.title ]);
   });
-  $("div.results").click(function () {
-    window.location=$("div.result").children("div").children("a").attr("href")
-  });
 });
