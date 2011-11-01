@@ -1,8 +1,6 @@
 ^data/
 ^index/
-^index-new/
-^index-pending/
-^index-spare/
+^index-.*/
 ^WEB-INF/classes/
 ^WEB-INF/lib/src/
 ^WEB-INF/dist/
