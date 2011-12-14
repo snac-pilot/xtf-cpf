@@ -9,36 +9,6 @@ a.noarrow:after { content: ""; }
 div.home { padding-bottom: 0.5em; float: left; }
 div.home { font-weight: 400; font-size: 150%; }
 .home { font-family: 'Reenie Beanie', Georgia, 'Times New Roman', serif; }
-.starburst { font-family: 'lucida grande', 'lucida sans unicode', sans-serif; }
-a.starburst:after { content: ""; }
-.starburst {
-	display:block;
-	width:6em;
-	height:6em;
-	background:#fe0;
-	-webkit-transform:rotate(-45deg);
-	-moz-transform:rotate(-45deg);
-	rotation:-45deg;
-	position:absolute;
-	top:2em;
-	left:66%; 
-	text-align:center;
-	text-decoration:none;
-        font-weight: bold;
-        font-size: 120%;
-	color:#000;
-}
-.starburst span {
-	display:block;
-	width:6em;
-	height:6em;
-	background:#fe0;
-	-webkit-transform:rotate(22.5deg);
-	-moz-transform:rotate(22.5deg);
-	rotation:22.5deg;
-}
-
-.starburst span div { padding-top: .5em; }
 
 .actions { float: right; }
 
