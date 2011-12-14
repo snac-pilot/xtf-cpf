@@ -107,13 +107,12 @@ tranformed elements
   <xsl:template match='*[@tmpl:change-value="actions"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
+      <div><a href="/xtf/view?mode=RGraph&amp;docId={escape-html-uri($docId)}">radial graph demo</a></div>
       <xsl:if test="$spreadsheets.formkey!=''">
         <div><a title="form in new window/tab" target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">note data issue</a></div>
       </xsl:if>
       <a title="raw XML" href="/xtf/data/{escape-html-uri($docId)}">view source EAC-CPF</a>
-      <div><a href="/xtf/search?mode=rnd">random record</a></div>
-      <div><a href="/xtf/view?mode=dracula&amp;docId={escape-html-uri($docId)}">graph demo</a></div>
-      <div><a href="/xtf/view?mode=RGraph&amp;docId={escape-html-uri($docId)}">NEW RGraph demo</a></div>
+      <!-- div><a href="/xtf/search?mode=rnd">random record</a></div -->
     </xsl:element>
   </xsl:template>
 
