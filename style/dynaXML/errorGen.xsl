@@ -120,7 +120,9 @@
 <xsl:variable name="reason">
   <xsl:choose>
     <xsl:when test="//InvalidDocument">
-      <xsl:text>dynaXML Error: Invalid Document</xsl:text>
+      <redirect:sendHttpError code="404" message="Document Not Found" 
+        xmlns:redirect="java:/org.cdlib.xtf.saxonExt.Redirect" 
+        xsl:extension-element-prefixes="redirect"/>
     </xsl:when>
     <xsl:when test="//NoPermission">
       <xsl:text>dynaXML Error: Permission Denied</xsl:text>
