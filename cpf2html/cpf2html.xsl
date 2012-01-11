@@ -624,7 +624,10 @@ tranformed elements
           </xsl:if>
         </xsl:when>
         <xsl:when test="$link-mode = 'worldcat-title'">
-          <a href="http://www.worldcat.org/title/%22{(eac:relationEntry)}%22">
+          <a href="http://www.worldcat.org/search?q=ti:{
+            encode-for-uri(eac:relationEntry)}+au:{
+            encode-for-uri(($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part)}"
+          >
             <xsl:value-of select="eac:relationEntry"/>
             <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           </a>
