@@ -598,12 +598,14 @@ tranformed elements
       <div>
         <xsl:apply-templates select="$resources" mode="eac">
           <xsl:sort select="eac:relationEntry"/>
+          <xsl:with-param name="link-mode" select="'worldcat-title'"/>
         </xsl:apply-templates>
       </div>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
+    <xsl:param name="link-mode" select="'snac'"/>
     <div class="{if (ends-with(lower-case(@xlink:role),'person')) then ('person') 
                  else if (ends-with(lower-case(@xlink:role),'corporatebody')) then ('corporateBody')
                  else if (ends-with(lower-case(@xlink:role),'family')) then ('family')
@@ -621,11 +623,17 @@ tranformed elements
             </div>
           </xsl:if>
         </xsl:when>
+        <xsl:when test="$link-mode = 'worldcat-title'">
+          <a href="http://www.worldcat.org/title/%22{(eac:relationEntry)}%22">
+            <xsl:value-of select="eac:relationEntry"/>
+            <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          </a>
+        </xsl:when>
         <xsl:otherwise>
           <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
           <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)};browse=">
-          <xsl:value-of select="eac:relationEntry"/>
-          <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+            <xsl:value-of select="eac:relationEntry"/>
+            <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
