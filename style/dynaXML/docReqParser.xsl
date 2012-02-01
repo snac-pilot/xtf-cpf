@@ -77,6 +77,7 @@
    <xsl:param name="query-join" select="'0'"/>
    <xsl:param name="query-exclude" select="'0'"/>
    <xsl:param name="sectionType" select="'0'"/>
+   <xsl:param name="mode"/>
    
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -146,7 +147,14 @@
          base directory, to a stylesheet that translates an XML source document
          into an HTML page
       -->
-      <style path="cpf2html/cpf2html.xsl"/>
+      <xsl:choose>
+        <xsl:when test="$mode='xml2owl'">
+          <style path="cpf2html/xml2owl/xml2owl.xsl"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <style path="cpf2html/cpf2html.xsl"/>
+        </xsl:otherwise>
+      </xsl:choose>
       
       <!-- ==================================================================
          The "source" tag specifies a filesystem path (relative to the servlet
