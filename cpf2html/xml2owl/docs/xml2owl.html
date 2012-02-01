@@ -281,9 +281,9 @@ a java implementation of the
                 <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;eac-cpf:cpfRelationType&quot;</span><span class="nt">&gt;</span>
                   <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@cpfRelationType&quot;</span><span class="nt">/&gt;</span>
                 <span class="k">&lt;/xsl:element&gt;</span>
-                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/p&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
                   <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;dc:description&quot;</span><span class="nt">&gt;</span>
-                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/p/text()&quot;</span><span class="nt">/&gt;</span>
+                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;</span>
                   <span class="k">&lt;/xsl:element&gt;</span>
                 <span class="k">&lt;/xsl:if&gt;</span>
               <span class="k">&lt;/xsl:when&gt;</span>
@@ -292,7 +292,7 @@ a java implementation of the
                 <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;eac-cpf:cpfRelationType&quot;</span><span class="nt">&gt;</span>
                   <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">/&gt;</span>
                 <span class="k">&lt;/xsl:element&gt;</span>
-                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/p&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
                   <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;dc:description&quot;</span><span class="nt">&gt;</span>
                     <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;</span>
                   <span class="k">&lt;/xsl:element&gt;</span>

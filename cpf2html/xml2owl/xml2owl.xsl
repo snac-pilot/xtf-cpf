@@ -300,9 +300,9 @@ a java implementation of the
                 <xsl:element name="eac-cpf:cpfRelationType">
                   <xsl:value-of select="@cpfRelationType"/>
                 </xsl:element>
-                <xsl:if test="eax:descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/eax:p">
                   <xsl:element name="dc:description">
-                    <xsl:value-of select="eax:descriptiveNote/p/text()"/>
+                    <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
                 </xsl:if>
               </xsl:when>
@@ -311,7 +311,7 @@ a java implementation of the
                 <xsl:element name="eac-cpf:cpfRelationType">
                   <xsl:value-of select="@xlink:arcrole"/>
                 </xsl:element>
-                <xsl:if test="eax:descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/eax:p">
                   <xsl:element name="dc:description">
                     <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
