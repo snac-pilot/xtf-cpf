@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- # convert EAC XML to RDF -->
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
@@ -20,9 +21,6 @@
   version="1.0"
 >
 <!--
-
-convert EAC XML to RDF 
-
 Created by Silvia Mazzini, Regesta.exe, 2011
 
 Copyright (c) 2011, Regesta.exe
@@ -38,22 +36,58 @@ Redistribution and use are permitted provided that the following conditions are 
       names of its contributors may be used to endorse or promote products
       derived from this software without specific prior written permission.
 
+### Related Work
+
+[EAC-CPF Ontology and Linked Archival Data](http://ceur-ws.org/Vol-801/paper6.pdf)
+Proceedings of the 1st International Workshop on Semantic Digital Archives (SDA 2011)
+
+[eac-cpf ontology browser](http://templates.xdams.net/RelationBrowser/genericEAC/RelationBrowserCIA.html)
+
+[Epimorphics Linked Data API Implementation](http://code.google.com/p/elda/)  
+a java implementation of the 
+[Linked Data API](http://code.google.com/p/linked-data-api/)
+
 -->
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+
+  <!-- root template -->
   <xsl:template match="*">
     <xsl:apply-templates/>
   </xsl:template>
+
+  <!-- I could not get this to work in the default namespace; 
+       choose eax: for the xml; eac-cpf is the RDF's namespace ~bt -->
   <xsl:template match="eax:eac-cpf">
+    <!-- need our real id in here -->
     <xsl:variable name="id">
       <xsl:value-of select="eax:control/eax:recordId/text()"/>
     </xsl:variable>
-    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:skos="http://www.w3.org/2008/05/skos#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:bio="http://purl.org/vocab/bio/0.1/" xmlns="urn:isbn:1-931666-33-4" xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/" xmlns:viaf="http://viaf.org/ontology/1.1/#" xmlns:gn="http://www.geonames.org/ontology#" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- root rdf element -->
+    <rdf:RDF 
+       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+       xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+       xmlns:dc="http://purl.org/dc/elements/1.1/"
+       xmlns:dcterms="http://purl.org/dc/terms/"
+       xmlns:owl="http://www.w3.org/2002/07/owl#"
+       xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:skos="http://www.w3.org/2008/05/skos#"
+       xmlns:foaf="http://xmlns.com/foaf/0.1/"
+       xmlns:bio="http://purl.org/vocab/bio/0.1/"
+       xmlns="urn:isbn:1-931666-33-4"
+       xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+       xmlns:viaf="http://viaf.org/ontology/1.1/#"
+       xmlns:gn="http://www.geonames.org/ontology#"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+    > 
+      <!-- make choices based on entity type -->
       <xsl:variable name="entityType">
         <xsl:value-of select="eax:cpfDescription/eax:identity/eax:entityType/text()"/>
       </xsl:variable>
       <xsl:if test="$entityType='corporateBody'">
         <xsl:element name="eac-cpf:corporateBody">
           <xsl:call-template name="scriviRDF">
+            <!-- not sure why we need this unused parameter -->
             <xsl:with-param name="rdf"/>
           </xsl:call-template>
         </xsl:element>
@@ -74,24 +108,37 @@ Redistribution and use are permitted provided that the following conditions are 
       </xsl:if>
     </rdf:RDF>
   </xsl:template>
+
+  <!-- convert to apply-templates ? -->
   <xsl:template name="scriviRDF">
+    <!-- unused rdf parameter -->
     <xsl:param name="rdf"/>
+    <!-- TODO; get into XTF so we can get the actual file name ... or get it in the source EAC -->
     <xsl:attribute name="rdf:about">http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity</xsl:attribute>
     <xsl:element name="rdfs:label">
       <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
+      <!-- value-ofs .../text() should maybe change to apply-template as well -->
       <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()"/>
+      <!-- this definatly should be refactored -->
       <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">, <xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,1,4)"/>-<xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,10,4)"/>
 			</xsl:if>
     </xsl:element>
-<!-- foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature -->
+<!-- `foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature` -->
+    <!-- dates -->
     <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">
       <xsl:element name="dc:date">
         <xsl:value-of select="eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate"/>
       </xsl:element>
     </xsl:if>
+
+    <!-- viaf -->
+    <!--```xslt
     <xsl:element name="owl:sameAs">
       <xsl:attribute name="rdf:resource">http://viaf.org/viaf/</xsl:attribute>
     </xsl:element>
+    ```-->
+
+    <!-- ## control -->
     <xsl:if test="eax:control">
       <xsl:element name="eac-cpf:control">
         <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
@@ -153,6 +200,7 @@ Redistribution and use are permitted provided that the following conditions are 
         </xsl:if>
       </xsl:element>
     </xsl:if>
+    <!-- ## cpfDescription -->
     <xsl:if test="eax:cpfDescription">
       <xsl:element name="eac-cpf:description">
         <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
@@ -276,8 +324,8 @@ Redistribution and use are permitted provided that the following conditions are 
           </xsl:for-each>
         </xsl:if>
       </xsl:element>
-      <xsl:if test="eax:cpfDescription/relations">
-        <xsl:for-each select="eax:cpfDescription/relations/cpfRelation">
+      <xsl:if test="eax:cpfDescription/eax:relations">
+        <xsl:for-each select="eax:cpfDescription/eax:relations/eax:cpfRelation">
           <xsl:element name="eac-cpf:cpfRelation">
             <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
             <xsl:choose>
@@ -314,15 +362,25 @@ Redistribution and use are permitted provided that the following conditions are 
             </xsl:if>
           </xsl:element>
         </xsl:for-each>
-        <xsl:for-each select="eax:cpfDescription/relations/resourceRelation">
+        <xsl:for-each select="eax:cpfDescription/eax:relations/eax:resourceRelation">
           <xsl:choose>
             <xsl:when test="@resourceRelationType">
               <xsl:element name="eac-cpf:resourceRelation">
                 <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
                 <xsl:element name="rdfs:label">
-                  <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-                  <xsl:if test="@resourceRelationType='creatorOf'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
-                  <xsl:if test="@resourceRelationType='other'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  in relation with <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+                  <xsl:attribute name="rdf:datatype">
+                     <xsl:text>http://www.w3.org/2001/XMLSchema#string</xsl:text>
+                  </xsl:attribute>
+                  <xsl:if test="@resourceRelationType='creatorOf'">
+                    <xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>
+                    <xsl:text>  creator of </xsl:text>
+                    <xsl:value-of select="eax:relationEntry/text()"/>
+                  </xsl:if>
+                  <xsl:if test="@resourceRelationType='other'">
+                    <xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>
+                    <xsl:text>  in relation with </xsl:text>
+                    <xsl:value-of select="eax:relationEntry/text()"/>
+                  </xsl:if>
                 </xsl:element>
                 <xsl:element name="eac-cpf:resourceRelationType">
                   <xsl:value-of select="@resourceRelationType"/>
@@ -332,9 +390,8 @@ Redistribution and use are permitted provided that the following conditions are 
                     <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
                 </xsl:if>
-                <xsl:element name="dcterms:relation">
-                  <xsl:attribute name="rdf:resource">http://archivi.ibc.regione.emilia-romagna.it/ead-str/<xsl:value-of select="eax:relationEntry/@localType"/></xsl:attribute>
-                </xsl:element>
+                <!-- xsl:element name="dcterms:relation">
+                </xsl:element -->
                 <xsl:if test="eax:date">
                   <xsl:element name="dc:date">
                     <xsl:value-of select="eax:date"/>
@@ -345,7 +402,13 @@ Redistribution and use are permitted provided that the following conditions are 
             <xsl:when test="@xlink:arcrole">
               <xsl:element name="eac-cpf:resourceRelation">
                 <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
-                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/> <xsl:value-of select="@xlink:arcrole"/> <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
+                <xsl:element name="rdfs:label">
+                  <xsl:attribute name="rdf:datatype">
+                    <xsl:text>http://www.w3.org/2001/XMLSchema#string</xsl:text>
+                  </xsl:attribute>
+                  <xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/>                  <xsl:value-of select="@xlink:arcrole"/>
+                  <xsl:value-of select="eax:relationEntry/text()"/>
+                </xsl:element>
                 <xsl:element name="eac-cpf:resourceRelationType">
                   <xsl:value-of select="@xlink:arcrole"/>
                 </xsl:element>
@@ -362,11 +425,21 @@ Redistribution and use are permitted provided that the following conditions are 
         <xsl:for-each select="eax:cpfDescription/eax:relations/eax:functionRelation">
           <xsl:element name="eac-cpf:functionRelation">
             <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
+<!-- need to come back here and finsh converting this to xsl:text -->
             <xsl:element name="rdfs:label">
               <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-              <xsl:if test="@functionRelationType='controls'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
-              <xsl:if test="@functionRelationType='owns'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
-              <xsl:if test="@functionRelationType='performs'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+              <xsl:if test="@functionRelationType='controls'">
+                <xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of 
+                <xsl:value-of select="eax:relationEntry/text()"/>
+              </xsl:if>
+              <xsl:if test="@functionRelationType='owns'">
+                <xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of 
+                <xsl:value-of select="eax:relationEntry/text()"/>
+              </xsl:if>
+              <xsl:if test="@functionRelationType='performs'">
+                <xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of 
+              <xsl:value-of select="eax:relationEntry/text()"/>
+            </xsl:if>
             </xsl:element>
             <xsl:element name="eac-cpf:functionRelationType">
               <xsl:value-of select="@functionRelationType"/>
@@ -384,6 +457,7 @@ Redistribution and use are permitted provided that the following conditions are 
           </xsl:element>
         </xsl:for-each>
       </xsl:if>
+<!-- not sure if we want this yet -->
       <xsl:element name="skos:changeNote">
         <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
         <xsl:element name="dc:date">
@@ -400,13 +474,20 @@ Redistribution and use are permitted provided that the following conditions are 
       </xsl:element>
     </xsl:if>
   </xsl:template>
+  <!-- bioghist -->
   <xsl:template match="eax:cpfDescription/eax:description/eax:biogHist">
     <xsl:if test="eax:p">
       <xsl:apply-templates/>
     </xsl:if>
-    <xsl:if test="chronList">
-      <xsl:for-each select="chronList/chronItem"><xsl:if test="date"><xsl:value-of select="date"/>: </xsl:if><xsl:value-of select="normalize-space(event)"/>; 
-			</xsl:for-each>
+    <!-- refactor to apply templates -->
+    <xsl:if test="eax:chronList">
+      <xsl:for-each select="eax:chronList/eax:chronItem">
+        <xsl:if test="eax:date">
+          <xsl:value-of select="eax:date"/>
+          <xsl:text>: </xsl:text>
+        </xsl:if>
+      </xsl:for-each>
+        <xsl:value-of select="normalize-space(eax:event)"/>; 
     </xsl:if>
   </xsl:template>
   <xsl:template match="eax:p">
