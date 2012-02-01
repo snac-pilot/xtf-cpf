@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- # convert EAC XML to RDF -->
+<!-- # convert EAC XML to RDF 
+[this file on google code](http://code.google.com/p/xtf-cpf/source/browse/cpf2html/xml2owl/xml2owl.xsl?name=xtf-cpf) 
+ -->
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
@@ -54,8 +56,6 @@ a java implementation of the
 Modified by Brian Tingle for the [Social Networks and Archival 
 Context Project](http://socialarchive.iath.virginia.edu/ )
 Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
-
-<!-- [xml2owl in xtf-cpf on google code](http://code.google.com/p/xtf-cpf/source/browse/cpf2html/xml2owl/xml2owl.xsl?name=xtf-cpf) -->
 
 -->
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
