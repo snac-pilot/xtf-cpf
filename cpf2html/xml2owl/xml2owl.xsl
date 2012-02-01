@@ -76,7 +76,7 @@ Redistribution and use are permitted provided that the following conditions are 
   </xsl:template>
   <xsl:template name="scriviRDF">
     <xsl:param name="rdf"/>
-    <xsl:attribute name="rdf:about">URI<xsl:value-of select="eax:control/eax:recordId"/></xsl:attribute>
+    <xsl:attribute name="rdf:about">http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity</xsl:attribute>
     <xsl:element name="rdfs:label">
       <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
       <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()"/>
@@ -163,16 +163,16 @@ Redistribution and use are permitted provided that the following conditions are 
               <xsl:attribute name="xml:lang">
                 <xsl:value-of select="@xml:lang"/>
               </xsl:attribute>
-              <xsl:value-of select="part/text()"/>
+              <xsl:value-of select="eax:part/text()"/>
             </xsl:element>
-            <xsl:if test="authorizedForm">
+            <xsl:if test="eax:authorizedForm">
               <xsl:element name="eac-cpf:authorizedForm">
-                <xsl:value-of select="authorizedForm/text()"/>
+                <xsl:value-of select="eax:authorizedForm/text()"/>
               </xsl:element>
             </xsl:if>
-            <xsl:if test="alternativeForm">
+            <xsl:if test="eax:alternativeForm">
               <xsl:element name="eac-cpf:alternativeForm">
-                <xsl:value-of select="alternativeForm/text()"/>
+                <xsl:value-of select="eax:alternativeForm/text()"/>
               </xsl:element>
             </xsl:if>
             <xsl:if test="@localType">
@@ -182,80 +182,80 @@ Redistribution and use are permitted provided that the following conditions are 
             </xsl:if>
           </xsl:element>
         </xsl:for-each>
-        <xsl:if test="eax:cpfDescription/eax:description/existDates/date/@standardDate">
+        <xsl:if test="eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate">
           <xsl:element name="eac-cpf:existDates">
-            <xsl:value-of select="eax:cpfDescription/eax:description/existDates/date/@standardDate"/>
+            <xsl:value-of select="eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate"/>
           </xsl:element>
         </xsl:if>
-        <xsl:if test="eax:cpfDescription/eax:description/existDates/dateRange">
+        <xsl:if test="eax:cpfDescription/eax:description/eax:existDates/eax:dateRange">
           <xsl:element name="eac-cpf:existDates">
-            <xsl:value-of select="eax:cpfDescription/eax:description/existDates/dateRange/fromDate"/>
-            <xsl:if test="eax:cpfDescription/eax:description/existDates/dateRange/toDate">/<xsl:value-of select="eax:cpfDescription/eax:description/existDates/dateRange/toDate"/>
+            <xsl:value-of select="eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:fromDate"/>
+            <xsl:if test="eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:toDate">/<xsl:value-of select="eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:toDate"/>
 						</xsl:if>
           </xsl:element>
         </xsl:if>
         <xsl:choose>
-          <xsl:when test="eax:cpfDescription/eax:description/localDescription[@localType='subject']">
-            <xsl:for-each select="eax:cpfDescription/eax:description/localDescription[@localType='subject']">
+          <xsl:when test="eax:cpfDescription/eax:description/eax:localDescription[@localType='subject']">
+            <xsl:for-each select="eax:cpfDescription/eax:description/eax:localDescription[@localType='subject']">
               <xsl:element name="dc:subject">
-                <xsl:value-of select="term/text()"/>
+                <xsl:value-of select="eax:term/text()"/>
               </xsl:element>
             </xsl:for-each>
           </xsl:when>
         </xsl:choose>
-        <xsl:if test="eax:cpfDescription/eax:description/places">
-          <xsl:for-each select="eax:cpfDescription/eax:description/places/place">
+        <xsl:if test="eax:cpfDescription/eax:description/eax:places">
+          <xsl:for-each select="eax:cpfDescription/eax:description/eax:places/eax:place">
             <xsl:choose>
-              <xsl:when test="contains(descriptiveNote/p,'nascita')">
+              <xsl:when test="contains(eax:descriptiveNote/eax:p,'nascita')">
                 <xsl:element name="bio:Birth">
                   <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
                   <xsl:element name="bio:date">
-                    <xsl:value-of select="substring-before(../../existDates,'-')"/>
+                    <xsl:value-of select="substring-before(../../eax:existDates,'-')"/>
                   </xsl:element>
-                  <xsl:if test="placeEntry">
+                  <xsl:if test="eax:placeEntry">
                     <xsl:element name="gn:Feature">
                       <xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="placeEntry"/>
+                        <xsl:value-of select="eax:placeEntry"/>
                       </xsl:attribute>
                     </xsl:element>
                     <xsl:element name="eac-cpf:place">
                       <xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="placeEntry"/>
+                        <xsl:value-of select="eax:placeEntry"/>
                       </xsl:attribute>
                     </xsl:element>
                   </xsl:if>
                 </xsl:element>
               </xsl:when>
-              <xsl:when test="contains(descriptiveNote/p,'morte')">
+              <xsl:when test="contains(eax:descriptiveNote/eax:p,'morte')">
                 <xsl:element name="bio:Death">
                   <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
                   <xsl:element name="bio:date">
-                    <xsl:value-of select="substring-after(../../existDates,'-')"/>
+                    <xsl:value-of select="substring-after(../../eax:existDates,'-')"/>
                   </xsl:element>
-                  <xsl:if test="placeEntry">
+                  <xsl:if test="eax:placeEntry">
                     <xsl:element name="gn:Feature">
                       <xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="placeEntry"/>
+                        <xsl:value-of select="eax:placeEntry"/>
                       </xsl:attribute>
                     </xsl:element>
                     <xsl:element name="eac-cpf:place">
                       <xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="placeEntry"/>
+                        <xsl:value-of select="eax:placeEntry"/>
                       </xsl:attribute>
                     </xsl:element>
                   </xsl:if>
                 </xsl:element>
               </xsl:when>
-              <xsl:when test="descriptiveNote/p/text()='sede'">
-                <xsl:if test="placeEntry">
+              <xsl:when test="eax:descriptiveNote/eax:p/text()='sede'">
+                <xsl:if test="eax:placeEntry">
                   <xsl:element name="gn:Feature">
                     <xsl:attribute name="rdf:resource">
-                      <xsl:value-of select="placeEntry"/>
+                      <xsl:value-of select="eax:placeEntry"/>
                     </xsl:attribute>
                   </xsl:element>
                   <xsl:element name="eac-cpf:place">
                     <xsl:attribute name="rdf:resource">
-                      <xsl:value-of select="placeEntry"/>
+                      <xsl:value-of select="eax:placeEntry"/>
                     </xsl:attribute>
                   </xsl:element>
                 </xsl:if>
@@ -282,24 +282,24 @@ Redistribution and use are permitted provided that the following conditions are 
             <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
             <xsl:choose>
               <xsl:when test="@cpfRelationType">
-                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/> <xsl:value-of select="@cpfRelationType"/> relation with <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
+                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/> <xsl:value-of select="@cpfRelationType"/> relation with <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
                 <xsl:element name="eac-cpf:cpfRelationType">
                   <xsl:value-of select="@cpfRelationType"/>
                 </xsl:element>
-                <xsl:if test="descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/p">
                   <xsl:element name="dc:description">
-                    <xsl:value-of select="descriptiveNote/p/text()"/>
+                    <xsl:value-of select="eax:descriptiveNote/p/text()"/>
                   </xsl:element>
                 </xsl:if>
               </xsl:when>
               <xsl:when test="@xlink:arcrole">
-                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/part"/> <xsl:value-of select="@xlink:arcrole"/> <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
+                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/> <xsl:value-of select="@xlink:arcrole"/> <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
                 <xsl:element name="eac-cpf:cpfRelationType">
                   <xsl:value-of select="@xlink:arcrole"/>
                 </xsl:element>
-                <xsl:if test="descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/p">
                   <xsl:element name="dc:description">
-                    <xsl:value-of select="descriptiveNote/p/text()"/>
+                    <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
                 </xsl:if>
               </xsl:when>
@@ -321,23 +321,23 @@ Redistribution and use are permitted provided that the following conditions are 
                 <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
                 <xsl:element name="rdfs:label">
                   <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-                  <xsl:if test="@resourceRelationType='creatorOf'"><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/>  creator of <xsl:value-of select="relationEntry/text()"/></xsl:if>
-                  <xsl:if test="@resourceRelationType='other'"><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/>  in relation with <xsl:value-of select="relationEntry/text()"/></xsl:if>
+                  <xsl:if test="@resourceRelationType='creatorOf'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+                  <xsl:if test="@resourceRelationType='other'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  in relation with <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
                 </xsl:element>
                 <xsl:element name="eac-cpf:resourceRelationType">
                   <xsl:value-of select="@resourceRelationType"/>
                 </xsl:element>
-                <xsl:if test="descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/eax:p">
                   <xsl:element name="dc:description">
-                    <xsl:value-of select="descriptiveNote/p/text()"/>
+                    <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
                 </xsl:if>
                 <xsl:element name="dcterms:relation">
-                  <xsl:attribute name="rdf:resource">http://archivi.ibc.regione.emilia-romagna.it/ead-str/<xsl:value-of select="relationEntry/@localType"/></xsl:attribute>
+                  <xsl:attribute name="rdf:resource">http://archivi.ibc.regione.emilia-romagna.it/ead-str/<xsl:value-of select="eax:relationEntry/@localType"/></xsl:attribute>
                 </xsl:element>
-                <xsl:if test="date">
+                <xsl:if test="eax:date">
                   <xsl:element name="dc:date">
-                    <xsl:value-of select="date"/>
+                    <xsl:value-of select="eax:date"/>
                   </xsl:element>
                 </xsl:if>
               </xsl:element>
@@ -345,13 +345,13 @@ Redistribution and use are permitted provided that the following conditions are 
             <xsl:when test="@xlink:arcrole">
               <xsl:element name="eac-cpf:resourceRelation">
                 <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
-                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/part"/> <xsl:value-of select="@xlink:arcrole"/> <xsl:value-of select="relationEntry/text()"/></xsl:element>
+                <xsl:element name="rdfs:label"><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/> <xsl:value-of select="@xlink:arcrole"/> <xsl:value-of select="eax:relationEntry/text()"/></xsl:element>
                 <xsl:element name="eac-cpf:resourceRelationType">
                   <xsl:value-of select="@xlink:arcrole"/>
                 </xsl:element>
-                <xsl:if test="descriptiveNote/p">
+                <xsl:if test="eax:descriptiveNote/eax:p">
                   <xsl:element name="dc:description">
-                    <xsl:value-of select="descriptiveNote/p/text()"/>
+                    <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
                   </xsl:element>
                 </xsl:if>
               </xsl:element>
@@ -364,16 +364,16 @@ Redistribution and use are permitted provided that the following conditions are 
             <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
             <xsl:element name="rdfs:label">
               <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-              <xsl:if test="@functionRelationType='controls'"><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
-              <xsl:if test="@functionRelationType='owns'"><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
-              <xsl:if test="@functionRelationType='performs'"><xsl:value-of select="../../eax:identity/eax:nameEntry/part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+              <xsl:if test="@functionRelationType='controls'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+              <xsl:if test="@functionRelationType='owns'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
+              <xsl:if test="@functionRelationType='performs'"><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/>  creator of <xsl:value-of select="eax:relationEntry/text()"/></xsl:if>
             </xsl:element>
             <xsl:element name="eac-cpf:functionRelationType">
               <xsl:value-of select="@functionRelationType"/>
             </xsl:element>
-            <xsl:if test="descriptiveNote/p">
+            <xsl:if test="eax:descriptiveNote/eax:p">
               <xsl:element name="dc:description">
-                <xsl:value-of select="descriptiveNote/p/text()"/>
+                <xsl:value-of select="eax:descriptiveNote/eax:p/text()"/>
               </xsl:element>
             </xsl:if>
             <xsl:if test="date">
@@ -401,7 +401,7 @@ Redistribution and use are permitted provided that the following conditions are 
     </xsl:if>
   </xsl:template>
   <xsl:template match="eax:cpfDescription/eax:description/eax:biogHist">
-    <xsl:if test="p">
+    <xsl:if test="eax:p">
       <xsl:apply-templates/>
     </xsl:if>
     <xsl:if test="chronList">
@@ -409,7 +409,7 @@ Redistribution and use are permitted provided that the following conditions are 
 			</xsl:for-each>
     </xsl:if>
   </xsl:template>
-  <xsl:template match="p">
+  <xsl:template match="eax:p">
     <xsl:apply-templates/>
   </xsl:template>
 </xsl:stylesheet>
