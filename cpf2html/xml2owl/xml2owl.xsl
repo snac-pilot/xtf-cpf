@@ -48,7 +48,20 @@ a java implementation of the
 [Linked Data API](http://code.google.com/p/linked-data-api/)
 
 -->
+<!-- 
+
+### Social Network and Archival Context
+Modified by Brian Tingle for the [Social Networks and Archival 
+Context Project](http://socialarchive.iath.virginia.edu/ )
+Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
+
+<!-- [xml2owl in xtf-cpf on google code](http://code.google.com/p/xtf-cpf/source/browse/cpf2html/xml2owl/xml2owl.xsl?name=xtf-cpf) -->
+
+-->
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+
+  <!-- supplied by XTF -->
+  <xsl:param name="docId"/>
 
   <!-- root template -->
   <xsl:template match="*">
@@ -81,7 +94,9 @@ a java implementation of the
       </xsl:variable>
       <xsl:element name="eac-cpf:{$entityType}">
         <xsl:attribute name="rdf:about">
-          <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity</xsl:text>
+          <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=</xsl:text>
+          <xsl:value-of select="$docId"/>
+          <xsl:text>#entity</xsl:text>
         </xsl:attribute>
           <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
             <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part"/>
@@ -97,12 +112,13 @@ a java implementation of the
       </xsl:element>
     </xsl:if>
 
-    <!-- viaf -->
-    <!--```xslt
+    <!-- viaf --><!-- add dbpedia as well -->
+    <!--
+```
     <xsl:element name="owl:sameAs">
       <xsl:attribute name="rdf:resource">http://viaf.org/viaf/</xsl:attribute>
     </xsl:element>
-    ```-->
+```-->
 
     <!-- ## control -->
     <xsl:if test="eax:control">
