@@ -58,10 +58,6 @@ a java implementation of the
   <!-- I could not get this to work in the default namespace; 
        choose eax: for the xml; eac-cpf is the RDF's namespace ~bt -->
   <xsl:template match="eax:eac-cpf">
-    <!-- need our real id in here -->
-    <xsl:variable name="id">
-      <xsl:value-of select="eax:control/eax:recordId/text()"/>
-    </xsl:variable>
     <!-- root rdf element -->
     <rdf:RDF 
        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -80,49 +76,19 @@ a java implementation of the
        xmlns:gn="http://www.geonames.org/ontology#"
        xmlns:xlink="http://www.w3.org/1999/xlink"
     > 
-      <!-- make choices based on entity type -->
       <xsl:variable name="entityType">
-        <xsl:value-of select="eax:cpfDescription/eax:identity/eax:entityType/text()"/>
+        <xsl:value-of select="eax:cpfDescription/eax:identity/eax:entityType"/>
       </xsl:variable>
-      <xsl:if test="$entityType='corporateBody'">
-        <xsl:element name="eac-cpf:corporateBody">
-          <xsl:call-template name="scriviRDF">
-            <!-- not sure why we need this unused parameter -->
-            <xsl:with-param name="rdf"/>
-          </xsl:call-template>
-        </xsl:element>
-      </xsl:if>
-      <xsl:if test="$entityType='family'">
-        <xsl:element name="eac-cpf:family">
-          <xsl:call-template name="scriviRDF">
-            <xsl:with-param name="rdf"/>
-          </xsl:call-template>
-        </xsl:element>
-      </xsl:if>
-      <xsl:if test="$entityType='person'">
-        <xsl:element name="eac-cpf:person">
-          <xsl:call-template name="scriviRDF">
-            <xsl:with-param name="rdf"/>
-          </xsl:call-template>
-        </xsl:element>
-      </xsl:if>
-    </rdf:RDF>
-  </xsl:template>
-
-  <!-- convert to apply-templates ? -->
-  <xsl:template name="scriviRDF">
-    <!-- unused rdf parameter -->
-    <xsl:param name="rdf"/>
-    <!-- TODO; get into XTF so we can get the actual file name ... or get it in the source EAC -->
-    <xsl:attribute name="rdf:about">http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity</xsl:attribute>
-    <xsl:element name="rdfs:label">
-      <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
-      <!-- value-ofs .../text() should maybe change to apply-template as well -->
-      <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()"/>
+      <xsl:element name="eac-cpf:{$entityType}">
+        <xsl:attribute name="rdf:about">
+          <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity</xsl:text>
+        </xsl:attribute>
+          <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+            <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part"/>
       <!-- this definatly should be refactored -->
       <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">, <xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,1,4)"/>-<xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,10,4)"/>
 			</xsl:if>
-    </xsl:element>
+    </rdfs:label>
 <!-- `foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature` -->
     <!-- dates -->
     <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">
@@ -473,7 +439,12 @@ a java implementation of the
         <xsl:value-of select="eax:control/eax:maintenanceHistory/eax:maintenanceEvent[child::eventType='create']/eax:agent"/>
       </xsl:element>
     </xsl:if>
+
+      </xsl:element>
+    </rdf:RDF>
   </xsl:template>
+
+
   <!-- bioghist -->
   <xsl:template match="eax:cpfDescription/eax:description/eax:biogHist">
     <xsl:if test="eax:p">
