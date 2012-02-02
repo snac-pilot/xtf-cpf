@@ -95,6 +95,47 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
      <eac-cpf:source><xsl:value-of select="eax:sourceEntry"/></eac-cpf:source>
   </xsl:template>
 
+  <!-- XML's Id to OWL's ID -->
+  <xsl:template match="eax:recordId | eax:otherRecordId">
+    <xsl:element name="eac-cpf:{substring(local-name(),0,string-length(local-name()))}D">
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="eax:maintenanceStatus | eax:publicationStatus | eax:maintenanceAgency | eax:languageDeclaration | eax:conventionDeclaration">
+    <xsl:element name="eac-cpf:{local-name()}">
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- not sure why this is not a straigt mapping; also there is a script sub-element in the xml version of the declaration -->
+  <xsl:template match="eax:languageDeclaration">
+    <eac-cpf:languageDeclaration>
+      <xsl:apply-templates select="eax:language"/>
+    </eac-cpf:languageDeclaration>
+  </xsl:template>
+
+  <!-- this mapping jogs as well -->
+  <xsl:template match="eax:maintenanceAgency">
+      <xsl:apply-templates select="eax:agencyName"/>
+  </xsl:template>
+
+  <xsl:template match="eax:agencyName">
+      <xsl:apply-templates/> 
+  </xsl:template>
+
+  <xsl:template match="eax:control">
+    <eac-cpf:control>
+      <xsl:attribute name="rdf:parseType">Resource</xsl:attribute>
+      <rdfs:label>
+        <xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
+        <xsl:value-of select="../eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()"/>
+      </rdfs:label>
+      <xsl:apply-templates select="eax:recordId | eax:otherRecordId | eax:maintenanceStatus | eax:publicationStatus | eax:maintenanceAgency | eax:languageDeclaration | eax:conventionDeclaration | eax:otherRecordId"/>
+      <xsl:apply-templates select="eax:sources"/>
+    </eac-cpf:control>
+  </xsl:template>
+
   <!-- I could not get this to work in the default namespace; 
        choose eax: for the xml; eac-cpf is the RDF's namespace ~bt -->
   <xsl:template match="eax:eac-cpf">
@@ -119,27 +160,11 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
           <!-- viaf --><!-- add dbpedia as well -->
 
     <!-- ## control -->
-    <xsl:if test="eax:control">
-      <eac-cpf:control><xsl:attribute name="rdf:parseType">Resource</xsl:attribute><rdfs:label><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()"/></rdfs:label><eac-cpf:recordID><xsl:value-of select="eax:control/eax:recordId"/></eac-cpf:recordID><xsl:if test="eax:control/eax:otherRecordId">
-          <xsl:for-each select="eax:control/eax:otherRecordId">
-            <eac-cpf:otherRecordID><xsl:value-of select="."/></eac-cpf:otherRecordID>
-          </xsl:for-each>
-        </xsl:if><xsl:if test="eax:control/eax:maintenanceStatus">
-          <eac-cpf:maintenanceStatus><xsl:value-of select="eax:control/eax:maintenanceStatus"/></eac-cpf:maintenanceStatus>
-        </xsl:if><xsl:if test="eax:control/eax:publicationStatus">
-          <eac-cpf:publicationStatus><xsl:value-of select="eax:control/eax:publicationStatus"/></eac-cpf:publicationStatus>
-        </xsl:if><xsl:if test="eax:control/eax:maintenanceAgency">
-          <eac-cpf:maintenanceAgency><xsl:value-of select="eax:control/eax:maintenanceAgency/eax:agencyName/text()"/></eac-cpf:maintenanceAgency>
-        </xsl:if><xsl:if test="eax:control/eax:languageDeclaration">
-          <eac-cpf:languageDeclaration><xsl:value-of select="eax:control/eax:languageDeclaration/eax:language/text()"/></eac-cpf:languageDeclaration>
-        </xsl:if><xsl:if test="eax:control/eax:conventionDeclaration">
-          <eac-cpf:conventionDeclaration><xsl:value-of select="eax:control/eax:conventionDeclaration/eax:citation/text()"/></eac-cpf:conventionDeclaration>
-        </xsl:if>
-
-
-          <xsl:apply-templates select="eax:control/eax:sources"/>
-      </eac-cpf:control>
-    </xsl:if>
+    <xsl:apply-templates select="eax:control"/>
+<!-- 
+==========================
+this is as far as I've gotten with the refactor to templates
+-->
     <!-- ## cpfDescription -->
     <xsl:if test="eax:cpfDescription">
       <eac-cpf:description><xsl:attribute name="rdf:parseType">Resource</xsl:attribute><xsl:for-each select="eax:cpfDescription/eax:identity/eax:nameEntry">
