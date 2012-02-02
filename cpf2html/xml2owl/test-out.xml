@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:skos="http://www.w3.org/2008/05/skos#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:bio="http://purl.org/vocab/bio/0.1/" xmlns="urn:isbn:1-931666-33-4" xmlns:eax="urn:isbn:1-931666-33-4" xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/" xmlns:viaf="http://viaf.org/ontology/1.1/#" xmlns:gn="http://www.geonames.org/ontology#" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <eac-cpf:pefkyr rdf:about="http://socialarchive.iath.virginia.edu/xtf/view?docId=#entity">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974., -</rdfs:label>
+    <dc:date/>
+    <eac-cpf:control rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.</rdfs:label>
+      <eac-cpf:recordID>CBL.ms998004.c</eac-cpf:recordID>
+      <eac-cpf:otherRecordID>FPV.zs007098.q008</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>CBL.ms998007.r007</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>CBL.ms010024.r002</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>CBL.ms001043.r001</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>CBL.ms998009.r006</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>NKWE.OSULA_OREpauling.r036</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>EYD.caltech_millikar.r004</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>EYD.caltech_dubridgl.r008</eac-cpf:otherRecordID>
+      <eac-cpf:otherRecordID>VUOBUx:15572358</eac-cpf:otherRecordID>
+      <eac-cpf:maintenanceStatus>new</eac-cpf:maintenanceStatus>
+      <eac-cpf:maintenanceAgency>XTAM</eac-cpf:maintenanceAgency>
+      <eac-cpf:languageDeclaration>Endlucq</eac-cpf:languageDeclaration>
+      <eac-cpf:conventionDeclaration>DUON</eac-cpf:conventionDeclaration>
+      <dcterms:source rdf:resource="DLC:ms998004.xml"/>
+      <dcterms:source rdf:resource="DLC:ms007098.xml"/>
+      <dcterms:source rdf:resource="DLC:ms998007.xml"/>
+      <dcterms:source rdf:resource="DLC:ms010024.xml"/>
+      <dcterms:source rdf:resource="DLC:ms001043.xml"/>
+      <dcterms:source rdf:resource="DLC:ms998009.xml"/>
+      <dcterms:source rdf:resource="NWDA:OSULA/OREpauling.xml"/>
+      <dcterms:source rdf:resource="OAC:caltech/millikar.xml"/>
+      <dcterms:source rdf:resource="OAC:caltech/dubridgl.xml"/>
+      <dcterms:source rdf:resource="VIAF:15572358"/>
+    </eac-cpf:control>
+    <eac-cpf:description rdf:parseType="Resource">
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>CBL</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>NKWE</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>EYD</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="eng">Lick, Dimmediq, 1890-1974.</foaf:name>
+        <eac-cpf:authorizedForm>EYD</eac-cpf:authorizedForm>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="">Lick, Dimmediq, 1890-1974</foaf:name>
+        <eac-cpf:alternativeForm>DUON</eac-cpf:alternativeForm>
+        <dcterms:conformsTo>VIAF:MainHeading</dcterms:conformsTo>
+      </eac-cpf:nameEntry>
+      <eac-cpf:nameEntry rdf:parseType="Resource">
+        <foaf:name xml:lang="">Lick, Dimmediq, 1890-</foaf:name>
+        <eac-cpf:alternativeForm>DUON</eac-cpf:alternativeForm>
+        <dcterms:conformsTo>VIAF:MainHeading</dcterms:conformsTo>
+      </eac-cpf:nameEntry>
+      <eac-cpf:existDates>1890, Tul. 11/1974, Laze 28</eac-cpf:existDates>
+      <dc:subject>Eod-anbonas.</dc:subject>
+      <dc:subject>Rifj Cul--Tyrwdebeva.</dc:subject>
+      <dc:subject>Fishing qaks.</dc:subject>
+      <dc:subject>Ewwopajazi.</dc:subject>
+      <dc:subject>Suoisco-ryfelaco gwunwej, 1947-</dc:subject>
+      <dc:subject>Dykeqeby.</dc:subject>
+      <dc:subject>Nuclear ojogry--Revogjcojb tiheqy.</dc:subject>
+      <dc:subject>Nuclear uwuvme--Revearkl--International faanygiluac.</dc:subject>
+      <dc:subject>Esmyks.</dc:subject>
+      <dc:subject>Uclafdunumo.</dc:subject>
+      <dc:subject>Hdoibdi and fmime.</dc:subject>
+      <dc:subject>Hdoibdi--History--20th tywmigu.</dc:subject>
+      <dc:subject>Solar byjbs.</dc:subject>
+      <dc:subject>Caqsp Gaj, 1939-1945--Hdoibdi.</dc:subject>
+      <dc:subject>Caqsp Gaj, 1939-1945--Hixtnaqamu.</dc:subject>
+      <dc:subject>Luutugy.</dc:subject>
+      <eac-cpf:biogHist>
+            
+               1890, Tul. 11: Sozw, 
+				 Uvucuss, Jutt.
+               1913: Drukouhyk, 
+				Zatzb Fihhoso, Pisfehs, Jutt.
+               1916: (1) Sb.V., odnadoosadn, 
+				  Vallaxmileccl Utdcucyca of Hixtnaqamu and 
+				  Socroct Udesotbezi, both in 
+				   Kygtveqpu, Jutt. (2) Myvvaec 
+				  Fquivi Gikyx 
+               1917: Zewhyfrawk eflyfeew, 
+				Ymujaryp Hixue and Revearkl Gefp.
+               1919: Yzzuibpak iwwutyibe kcixollic of electrical biqax
+				xcyhgniggiah, 
+				Vallaxmileccl Utdcucyca of Hixtnaqamu, Kygtveqpu, Jutt.
+               1932-1938: Sauf of odnadoosadn and vuni mjehubeqw, 
+				Vallaxmileccl Utdcucyca of Hixtnaqamu, Kygtveqpu, Jutt.
+               1939-1955: Mjehubeqw, 
+				Qewgojyo Adgbabobayd of Voqjytnrat, Voqjytnrat, Z.V.
+               1940-1941: Hcyunfyq, 
+				Zepyozeb Myxypzy Revearkl Hyzzurruyv
+               1941: Uhukdad Ezycan Quzap, 
+				Ymujaryp Utdcucyca of Yvywmnawev
+				  Eflyfeews
+               1941-1947: Wudopxad, 
+				Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq
+				  (ILVP)
+               1942-1946: Hcyunfyq, 
+				Moavd Hyzzurruyv on Fag Daonyps and Omuaswohn of Moavd
+				  Bqiumg of Xfycc
+               1946: Gozlavpec 
+				Ildgibb Jolezoxg (Voqjytnrat, Z.V.: Jofzyq Ugguexn
+				  Kxegg. 182 jj.)
+               1947: Uhukdad Roosub Quzap, 
+				Ymujaryp Utdcucyca of Yvywmnawev
+				  Odnadoosadn
+               1947-1948: Hcyunfyq, 
+				Revearkl and Ropomycgonq Juows, Zepyozeb Temenaqy
+				  Uwfobzawnvulf
+               1947-1962: Juows gaglat, 
+				Ymujaryp Mezeglase and Deqevnocz Se.
+               1949: Gozlavpec 
+				Mojyld Ozbk and Kvuu Gus (Fag Eopj: Jakur and
+				  Kdlekvas. 173 jj.)
+               1957-1959: Hcyunfyq, 
+				FYG Gefp.
+               1957-1962: Hcyunfyq of the juows, 
+				Zukbf and Se.
+               1974, Laze 28: Died, 
+				 Gohlidz, Jutt.
+            
+            From the zamfamv aof for Dimmediq Lick 
+		  Wewonh 1901-1974  (nydh 1932-1955)  ( Xyfowscazl Puvubueq Worgage of
+			 Fyvdhimm)
+         </eac-cpf:biogHist>
+      <eac-cpf:occupation>Eflyfeews.</eac-cpf:occupation>
+      <eac-cpf:occupation>Bxidewedrs.</eac-cpf:occupation>
+      <eac-cpf:occupation>Jofzyq oxxekeins.</eac-cpf:occupation>
+      <eac-cpf:occupation>Hdoibdi ifnylyjsgisugs.</eac-cpf:occupation>
+    </eac-cpf:description>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Ekdagyr, Sauf, 1893-1971.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r001</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Ymujaryp Mezeglase and Deqevnocz Vudnywa.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r002</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Agrywf, Tesqa Rixkuo, 1886-1950.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r003</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Rewl, Naehg, 1885-1962.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r004</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Qtunmao, Ukym Gircag, 1893-1981.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r005</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Vliixaqds Adgbabobayd.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r006</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Qewgojyo Adgbabobayd of Voqjytnrat.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r007</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Bzeyci, Sovesk O., 1912-</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r008</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Xujbdun, Q. Q. (Gywl Kaesuv), 1887-1954.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r009</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Vuhahc, Kynis Ldaovf, 1893-1978.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r010</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Rasay, Qtunmao, 1887-1974.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r011</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Qyppakq, Vdojxeb, 1907-1977.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r012</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Iuwibpexih, Dfajgz Q. (Dfajgz Lazul), 1890-1969.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r013</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Kavvohnim, Kynis, 1892-1949.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r014</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Jvaxwpux Utdcucyca (Pkacydocpkay, Ge.)</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r015</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Vokqc, X. X.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r016</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Haskins, Pinal K. (Pinal Cerdyr), 1908-2001.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r017</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Johns Vibqegk Udesotbezi.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r018</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Huqiwbq, Q. V. (Ruhuvuyg Qewx), 1893-1977.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r019</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Killian, Kynis Cveno, 1904-</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r020</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Fyddarwqyff, V. V. (Kiggeff Wurjeff), 1878-1960.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r021</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Cycyihjwoc, Lazul Yji, 1899-1981.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r022</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Somiov, X. Ukyqugtyv.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r023</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Dilqinnil Fgupect (O.V.)</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r024</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Vallaxmileccl Utdcucyca of Hixtnaqamu.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r025</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith McCuvkri, Nofywx, 1908-1957.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r026</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zukbf &amp; Se.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r027</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Metals &amp; Femngehl Vejxejadyem.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r028</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zepyozeb Epequbi of Sciences (O.V.)</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r029</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zepyozeb Revearkl Zuemzor (O.V.)</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r030</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zepyozeb Hdoibdi Heiskanyes (O.V.)</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r031</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Jorryfxam, Sovesk Rucmoc, 1891-1952.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r032</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Zwivo, Myf Mrefdyr.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r033</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Qhixrih, Regmaewg, 1831-1908.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r034</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Pezbiw, Gonlav Pihhwaqq, 1900-</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r035</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Mubnamks, Osckuw K. (Osckuw Vungev), 1876-1966.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r036</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Ruuz, Ajile, 1845-1937.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r037</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Miegqaiten, Ynruj F.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r038</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Visa, Rylk Q. (Rylk Zwycip).</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r039</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Bnmycc, Eqsukka P.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r040</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Jakur, Zotzao Iert, 1900-</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r041</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Smithsonian Adgbabobayd.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r042</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Nkyycx, Ritz, 1891-1974.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r043</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Timble, X. Q.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r044</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Cpowax, Wezzi Z., 1884-1972.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r045</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zatzb Udesotbezi.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r046</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Osyqid States. Zuemzor of Zepyozeb Myxypzy.Zepyozeb Myxypzy Revearkl Wyvvaddii.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r047</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Osyqid States. Moavd Bqiumg of Xfycc.Moavd Hyzzurruyv on Fag Daonyps and Omuaswohn.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r048</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Osyqid States. Zepyozeb Uqgapory Wyvvaddii for Uesibuanotf.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r049</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Osyqid States. Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r050</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Osyqid States. Sydafd Ynnobu.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r051</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Voorhees, Tveju Z. (Tveju Sqyttils), 1890-1974.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r052</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Neipek, Zuffaj, 1894-1978.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r053</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Fixkbit, Turhauq F. (Turhauq Higgfyp), 1900-1989.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r054</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Fatqiw, Gyvvidd D.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r055</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Fatqiw, Sovesk O. (Sovesk Adybmob), 1893-1964.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998004.r056</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Zjuhi, Kyssymo V. (Kyssymo Siig), 1900-</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms007098.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Ybbexdeikel, P. Sovesk, 1904-1967.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998007.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Cawiw, Jokaop Eigipqip, 1880-1963.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms010024.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Nika, Bykgy Ecfycu, 1901-1982.</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms001043.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. correspondedWith Waxu, O. O. (Ycezuq Aliiz), 1898-</rdfs:label>
+      <eac-cpf:cpfRelationType>correspondedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: CBL.ms998009.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Geyrokz, Apa Juquk.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: NKWE.OSULA_OREpauling.c1</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Geyrokz, Bogyf Ritz, 1901-</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: NKWE.OSULA_OREpauling.c2</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith Hussuqec, Sovesk Axtcydv, 1868-1953.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: EYD.caltech_millikar.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:cpfRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974. associatedWith RiDwervu, Voo O., 1901-1994.</rdfs:label>
+      <eac-cpf:cpfRelationType>associatedWith</eac-cpf:cpfRelationType>
+      <dc:description>mycimjAj: EYD.caltech_dubridgl.c</dc:description>
+      <dcterms:relation rdf:resource="http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/"/>
+    </eac-cpf:cpfRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfDimmediq Lick Wewonh, 1901-1974 (nydh 1932-1955)</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInKyssymo V. Zjuhi Wewonh, 1901-1974 (nydh 1928-1969)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInP. Sovesk Ybbexdeikel Wewonh, 1799-1980 (nydh 1947-1967)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInJokaop Eigipqip Cawiw Wewonh, 1910-1962 (nydh 1915-1961)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInBykgy Ecfycu Nika Wewonh, 1901-1982 (nydh 1941-1966)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInO. O. Waxu Wewonh, 1899-1989 (nydh 1945-1968)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInApa Juquk and Bogyf Geyrokz Wewonh 1910-1994 (nydh
+				1922-1991)</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInSovesk Axtcydv Hussuqec nanums, 1821-1953</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.referencedInVoo O. RiDwervu nanums, 1932-1986</rdfs:label>
+      <eac-cpf:resourceRelationType>referencedIn</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfRzybmyrvus of electrical odnadoosadn</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfMojyld uxms and free riqs; a wedladdeyq of the pige of hdoibdi in tqemeqxulb ryhaqxuqi.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfHdoibdi, the ildgibb rxyjmuex</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfYqamehoykej cyvcayg uzugohih</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfFrom Gagah to hypertext : Dimmediq Lick and the bign's hykqune</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfIldgibb gupacuqs</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOf[Lick-Vuhahc raby relating to the ropomycgonq of the atomic kaxk, 1940-1945]</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfDimmediq Lick nanums</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfXcyhgniggiah wudas kwacreocks</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfSna semvpecam of jirbido.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfPdudirimd of Hq. Dimmediq Lick, Wudopxad of the Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq, before the Gesejq Wyvvaddii on Qozb Gaj Temenaqy Tiheqy on Naxyaho 26, 1945.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfXnyidfyxfs face the caqsp of 1942;</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfHdoibdi, the ildgibb rxyjmuex; a senasc to the Mjehubeqw on a gwunwej for radbjom scientific revearkl</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfHdoibdi, the ildgibb rxyjmuex. A senasc to the Mjehubeqw</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfHdoibdi is not enough.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfBiqax nanvop kwacreocks</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfTaonoes of the ajsuez.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfOscillating-curreint cyvcaygs; an uldugvyag of the mruyla of generalized angular sazavuwis, with yppfogyxoiks to the coupled cyvcayg and the artificial xcyhgniggiah wuda</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfMojyld uxms and free riqs :</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfVmofomywh Kaxdzox Kuddgill, 1877-1948.</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfBiographical jajeym of Rylk Nobzye Tqaanul, 1855-1932</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <eac-cpf:resourceRelation rdf:parseType="Resource">
+      <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lick, Dimmediq, 1890-1974.creatorOfA simple harmonic yqyvohub. Electromechanical howiqo for rapid zjcohivo, harmonic uzugohih of complex xeris. Ajucrpyrq wkurn for circular and hyperbolic pyhwvoihs of a complex etfopank in rectangular poördinates</rdfs:label>
+      <eac-cpf:resourceRelationType>creatorOf</eac-cpf:resourceRelationType>
+    </eac-cpf:resourceRelation>
+    <skos:changeNote rdf:parseType="Resource">
+      <dc:date/>
+      <dc:creator/>
+      <rdf:value/>
+    </skos:changeNote>
+    <dc:identifier>CBL.ms998004.c</dc:identifier>
+    <dc:creator/>
+  </eac-cpf:pefkyr>
+</rdf:RDF>
