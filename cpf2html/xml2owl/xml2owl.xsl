@@ -223,33 +223,40 @@ this is as far as I've gotten with the refactor to templates
               </xsl:when>
             </xsl:choose>
           </xsl:for-each>
-        </xsl:if><xsl:if test="eax:cpfDescription/eax:description/eax:biogHist">
-          <eac-cpf:biogHist><xsl:apply-templates select="eax:cpfDescription/eax:description/eax:biogHist"/></eac-cpf:biogHist>
-        </xsl:if><xsl:if test="eax:cpfDescription/eax:description/eax:occupation">
-          <xsl:for-each select="eax:cpfDescription/eax:description/eax:occupation">
-            <eac-cpf:occupation><xsl:value-of select="term/text()"/></eac-cpf:occupation>
-          </xsl:for-each>
-        </xsl:if></eac-cpf:description>
+        </xsl:if>
+
+<xsl:apply-templates select="eax:cpfDescription/eax:description/eax:biogHist"/>
+<xsl:apply-templates select="eax:cpfDescription/eax:description/eax:occupation"/>
+
+</eac-cpf:description>
       <xsl:if test="eax:cpfDescription/eax:relations">
         <xsl:for-each select="eax:cpfDescription/eax:relations/eax:cpfRelation">
           <eac-cpf:cpfRelation><xsl:attribute name="rdf:parseType">Resource</xsl:attribute><xsl:choose>
               <xsl:when test="@cpfRelationType">
-                <rdfs:label><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/><xsl:value-of select="@cpfRelationType"/><xsl:value-of select="eax:relationEntry/text()"/></rdfs:label>
+                <rdfs:label><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry/eax:part[@localType='normal']"/><xsl:value-of select="@cpfRelationType"/><xsl:text> </xsl:text><xsl:value-of select="eax:relationEntry/text()"/>B</rdfs:label>
                 <eac-cpf:cpfRelationType><xsl:value-of select="@cpfRelationType"/></eac-cpf:cpfRelationType>
                 <xsl:if test="eax:descriptiveNote/eax:p">
                   <dc:description><xsl:value-of select="eax:descriptiveNote/eax:p/text()"/></dc:description>
                 </xsl:if>
               </xsl:when>
               <xsl:when test="@xlink:arcrole">
-                <rdfs:label><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute><xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/><xsl:value-of select="@xlink:arcrole"/><xsl:value-of select="eax:relationEntry/text()"/></rdfs:label>
+                <rdfs:label><xsl:attribute name="rdf:datatype">http://www.w3.org/2001/XMLSchema#string</xsl:attribute>
+                  <xsl:value-of select="../../eax:identity/eax:nameEntry[1]/eax:part"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="@xlink:arcrole"/> 
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="eax:relationEntry/text()"/>
+                </rdfs:label>
                 <eac-cpf:cpfRelationType><xsl:value-of select="@xlink:arcrole"/></eac-cpf:cpfRelationType>
                 <xsl:if test="eax:descriptiveNote/eax:p">
                   <dc:description><xsl:value-of select="eax:descriptiveNote/eax:p/text()"/></dc:description>
                 </xsl:if>
               </xsl:when>
-            </xsl:choose><dcterms:relation><xsl:attribute name="rdf:resource">http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/<xsl:value-of select="eax:relationEntry/@localType"/></xsl:attribute></dcterms:relation><xsl:if test="date">
+            </xsl:choose>
+            <dcterms:relation><xsl:attribute name="rdf:resource">http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/<xsl:value-of select="eax:relationEntry/@localType"/></xsl:attribute></dcterms:relation><xsl:if test="date">
               <dc:date><xsl:value-of select="date"/></dc:date>
-            </xsl:if></eac-cpf:cpfRelation>
+            </xsl:if>
+          </eac-cpf:cpfRelation>
         </xsl:for-each>
         <xsl:for-each select="eax:cpfDescription/eax:relations/eax:resourceRelation">
           <xsl:choose>
@@ -307,24 +314,32 @@ this is as far as I've gotten with the refactor to templates
     </rdf:RDF>
   </xsl:template>
 
-
   <!-- bioghist -->
-  <xsl:template match="eax:cpfDescription/eax:description/eax:biogHist">
-    <xsl:if test="eax:p">
+  <xsl:template match="eax:biogHist">
+    <eac-cpf:biogHist> 
       <xsl:apply-templates/>
-    </xsl:if>
-    <!-- refactor to apply templates -->
-    <xsl:if test="eax:chronList">
-      <xsl:for-each select="eax:chronList/eax:chronItem">
-        <xsl:if test="eax:date">
-          <xsl:value-of select="eax:date"/>
-          <xsl:text>: </xsl:text>
-        </xsl:if>
-      </xsl:for-each>
-        <xsl:value-of select="normalize-space(eax:event)"/>; 
-    </xsl:if>
+    </eac-cpf:biogHist>
   </xsl:template>
+
+  <xsl:template match="eax:chronList"> 
+      <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="eax:chronItem"> 
+    <xsl:apply-templates select="eax:date"/>
+    <xsl:text>: </xsl:text>
+    <xsl:apply-templates select="eax:event"/>
+    <!-- what about placeEntry's? -->
+  </xsl:template>
+
   <xsl:template match="eax:p">
     <xsl:apply-templates/>
   </xsl:template>
+
+  <xsl:template match="eax:occupation">
+    <eac-cpf:occupation>
+      <xsl:apply-templates/>
+    </eac-cpf:occupation>
+  </xsl:template>
+
 </xsl:stylesheet>
