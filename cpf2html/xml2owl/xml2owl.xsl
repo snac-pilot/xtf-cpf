@@ -67,15 +67,42 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="eax:existDates" mode="inLabel">
+    <!-- we use dateRange/fromDate and dateRange/toDate -->
+    <xsl:text>, </xsl:text>
+    <xsl:value-of select="substring(eax:date/@standardDate,1,4)"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="substring(eax:date/@standardDate,10,4)"/>
+  </xsl:template>
+
+  <xsl:template match="eax:existDates" mode="dc">
+    <dc:date><xsl:value-of select="eax:date/@standardDate"/></dc:date>
+  </xsl:template>
+
+  <xsl:template match="eax:sources">
+    <xsl:apply-templates select="eax:source"/>
+  </xsl:template>
+
+  <xsl:template match="eax:source[@xlink:href]">
+    <dcterms:source>
+      <xsl:attribute name="rdf:resource">
+        <xsl:value-of select="@xlink:href"/>
+      </xsl:attribute>
+    </dcterms:source>
+  </xsl:template>
+
+  <xsl:template match="eax:source[not(@xlink:href)]">
+     <eac-cpf:source><xsl:value-of select="eax:sourceEntry"/></eac-cpf:source>
+  </xsl:template>
+
   <!-- I could not get this to work in the default namespace; 
        choose eax: for the xml; eac-cpf is the RDF's namespace ~bt -->
   <xsl:template match="eax:eac-cpf">
+    <xsl:variable name="existDates" select="eax:cpfDescription/eax:description/eax:existDates"/>
     <!-- root rdf element -->
     <rdf:RDF> 
-      <xsl:variable name="entityType">
-        <xsl:value-of select="eax:cpfDescription/eax:identity/eax:entityType"/>
-      </xsl:variable>
-      <xsl:element name="eac-cpf:{$entityType}">
+      <xsl:element name="eac-cpf:{eax:cpfDescription/eax:identity/eax:entityType}">
+        <!-- link data http range compliant identifier for entity -->
         <xsl:attribute name="rdf:about">
           <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=</xsl:text>
           <xsl:value-of select="$docId"/>
@@ -83,23 +110,13 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
         </xsl:attribute>
           <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
             <xsl:value-of select="eax:cpfDescription/eax:identity/eax:nameEntry/eax:part"/>
-      <!-- this definatly should be refactored -->
-      <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">, <xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,1,4)"/>-<xsl:value-of select="substring(eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate,10,4)"/>
-			</xsl:if>
-    </rdfs:label>
-<!-- `foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature` -->
-    <!-- dates -->
-    <xsl:if test="eax:cpfDescription/eax:description/eax:existDates">
-      <dc:date><xsl:value-of select="eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate"/></dc:date>
-    </xsl:if>
-
-    <!-- viaf --><!-- add dbpedia as well -->
-    <!--
-```
-    <xsl:element name="owl:sameAs">
-      <xsl:attribute name="rdf:resource">http://viaf.org/viaf/</xsl:attribute>
-    </xsl:element>
-```-->
+            <xsl:apply-templates select="$existDates" mode="inLabel"/>
+          </rdfs:label>
+          <!-- `foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature` -->
+          <!-- dates -->
+          <xsl:apply-templates select="$existDates" mode="dc"/>
+          <!-- todo: owl:sameAs -->
+          <!-- viaf --><!-- add dbpedia as well -->
 
     <!-- ## control -->
     <xsl:if test="eax:control">
@@ -117,22 +134,11 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
           <eac-cpf:languageDeclaration><xsl:value-of select="eax:control/eax:languageDeclaration/eax:language/text()"/></eac-cpf:languageDeclaration>
         </xsl:if><xsl:if test="eax:control/eax:conventionDeclaration">
           <eac-cpf:conventionDeclaration><xsl:value-of select="eax:control/eax:conventionDeclaration/eax:citation/text()"/></eac-cpf:conventionDeclaration>
-        </xsl:if><xsl:if test="eax:control/eax:sources">
-          <xsl:choose>
-            <xsl:when test="not(eax:control/eax:sources/eax:source/@xlink:href)">
-              <xsl:for-each select="eax:control/eax:sources/eax:source">
-                <eac-cpf:source><xsl:value-of select="eax:sourceEntry"/></eac-cpf:source>
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:for-each select="eax:control/eax:sources/eax:source[@xlink:href]">
-                <dcterms:source><xsl:attribute name="rdf:resource">
-                    <xsl:value-of select="@xlink:href"/>
-                  </xsl:attribute></dcterms:source>
-              </xsl:for-each>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:if></eac-cpf:control>
+        </xsl:if>
+
+
+          <xsl:apply-templates select="eax:control/eax:sources"/>
+      </eac-cpf:control>
     </xsl:if>
     <!-- ## cpfDescription -->
     <xsl:if test="eax:cpfDescription">
