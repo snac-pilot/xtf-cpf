@@ -117,7 +117,9 @@ Sponsored by the National Endowment for the Humanaties http://www.neh.gov/
 
   <!-- this mapping jogs as well -->
   <xsl:template match="eax:maintenanceAgency">
+    <eac-cpf:maintenanceAgency>
       <xsl:apply-templates select="eax:agencyName"/>
+    </eac-cpf:maintenanceAgency>
   </xsl:template>
 
   <xsl:template match="eax:agencyName">
