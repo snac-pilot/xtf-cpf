@@ -338,7 +338,7 @@ this is as far as I've gotten with the refactor to templates
 
   <xsl:template match="eax:occupation">
     <eac-cpf:occupation>
-      <xsl:apply-templates/>
+      <xsl:value-of select="normalize-space(.)"/>
     </eac-cpf:occupation>
   </xsl:template>
 
