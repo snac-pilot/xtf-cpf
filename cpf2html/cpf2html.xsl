@@ -71,6 +71,20 @@ tranformed elements
     <xsl:apply-templates select="($layout)//*[local-name()='html']"/>
   </xsl:template>
 
+  <xsl:template match="link[@rel='alternate'][@type='application/rdf+xml']">
+    <xsl:variable name="LOD_URI">
+      <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=</xsl:text>
+      <xsl:value-of select="replace(escape-html-uri($docId),'\s','+')"/>
+      <xsl:text>#entity</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="sparql_describe">
+      <xsl:text>http://socialarchive.iath.virginia.edu//sparql/eac?query=DESCRIBE+%3C</xsl:text>
+      <xsl:value-of select="encode-for-uri($LOD_URI)"/>
+      <xsl:text>%3E%0D%0A</xsl:text>
+    </xsl:variable>
+    <link rel="alternate" type="application/rdf+xml" href="{$sparql_describe}"/>
+  </xsl:template>
+
   <xsl:template match='script[@tmpl:replace="excanvas"]'>
 <xsl:comment>[if IE]>
 &lt;script language="javascript" type="text/javascript" src="/xtf/cpf2html/Jit/Extras/excanvas.js">
