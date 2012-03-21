@@ -16,8 +16,6 @@ package org.apache.lucene.spelt;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
@@ -26,6 +24,8 @@ import org.apache.lucene.util.StringUtil;
 
 import junit.framework.TestCase;
 
+import org.cdlib.xtf.util.VFile;
+
 /** 
  * Test the {@link SpellReader} and {@link SpellWriter} classes 
  *
@@ -33,7 +33,7 @@ import junit.framework.TestCase;
  */
 public class SpellReadWriteTest extends TestCase
 {
-  protected File dictDir;
+  protected VFile dictDir;
   protected SpellReader reader;
   protected PrintWriter debugWriter;
   
@@ -74,8 +74,7 @@ public class SpellReadWriteTest extends TestCase
       reader.setStopwords(STOP_SET);
       
       // For debugging purposes, this gives a view into the guts.
-      debugWriter = new PrintWriter(new FileWriter(
-          new File(dictDir, "spellDebug.log")));
+      debugWriter = new PrintWriter(VFile.create(dictDir, "spellDebug.log").openWriter());
       reader.setDebugWriter(debugWriter);
     }
     finally {
@@ -90,11 +89,11 @@ public class SpellReadWriteTest extends TestCase
   protected void createDictDir(String name) throws IOException
   {
     // Create a spelling dictionary to test with
-    dictDir = File.createTempFile(name, null);
+    dictDir = VFile.createTempFile(name, null);
     dictDir.delete(); // Get rid of normal file, so we can make directory
     
     if (dictDir.isDirectory())
-      for (File f : dictDir.listFiles()) f.delete();
+      for (VFile f : dictDir.listFiles()) f.delete();
     dictDir.delete();
   }
   
@@ -107,7 +106,7 @@ public class SpellReadWriteTest extends TestCase
       debugWriter.close();
     
     if (dictDir.isDirectory()) {
-      for (File f : dictDir.listFiles())
+      for (VFile f : dictDir.listFiles())
         f.delete();
       dictDir.delete();
     }

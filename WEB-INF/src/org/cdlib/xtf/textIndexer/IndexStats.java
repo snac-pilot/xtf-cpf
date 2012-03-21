@@ -1,6 +1,6 @@
 package org.cdlib.xtf.textIndexer;
 
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import org.apache.lucene.index.IndexReader;
@@ -97,7 +97,7 @@ public class IndexStats
       }
 
       cfgInfo.xtfHomePath = Path.normalizePath(cfgInfo.xtfHomePath);
-      if (!new File(cfgInfo.xtfHomePath).isDirectory()) {
+      if (!VFile.create(cfgInfo.xtfHomePath).isDirectory()) {
         Trace.error(
           "Error: xtf.home directory \"" + cfgInfo.xtfHomePath +
           "\" does not exist or cannot be read.");
@@ -140,7 +140,7 @@ public class IndexStats
           else 
           {
             // Make sure the configuration path is absolute
-            if (!(new File(cfgInfo.cfgFilePath).isAbsolute())) {
+            if (!VFile.isAbsolute(cfgInfo.cfgFilePath)) {
               cfgInfo.cfgFilePath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
                                                          cfgInfo.cfgFilePath);
             }
@@ -268,7 +268,7 @@ public class IndexStats
     // index.
     //
     String idxPath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath, idxInfo.indexPath);
-    File idxFile = new File(idxPath);
+    VFile idxFile = VFile.create(idxPath);
     IndexReader indexReader = IndexReader.open(NativeFSDirectory.getDirectory(idxPath));
 
     // Give an estimate of the total number of documents.
@@ -304,7 +304,7 @@ public class IndexStats
     {
       String[] children = idxFile.list();
       for (int i = 0; i < children.length; i++) {
-        File child = new File(idxFile, children[i]);
+        VFile child = VFile.create(idxFile, children[i]);
         if (child.isFile())
           totalLuceneSize += child.length();
       }
@@ -314,7 +314,7 @@ public class IndexStats
 
     // Now calculate the size of the lazy files
     termEnum = indexReader.terms(new Term("key", ""));
-    File xtfHomeFile = new File(cfgInfo.xtfHomePath);
+    VFile xtfHomeFile = VFile.create(cfgInfo.xtfHomePath);
     long totalSrcSize = 0;
     long totalLazySize = 0;
     long filesDone = 0;
@@ -352,13 +352,13 @@ public class IndexStats
       String sourceDir = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
                                               idxInfo.sourcePath);
       String currPath = Path.resolveRelOrAbs(sourceDir, relPath);
-      File currFile = new File(currPath);
+      VFile currFile = VFile.create(currPath);
 
       // Add up the size of the source files
       totalSrcSize += currFile.length();
 
       // Also add up the size of the lazy files.
-      File lazyFile = IndexUtil.calcLazyPath(xtfHomeFile, idxInfo, currFile,
+      VFile lazyFile = IndexUtil.calcLazyPath(xtfHomeFile, idxInfo, currFile,
                                              false);
       totalLazySize += lazyFile.length();
     } while (termEnum.next());

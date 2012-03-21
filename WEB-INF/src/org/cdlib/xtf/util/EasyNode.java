@@ -1,10 +1,17 @@
 package org.cdlib.xtf.util;
 
-import java.io.File;
+import org.cdlib.xtf.servletBase.DTDSuppressingXMLReader;
+import org.cdlib.xtf.util.VFile;
+import org.xml.sax.InputSource;
+
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.sax.SAXSource;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.om.AllElementStripper;
@@ -49,7 +56,7 @@ import net.sf.saxon.type.Type;
  *
  * @author Martin Haye
  */
-public class EasyNode 
+public class EasyNode implements Iterable<EasyNode> 
 {
   /** The node we are wrapping */
   private NodeInfo wrapped;
@@ -70,19 +77,33 @@ public class EasyNode
    * Convenience method to read an XML file and return the root node.
    */
   public static EasyNode readXMLFile(String path) {
-    return readXMLFile(new File(path));
+    return readXMLFile(VFile.create(path));
   }
   
   /**
    * Convenience method to read an XML file and return the root node.
    */
-  public static EasyNode readXMLFile(File path)
+  public static EasyNode readXMLFile(VFile path)
+  {
+    try {
+      return readXMLFile(path.openReader(), path.toURI().toASCIIString());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Convenience method to read XML from a Reader and return the root node.
+   */
+  public static EasyNode readXMLFile(Reader reader, String systemID)
   {
     // Read in the document (it's in XML format)
-    StreamSource src = new StreamSource(path);
-    NodeInfo doc = null;
     try {
-      doc = TinyBuilder.build(src, new AllElementStripper(), config);
+      InputSource inSrc = new InputSource(reader);
+      inSrc.setSystemId(systemID);
+      SAXSource saxSrc = new SAXSource(new DTDSuppressingXMLReader(), inSrc);
+      saxSrc.setSystemId(systemID);
+      NodeInfo doc = TinyBuilder.build(saxSrc, new AllElementStripper(), config);
       return new EasyNode(doc);
     }
     catch (XPathException e) {
@@ -234,13 +255,40 @@ public class EasyNode
     return wrapped.getNodeKind() == Type.TEXT;
   }
 
-  /** Get the string value of this node */
+  /** Get the string value of this node (generally, just the text) */
   public String toString() {
     return wrapped.getStringValue();
+  }
+  
+  /** Get an XML representation of this node */
+  public String toXMLString() {
+    return XMLWriter.toString(this);
   }
 
   /** Get the actual node we're wrapping */
   public NodeInfo getWrappedNode() {
     return wrapped;
   } // getWrappedNode()
+
+  /** Iterate over the children */
+  public Iterator iterator() {
+    return children().iterator();
+  }
+  
+  /** A list of all descendants in depth-first order */
+  public List<EasyNode> descendants() 
+  {
+    ArrayList<EasyNode> out = new ArrayList<EasyNode>();
+    LinkedList<EasyNode> toVisit = new LinkedList<EasyNode>();
+    toVisit.add(this);
+    while (!toVisit.isEmpty())
+    {
+      EasyNode ret = toVisit.removeFirst();
+      int pos = 0;
+      for (EasyNode kid : ret)
+        toVisit.add(pos++, kid); // ensure proper traversal order
+      out.add(ret);
+    }
+    return out;
+  }
 } // class EasyNode

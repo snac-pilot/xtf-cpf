@@ -38,15 +38,11 @@ package org.cdlib.xtf.textIndexer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Vector;
@@ -98,7 +94,7 @@ public class IndexMerge
       }
 
       cfgInfo.xtfHomePath = Path.normalizePath(cfgInfo.xtfHomePath);
-      if (!new File(cfgInfo.xtfHomePath).isDirectory()) {
+      if (!VFile.create(cfgInfo.xtfHomePath).isDirectory()) {
         Trace.error(
           "Error: xtf.home directory \"" + cfgInfo.xtfHomePath +
           "\" does not exist or cannot be read.");
@@ -143,7 +139,7 @@ public class IndexMerge
           else 
           {
             // Make sure the configuration path is absolute
-            if (!(new File(cfgInfo.cfgFilePath).isAbsolute())) {
+            if (!VFile.isAbsolute(cfgInfo.cfgFilePath)) {
               cfgInfo.cfgFilePath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
                                                          cfgInfo.cfgFilePath);
             }
@@ -373,7 +369,7 @@ public class IndexMerge
     boolean anyToDo = false;
     for (int i = 1; i < dirInfos.length; i++) {
       String sourceDir = dirInfos[i].path;
-      File sourceFile = new File(sourceDir + "spellDict/newWords.txt");
+      VFile sourceFile = VFile.create(sourceDir + "spellDict/newWords.txt");
       if (!sourceFile.isFile() && sourceFile.canRead())
         continue;
       anyToDo = true;
@@ -388,22 +384,19 @@ public class IndexMerge
     for (int i = 1; i < dirInfos.length; i++) 
     {
       String sourceDir = dirInfos[i].path;
-      File sourceFile = new File(sourceDir + "spellDict/newWords.txt");
+      VFile sourceFile = VFile.create(sourceDir + "spellDict/newWords.txt");
       if (!sourceFile.isFile() && sourceFile.canRead())
         continue;
 
       // Open the target file.
       String targetDir = dirInfos[0].path;
       Path.createPath(targetDir + "spellDict");
-      File targetFile = new File(targetDir + "spellDict/newWords.txt");
+      VFile targetFile = VFile.create(targetDir + "spellDict/newWords.txt");
       PrintWriter targetWriter = new PrintWriter(
-        new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                                                                       targetFile,
-                                                                       targetFile.isFile()),
+        new BufferedWriter(new OutputStreamWriter(targetFile.openOutputStream(targetFile.isFile()),
                                                   "UTF-8")));
 
-      BufferedReader sourceReader = new BufferedReader(
-        new InputStreamReader(new FileInputStream(sourceFile), "UTF-8"));
+      BufferedReader sourceReader = sourceFile.openBufferedReader();
 
       boolean eof = false;
       while (!eof) 
@@ -443,9 +436,9 @@ public class IndexMerge
     {
       String sourceDir = dirInfos[i].path;
 
-      File accentFile = new File(sourceDir + dirInfos[i].accentMapName);
-      File pluralFile = new File(sourceDir + dirInfos[i].pluralMapName);
-      File tokFldFile = new File(sourceDir + "tokenizedFields.txt");
+      VFile accentFile = VFile.create(sourceDir + dirInfos[i].accentMapName);
+      VFile pluralFile = VFile.create(sourceDir + dirInfos[i].pluralMapName);
+      VFile tokFldFile = VFile.create(sourceDir + "tokenizedFields.txt");
 
       if (accentFile.canRead() || pluralFile.canRead() || tokFldFile.canRead())
         anyToDo = true;
@@ -459,18 +452,18 @@ public class IndexMerge
     // Copy files from each directory...
     for (int i = 1; i < dirInfos.length; i++) 
     {
-      File accentSrc = new File(dirInfos[i].path, dirInfos[i].accentMapName);
-      File accentDst = new File(dirInfos[0].path, dirInfos[i].accentMapName);
+      VFile accentSrc = VFile.create(dirInfos[i].path, dirInfos[i].accentMapName);
+      VFile accentDst = VFile.create(dirInfos[0].path, dirInfos[i].accentMapName);
       if (accentSrc.canRead() && !accentDst.canRead())
         Path.copyFile(accentSrc, accentDst);
 
-      File pluralSrc = new File(dirInfos[i].path, dirInfos[i].pluralMapName);
-      File pluralDst = new File(dirInfos[0].path, dirInfos[i].pluralMapName);
+      VFile pluralSrc = VFile.create(dirInfos[i].path, dirInfos[i].pluralMapName);
+      VFile pluralDst = VFile.create(dirInfos[0].path, dirInfos[i].pluralMapName);
       if (pluralSrc.canRead() && !pluralDst.canRead())
         Path.copyFile(pluralSrc, pluralDst);
       
-      File tokFldSrc = new File(dirInfos[i].path, "tokenizedFields.txt");
-      File tokFldDst = new File(dirInfos[0].path, "tokenizedFields.txt");
+      VFile tokFldSrc = VFile.create(dirInfos[i].path, "tokenizedFields.txt");
+      VFile tokFldDst = VFile.create(dirInfos[0].path, "tokenizedFields.txt");
       if (tokFldSrc.canRead() && !tokFldDst.canRead())
         mergeTokFldFiles(tokFldSrc, tokFldDst);
       else if (tokFldSrc.canRead() && tokFldDst.canRead())
@@ -481,20 +474,20 @@ public class IndexMerge
   } // mergeAux()
   
   //////////////////////////////////////////////////////////////////////////////
-  private static void mergeTokFldFiles(File file1, File file2) throws IOException
+  private static void mergeTokFldFiles(VFile file1, VFile file2) throws IOException
   {
     LinkedHashSet set = new LinkedHashSet();
     
     // Read in the first file
-    BufferedReader reader = new BufferedReader(new FileReader(file1));
+    BufferedReader reader = file1.openBufferedReader();
     String line;
     while ((line = reader.readLine()) != null)
       set.add(line);
     reader.close();
     
     // Add entries from the second file
-    FileWriter writer = new FileWriter(file1, true /*append*/);
-    reader = new BufferedReader(new FileReader(file2));
+    Writer writer = file1.openWriter(true /*append*/);
+    reader = file2.openBufferedReader();
     while ((line = reader.readLine()) != null) {
       if (!set.contains(line))
         writer.append(line + "\n");
@@ -513,7 +506,7 @@ public class IndexMerge
     boolean anyToDo = false;
     for (int i = 1; i < dirInfos.length; i++) {
       String sourceDir = dirInfos[i].path;
-      File lazyDir = new File(sourceDir, "lazy");
+      VFile lazyDir = VFile.create(sourceDir, "lazy");
       if (lazyDir.isDirectory())
         anyToDo = true;
     }
@@ -526,14 +519,14 @@ public class IndexMerge
     // Process each source directory.
     for (int i = 1; i < dirInfos.length; i++) {
       String sourceDir = dirInfos[i].path;
-      mergeLazy(new File(sourceDir, "lazy"), new File(targetDir, "lazy"));
+      mergeLazy(VFile.create(sourceDir, "lazy"), VFile.create(targetDir, "lazy"));
     } // for
 
     Trace.more("Done.");
   } // mergeLazy()
 
   //////////////////////////////////////////////////////////////////////////////
-  private static void mergeLazy(File src, File dst)
+  private static void mergeLazy(VFile src, VFile dst)
     throws IOException 
   {
     // If the source is a file, copy it.
@@ -562,7 +555,7 @@ public class IndexMerge
       // Process each sub-file
       String[] subFiles = src.list();
       for (int i = 0; i < subFiles.length; i++) {
-        mergeLazy(new File(src, subFiles[i]), new File(dst, subFiles[i]));
+        mergeLazy(VFile.create(src, subFiles[i]), VFile.create(dst, subFiles[i]));
       } // for
     } // if
   } // mergeLazy()

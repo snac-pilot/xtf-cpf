@@ -1,3 +1,4 @@
+^conf/merritt.conf$
 ^data/
 ^index/
 ^index-new/
@@ -7,6 +8,7 @@
 ^WEB-INF/lib/src/
 ^WEB-INF/dist/
 ^WEB-INF/javadoc/
+^WEB-INF/ext-source/
 ^regress/.*/IndexDB/
 ^regress/.*/actual/
 ^regress/.*/.*\.log$

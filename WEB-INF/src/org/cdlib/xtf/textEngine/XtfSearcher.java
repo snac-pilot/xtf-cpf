@@ -30,9 +30,7 @@ package org.cdlib.xtf.textEngine;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;
@@ -222,8 +220,8 @@ public class XtfSearcher
     // If there's an accent map specified, load it.
     String accentMapName = doc.get("accentMap");
     if (accentMapName != null && accentMapName.length() > 0) {
-      File accentFile = new File(indexPath, accentMapName);
-      InputStream stream = new FileInputStream(accentFile);
+      VFile accentFile = VFile.create(indexPath, accentMapName);
+      InputStream stream = accentFile.openInputStream();
       if (accentMapName.endsWith(".gz"))
         stream = new GZIPInputStream(stream);
       accentMap = new CharMap(stream);
@@ -235,15 +233,15 @@ public class XtfSearcher
     //
     String pluralMapName = doc.get("pluralMap");
     if (pluralMapName != null && pluralMapName.length() > 0) {
-      File pluralFile = new File(indexPath, pluralMapName);
-      InputStream stream = new FileInputStream(pluralFile);
+      VFile pluralFile = VFile.create(indexPath, pluralMapName);
+      InputStream stream = pluralFile.openInputStream();
       if (pluralMapName.endsWith(".gz"))
         stream = new GZIPInputStream(stream);
       pluralMap = new WordMap(stream, accentMap);
     }
 
     // If there's a spelling correction dictionary, attach to it.
-    File spellDir = new File(indexPath, "spellDict");
+    VFile spellDir = VFile.create(indexPath, "spellDict");
     if (SpellReader.isValidDictionary(spellDir)) {
       spellReader = SpellReader.open(spellDir);
       spellReader.setStopwords(stopSet);
@@ -280,10 +278,10 @@ public class XtfSearcher
     LinkedHashSet tokenizedFields = new LinkedHashSet();
     
     // Read in the the file listing all the tokenized fields (if any).
-    File tokFieldsFile = new File(
+    VFile tokFieldsFile = VFile.create(
       Path.normalizePath(indexPath + "/tokenizedFields.txt"));
     if (tokFieldsFile.canRead()) {
-      BufferedReader reader = new BufferedReader(new FileReader(tokFieldsFile));
+      BufferedReader reader = tokFieldsFile.openBufferedReader();
       String line;
       while ((line = reader.readLine()) != null)
         tokenizedFields.add(line);

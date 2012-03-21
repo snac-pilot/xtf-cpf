@@ -29,7 +29,7 @@ package org.cdlib.xtf.textEngine;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import org.cdlib.xtf.cache.GeneratingCache;
 import org.cdlib.xtf.textIndexer.IndexerConfig;
 import org.cdlib.xtf.textIndexer.XMLConfigParser;
@@ -51,7 +51,7 @@ public class ConfigCache extends GeneratingCache
   }
 
   /** Find or load the configuration given its File */
-  public IndexerConfig find(File configFile, String indexName)
+  public IndexerConfig find(VFile configFile, String indexName)
     throws Exception 
   {
     ConfigCacheKey key = new ConfigCacheKey();
@@ -89,6 +89,7 @@ public class ConfigCache extends GeneratingCache
       return configPath.hashCode() ^ indexName.hashCode();
     }
 
+    @SuppressWarnings("unused")
     public boolean equals(ConfigCacheKey other) {
       return configPath.equals(other.configPath) &&
              indexName.equals(other.indexName);

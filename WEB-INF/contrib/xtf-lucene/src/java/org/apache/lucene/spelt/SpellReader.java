@@ -22,10 +22,8 @@ package org.apache.lucene.spelt;
  * as part of the Melvyl Recommender Project.
  */
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
@@ -42,13 +40,15 @@ import org.apache.lucene.util.LongSet;
 import org.apache.lucene.util.PriorityQueue;
 import org.apache.lucene.util.StringUtil;
 
+import org.cdlib.xtf.util.VFile;
+
 /**
  * <p>
  * Reads a spelling dictionary created by {@link SpellWriter}, and provides
  * fast single- and multi-word spelling suggestions. Typical usage:
  * </p>
  * <ol>
- *   <li>First, {@linkplain #open(File) open} a new reader.</li>
+ *   <li>First, {@linkplain #open(VFile) open} a new reader.</li>
  *   <li>For each potentially mispelled query, gather the keywords
  *       and {@linkplain #suggestKeywords(String[]) get suggestions}
  *       for them.
@@ -70,7 +70,7 @@ public class SpellReader
   /** Positions in the edit map file */
   private IntList edMapPosns;
 
-  /** File for reading edit map entries */
+  /** VFile for reading edit map entries */
   private RandomAccessFile edMapFile;
 
   /** Charset decoder for reading edit map entries */
@@ -97,15 +97,15 @@ public class SpellReader
   /** Word equivalency checker */
   private WordEquiv wordEquiv;
   
-  /** Private constructor -- use {@link #open(File)} instead. */
+  /** Private constructor -- use {@link #open(VFile)} instead. */
   private SpellReader() {
   }
 
   /** Check if there's a valid dictionary in the given directory */
-  public static boolean isValidDictionary(File spellDir) {
+  public static boolean isValidDictionary(VFile spellDir) {
     if (!spellDir.isDirectory() || !spellDir.canRead())
       return false;
-    File file = new File(spellDir, "pairs.dat");
+    VFile file = VFile.create(spellDir, "pairs.dat");
     return file.canRead();
   }
 
@@ -118,7 +118,7 @@ public class SpellReader
    *
    * @param spellDir   directory containing the spelling dictionary
    */
-  public static SpellReader open(File spellDir)
+  public static SpellReader open(VFile spellDir)
     throws IOException 
   {
     SpellReader reader = new SpellReader();
@@ -156,16 +156,16 @@ public class SpellReader
   }
 
   /** Read the index for the edit map file */ 
-  private void openEdmap(File spellDir)
+  private void openEdmap(VFile spellDir)
     throws IOException 
   {
     long startTime = System.currentTimeMillis();
-    File file = new File(spellDir, "edmap.dat");
+    VFile file = VFile.create(spellDir, "edmap.dat");
 
     try 
     {
       // First, open the map file. At the end, we'll find the position of the index.
-      FileInputStream in = new FileInputStream(file);
+      InputStream in = file.openInputStream();
       in.skip(file.length() - 20);
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       String line = reader.readLine();
@@ -173,7 +173,7 @@ public class SpellReader
 
       // Now re-open and read the index.
       reader.close();
-      in = new FileInputStream(file);
+      in = file.openInputStream();
       in.skip(indexPos);
       reader = new BufferedReader(new InputStreamReader(in));
 
@@ -231,7 +231,7 @@ public class SpellReader
     // Finally, open a random-access version of the file for the actual
     // spellcheck process.
     //
-    edMapFile = new RandomAccessFile(file, "r");
+    edMapFile = file.openRandomAccessFile("r");
 
     // Print stats
     if (debugWriter != null) {
@@ -851,7 +851,7 @@ public class SpellReader
   }
 
   /** Get the term frequency sample array for our dictionary. */
-  private void loadFreqSamples(File spellDir)
+  private void loadFreqSamples(VFile spellDir)
     throws IOException 
   {
     // Default if no frequencies found will be to turn off frequency boosting
@@ -859,12 +859,12 @@ public class SpellReader
     res[0] = res[1] = res[2] = res[3] = res[4] = Integer.MAX_VALUE;
 
     // Find the frequency samples file and open it
-    File freqSamplesFile = new File(spellDir, "freqSamples.dat");
+    VFile freqSamplesFile = VFile.create(spellDir, "freqSamples.dat");
     if (!freqSamplesFile.canRead())
       throw new IOException(
         "Cannot open frequency samples file '" + freqSamplesFile + "'");
 
-    BufferedReader reader = new BufferedReader(new FileReader(freqSamplesFile));
+    BufferedReader reader = new BufferedReader(freqSamplesFile.openReader());
     int nSamples = 0;
     int[] samples = null;
     try 
@@ -903,18 +903,18 @@ public class SpellReader
   }
 
   /** Get the term frequency sample array for our dictionary. */
-  private void loadWordFreqs(File spellDir)
+  private void loadWordFreqs(VFile spellDir)
     throws IOException 
   {
     // Find the word frequency file and open it
-    File freqFile = new File(spellDir, "words.dat");
+    VFile freqFile = VFile.create(spellDir, "words.dat");
     if (!freqFile.canRead())
       throw new IOException("Cannot open word frequency file '" + freqFile +
                             "'");
 
     // Read in each word and its frequency.
     wordFreqs = new FreqData();
-    BufferedReader reader = new BufferedReader(new FileReader(freqFile));
+    BufferedReader reader = new BufferedReader(freqFile.openReader());
     try 
     {
       while (true) {
@@ -935,12 +935,12 @@ public class SpellReader
     }
   }
 
-  private void openPairFreqs(File spellDir)
+  private void openPairFreqs(VFile spellDir)
     throws IOException 
   {
     if (pairFreqs == null) {
       pairFreqs = new FreqData();
-      pairFreqs.add(new File(spellDir, "pairs.dat"));
+      pairFreqs.add(VFile.create(spellDir, "pairs.dat"));
     }
   }
 
@@ -1021,6 +1021,7 @@ public class SpellReader
       return word.length();
     }
 
+    @SuppressWarnings("unused")
     public boolean equals(Word other) {
       return word.equals(other.word);
     }

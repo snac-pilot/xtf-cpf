@@ -36,8 +36,7 @@ package org.cdlib.xtf.textEngine;
  * as part of the Melvyl Recommender Project.
  */
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,7 +80,7 @@ public class BoostSet
    * @param field        Field used to key boost values
    * @return             Group data for the specified field
    */
-  public static BoostSet getCachedSet(IndexReader indexReader, File inFile,
+  public static BoostSet getCachedSet(IndexReader indexReader, VFile inFile,
                                       String field)
     throws IOException 
   {
@@ -121,12 +120,12 @@ public class BoostSet
   } // getBoost()
 
   /** Do not construct directly; use
-   *  {@link #getCachedSet(IndexReader, File, String)}
+   *  {@link #getCachedSet(IndexReader, VFile, String)}
    *  instead. Constructs a BoostSet by reading a file containing document
    *  key -> boost factor mappings, and correlating it with the keys in the
    *  given index reader.
    */
-  private BoostSet(IndexReader indexReader, File inFile, String field)
+  private BoostSet(IndexReader indexReader, VFile inFile, String field)
     throws IOException 
   {
     this.field = field;
@@ -146,7 +145,7 @@ public class BoostSet
     try 
     {
       docIter = new DocIter(indexReader, field);
-      lineIter = new LineIter(new BufferedReader(new FileReader(inFile)));
+      lineIter = new LineIter(inFile.openBufferedReader());
 
       // Process all matches
       while (!docIter.done() && !lineIter.done()) 

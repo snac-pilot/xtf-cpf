@@ -1,8 +1,7 @@
 package org.cdlib.xtf.xslt;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -85,8 +84,8 @@ public class FileUtils
   private static HashMap dateFormatCache = new HashMap();
   
   /** Used to track temp files, per thread */
-  private static ThreadLocal<ArrayList<File>> tempFiles =
-    new ThreadLocal<ArrayList<File>>();
+  private static ThreadLocal<ArrayList<VFile>> tempFiles =
+    new ThreadLocal<ArrayList<VFile>>();
 
   /**
    * Checks whether a file with the given path exists (that is, if it can
@@ -99,7 +98,7 @@ public class FileUtils
    * @return          true if the file exists and can be read, else false
    */
   public static boolean exists(XPathContext context, String filePath) {
-    File file = resolveFile(context, filePath);
+    VFile file = resolveFile(context, filePath);
     return file.canRead();
   } // exists()
 
@@ -118,7 +117,7 @@ public class FileUtils
   public static String lastModified(XPathContext context, String filePath,
                                     String formatStr) 
   {
-    File file = resolveFile(context, filePath);
+    VFile file = resolveFile(context, filePath);
     if (!file.canRead())
       return null;
 
@@ -138,7 +137,7 @@ public class FileUtils
    * @return          The file size, or -1 if it doesn't exist.
    */
   public static long length(XPathContext context, String filePath) {
-    File file = resolveFile(context, filePath);
+    VFile file = resolveFile(context, filePath);
     if (!file.canRead())
       return -1;
     return file.length();
@@ -304,18 +303,21 @@ public class FileUtils
   /**
    * Resolve the location of a file given the stylesheet context.
    */
-  public static File resolveFile(XPathContext context, String filePath) 
+  public static VFile resolveFile(XPathContext context, String filePath) 
   {
+    if (VFile.isAbsolute(filePath))
+      return VFile.create(filePath);
+    
     String stylesheetPath = getSystemId(context);
     stylesheetPath = stylesheetPath.replaceFirst("^file:", "");
     stylesheetPath = stylesheetPath.replaceAll("%20", " "); // fix spaces from Saxon on Windows
-    File stylesheetDir = new File(stylesheetPath).getParentFile();
+    VFile stylesheetDir = VFile.create(stylesheetPath).getParentFile();
 
     filePath = filePath.replaceFirst("^file:", "");
     filePath = filePath.replaceAll("%20", " "); // fix spaces from Saxon on Windows
 
     String resolved = Path.resolveRelOrAbs(stylesheetDir, filePath);
-    return new File(resolved);
+    return VFile.create(resolved);
   } // resolveFile
   
   /**
@@ -328,7 +330,7 @@ public class FileUtils
     String stylesheetPath = getSystemId(context);
     stylesheetPath = stylesheetPath.replaceFirst("^file:", "");
     stylesheetPath = stylesheetPath.replaceAll("%20", " "); // fix spaces from Saxon on Windows
-    File stylesheetDir = new File(stylesheetPath).getParentFile();
+    VFile stylesheetDir = VFile.create(stylesheetPath).getParentFile();
 
     filePath = filePath.replaceFirst("^file:", "");
     filePath = filePath.replaceAll("%20", " "); // fix spaces from Saxon on Windows
@@ -448,11 +450,11 @@ public class FileUtils
                                       String prefix, String suffix)
     throws IOException
   {
-    File out = File.createTempFile(prefix, suffix);
+    VFile out = VFile.createTempFile(prefix, suffix);
     out.delete();
-    ArrayList<File> files = tempFiles.get();
+    ArrayList<VFile> files = tempFiles.get();
     if (files == null) {
-      files = new ArrayList<File>();
+      files = new ArrayList<VFile>();
       tempFiles.set(files);
     }
     tempFiles.get().add(out);
@@ -465,9 +467,9 @@ public class FileUtils
    */
   public static void deleteTempFiles()
   {
-    ArrayList<File> files = tempFiles.get();
+    ArrayList<VFile> files = tempFiles.get();
     if (files != null) {
-      for (File f : files)
+      for (VFile f : files)
         f.delete();
       files.clear();
       tempFiles.set(null);
@@ -485,13 +487,13 @@ public class FileUtils
     throws IOException, XPathException
   {
     // First, locate the file
-    File file = resolveFile(context, filePath);
+    VFile file = resolveFile(context, filePath);
     if (!file.canRead())
       throw new IOException("Cannot read file '" + file.toString() + "'");
     
     // Now read it in, up to the first close-element marker.
     XMLStubReader xmlReader = new XMLStubReader();
-    BufferedInputStream bufStream = new BufferedInputStream(new FileInputStream(file));
+    BufferedInputStream bufStream = new BufferedInputStream(file.openInputStream());
     InputSource inputSrc = new InputSource(bufStream);
     inputSrc.setSystemId(file.toURI().toString());
     Source saxSrc = new SAXSource(xmlReader, inputSrc);

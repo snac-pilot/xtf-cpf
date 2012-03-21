@@ -31,12 +31,11 @@ package org.cdlib.xtf.textIndexer;
  */
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 
 import org.apache.lucene.index.IndexReader;
+import org.cdlib.xtf.merritt.MerrittRoot;
 import org.cdlib.xtf.textEngine.IndexValidator;
 import org.cdlib.xtf.textEngine.NativeFSDirectory;
 import org.cdlib.xtf.util.DirSync;
@@ -183,13 +182,16 @@ public class TextIndexer
       }
 
       cfgInfo.xtfHomePath = Path.normalizePath(cfgInfo.xtfHomePath);
-      if (!new File(cfgInfo.xtfHomePath).isDirectory()) {
+      if (!VFile.create(cfgInfo.xtfHomePath).isDirectory()) {
         Trace.error(
           "Error: xtf.home directory \"" + cfgInfo.xtfHomePath +
           "\" does not exist or cannot be read.");
         System.exit(1);
       }
-      File xtfHomeFile = new File(cfgInfo.xtfHomePath);
+      VFile xtfHomeFile = VFile.create(cfgInfo.xtfHomePath);
+
+      // Make sure all the virtual file processors are registered.
+      MerrittRoot.register(xtfHomeFile);
 
       // Perform indexing for each index specified.
       for (;;) 
@@ -227,7 +229,7 @@ public class TextIndexer
           else 
           {
             // Make sure the configuration path is absolute
-            if (!(new File(cfgInfo.cfgFilePath).isAbsolute())) {
+            if (!VFile.isAbsolute(cfgInfo.cfgFilePath)) {
               cfgInfo.cfgFilePath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
                                                          cfgInfo.cfgFilePath);
             }
@@ -298,7 +300,7 @@ public class TextIndexer
         // we're doing.
         //
         // Clean all indices below the root index directory. 
-        File idxRoot = new File(
+        VFile idxRoot = VFile.create(
             Path.resolveRelOrAbs(xtfHomeFile, cfgInfo.indexInfo.indexPath));
         if (firstIndex) 
         {
@@ -355,7 +357,7 @@ public class TextIndexer
         Trace.info("Optimizing Index:");
         Trace.tab();
 
-        File idxRootDir = new File(Path.resolveRelOrAbs(
+        VFile idxRootDir = VFile.create(Path.resolveRelOrAbs(
                                                         cfgInfo.xtfHomePath,
                                                         cfgInfo.indexInfo.indexPath));
         optimizer.processDir(idxRootDir);
@@ -377,7 +379,7 @@ public class TextIndexer
         Trace.info("Updating Spellcheck Dictionary:");
         Trace.tab();
 
-        File idxRootDir = new File(Path.resolveRelOrAbs(
+        VFile idxRootDir = VFile.create(Path.resolveRelOrAbs(
                                                         cfgInfo.xtfHomePath,
                                                         cfgInfo.indexInfo.indexPath));
         dictMaker.processDir(idxRootDir);
@@ -467,7 +469,7 @@ public class TextIndexer
   /**
    * Handles the main work of adding and removing documents to/from the index.
    */
-  private static void doIndexing(IndexerConfig cfgInfo, File xtfHomeFile)
+  private static void doIndexing(IndexerConfig cfgInfo, VFile xtfHomeFile)
     throws Exception 
   {
     SrcTreeProcessor srcTreeProcessor = new SrcTreeProcessor();
@@ -476,12 +478,12 @@ public class TextIndexer
     // Start at the root directory specified by the config file. 
     String srcRoot = Path.resolveRelOrAbs(xtfHomeFile,
                                           cfgInfo.indexInfo.sourcePath);
-    File srcRootFile = new File(srcRoot);
+    VFile srcRootFile = VFile.create(srcRoot);
 
     // Also figure out where the index is going to go.
     String indexPath = Path.resolveRelOrAbs(cfgInfo.xtfHomePath,
         cfgInfo.indexInfo.indexPath);
-    File indexFile = new File(indexPath);
+    VFile indexFile = VFile.create(indexPath);
     
     // Record the directories that we scan, for incremental syncing runs later.
     writeScanDirs(indexFile, cfgInfo.indexInfo);
@@ -489,25 +491,6 @@ public class TextIndexer
     // Make a filter for the specified source directories (null for all)
     SubDirFilter subDirFilter = makeSubDirFilter(srcRootFile, cfgInfo);
     
-    // If requested, clone the data and use that as our source.
-    if (cfgInfo.indexInfo.cloneData) 
-    {
-      Trace.info("Cloning Data Directories.");
-      
-      // Clone the source data.
-      File cloneRootFile = new File(indexFile, "dataClone/" + cfgInfo.indexInfo.indexName);
-      if (!cloneRootFile.exists() && !cloneRootFile.mkdirs())
-        throw new IOException("Error creating clone directory '" + cloneRootFile + "'");
-      DirSync sync = new DirSync(subDirFilter);
-      sync.syncDirs(srcRootFile, cloneRootFile);
-      
-      // Switch to using the clone data as our source
-      subDirFilter = makeSubDirFilter(cloneRootFile, cfgInfo);
-      srcRootFile = cloneRootFile;
-      
-      Trace.more(Trace.info, " Done.");
-    }
-      
     Trace.info("Scanning Data Directories...");
     srcTreeProcessor.processDir(srcRootFile, subDirFilter, true);
     Trace.more(Trace.info, " Done.");
@@ -522,7 +505,7 @@ public class TextIndexer
     Trace.info("Removing Missing Documents From Index:");
     Trace.tab();
 
-    culler.cullIndex(new File(cfgInfo.xtfHomePath), cfgInfo.indexInfo, 
+    culler.cullIndex(VFile.create(cfgInfo.xtfHomePath), cfgInfo.indexInfo, 
                      srcRootFile, subDirFilter);
 
     Trace.untab();
@@ -537,21 +520,21 @@ public class TextIndexer
    * file. This file is used in incremental index rotation to figure out which
    * data and lazy subdirectories need to be scanned for changes.
    */
-  private static void writeScanDirs(File indexFile, IndexInfo idxInfo) 
+  private static void writeScanDirs(VFile indexFile, IndexInfo idxInfo) 
     throws IOException 
   {
-    File oldScanFile = new File(indexFile, "scanDirs.list");
-    File newScanFile = new File(indexFile, "scanDirs.list.new");
+    VFile oldScanFile = VFile.create(indexFile, "scanDirs.list");
+    VFile newScanFile = VFile.create(indexFile, "scanDirs.list.new");
     try
     {
-      BufferedWriter scanWriter = new BufferedWriter(new FileWriter(newScanFile));
+      BufferedWriter scanWriter = newScanFile.openBufferedWriter();
       
       if (oldScanFile.canRead())
       {
         // Copy the contents of the old file. We can't just append to the old file
         // because it may be hard linked to a older index.
         //
-        BufferedReader scanReader = new BufferedReader(new FileReader(oldScanFile));
+        BufferedReader scanReader = oldScanFile.openBufferedReader();
         while (true) {
           String line = scanReader.readLine();
           if (line == null)
@@ -586,13 +569,13 @@ public class TextIndexer
    * Create a subdirectory filter, using the specified source root directory
    * and the given configuration info.
    */
-  private static SubDirFilter makeSubDirFilter(File srcRootFile, IndexerConfig cfgInfo) 
+  private static SubDirFilter makeSubDirFilter(VFile srcRootFile, IndexerConfig cfgInfo) 
   {
     if (cfgInfo.indexInfo.subDirs == null)
       return null;
     SubDirFilter filter = new SubDirFilter();
     for (String subdir : cfgInfo.indexInfo.subDirs)
-      filter.add(new File(Path.normalizePath(srcRootFile.toString() + "/" + subdir)));
+      filter.add(VFile.create(Path.normalizePath(srcRootFile.toString() + "/" + subdir)));
     return filter;
   }
 
@@ -613,13 +596,13 @@ public class TextIndexer
     assert indexPath.endsWith("-new/"); // Should have been modified above
     
     String home = cfgInfo.xtfHomePath;
-    File newIndex = new File(Path.resolveRelOrAbs(home, 
+    VFile newIndex = VFile.create(Path.resolveRelOrAbs(home, 
         indexPath));
-    File currentIndex = new File(Path.resolveRelOrAbs(home, 
+    VFile currentIndex = VFile.create(Path.resolveRelOrAbs(home, 
         indexPath.replaceFirst("-new/$", "/")));
-    File pendingIndex = new File(Path.resolveRelOrAbs(home, 
+    VFile pendingIndex = VFile.create(Path.resolveRelOrAbs(home, 
         indexPath.replaceFirst("-new/$", "-pending/")));
-    File spareIndex = new File(Path.resolveRelOrAbs(home, 
+    VFile spareIndex = VFile.create(Path.resolveRelOrAbs(home, 
         indexPath.replaceFirst("-new/$", "-spare/")));
     
     // If nothing has happened to the new index since the current one was
@@ -703,7 +686,7 @@ public class TextIndexer
    * fails.
    * @throws IOException 
    */
-  private static void renameOrElse(File from, File to) throws IOException
+  private static void renameOrElse(VFile from, VFile to) throws IOException
   {
     if (!from.renameTo(to))
       throw new IOException("Error renaming '" + from + "' to '" + to + "'");

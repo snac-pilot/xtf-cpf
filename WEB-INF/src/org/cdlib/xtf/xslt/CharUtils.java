@@ -1,7 +1,6 @@
 package org.cdlib.xtf.xslt;
 
-import java.io.File;
-import java.io.FileInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class CharUtils
     {
       // First resolve relative path name.
       String fullPath = FileUtils.resolvePath(context, filePath);
-      File file = new File(fullPath);
+      VFile file = VFile.create(fullPath);
       
       // Make sure we can read the file.
       if (!file.canRead())
@@ -79,7 +78,7 @@ public class CharUtils
         return accentMapCache.get(key);
       
       // Okay, we need to read and cache it.
-      InputStream stream = new FileInputStream(file);
+      InputStream stream = file.openInputStream();
       if (fullPath.endsWith(".gz"))
         stream = new GZIPInputStream(stream);
       CharMap map = new CharMap(stream);

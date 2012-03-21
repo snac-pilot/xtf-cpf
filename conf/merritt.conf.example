@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- Configuration file for Merritt connection parameters and credentials.  -->
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- Copy this file to merritt.conf and change to use your parameters. -->
+
+<merritt-config>
+  <collection name="ht_proto" 
+              server="merritt-stage.cdlib.org" 
+              collection="ark:/13030/m5j10120" 
+              group="hathitrust_prototype"
+              username="yourUserName"
+              password="yourPassword"/>
+</merritt-config>
+

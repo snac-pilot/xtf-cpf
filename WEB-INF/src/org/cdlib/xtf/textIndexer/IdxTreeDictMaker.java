@@ -35,7 +35,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.spelt.SpellWriter;
 import org.apache.lucene.util.ProgressTracker;
@@ -50,7 +50,7 @@ import org.cdlib.xtf.util.Trace;
  * dictionary after new documents have been added or updated. <br><br>
  *
  * To use this class, simply instantiate a copy, and call the
- * {@link IdxTreeDictMaker#processDir(File) processDir()}
+ * {@link IdxTreeDictMaker#processDir(VFile) processDir()}
  * method on a directory containing an index. Note that the directory passed
  * may also be a root directory with many index sub-directories if desired.
  */
@@ -71,14 +71,14 @@ public class IdxTreeDictMaker
    *                     potential index sub-directories below the passed
    *                     directory.
    */
-  public void processDir(File dir)
+  public void processDir(VFile dir)
     throws Exception 
   {
     // If the file we were passed was in fact a directory...
     if (dir.getAbsoluteFile().isDirectory()) 
     {
       // And it contains an index, optimize it.
-      if (IndexReader.indexExists(dir.getAbsoluteFile()))
+      if (IndexReader.indexExists(dir.getAbsoluteFile().getNativeFile()))
         makeDict(dir);
 
       else 
@@ -88,7 +88,7 @@ public class IdxTreeDictMaker
 
         // And process each of them.
         for (int i = 0; i < files.length; i++)
-          processDir(new File(dir, files[i]));
+          processDir(VFile.create(dir, files[i]));
       }
 
       return;
@@ -111,7 +111,7 @@ public class IdxTreeDictMaker
    *                            during the dictionary generation process.
    *                            <br><br>
    */
-  public void makeDict(File mainIdxDir)
+  public void makeDict(VFile mainIdxDir)
     throws Exception 
   {
     // Detect if spelling data is present.
@@ -119,8 +119,8 @@ public class IdxTreeDictMaker
     String spellIdxPath = indexPath + "spellDict/";
     String wordQueuePath = spellIdxPath + "newWords.txt";
     String pairQueuePath = spellIdxPath + "newPairs.txt";
-    if (new File(wordQueuePath).length() < 1 &&
-        new File(pairQueuePath).length() < 1) 
+    if (VFile.create(wordQueuePath).length() < 1 &&
+        VFile.create(pairQueuePath).length() < 1) 
     {
       return;
     }
@@ -138,7 +138,7 @@ public class IdxTreeDictMaker
       // Open the SpellWriter. We don't have to specify a stopword set for
       // this phase (it's only used during queuing.)
       //
-      spellWriter = SpellWriter.open(new File(spellIdxPath));
+      spellWriter = SpellWriter.open(VFile.create(spellIdxPath));
       spellWriter.setMinWordFreq(3);
 
       // Perform the update.

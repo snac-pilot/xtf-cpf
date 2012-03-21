@@ -29,7 +29,11 @@ package org.cdlib.xtf.util;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.*;
+import org.cdlib.xtf.util.VFile;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.regex.Pattern;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,6 +44,8 @@ import java.io.*;
  */
 public class Path 
 {
+  static final Pattern winDrivePat = Pattern.compile("^[a-z]:");
+  
   ////////////////////////////////////////////////////////////////////////////// 
 
   /** Normalize the specified file system path. <br><br>
@@ -73,86 +79,35 @@ public class Path
    */
   public final static String normalizePath(String path) 
   {
-    // Create a buffer in which we can normalize the Path.
-    StringBuffer trimPath = new StringBuffer();
-
-    // Remove any leading or trailing whitespace from the Path.
-    trimPath.append(path.trim());
-
-    // Determine the length of the Path.
-    int len = trimPath.length();
-    int lastSlash = -1;
-    int lastLastSlash = -1;
-
-    for (int i = 0; i < len; i++) 
+    try
     {
-      assert len == trimPath.length();
-
-      // Normalize Path to use forward instead of back slashes.
-      if (trimPath.charAt(i) == '\\')
-        trimPath.setCharAt(i, '/');
-      if (i < len - 1 && trimPath.charAt(i + 1) == '\\')
-        trimPath.setCharAt(i + 1, '/');
-
-      // Remove any double slashes created by concatenating partial
-      // normalized paths together.
-      //
-      if (i < len - 1 &&
-          trimPath.charAt(i) == '/' &&
-          trimPath.charAt(i + 1) == '/') 
-      {
-        trimPath.deleteCharAt(i);
-        len--;
-        i--;
+      // Make a canonical path out of it, somehow.
+      String ret; 
+      if (VFile.isAbsolute(path))
+        ret = VFile.create(path.trim()).getCanonicalPath();
+      else {
+        ret = path;
+        while (ret.startsWith("./") || ret.startsWith(".\\"))
+          ret = ret.substring(2);
       }
-
-      // Remove ./
-      if (i < len - 1 &&
-          i == lastSlash + 1 &&
-          trimPath.charAt(i) == '.' &&
-          trimPath.charAt(i + 1) == '/') 
-      {
-        trimPath.delete(i, i + 2);
-        len -= 2;
-      }
-
-      // Remove xxx/../
-      if (i < len - 2 &&
-          i == lastSlash + 1 &&
-          lastLastSlash >= 0 &&
-          trimPath.charAt(lastLastSlash+1) != '.' &&
-          trimPath.charAt(i) == '.' &&
-          trimPath.charAt(i + 1) == '.' &&
-          trimPath.charAt(i + 2) == '/') 
-      {
-        trimPath.delete(lastLastSlash, i + 2);
-        len -= (i + 2 - lastLastSlash);
-        i = lastLastSlash;
-        lastSlash = trimPath.lastIndexOf("/", lastLastSlash - 1);
-      }
-
-      if (trimPath.charAt(i) == '/') {
-        lastLastSlash = lastSlash;
-        lastSlash = i;
-      }
+      
+      // Replace windows backslashes
+      ret = ret.replaceAll("\\\\", "/");
+      
+      // Convert Windows drive letters to upper case
+      if (winDrivePat.matcher(ret).matches())
+        ret = ret.substring(0, 1).toUpperCase() + ret.substring(2);
+      
+      // Add a trailing slash if not already present.
+      if (ret.length() > 0 && !ret.endsWith("/"))
+        ret += "/";
+      
+      // All done.
+      return ret;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
-    assert len == trimPath.length();
-
-    // If the normalized  Path is empty, return an empty string.
-    if (len == 0)
-      return "";
-
-    // Change drive letters to upper-case.
-    if (len >= 3 && trimPath.charAt(1) == ':' && trimPath.charAt(2) == '/')
-      trimPath.setCharAt(0, Character.toUpperCase(trimPath.charAt(0)));
-
-    // If the Path did not end in a forward slash, add one.
-    if (trimPath.charAt(len - 1) != '/')
-      trimPath.append("/");
-
-    // Return the resulting normalized Path.
-    return trimPath.toString();
-  } // private normalizePath()
+  }
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -175,16 +130,11 @@ public class Path
    */
   public final static String normalizeFileName(String path) 
   {
-    // Let the Path normalization code do the hard work.
-    String filename = normalizePath(path);
-
-    // Now if the resulting normalized Path ends in a slash, remove it.
-    if (filename.length() > 0 && filename.charAt(filename.length() - 1) == '/')
-      filename = filename.substring(0, filename.length() - 1);
-
-    // Return the result to the caller.
-    return filename;
-  } // private normalizeFileName()
+    String ret = normalizePath(path);
+    if (ret.length() > 0 && ret.endsWith("/"))
+      ret = ret.substring(0, ret.length() - 1);
+    return ret;
+  } // normalizeFileName()
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -207,6 +157,7 @@ public class Path
    *    will not.
    */
   public final static String normalize(String pathOrFileName) {
+    pathOrFileName = pathOrFileName.trim();
     if (pathOrFileName.endsWith("/") || pathOrFileName.endsWith("\\"))
       return normalizePath(pathOrFileName);
     else
@@ -241,7 +192,7 @@ public class Path
     boolean ret = false;
 
     // First normalize the path name.
-    File thePath = new File(normalizePath(path));
+    VFile thePath = VFile.create(normalizePath(path));
 
     // Then, if the specified path exists, return early.
     if (thePath.exists())
@@ -273,7 +224,7 @@ public class Path
    */
   public final static boolean deletePath(String path) 
   {
-    File f = new File(path);
+    VFile f = VFile.create(path);
 
     // Try to delete the file, then its parent directory, and so on. Eventually
     // File.delete() will return false when we get to a non-empty directory.
@@ -299,22 +250,19 @@ public class Path
     // Find the part of the long path that, when all symlinks are fully
     // resolved, maps to the short path when it's fully resolved.
     //
-    String normShort = normalizePath(new File(shortPath).getCanonicalPath());
+    VFile normShort = VFile.create(shortPath).getCanonicalFile();
+    VFile normLong = VFile.create(longPath).getCanonicalFile();
 
-    while (true) 
+    while (normLong != null) 
     {
-      longPath = normalizePath(longPath);
-      String normLong = normalizePath(new File(longPath).getCanonicalPath());
       if (normLong.equals(normShort))
-        return longPath;
+        return normalizePath(normLong.toString());
 
       // Strip one directory from the end of the long path, and try again.
-      int slashPos = longPath.lastIndexOf('/', longPath.length() - 2);
-      if (slashPos < 0)
-        return null;
-
-      longPath = longPath.substring(0, slashPos);
+      normLong = normLong.getParentFile();
     } // while( true )
+    
+    return null;
   } // public calcPrefix() 
 
   /**
@@ -324,7 +272,7 @@ public class Path
    * @throws IOException if we fail to delete the entire directory and all
    *                     sub-files and subdirectories.
    */
-  public static void deleteDir(File dir) throws IOException 
+  public static void deleteDir(VFile dir) throws IOException 
   {
     // If the specified directory exists...
     if (dir.isDirectory()) 
@@ -334,7 +282,7 @@ public class Path
 
       //  Delete the contents of the directory.
       for (int i = 0; i < children.length; i++) 
-        deleteDir(new File(dir, children[i]));
+        deleteDir(VFile.create(dir, children[i]));
     } // if( dir.isDirectory() )
 
     // At this point we either have a file or an empty directory, so 
@@ -356,8 +304,8 @@ public class Path
    *                    resolve against <code>parentFile</code>.
    * @return - The resulting fully resolved path.
    */
-  public static String resolveRelOrAbs(File parentDir, String childPath) {
-    if (parentDir == null)
+  public static String resolveRelOrAbs(VFile parentDir, String childPath) {
+    if (parentDir == null || VFile.isAbsolute(childPath))
       return normalize(childPath);
     return normalize(resolveRelOrAbs(parentDir.toString(), childPath));
   } // resolveRelOrAbs()
@@ -381,9 +329,7 @@ public class Path
     parentDir = normalizePath(parentDir);
 
     // If the child path is absolute, just return it.
-    if (childPath.startsWith("/"))
-      return childPath;
-    if (childPath.length() > 1 && childPath.charAt(1) == ':')
+    if (VFile.isAbsolute(childPath))
       return childPath;
 
     // Otherwise, resolve against the parent.
@@ -393,11 +339,11 @@ public class Path
   /** Copies a source file to the specified destination. Creates the
    *  destination file if it doesn't exist; overwrites it otherwise.
    */
-  public static void copyFile(File src, File dst)
+  public static void copyFile(VFile src, VFile dst)
     throws IOException 
   {
-    InputStream in = new FileInputStream(src);
-    OutputStream out = new FileOutputStream(dst);
+    InputStream in = src.openInputStream();
+    OutputStream out = dst.openOutputStream();
 
     // Transfer bytes from in to out
     byte[] buf = new byte[(int)Math.min(src.length(), 1024 * 256)];
@@ -415,9 +361,6 @@ public class Path
       throws Exception 
     {
       String x;
-
-      x = Path.normalizePath("c:\\tmp\\foo");
-      assert x.equals("C:/tmp/foo/");
 
       x = Path.normalizeFileName("xyz/./foo.txt/");
       assert x.equals("xyz/foo.txt");
