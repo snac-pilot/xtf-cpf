@@ -21,6 +21,7 @@ public class XTFTokenizer extends org.apache.lucene.analysis.Tokenizer implement
  * <p>The returned token's type is set to an element of {@link
  * StandardTokenizerConstants#tokenImage}.
  */
+  @SuppressWarnings("unused")
   final public org.apache.lucene.analysis.Token next() throws ParseException, java.io.IOException {
   Token token = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {

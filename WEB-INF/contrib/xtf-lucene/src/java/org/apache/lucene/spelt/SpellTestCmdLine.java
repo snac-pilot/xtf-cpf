@@ -17,8 +17,6 @@ package org.apache.lucene.spelt;
  */
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,6 +33,8 @@ import java.util.regex.Pattern;
 // old: import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.ProgressTracker;
 import org.apache.lucene.util.StringUtil;
+
+import org.cdlib.xtf.util.VFile;
 
 /**
  * A command-line driver class to test out the spelling correction 
@@ -130,9 +130,9 @@ public class SpellTestCmdLine
   { 
     
     // Clear all the files in the target dir.
-    File dictDirFile = new File(dictDir);
+    VFile dictDirFile = VFile.create(dictDir);
     if (dictDirFile.isDirectory()) {
-      for (File f : dictDirFile.listFiles())
+      for (VFile f : dictDirFile.listFiles())
         f.delete();
       if (!dictDirFile.delete())
         throw new IOException("Error deleting old dictionary from '" + dictDir + "'");
@@ -285,7 +285,7 @@ public class SpellTestCmdLine
   {
     SpellWriter spellWriter;
 
-    SpeltDictBuilder(File dictDir) throws IOException
+    SpeltDictBuilder(VFile dictDir) throws IOException
     {
       spellWriter = SpellWriter.open(dictDir);
       spellWriter.setStopwords(makeStopSet());
@@ -319,7 +319,7 @@ public class SpellTestCmdLine
     
     TextRipper(String dir) throws IOException 
     {
-      fileStack.push(new File(dir));
+      fileStack.push(VFile.create(dir));
       advance();
     }
     
@@ -339,18 +339,18 @@ public class SpellTestCmdLine
       // Scan until we find a file we can read.
       while (reader == null && !fileStack.isEmpty())
       {
-        File file = (File) fileStack.pop();
+        VFile file = (VFile) fileStack.pop();
         if (file.isFile()) {
           String path = file.getCanonicalPath();
           if (path.matches(".*\\.(xml|txt|text|html|htm|xhtml)"))
           {
             System.out.println(file);
             reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file), "UTF-8"));
+                new InputStreamReader(file.openInputStream(), "UTF-8"));
           }
         }
         else if (file.isDirectory()) {
-          File[] subFiles = file.listFiles();
+          VFile[] subFiles = file.listFiles();
           for (int i=0; i<subFiles.length; i++)
               fileStack.push(subFiles[i]);
         }
@@ -483,7 +483,7 @@ public class SpellTestCmdLine
     
     SpeltSuggTester(String dictDir) throws IOException
     {
-      spellReader = SpellReader.open(new File(dictDir));
+      spellReader = SpellReader.open(VFile.create(dictDir));
       spellReader.setStopwords(makeStopSet());
     }
     

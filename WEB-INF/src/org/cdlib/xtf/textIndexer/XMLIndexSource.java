@@ -35,7 +35,7 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class XMLIndexSource extends IndexSource
     String sysId = inSrc.getSystemId();
 
     this.inSrc = inSrc;
-    this.path = (sysId == null) ? null : new File(sysId);
+    this.path = (sysId == null) ? null : VFile.create(sysId);
     this.key = key;
     this.preFilters = null;
     this.displayStyle = null;
@@ -71,7 +71,7 @@ public class XMLIndexSource extends IndexSource
   }
 
   /** Constructor -- initializes all the fields */
-  public XMLIndexSource(InputSource inSrc, File path, String key,
+  public XMLIndexSource(InputSource inSrc, VFile path, String key,
                         Templates[] preFilters, Templates displayStyle,
                         StructuredStore lazyStore) 
   {
@@ -91,7 +91,7 @@ public class XMLIndexSource extends IndexSource
   private InputSource inSrc;
 
   /** Path to the file, or null if it's not a local file. */
-  private File path;
+  private VFile path;
 
   /** Key used to identify this file in the index */
   private String key;
@@ -128,7 +128,7 @@ public class XMLIndexSource extends IndexSource
   private static SAXParser saxParser = IndexUtil.createSAXParser();
 
   // inherit JavaDoc
-  public File path() {
+  public VFile path() {
     return path;
   }
 
@@ -220,7 +220,7 @@ public class XMLIndexSource extends IndexSource
         path = path.substring(6);
       else if (path.startsWith("file:/"))
         path = path.substring(5);
-      if (!(new File(path).canRead()))
+      if (!(VFile.create(path).canRead()))
         throw new FileNotFoundException(inSrc.getSystemId());
       inStream = new FileInputStream(path);
     }
@@ -322,4 +322,4 @@ public class XMLIndexSource extends IndexSource
 
     return s;
   } // normalize()
-} // class SimpleSrcTextInfo
+}

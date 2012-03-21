@@ -21,11 +21,8 @@ import java.io.BufferedWriter;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +30,7 @@ import java.util.PriorityQueue;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
+import org.cdlib.xtf.util.VFile;
 
 /**
  * Performs a disk-based sort of the lines of a text file, similar to the
@@ -46,7 +44,7 @@ public class FileSorter
   public static final int DEFAULT_MEM_LIMIT = 10 * 1024 * 1024; // 10 megs
 
   /** File to use for temporary disk storage (automatically deleted) */
-  private File tmpFile;
+  private VFile tmpFile;
 
   /** Approximate limit on the amount of memory to consume during sort */
   private int memLimit;
@@ -82,7 +80,7 @@ public class FileSorter
     }
     try {
       long startTime = System.currentTimeMillis();
-      sort(new File(args[0]), new File(args[1]));
+      sort(VFile.create(args[0]), VFile.create(args[1]));
       System.out.println(
         "Sort time: " + ((System.currentTimeMillis() - startTime) / 1000.0f) +
         " sec");
@@ -93,7 +91,7 @@ public class FileSorter
   }
 
   /** Simple API: Sort from an input file to an output file */
-  public static void sort(File inFile, File outFile)
+  public static void sort(VFile inFile, VFile outFile)
     throws IOException 
   {
     sort(inFile, outFile, null, DEFAULT_MEM_LIMIT);
@@ -109,14 +107,14 @@ public class FileSorter
    *               null, then the system default temp directory will be used.
    * @param memLimit approximate max amount of RAM to use during sort
    */
-  public static void sort(File inFile, File outFile, File tmpDir, int memLimit)
+  public static void sort(VFile inFile, VFile outFile, VFile tmpDir, int memLimit)
     throws IOException 
   {
     // Clear the output file
     clearFile(outFile);
 
     // Open the input file.
-    BufferedReader in = new BufferedReader(new FileReader(inFile));
+    BufferedReader in = new BufferedReader(inFile.openReader());
     try 
     {
       // Do the main work of sorting.
@@ -153,10 +151,10 @@ public class FileSorter
   {
     private BufferedWriter out;
 
-    public FileOutput(File f, int bufSize)
+    public FileOutput(VFile f, int bufSize)
       throws IOException 
     {
-      out = new BufferedWriter(new FileWriter(f), bufSize);
+      out = new BufferedWriter(f.openWriter(), bufSize);
     }
 
     public void writeLine(String s)
@@ -182,7 +180,7 @@ public class FileSorter
    * @param tmpDir a filesystem directory to store temporary data during sort.
    * @param memLimit approximate limit on the amount of RAM to use during sort.
    */
-  public static FileSorter start(File tmpDir, int memLimit)
+  public static FileSorter start(VFile tmpDir, int memLimit)
     throws IOException 
   {
     if (tmpDir != null && !tmpDir.isDirectory())
@@ -190,7 +188,7 @@ public class FileSorter
 
     FileSorter sorter = new FileSorter();
     sorter.memLimit = memLimit;
-    sorter.tmpFile = File.createTempFile("sort", ".tmp", tmpDir);
+    sorter.tmpFile = VFile.createTempFile("sort", ".tmp", tmpDir);
     return sorter;
   }
 
@@ -248,7 +246,7 @@ public class FileSorter
     int blockMemLimit = Math.max(16384, memLimit / blockOffsets.size());
 
     // Open the temporary file which contains the sorted blocks.
-    RandomAccessFile tmpIn = new RandomAccessFile(tmpFile, "r");
+    RandomAccessFile tmpIn = tmpFile.openRandomAccessFile("r");
     try 
     {
       // Make a priority queue of each of the input blocks.
@@ -300,7 +298,7 @@ public class FileSorter
     blockOffsets.add(new Long(tmpFile.length()));
 
     // Open the temp file and record the offset of the new block.
-    FileOutputStream tmpOut = new FileOutputStream(tmpFile, true);
+    OutputStream tmpOut = tmpFile.openOutputStream(true);
     try 
     {
       // Testing has shown a significant performance gain (around 40%) from
@@ -330,14 +328,14 @@ public class FileSorter
   }
 
   /** Delete, or at least truncate, the given file (if it exists) */
-  private static void clearFile(File f)
+  private static void clearFile(VFile f)
     throws IOException 
   {
     if (!f.canRead())
       return;
     if (f.delete())
       return;
-    FileOutputStream truncator = new FileOutputStream(f);
+    OutputStream truncator = f.openOutputStream();
     truncator.close();
     f.delete();
   }

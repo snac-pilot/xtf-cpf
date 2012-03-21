@@ -29,12 +29,13 @@ package org.cdlib.xtf.textIndexer;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.xml.transform.Templates;
@@ -81,7 +82,7 @@ public class SrcTreeProcessor
   private StringBuffer docBuf = new StringBuffer(1024);
   private StringBuffer dirBuf = new StringBuffer(1024);
   private String docSelPath;
-  private File docSelCacheFile;
+  private VFile docSelCacheFile;
   private DocSelCache docSelCache = new DocSelCache();
 
   ////////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@ public class SrcTreeProcessor
     // directory as the config file.
     //
     if (cfgInfo.xtfHomePath == null) {
-      cfgInfo.xtfHomePath = new File(cfgInfo.cfgFilePath).getParentFile()
+      cfgInfo.xtfHomePath = VFile.create(cfgInfo.cfgFilePath).getParentFile()
                             .toString();
     }
 
@@ -201,7 +202,7 @@ public class SrcTreeProcessor
     docSelCache.clear();
 
     // Figure out the path to the cache file
-    docSelCacheFile = new File(calcIndexPath() + "docSelect.cache");
+    docSelCacheFile = VFile.create(calcIndexPath() + "docSelect.cache");
 
     // Calculate all the file dependencies of the docSelector stylesheet.
     Iterator iter = stylesheetCache.getDependencies(docSelPath);
@@ -284,7 +285,7 @@ public class SrcTreeProcessor
    *
    */
 
-  public void processDir(File curDir, SubDirFilter subDirFilter, boolean topLevel)
+  public void processDir(VFile curDir, SubDirFilter subDirFilter, boolean topLevel)
     throws Exception 
   {
     // If we're only doing a subset and this directory isn't in it, skip.
@@ -292,17 +293,14 @@ public class SrcTreeProcessor
       return;
     
     // We're looking at a directory. Get the list of files it contains.
-    String[] fileStrs = curDir.getAbsoluteFile().list();
-    if (fileStrs == null) {
+    List<VFile> files = Arrays.asList(curDir.getAbsoluteFile().listFiles());
+    if (files == null) {
       Trace.warning(
         "Warning: error retrieving file list for directory: " + curDir);
       return;
     }
 
-    ArrayList list = new ArrayList(fileStrs.length);
-    for (int i = 0; i < fileStrs.length; i++)
-      list.add(fileStrs[i]);
-    Collections.sort(list);
+    Collections.sort(files);
 
     // Process all of the non-directory files first. Form a document 
     // representing the directory and all its files.
@@ -313,9 +311,8 @@ public class SrcTreeProcessor
     String dirPath = Path.normalizePath(curDir.toString());
     docBuf.append("<directory dirPath=\"" + StringUtil.escapeHTMLChars(dirPath) + "\">\n");
     int nFiles = 0;
-    for (Iterator i = list.iterator(); i.hasNext();) 
+    for (VFile subFile : files)
     {
-      File subFile = new File(curDir, (String)i.next());
       if (!subFile.getAbsoluteFile().isDirectory()) 
       {
         docBuf.append("  <file fileName=\"");
@@ -347,7 +344,7 @@ public class SrcTreeProcessor
     if (topLevel)
       dirKey = cfgInfo.indexInfo.indexName + ":/";
     else
-      dirKey = IndexUtil.calcDocKey(new File(cfgInfo.xtfHomePath),
+      dirKey = IndexUtil.calcDocKey(VFile.create(cfgInfo.xtfHomePath),
                                     cfgInfo.indexInfo, curDir);
     
     if (nFiles == 0)
@@ -432,8 +429,7 @@ public class SrcTreeProcessor
       return;
 
     // Recursively try sub-directories.
-    for (Iterator i = list.iterator(); i.hasNext();) {
-      File subFile = new File(curDir, (String)i.next());
+    for (VFile subFile : files) {
       if (subFile.getAbsoluteFile().isDirectory())
         processDir(subFile, subDirFilter, false);
     }
@@ -462,7 +458,7 @@ public class SrcTreeProcessor
     throws Exception 
   {
     // Gather all the info from the element's attributes.
-    File srcPath = null;
+    VFile srcPath = null;
     Vector preFilterVec = new Vector();
     Templates displayStyle = null;
     String fileName = null;
@@ -478,7 +474,7 @@ public class SrcTreeProcessor
       if (attrName.equalsIgnoreCase("fileName")) 
       {
         fileName = attrVal; // for extension checking only
-        srcPath = new File(Path.normalizeFileName(dir + attrVal));
+        srcPath = VFile.create(Path.normalizeFileName(dir + attrVal));
         if (!srcPath.canRead()) {
           Trace.error("Error: cannot read input document '" + srcPath + "'");
           return false;
@@ -587,11 +583,11 @@ public class SrcTreeProcessor
     // that just contains the index name and the part of the path after that
     // index's data directory.
     //
-    String key = IndexUtil.calcDocKey(new File(cfgInfo.xtfHomePath),
+    String key = IndexUtil.calcDocKey(VFile.create(cfgInfo.xtfHomePath),
                                       cfgInfo.indexInfo, srcPath);
 
     // Calculate a proper system ID for this file.
-    String systemId = srcPath.toURL().toString();
+    String systemId = srcPath.toURI().toString();
 
     // Figure out where to put the lazy file (if we've been asked to build one)
     StructuredStore lazyStore = null;
@@ -601,7 +597,7 @@ public class SrcTreeProcessor
       // the directory just yet, since for non-XML files the store will
       // never be used.
       //
-      File lazyFile = IndexUtil.calcLazyPath(new File(cfgInfo.xtfHomePath),
+      VFile lazyFile = IndexUtil.calcLazyPath(VFile.create(cfgInfo.xtfHomePath),
                                              cfgInfo.indexInfo,
                                              srcPath,
                                              false); // false: don't create yet
@@ -622,6 +618,7 @@ public class SrcTreeProcessor
     IndexSource srcFile = null;
     if (format.equalsIgnoreCase("XML")) {
       InputSource finalSrc = new InputSource(systemId);
+      finalSrc.setByteStream(srcPath.openInputStream());
       srcFile = new XMLIndexSource(finalSrc,
                                    srcPath,
                                    key,

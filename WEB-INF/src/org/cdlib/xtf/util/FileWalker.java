@@ -29,9 +29,7 @@ package org.cdlib.xtf.util;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.*;
-import org.cdlib.xtf.util.Path;
-import org.cdlib.xtf.util.Trace;
+import java.io.IOException;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +64,7 @@ public abstract class FileWalker
     try 
     {
       // Convert the specified path to a file equivalent.
-      mBasePath = new File(Path.normalizePath(baseDir));
+      mBasePath = VFile.create(Path.normalizePath(baseDir));
     }
 
     // Catch any problems that occurred during conversion.
@@ -137,7 +135,7 @@ public abstract class FileWalker
    *      {@link FileWalker#processFile(String,String,String,String) processFile() }
    *      method to actually perform some work for the file found.
    */
-  private void processFiles(File theFile, boolean subDirs)
+  private void processFiles(VFile theFile, boolean subDirs)
     throws IOException 
   {
     // If the derived class wants us to stop processing files, return now.
@@ -152,7 +150,7 @@ public abstract class FileWalker
       for (int i = 0; i < subFiles.length; i++) 
       {
         // Create a file object for the current file in the list.
-        File currFile = new File(theFile, subFiles[i]);
+        VFile currFile = VFile.create(theFile, subFiles[i]);
 
         // If the current file is a sub-directory and we're not supposed 
         // to process sub-directories, skip it.
@@ -218,7 +216,7 @@ public abstract class FileWalker
   /** Local copy of the path to the base directory to process (as passed into
    *  {@link FileWalker#processFiles(String,boolean) processFiles() }.
    */
-  private File mBasePath = null;
+  private VFile mBasePath = null;
 
   /** Flag indicating whether file processing should continue or stop (set by
    *  the value returned from the derived

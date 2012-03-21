@@ -32,7 +32,7 @@ package org.cdlib.xtf.util;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.EOFException;
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -48,7 +48,7 @@ import java.util.HashMap;
 public class StructuredFile implements StructuredStore 
 {
   /** Actual file path of the structured file */
-  private File file;
+  private VFile file;
 
   /** Used to read/write the disk file */
   private RandomAccessFile realFile;
@@ -99,13 +99,13 @@ public class StructuredFile implements StructuredStore
    * Instances should never be created by outside parties, so the constructor
    * is strictly private.
    */
-  private StructuredFile(File file, boolean create)
+  private StructuredFile(VFile file, boolean create)
     throws IOException 
   {
     this.file = file;
     if (!create && !file.exists())
       throw new FileNotFoundException(file.toString());
-    realFile = new RandomAccessFile(file, "rw");
+    realFile = file.openRandomAccessFile("rw");
     
     try 
     {
@@ -170,7 +170,7 @@ public class StructuredFile implements StructuredStore
    *
    * @param file  The file path to write to.
    */
-  public static synchronized StructuredFile create(File file)
+  public static synchronized StructuredFile create(VFile file)
     throws IOException 
   {
     StructuredFile sf;
@@ -192,7 +192,7 @@ public class StructuredFile implements StructuredStore
    * @param file  The file to open.
    * @throws FileNotFoundException    If the file doesn't exist.
    */
-  public static synchronized StructuredFile open(File file)
+  public static synchronized StructuredFile open(VFile file)
     throws FileNotFoundException, IOException 
   {
     StructuredFile sf;
@@ -594,7 +594,7 @@ public class StructuredFile implements StructuredStore
     protected void testImpl()
       throws Exception 
     {
-      File testFile = new File("test.sf");
+      VFile testFile = VFile.create("test.sf");
       StructuredFile f = null;
 
       try 

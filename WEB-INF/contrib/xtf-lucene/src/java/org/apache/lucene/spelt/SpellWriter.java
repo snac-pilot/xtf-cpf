@@ -25,12 +25,9 @@ package org.apache.lucene.spelt;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -46,6 +43,8 @@ import org.apache.lucene.util.FileSorter;
 import org.apache.lucene.util.IntList;
 import org.apache.lucene.util.ProgressTracker;
 
+import org.cdlib.xtf.util.VFile;
+
 /**
  * <p>
  * Writes spelling dictionaries, which can later be used by {@link SpellReader}
@@ -53,7 +52,7 @@ import org.apache.lucene.util.ProgressTracker;
  * to a spelling correction dictionary. Typical steps for creating a dictionary:
  * </p>
  * <ol>
- *   <li>First, {@linkplain #open(File) open} a new writer.</li>
+ *   <li>First, {@linkplain #open(VFile) open} a new writer.</li>
  *   <li>Repeatedly {@linkplain #queueWord(String) queue} words to be added
  *       to the dictionary. This writes the words and pairs to a simple
  *       disk file.
@@ -73,31 +72,31 @@ import org.apache.lucene.util.ProgressTracker;
 public class SpellWriter 
 {
   /** Directory to store the spelling dictionary in */
-  private File spellIndexDir;
+  private VFile spellIndexDir;
 
   /** Set of stop words in use; default is null for no stop set */
   private Set stopSet = null;
 
-  /** File to queue words into */
-  private File wordQueueFile;
+  /** VFile to queue words into */
+  private VFile wordQueueFile;
 
   /** The previous word queued, or null if none (or a break was queued) */
   private String prevWord;
 
-  /** File to queue words into */
-  private File pairQueueFile;
+  /** VFile to queue words into */
+  private VFile pairQueueFile;
 
-  /** File containing compiled word frequencies */
-  private File freqFile;
+  /** VFile containing compiled word frequencies */
+  private VFile freqFile;
 
-  /** File containing frequency sample data */
-  private File sampleFile;
+  /** VFile containing frequency sample data */
+  private VFile sampleFile;
 
-  /** File containing edit map data */
-  private File edmapFile;
+  /** VFile containing edit map data */
+  private VFile edmapFile;
 
-  /** File containing compiled pair frequency data */
-  private File pairFreqFile;
+  /** VFile containing compiled pair frequency data */
+  private VFile pairFreqFile;
 
   /** For writing to the word queue */
   private PrintWriter wordQueueWriter = null;
@@ -148,7 +147,7 @@ public class SpellWriter
 
   /**
    * Private constructor -- do not construct directly; rather, use the
-   * static {@link #open(File)} method.
+   * static {@link #open(VFile)} method.
    */
   private SpellWriter() {
   }
@@ -169,7 +168,7 @@ public class SpellWriter
    *
    * @param spellIndexDir  Directory in which to store the spelling dictionary
    */
-  public static SpellWriter open(File spellIndexDir)
+  public static SpellWriter open(VFile spellIndexDir)
     throws IOException 
   {
     SpellWriter writer = new SpellWriter();
@@ -180,18 +179,18 @@ public class SpellWriter
   /**
    * Establishes the directory to store the dictionary in.
    */
-  private void openInternal(File spellIndexDir)
+  private void openInternal(VFile spellIndexDir)
     throws IOException 
   {
     this.spellIndexDir = spellIndexDir;
 
     // Figure out the files we're going to store stuff in
-    wordQueueFile = new File(spellIndexDir, "newWords.txt");
-    pairQueueFile = new File(spellIndexDir, "newPairs.txt");
-    freqFile = new File(spellIndexDir, "words.dat");
-    sampleFile = new File(spellIndexDir, "freqSamples.dat");
-    edmapFile = new File(spellIndexDir, "edmap.dat");
-    pairFreqFile = new File(spellIndexDir, "pairs.dat");
+    wordQueueFile = VFile.create(spellIndexDir, "newWords.txt");
+    pairQueueFile = VFile.create(spellIndexDir, "newPairs.txt");
+    freqFile = VFile.create(spellIndexDir, "words.dat");
+    sampleFile = VFile.create(spellIndexDir, "freqSamples.dat");
+    edmapFile = VFile.create(spellIndexDir, "edmap.dat");
+    pairFreqFile = VFile.create(spellIndexDir, "pairs.dat");
 
     // If the index directory doesn't exist, make it.
     if (!spellIndexDir.isDirectory()) {
@@ -463,17 +462,17 @@ public class SpellWriter
     // And write out the accumulated frequencies (culling entries with low 
     // frequency as we go). Also, we'll start building the edit map.
     //
-    File newFreqFile = new File(spellIndexDir, "words.dat.new");
+    VFile newFreqFile = VFile.create(spellIndexDir, "words.dat.new");
     FileSorter edmapSorter = FileSorter.start(spellIndexDir, SORT_MEM_LIMIT);
     IntList allFreqs = new IntList(10000);
     writeFreqs(newFreqFile, freqSorter, allFreqs, edmapSorter, subProgs[1]);
 
     // Write out frequency samples for statistical purposes.
-    File newSampleFile = new File(spellIndexDir, "freqSamples.dat.new");
+    VFile newSampleFile = VFile.create(spellIndexDir, "freqSamples.dat.new");
     writeFreqSamples(allFreqs, newSampleFile, subProgs[2]);
 
     // Write out the new edit map.
-    File newEdmapFile = new File(spellIndexDir, "edmap.dat.new");
+    VFile newEdmapFile = VFile.create(spellIndexDir, "edmap.dat.new");
     writeEdMap(edmapSorter, newEdmapFile, subProgs[3]);
 
     // Clear the queue, and replace the old data files.
@@ -486,7 +485,7 @@ public class SpellWriter
   /**
    * Read an existing frequency file, and add it to a file sorter.
    */
-  private void readFreqs(File inFile, FileSorter out, ProgressTracker prog)
+  private void readFreqs(VFile inFile, FileSorter out, ProgressTracker prog)
     throws IOException 
   {
     // Skip if we can't open the file.
@@ -495,7 +494,7 @@ public class SpellWriter
 
     // Read each line, consisting of a word and a count separated by "|"
     CountedInputStream countedIn = new CountedInputStream(
-      new FileInputStream(inFile));
+      inFile.openInputStream());
     BufferedReader freqReader = new BufferedReader(
       new InputStreamReader(countedIn, "UTF-8"));
     int lineCt = 0;
@@ -516,12 +515,12 @@ public class SpellWriter
   /**
    * Write out frequency data, in sorted order.
    */
-  private void writeFreqs(final File outFile, final FileSorter freqSorter,
+  private void writeFreqs(final VFile outFile, final FileSorter freqSorter,
                           final IntList allFreqs, final FileSorter edmapSorter,
                           final ProgressTracker prog)
     throws IOException 
   {
-    final BufferedWriter out = new BufferedWriter(new FileWriter(outFile));
+    final BufferedWriter out = new BufferedWriter(outFile.openWriter());
     freqSorter.finish(new FileSorter.Output() 
     {
         String curWord = null;
@@ -651,7 +650,7 @@ public class SpellWriter
   }
 
   /** Write term frequency samples to the given file. */
-  private void writeFreqSamples(IntList allFreqs, File file,
+  private void writeFreqSamples(IntList allFreqs, VFile file,
                                 ProgressTracker prog)
     throws IOException 
   {
@@ -695,7 +694,7 @@ public class SpellWriter
 
     // Write out the data
     prog.progress(50, 100, "Sampling frequencies.");
-    PrintWriter writer = new PrintWriter(new FileWriter(file));
+    PrintWriter writer = new PrintWriter(file.openWriter());
     writer.println(allFreqs.size());
     writer.println(finalFreqs.size());
     for (int i = 0; i < finalFreqs.size(); i++)
@@ -709,12 +708,12 @@ public class SpellWriter
    * Write out a prefix-compressed edit-distance map, which also contains
    * term frequencies.
    */
-  private void writeEdMap(final FileSorter edmapSorter, final File outFile,
+  private void writeEdMap(final FileSorter edmapSorter, final VFile outFile,
                           final ProgressTracker prog)
     throws IOException 
   {
     final CountedOutputStream outCounted = new CountedOutputStream(
-      new BufferedOutputStream(new FileOutputStream(outFile)));
+      new BufferedOutputStream(outFile.openOutputStream()));
     final Writer out = new OutputStreamWriter(outCounted, "UTF-8");
     
     prog.progress(0, 100, "Building word map.", true);
@@ -835,7 +834,7 @@ public class SpellWriter
   }
 
   /** Attempt to delete (and at least truncate) the given file. */
-  private void deleteFile(File file)
+  private void deleteFile(VFile file)
     throws IOException 
   {
     // First, simply try to delete it.
@@ -843,12 +842,12 @@ public class SpellWriter
       return;
 
     // Couldn't delete it... at least truncate it.
-    FileOutputStream tmp = new FileOutputStream(file);
+    OutputStream tmp = file.openOutputStream();
     tmp.close();
   }
 
   /** Replace an old file with a new one */
-  private void replaceFile(File oldFile, File newFile) 
+  private void replaceFile(VFile oldFile, VFile newFile) 
   {
     // First, try to delete the old one.
     oldFile.delete();
@@ -876,7 +875,7 @@ public class SpellWriter
     // progress messages.
     //
     CountedInputStream queueCounted = new CountedInputStream(
-      new FileInputStream(pairQueueFile));
+      pairQueueFile.openInputStream());
     BufferedReader queueReader = new BufferedReader(
       new InputStreamReader(queueCounted, "UTF-8"));
 
@@ -936,7 +935,7 @@ public class SpellWriter
     }
 
     // Write out the resulting data and replace the old data file, if any.
-    File newPairFreqFile = new File(spellIndexDir, "pairs.dat.new");
+    VFile newPairFreqFile = VFile.create(spellIndexDir, "pairs.dat.new");
     newPairFreqFile.delete();
     subProgs[1].progress(50, 100, "Writing pair data.", true);
     pairData.save(newPairFreqFile);
@@ -948,7 +947,7 @@ public class SpellWriter
         "Could not rename new pair data file -- permission problem?");
 
     // Clear out (and try to delete) the queue file.
-    FileOutputStream tmp = new FileOutputStream(pairQueueFile);
+    OutputStream tmp = pairQueueFile.openOutputStream();
     tmp.close();
     pairQueueFile.delete();
   }
@@ -964,7 +963,7 @@ public class SpellWriter
     // Open the writers now. Be sure to append if they already exist.
     wordQueueWriter = new PrintWriter(
       new BufferedWriter(
-        new OutputStreamWriter(new FileOutputStream(wordQueueFile, true),
+        new OutputStreamWriter(wordQueueFile.openOutputStream(true),
                                "UTF-8")));
   }
 
@@ -978,7 +977,7 @@ public class SpellWriter
 
     pairQueueWriter = new PrintWriter(
       new BufferedWriter(
-        new OutputStreamWriter(new FileOutputStream(pairQueueFile, true),
+        new OutputStreamWriter(pairQueueFile.openOutputStream(true),
                                "UTF-8")));
   } // openQueueWriters()
 

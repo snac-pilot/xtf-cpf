@@ -29,7 +29,7 @@ package org.cdlib.xtf.textIndexer;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.cdlib.xtf.textEngine.NativeFSDirectory;
@@ -55,7 +55,7 @@ import org.cdlib.xtf.util.Trace;
  * index that do not have a corresponding summary chunk. <br><br>
  *
  * To use this class, simply instantiate a copy, and call the
- * {@link IdxTreeCleaner#processDir(File) processDir()}
+ * {@link IdxTreeCleaner#processDir(VFile) processDir()}
  * method on a directory containing an index. Note that the directory passed
  * may also be a root directory with many index sub-directories if desired.
  *
@@ -87,14 +87,14 @@ public class IdxTreeCleaner
    *     For an explanation of "complete" and "incomplete" documents, see the
    *     <code>IdxTreeCleaner<code> class description.
    */
-  public void processDir(File dir)
+  public void processDir(VFile dir)
     throws Exception 
   {
     // If the file we were passed was in fact a directory...
     if (dir.isDirectory()) 
     {
       // And it contains an index, see if it needs any culling.
-      if (IndexReader.indexExists(dir))
+      if (IndexReader.indexExists(dir.getNativeFile()))
         cleanIndex(dir);
 
       else 
@@ -104,7 +104,7 @@ public class IdxTreeCleaner
 
         // And process each of them.
         for (int i = 0; i < files.length; i++)
-          processDir(new File(dir, files[i]));
+          processDir(VFile.create(dir, files[i]));
       }
 
       return;
@@ -130,7 +130,7 @@ public class IdxTreeCleaner
    *     For an explanation of "complete" and "incomplete" documents, see the
    *     <code>IdxTreeCleaner</code> class description.
    */
-  public void cleanIndex(File idxDirToClean)
+  public void cleanIndex(VFile idxDirToClean)
     throws Exception 
   {
     IndexReader indexReader;
@@ -233,7 +233,7 @@ public class IdxTreeCleaner
       // FIrst, we need to delete all the files in the index 
       // directory, before we can delete the directory itself.
       //
-      File[] fileList = idxDirToClean.listFiles();
+      VFile[] fileList = idxDirToClean.listFiles();
 
       // Delete the files.
       for (int j = 0; j < fileList.length; j++) 
@@ -272,7 +272,7 @@ public class IdxTreeCleaner
       }
 
       // Now start with the index directory...
-      File dir = idxDirToClean;
+      VFile dir = idxDirToClean;
 
       // And delete it and all the empty parent directories
       // above it.
@@ -280,14 +280,14 @@ public class IdxTreeCleaner
       for (;;) 
       {
         // If the current directory is not empty, we're done.
-        File[] contents = dir.listFiles();
+        VFile[] contents = dir.listFiles();
         if (contents.length != 0)
           break;
 
         // Otherwise, hang on to the parent directory for 
         // the current directory.
         //
-        File parentDir = dir.getParentFile();
+        VFile parentDir = dir.getParentFile();
 
         // Try to delete the current directory.
         try {

@@ -36,7 +36,7 @@ package org.cdlib.xtf.textIndexer;
  * as part of the Melvyl Recommender Project.
  */
 
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
@@ -61,7 +61,7 @@ import java.io.IOException;
  * for that document are removed from the index. <br><br>
  *
  * To use this class, simply instantiate a copy, and call the
- * {@link #cullIndex(File,IndexInfo,File,SubDirFilter) cullIndex()}
+ * {@link #cullIndex(VFile,IndexInfo,VFile,SubDirFilter) cullIndex()}
  * method on a directory containing an index. Note that the directory passed
  * may also be a root directory with many index sub-directories if desired.
  */
@@ -93,8 +93,8 @@ public class IdxTreeCuller
    *                        <br><br>
    *
    */
-  public void cullIndex(File xtfHome, IndexInfo idxInfo, 
-                        File srcRootFile, SubDirFilter subDirFilter)
+  public void cullIndex(VFile xtfHome, IndexInfo idxInfo, 
+                        VFile srcRootFile, SubDirFilter subDirFilter)
     throws Exception 
   {
     // Start with no Path fields encountered, and no documents culled.
@@ -131,7 +131,7 @@ public class IdxTreeCuller
           continue;
 
         // Create a reference to the source XML document.
-        File currFile = new File(Path.resolveRelOrAbs(srcRootFile, relPath));
+        VFile currFile = VFile.create(Path.resolveRelOrAbs(srcRootFile, relPath));
         
         // If a subdirectory was specified, skip docs that aren't within it.
         if (subDirFilter != null && !subDirFilter.approve(currFile))
@@ -178,7 +178,7 @@ public class IdxTreeCuller
           // Also delete the lazy file, if any. Might as well delete
           // empty parent directories as well.
           //
-          File lazyFile = IndexUtil.calcLazyPath(xtfHome, idxInfo, currFile,
+          VFile lazyFile = IndexUtil.calcLazyPath(xtfHome, idxInfo, currFile,
                                                  false);
           if (lazyFile.canRead()) {
             if (!Path.deletePath(lazyFile.toString()))
@@ -220,7 +220,7 @@ public class IdxTreeCuller
         }
 
         if (!anyNotDeleted) {
-          deleteIndex(new File(Path.resolveRelOrAbs(xtfHome, idxInfo.indexPath)));
+          deleteIndex(VFile.create(Path.resolveRelOrAbs(xtfHome, idxInfo.indexPath)));
           indexDeleted = true;
         }
       } // if( docCount == cullCount )
@@ -285,7 +285,7 @@ public class IdxTreeCuller
   } // cullIndex()
 
   ////////////////////////////////////////////////////////////////////////////
-  private void deleteIndex(File idxDirToCull)
+  private void deleteIndex(VFile idxDirToCull)
     throws IOException 
   {
     int deleteFailCount = 0;
@@ -293,7 +293,7 @@ public class IdxTreeCuller
     // First, we need to delete all the files in the index 
     // directory, before we can delete the directory itself.
     //
-    File[] fileList = idxDirToCull.listFiles();
+    VFile[] fileList = idxDirToCull.listFiles();
 
     // Delete the files.
     for (int j = 0; j < fileList.length; j++) 
@@ -332,7 +332,7 @@ public class IdxTreeCuller
     }
 
     // Now start with the index directory...
-    File dir = idxDirToCull;
+    VFile dir = idxDirToCull;
 
     // And delete it and all the empty parent directories
     // above it.
@@ -340,14 +340,14 @@ public class IdxTreeCuller
     for (;;) 
     {
       // If the current directory is not empty, we're done.
-      File[] contents = dir.listFiles();
+      VFile[] contents = dir.listFiles();
       if (contents.length != 0)
         break;
 
       // Otherwise, hang on to the parent directory for 
       // the current directory.
       //
-      File parentDir = dir.getParentFile();
+      VFile parentDir = dir.getParentFile();
 
       // Try to delete the current directory.
       try {

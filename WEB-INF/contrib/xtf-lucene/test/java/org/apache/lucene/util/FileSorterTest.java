@@ -31,14 +31,13 @@ package org.apache.lucene.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
 import junit.framework.TestCase;
+
+import org.cdlib.xtf.util.VFile;
 
 /** 
  * Test the {@link FileSorter} class
@@ -50,13 +49,13 @@ public class FileSorterTest extends TestCase
   public void testSort() throws IOException
   {
     // Create a file of random stuff to sort.
-    File tmpIn = File.createTempFile("FileSorterTest", ".in.tmp");
-    File tmpOut = File.createTempFile("FileSorterTest", ".out.tmp");
+    VFile tmpIn = VFile.createTempFile("FileSorterTest", ".in.tmp");
+    VFile tmpOut = VFile.createTempFile("FileSorterTest", ".out.tmp");
     try {
       final int NLINES = 1000;
       final int LINE_LENGTH = 50;
       String[] lines = new String[NLINES];
-      BufferedWriter writer = new BufferedWriter(new FileWriter(tmpIn));
+      BufferedWriter writer = new BufferedWriter(tmpIn.openWriter());
       try {
         StringBuffer buf = new StringBuffer();
         Random rand = new Random(1);
@@ -82,7 +81,7 @@ public class FileSorterTest extends TestCase
       Arrays.sort(sortedLines);
       
       // Check that the FileSorter did it right.
-      BufferedReader reader = new BufferedReader(new FileReader(tmpOut));
+      BufferedReader reader = new BufferedReader(tmpOut.openReader());
       for (int i=0; i<NLINES; i++) {
         String line = reader.readLine();
         assertEquals(sortedLines[i], line);

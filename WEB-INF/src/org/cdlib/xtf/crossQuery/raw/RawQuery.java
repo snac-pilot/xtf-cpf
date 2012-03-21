@@ -29,7 +29,7 @@ package org.cdlib.xtf.crossQuery.raw;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.SocketException;
@@ -138,7 +138,7 @@ public class RawQuery extends CrossQuery
     // Parse the XML query to make an XTF QueryRequest
     QueryRequest queryReq = new QueryRequestParser().parseRequest(
       new StreamSource(new StringReader(queryText)),
-      new File(getRealPath("")));
+      VFile.create(getRealPath("")));
 
     // Fill in the auxiliary info
     queryReq.parserInput = null;

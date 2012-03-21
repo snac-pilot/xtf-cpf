@@ -16,7 +16,7 @@ import net.sf.saxon.trans.KeyManager;
 import net.sf.saxon.trans.XPathException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class LazyKeyManager extends KeyManager
       if (document.getDebug()) {
         Trace.debug(
           "Building dynamic (non-stored) index " +
-          new File(doc.getSystemId()).getName() + ": '" + fingerName + ":" +
+          VFile.create(doc.getSystemId()).getName() + ": '" + fingerName + ":" +
           itemType + "'");
       }
       Map index = super.buildIndex(keyNameFingerprint, itemType, foundItemTypes, doc, context);
@@ -92,7 +92,7 @@ public class LazyKeyManager extends KeyManager
 
     if (document.getDebug()) {
       Trace.info(
-        "Building key index " + new File(doc.getSystemId()).getName() +
+        "Building key index " + VFile.create(doc.getSystemId()).getName() +
         ": '" + fingerName + "' {" + indexName + "}...");
     }
 

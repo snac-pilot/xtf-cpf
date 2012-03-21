@@ -31,6 +31,7 @@ package org.cdlib.xtf.saxonExt.pipe;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import org.cdlib.xtf.util.VFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -158,7 +159,7 @@ public class PipeFopElement extends ElementWithContent
                        /*backward-compatibility:*/ getAttribStr("appendPDF", context, null));
       
       // Resolve it to a full path.
-      File fileToMerge = null;
+      VFile fileToMerge = null;
       if (nameToMerge != null) {
         fileToMerge = FileUtils.resolveFile(context, nameToMerge);
         if (!fileToMerge.canRead())
@@ -399,7 +400,7 @@ public class PipeFopElement extends ElementWithContent
      */
     private void mergePdf(XPathContext context, 
                            File origPdfData, 
-                           File fileToAppend,
+                           VFile fileToAppend,
                            MergeMode mergeMode, 
                            MergeAt mergeAt, 
                            OutputStream outStream)

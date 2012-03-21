@@ -1,6 +1,6 @@
 package org.cdlib.xtf.util;
 
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class DirSync
    * @param dstDir      Directory to modify
    * @throws IOException If anything goes wrong
    */
-  public void syncDirs(File srcDir, File dstDir) 
+  public void syncDirs(VFile srcDir, VFile dstDir) 
     throws IOException
   {
     // If there are no directories specified, or there are too many, or if only
@@ -81,7 +81,7 @@ public class DirSync
     //
     if (filter == null || filter.size() > MAX_SELECTIVE_SYNC ||
         (filter.size() == 1 && 
-         new File(filter.getTargets().get(0)).getCanonicalFile().equals(srcDir.getCanonicalFile())))
+         VFile.create(filter.getTargets().get(0)).getCanonicalFile().equals(srcDir.getCanonicalFile())))
     {
       runRsync(srcDir, dstDir, null, new String[] { "--exclude=scanDirs.list" });
     }
@@ -95,7 +95,7 @@ public class DirSync
     // mistakenly think two directories were perfectly in sync when in fact they
     // are different.
     //
-    runRsync(new File(srcDir, "scanDirs.list"), dstDir, null, null);
+    runRsync(VFile.create(srcDir, "scanDirs.list"), dstDir, null, null);
   }
   
   /**
@@ -105,7 +105,7 @@ public class DirSync
    * @param dstDir      Directory to modify
    * @throws IOException If anything goes wrong
    */
-  private void selectiveSync(File srcDir, File dstDir) 
+  private void selectiveSync(VFile srcDir, VFile dstDir) 
     throws IOException
   {
     // First, sync the top-level files (no sub-dirs)
@@ -118,7 +118,7 @@ public class DirSync
       String basePath = srcDir.getCanonicalPath() + "/";
       for (String target : filter.getTargets()) 
       {
-        String targetPath = new File(target).getCanonicalPath();
+        String targetPath = VFile.create(target).getCanonicalPath();
         assert targetPath.startsWith(basePath) : ("targetPath '" + targetPath.toString() + "' should start with basePAth '" + basePath.toString() + "'");
         targetPath = targetPath.substring(basePath.length());
         
@@ -144,7 +144,7 @@ public class DirSync
    * @param subDirs      Sub-directories to rsync (null for all)
    * @throws IOException If anything goes wrong
    */
-  public void runRsync(File src, File dst, 
+  public void runRsync(VFile src, VFile dst, 
                        List<String> subDirs,
                        String[] extraArgs) 
     throws IOException
@@ -175,7 +175,7 @@ public class DirSync
         args.add("--relative");
         for (String subDir : subDirs) 
         {
-          if (new File(src.getAbsolutePath(), subDir).canRead())
+          if (VFile.create(src.getAbsolutePath(), subDir).canRead())
             args.add(src.getAbsolutePath() + "/./" + subDir);
         }
       }

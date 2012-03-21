@@ -36,7 +36,7 @@ package org.cdlib.xtf.servletBase;
  * as part of the Melvyl Recommender Project.
  */
 import java.io.ByteArrayOutputStream;
-import java.io.File;
+import org.cdlib.xtf.util.VFile;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
@@ -77,6 +77,7 @@ import net.sf.saxon.value.StringValue;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.limit.ExcessiveWorkException;
 import org.apache.lucene.limit.TermLimitException;
+import org.cdlib.xtf.merritt.MerrittRoot;
 import org.cdlib.xtf.saxonExt.sql.SQLConnect;
 import org.cdlib.xtf.textEngine.DefaultQueryProcessor;
 import org.cdlib.xtf.textEngine.IndexUtil;
@@ -180,11 +181,7 @@ public abstract class TextServlet extends HttpServlet
     if (staticContext == null)
       return partialPath;
 
-    if (partialPath.startsWith("http://"))
-      return partialPath;
-    if (partialPath.startsWith("/") || partialPath.startsWith("\\"))
-      return partialPath;
-    if (partialPath.length() > 1 && partialPath.charAt(1) == ':')
+    if (VFile.isAbsolute(partialPath))
       return partialPath;
     if (!isEmpty(baseDir))
       return Path.resolveRelOrAbs(baseDir, partialPath);
@@ -278,7 +275,7 @@ public abstract class TextServlet extends HttpServlet
       // changed, we need to re-initialize.
       //
       String configPath = getRealPath(getConfigName());
-      File configFile = new File(configPath);
+      VFile configFile = VFile.create(configPath);
       if (configFileLastModified > 0 &&
           configFile.lastModified() != configFileLastModified) 
       {
@@ -295,6 +292,9 @@ public abstract class TextServlet extends HttpServlet
       if (isInitted)
         return;
 
+      // Make sure all the virtual file processors are registered
+      MerrittRoot.register(VFile.create(Path.normalizePath(getRealPath(""))));
+      
       // Read in the configuration file.
       TextConfig config = readConfig(configPath);
 
@@ -428,14 +428,14 @@ public abstract class TextServlet extends HttpServlet
         // The following are not safe and can cause IE7 downloads to fail.
         // See article http://edn.embarcadero.com/print/39141
         //
-        if (false) {
+        /*
           // Set standard HTTP/1.1 no-cache headers.
           res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
           // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
           res.addHeader("Cache-Control", "post-check=0, pre-check=0");
           // Set standard HTTP/1.0 no-cache header.
           res.setHeader("Pragma", "no-cache");
-        }
+        */
       }
 
       // Let the specific servlet serve the request.
@@ -1632,7 +1632,6 @@ public abstract class TextServlet extends HttpServlet
    * Since there's nothing we can do about that, we simply suppress warnings
    * about that.
    */
-  @SuppressWarnings("deprecation")
   private class RequestWrapper extends HttpServletRequestWrapper 
   {
     HttpServletRequest inReq;
@@ -1876,7 +1875,6 @@ public abstract class TextServlet extends HttpServlet
    * Since there's nothing we can do about that, we simply suppress warnings
    * about that.
    */
-  @SuppressWarnings("deprecation")
   private class ResponseWrapper extends HttpServletResponseWrapper 
   {
     private ServletOutputStream substOutStream;
