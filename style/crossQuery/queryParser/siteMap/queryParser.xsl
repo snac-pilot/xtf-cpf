@@ -1,13 +1,32 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   exclude-result-prefixes="#all"
-   version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" >
    
    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-   <!-- Simple query router stylesheet                                         -->
+   <!-- SiteMap query parser stylesheet                                        -->
+   <!-- (see copyright notice at end of file)                                  -->
    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
    
+   <!-- This stylesheet implements a query parsing for the generating site maps -->
+   
+   <!-- ====================================================================== -->
+   <!-- Output                                                                 -->
+   <!-- ====================================================================== -->
+   
+   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
+   
+   <!-- ====================================================================== -->
+   <!-- Root Template                                                          -->
+   <!-- ====================================================================== -->
+   
+   <xsl:template match="/">
+      <xsl:variable name="stylesheet" select="'style/crossQuery/resultFormatter/siteMap/resultFormatter.xsl'"/>
+      <query indexPath="index" style="{$stylesheet}" termLimit="-1" maxDocs="1000000" 
+             returnMetaFields="identifier, dateStamp" sortMetaFields="identifier">
+         <allDocs/>
+      </query>
+   </xsl:template>
+
    <!--
-      Copyright (c) 2008, Regents of the University of California
+      Copyright (c) 2012, Regents of the University of California
       All rights reserved.
       
       Redistribution and use in source and binary forms, with or without 
@@ -35,45 +54,5 @@
       ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
       POSSIBILITY OF SUCH DAMAGE.
    -->
-   
-   <!--
-      This stylesheet implements a simple switching mechanism, allowing one to
-      set up multiple distinct crossQuery domains, each with its own query parser
-      and associated stylesheets.
-      
-      As shipped, there are two domains, "default" and "oai", which supports OAI 
-      harvesting of your collections
-   -->
-   
-   <xsl:output method="xml" indent="yes" encoding="utf-8"/>
-   <xsl:strip-space elements="*"/>
-   
-   <!-- ====================================================================== -->
-   <!-- Root Template                                                          -->
-   <!-- ====================================================================== -->
-   
-   <xsl:param name="http.URL"/>
-   <xsl:param name="smode"/>
-   
-   <xsl:template match="/">
-      
-      <route>
-         <xsl:choose>
-            <!-- oai -->
-            <xsl:when test="matches($http.URL,'oai\?')">
-               <queryParser path="style/crossQuery/queryParser/oai/queryParser.xsl"/>
-               <errorGen path="style/crossQuery/oaiErrorGen.xsl"/>
-            </xsl:when>
-            <!-- sitemap -->
-            <xsl:when test="matches($smode,'siteMap')">
-               <queryParser path="style/crossQuery/queryParser/siteMap/queryParser.xsl"/>
-            </xsl:when>
-            <!-- default -->
-            <xsl:otherwise>
-               <queryParser path="style/crossQuery/queryParser/default/queryParser.xsl"/>
-            </xsl:otherwise>
-         </xsl:choose>
-      </route>
-   </xsl:template>
    
 </xsl:stylesheet>
