@@ -29,7 +29,7 @@ function init(){
     // snac: look up node id
     var nodeId;
     $.ajax({
-      url: "/rex/snac/indices/name-idx?key=identity&value=" 
+      url: "/rex/snac/vertices?key=identity&value=" 
           + encodeURIComponent(identity),
       async: false,
       dataType: "json",
