@@ -6,6 +6,7 @@ echo "<a href=\"http://code.google.com/p/xtf-cpf/source/detail?r=$changeset\">$c
 hg parents --template '{date|date}' >> VERSION
 echo "—code<div>" >> VERSION
 ls -ald ../data >> VERSION
+ls -ald ../data/ >> VERSION
 echo "</div>" >> VERSION
 echo "<div>" >> VERSION
 ls -ald ../index >> VERSION
