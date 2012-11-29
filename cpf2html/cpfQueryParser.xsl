@@ -51,7 +51,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, facet-entityType, entityId"
+	  returnMetaFields="identity"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -62,11 +62,11 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           <xsl:if test="$sortDocsBy">
             <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
           </xsl:if>
-          <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+          <!-- facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/ -->
           <spellcheck/>
           <and>
           <xsl:apply-templates/>
@@ -90,11 +90,11 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
         <query
           indexPath="index"
           termLimit="1000"
-          workLimit="1000000"
+          workLimit="4000000"
           maxSnippets="0"
           style="{$stylesheet}"
           startDoc="{$startDoc}"
-          returnMetaFields="facet-identityAZ, facet-recordLevel, facet-entityType, entityId"
+          returnMetaFields="facet-identityAZ"
           maxDocs="{$maxDocs}">
           <!-- all this does now is trigger the display mode? -->
           <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>

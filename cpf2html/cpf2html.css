@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+body { background-color: rgb(204, 204, 204); }
+
 a[href^="http://"]:after { content: " ↗"; }
 a.noarrow:after { content: ""; }
 .hit { background-color: yellow; }
