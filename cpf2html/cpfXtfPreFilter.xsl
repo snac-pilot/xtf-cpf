@@ -148,17 +148,17 @@
 
   <xsl:template match="eac:localDescription" mode="meta">
     <localDescription xtf:meta="yes">
-      <xsl:apply-templates select="@localType[.!='subject']|eac:term|eac:placeEntry" mode="meta"/>
+      <xsl:apply-templates select="eac:term|eac:placeEntry" mode="meta"/>
     </localDescription>
     <facet-localDescription xtf:facet="yes" xtf:meta="yes">
-      <xsl:apply-templates select="@localType[.!='subject']|eac:term|eac:placeEntry" mode="meta"/>
+      <xsl:apply-templates select="eac:term|eac:placeEntry" mode="meta"/>
     </facet-localDescription>
   </xsl:template>
 
-  <xsl:template match="@localType" mode="meta">
+  <!-- xsl:template match="@localType" mode="meta">
     <xsl:value-of select="replace(.,'^VIAF:','')"/>
     <xsl:text> </xsl:text>
-  </xsl:template>
+  </xsl:template -->
 
   <xsl:template match="eac:term" mode="meta">
     <xsl:value-of select="replace(replace(.

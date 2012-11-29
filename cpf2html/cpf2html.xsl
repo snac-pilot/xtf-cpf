@@ -193,9 +193,7 @@ tranformed elements
       <xsl:when test="$existDates">
         <xsl:element name="{name()}">
           <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-          <xsl:text>(</xsl:text>
           <xsl:apply-templates select="$existDates" mode="eac"/>
-          <xsl:text>)</xsl:text>
         <xsl:apply-templates select="
           ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:gender']),
           ($page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[@localType='VIAF:nationality'])" 
@@ -512,8 +510,8 @@ tranformed elements
 
   <xsl:template match="eac:localDescription" mode="eac-inlist">
     <xsl:variable name="value">
-      <xsl:apply-templates select="@localType[.!='subject']"/>
-      <xsl:text> </xsl:text>
+      <!-- xsl:apply-templates select="@localType[.!='subject']"/>
+      <xsl:text> </xsl:text -->
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
     <xsl:variable name="normalValue" 

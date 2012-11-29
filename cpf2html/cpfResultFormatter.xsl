@@ -292,11 +292,11 @@
       <!-- Browse Identities -->
       <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
         <div class="g480">
-       <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalGroups)"/> 
+       <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalDocs)"/> 
        <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
        <xsl:variable name="corporateBody-count" 
             select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
-        <h2><xsl:value-of select="format-number($person-count + $family-count + $corporateBody-count,'#,##0')"/>
+        <h2><xsl:value-of select="format-number(number(($page)/crossQueryResult/@totalDocs),'#,##0')"/>
             <xsl:text> </xsl:text>
           <xsl:if test="$facet-entityType">
             <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> 
