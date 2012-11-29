@@ -1,7 +1,7 @@
 package org.cdlib.xtf.saxonExt.pipe;
 
 /*
- * Copyright (c) 2009, Regents of the University of California
+ * Copyright (c) 2012, Regents of the University of California
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,10 +29,10 @@ package org.cdlib.xtf.saxonExt.pipe;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -83,6 +83,7 @@ import com.lowagie.text.pdf.PdfObject;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.RandomAccessFileOrArray;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.lowagie.text.pdf.PdfCopy.PageStamp;
 
@@ -208,10 +209,11 @@ public class PipeFopElement extends ElementWithContent
 
         // So that we can keep the lock on FOP short, and also so we can send an
         // accurate Content-length header to the client, we'll accumulate the FOP output
-        // in a byte buffer. We use the Apache ByteArrayOutputStream class since it
-        // doesn't constantly realloc-copy when the buffer needs to grow.
+        // in a temp file. We don't use a memory buffer since sometimes these things
+        // can be quite huge.
         //
-        ByteArrayOutputStream fopOut = new ByteArrayOutputStream();
+        File tempFile = new File(FileUtils.createTempFile(context, "xtfFop.", ".tmp"));
+        FileOutputStream fopOut = new FileOutputStream(tempFile);
         
         // According to the Apache docs, FOP may not be thread-safe. So, we need to
         // single-thread it. However, we must at all costs keep requests from backing
@@ -264,21 +266,30 @@ public class PipeFopElement extends ElementWithContent
           // Always release the FOP lock when we're done, regardless of what happened.
           if (gotLock)
             fopLock.unlock();
+          if (fopOut != null)
+            fopOut.close();
         }
         
         // Now that we've released the FOP lock, check if we need to merge a PDF or not.
         
-        ByteArrayOutputStream finalOut;
-        if (fileToMerge != null) { 
-          finalOut = new ByteArrayOutputStream(fopOut.size() + (int)fileToMerge.length());
-          mergePdf(context, fopOut.toByteArray(), fileToMerge, mergeMode, mergeAt, finalOut);
+        File finalOut;
+        if (fileToMerge != null) {
+          File tempFile2 = new File(FileUtils.createTempFile(context, "xtfFopMerge.", ".tmp"));
+          finalOut = tempFile2;
+          OutputStream mergeOut = new BufferedOutputStream(new FileOutputStream(tempFile2));
+          try {
+            mergePdf(context, tempFile, fileToMerge, mergeMode, mergeAt, mergeOut);
+          }
+          finally {
+            mergeOut.close();
+          }
         }
         else 
-          finalOut = fopOut;
+          finalOut = tempFile;
         
         // Now we know the output length, so let the client know and then send it.
-        servletResponse.setHeader("Content-length", Integer.toString(finalOut.size()));
-        servletResponse.getOutputStream().write(finalOut.toByteArray());
+        servletResponse.setHeader("Content-length", Long.toString(finalOut.length()));
+        PipeFileElement.copyFileToStream(finalOut, servletResponse.getOutputStream());
       } 
       catch (Throwable e) 
       {
@@ -376,7 +387,7 @@ public class PipeFopElement extends ElementWithContent
       fopFactories.put(fontDirs, factory);
       return factory;
     }
-
+    
     /** 
      * Do the work of joining the FOP output and a PDF together. This involves
      * several steps:
@@ -387,157 +398,177 @@ public class PipeFopElement extends ElementWithContent
      *  3. Output the pages  
      */
     private void mergePdf(XPathContext context, 
-                           byte[] origPdfData, 
+                           File origPdfData, 
                            File fileToAppend,
                            MergeMode mergeMode, 
                            MergeAt mergeAt, 
                            OutputStream outStream)
       throws IOException, DocumentException, BadPdfFormatException, XPathException
     {
+      RandomAccessFileOrArray[] randFiles = new RandomAccessFileOrArray[2];
       PdfReader[] readers = new PdfReader[2];
       HashMap<String,String>[] infos = new HashMap[2];
       int[] nInPages = new int[2];
       int[] pageOffsets = new int[2];
       int nOutPages = 0;
       
-      // Read in the PDF that FOP generated and the one we're merging
-      readers[0] = new PdfReader(origPdfData);
-      readers[1] = new PdfReader(new BufferedInputStream(new FileInputStream(fileToAppend)));
-      
-      // Perform processing that's identical for both
-      for (int i=0; i<2; i++) 
+      try
       {
-        readers[i].consolidateNamedDestinations();
-        infos[i] = readers[i].getInfo();
-        nInPages[i] = readers[i].getNumberOfPages();
-      }
-      
-      // Calculate page offsets depending on the merge mode.
-      switch (mergeMode) 
-      {
-        case SEQUENTIAL:
-          nOutPages = nInPages[0] + nInPages[1];
-          switch (mergeAt) {
-            case START:
-              pageOffsets[0] = nInPages[1];
-              pageOffsets[1] = 0;
-              break;
-            case END:
-              pageOffsets[0] = 0;
-              pageOffsets[1] = nInPages[0];
-              break;
-          }
-          break;
-          
-        case OVERLAY:
-        case UNDERLAY:
-          nOutPages = Math.max(nInPages[0], nInPages[1]);
-          pageOffsets[0] = 0;
-          if (mergeAt == MergeAt.END)
-            pageOffsets[1] = Math.max(0, nInPages[0] - nInPages[1]);
-          else
-            pageOffsets[1] = 0;
-          break;
-      }
-      
-      // Construct the copying writer
-      Document pdfDocument = new Document(readers[0].getPageSizeWithRotation(1));
-      PdfCopy pdfWriter = new PdfCopy(pdfDocument, outStream);
-      pdfDocument.open();
-      
-      // Merge the metadata
-      mergeMetadata(infos, pdfWriter, context);
-      
-      // Copy bookmarks from both PDFs
-      ArrayList allBookmarks = new ArrayList();
-      for (int i=0; i<2; i++) {
-        List bookmarks = SimpleBookmark.getBookmark(readers[i]);
-        if (bookmarks != null) {
-          if (pageOffsets[i] != 0)
-            SimpleBookmark.shiftPageNumbers(bookmarks, pageOffsets[i], null);
-          allBookmarks.addAll(bookmarks);
-        }
-      }
-      
-      PageInfo[] basePages = new PageInfo[nOutPages];
-      PageInfo[] mergePages = new PageInfo[nOutPages];
-      
-      // Gather all the info we'll need to merge the pages. For some reason,
-      // iText needs us to make all the template images before using any
-      // of them.
-      //
-      for (int i = 0; i < nOutPages; i++)
-      {
-        for (int j=0; j<2; j++)
-        {
-          int inPageNum = i - pageOffsets[j];
-          if (inPageNum < 0 || inPageNum >= nInPages[j])
-            continue;
-          
-          PageInfo info = new PageInfo();
-          info.reader = readers[j];
-          info.pageNum = inPageNum+1;
-          
-          if (basePages[i] == null)
-            basePages[i] = info;
-          else {
-            info.impPage = pdfWriter.getImportedPage(info.reader, info.pageNum);
-            info.image = Image.getInstance(info.impPage);
-            mergePages[i] = info;
-          }
-        }
-      }
-
-      for (int i = 0; i < nOutPages; i++)
-      {
-        PageInfo basePage = basePages[i];
-        PageInfo mergePage = mergePages[i];
-        boolean over = mergeMode == MergeMode.OVERLAY;
-
-        basePage.impPage = pdfWriter.getImportedPage(basePage.reader, basePage.pageNum);
+        // For large PDFs, use a buffered random access file rather than the default
+        // memory-mapped file that iText assumes.
+        //
+        randFiles[0] = (origPdfData.length() > 1024*1024) ? 
+                       new BufferedRandomAccessFile(origPdfData.toString()) : 
+                       new RandomAccessFileOrArray(origPdfData.toString());
+        randFiles[1] = (fileToAppend.length() > 1024*1024) ? 
+                       new BufferedRandomAccessFile(fileToAppend.toString()) : 
+                       new RandomAccessFileOrArray(fileToAppend.toString());
+                       
+        // Read in the PDF that FOP generated and the one we're merging
+        readers[0] = new PdfReader(randFiles[0], null);
+        readers[1] = new PdfReader(randFiles[1], null);
         
-        if (mergePage != null)
+        // Perform processing that's identical for both
+        for (int i=0; i<2; i++) 
         {
-          PageStamp ps = pdfWriter.createPageStamp(basePage.impPage);
-          PdfContentByte contentBuf = null;
-          if (over)
-            contentBuf = ps.getOverContent();
-          else
-            contentBuf = ps.getUnderContent();
-          
-          Image img = Image.getInstance(mergePage.image); // this is the trick
-          
-          // When adding the image, we need to construct a matrix that will properly orient it.
-          int rotation = mergePage.reader.getPageRotation(mergePage.pageNum);
-          float w = basePage.impPage.getWidth();
-          float h = basePage.impPage.getHeight();
-          switch (rotation)
-          {
-            case 0:
-              contentBuf.addImage(img, w, 0, 0, h, 0, 0);
-              break;
-            case 90:
-              contentBuf.addImage(img, 0, -h, w, 0, 0, h);
-              break;
-            case 180:
-              contentBuf.addImage(img, -w, 0, 0, -h, w, h);
-              break;
-            case 270:
-              contentBuf.addImage(img, 0, h, -w, 0, w, 0);
-              break;
-          }
-          ps.alterContents();
+          readers[i].consolidateNamedDestinations();
+          infos[i] = readers[i].getInfo();
+          nInPages[i] = readers[i].getNumberOfPages();
         }
         
-        pdfWriter.addPage(basePage.impPage);
-      }
+        // Calculate page offsets depending on the merge mode.
+        switch (mergeMode) 
+        {
+          case SEQUENTIAL:
+            nOutPages = nInPages[0] + nInPages[1];
+            switch (mergeAt) {
+              case START:
+                pageOffsets[0] = nInPages[1];
+                pageOffsets[1] = 0;
+                break;
+              case END:
+                pageOffsets[0] = 0;
+                pageOffsets[1] = nInPages[0];
+                break;
+            }
+            break;
             
-      // Set the combined bookmarks.
-      if (!allBookmarks.isEmpty())
-        pdfWriter.setOutlines(allBookmarks);
-      
-      // And we're done.
-      pdfDocument.close();
+          case OVERLAY:
+          case UNDERLAY:
+            nOutPages = Math.max(nInPages[0], nInPages[1]);
+            pageOffsets[0] = 0;
+            if (mergeAt == MergeAt.END)
+              pageOffsets[1] = Math.max(0, nInPages[0] - nInPages[1]);
+            else
+              pageOffsets[1] = 0;
+            break;
+        }
+        
+        // Construct the copying writer
+        Document pdfDocument = new Document(readers[0].getPageSizeWithRotation(1));
+        PdfCopy pdfWriter = new PdfCopy(pdfDocument, outStream);
+        pdfDocument.open();
+        
+        // Merge the metadata
+        mergeMetadata(infos, pdfWriter, context);
+        
+        // Copy bookmarks from both PDFs
+        ArrayList allBookmarks = new ArrayList();
+        for (int i=0; i<2; i++) {
+          List bookmarks = SimpleBookmark.getBookmark(readers[i]);
+          if (bookmarks != null) {
+            if (pageOffsets[i] != 0)
+              SimpleBookmark.shiftPageNumbers(bookmarks, pageOffsets[i], null);
+            allBookmarks.addAll(bookmarks);
+          }
+        }
+        
+        PageInfo[] basePages = new PageInfo[nOutPages];
+        PageInfo[] mergePages = new PageInfo[nOutPages];
+        
+        // Gather all the info we'll need to merge the pages. For some reason,
+        // iText needs us to make all the template images before using any
+        // of them.
+        //
+        for (int i = 0; i < nOutPages; i++)
+        {
+          for (int j=0; j<2; j++)
+          {
+            int inPageNum = i - pageOffsets[j];
+            if (inPageNum < 0 || inPageNum >= nInPages[j])
+              continue;
+            
+            PageInfo info = new PageInfo();
+            info.reader = readers[j];
+            info.pageNum = inPageNum+1;
+            
+            if (basePages[i] == null)
+              basePages[i] = info;
+            else {
+              info.impPage = pdfWriter.getImportedPage(info.reader, info.pageNum);
+              info.image = Image.getInstance(info.impPage);
+              mergePages[i] = info;
+            }
+          }
+        }
+  
+        for (int i = 0; i < nOutPages; i++)
+        {
+          PageInfo basePage = basePages[i];
+          PageInfo mergePage = mergePages[i];
+          boolean over = mergeMode == MergeMode.OVERLAY;
+  
+          basePage.impPage = pdfWriter.getImportedPage(basePage.reader, basePage.pageNum);
+          
+          if (mergePage != null)
+          {
+            PageStamp ps = pdfWriter.createPageStamp(basePage.impPage);
+            PdfContentByte contentBuf = null;
+            if (over)
+              contentBuf = ps.getOverContent();
+            else
+              contentBuf = ps.getUnderContent();
+            
+            Image img = Image.getInstance(mergePage.image); // this is the trick
+            
+            // When adding the image, we need to construct a matrix that will properly orient it.
+            int rotation = mergePage.reader.getPageRotation(mergePage.pageNum);
+            float w = basePage.impPage.getWidth();
+            float h = basePage.impPage.getHeight();
+            switch (rotation)
+            {
+              case 0:
+                contentBuf.addImage(img, w, 0, 0, h, 0, 0);
+                break;
+              case 90:
+                contentBuf.addImage(img, 0, -h, w, 0, 0, h);
+                break;
+              case 180:
+                contentBuf.addImage(img, -w, 0, 0, -h, w, h);
+                break;
+              case 270:
+                contentBuf.addImage(img, 0, h, -w, 0, w, 0);
+                break;
+            }
+            ps.alterContents();
+          }
+          
+          pdfWriter.addPage(basePage.impPage);
+        }
+            
+        // Set the combined bookmarks.
+        if (!allBookmarks.isEmpty())
+          pdfWriter.setOutlines(allBookmarks);
+        
+        // And we're done.
+        pdfDocument.close();
+      }      
+      finally {
+        if (randFiles[0] != null)
+          try { randFiles[0].close(); } catch (Exception e) { }
+        if (randFiles[1] != null)
+          try { randFiles[1].close(); } catch (Exception e) { }
+      }
     }
 
     /**

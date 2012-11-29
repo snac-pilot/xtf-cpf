@@ -238,6 +238,21 @@ public abstract class TextServlet extends HttpServlet
   public static HttpServletResponse getCurResponse() {
     return (HttpServletResponse)curResponse.get();
   }
+  
+  /** 
+   * Called by the servlet container to indicate this servlet is being taken
+   * out of service. We clean up all resources we can.
+   */
+  @Override
+  public void destroy()
+  {
+    // Close down any index warmers we have created
+    synchronized (indexWarmers) {
+      for (IndexWarmer w : indexWarmers.values())
+        w.close();
+      indexWarmers.clear();
+    }
+  }
 
   /**
    * Ensures that the servlet has been properly initialized. If init()
@@ -333,6 +348,7 @@ public abstract class TextServlet extends HttpServlet
    * General service method. We set a watch on each request in case it
    * becomes a "runaway", and institute various filters.
    */
+  @SuppressWarnings("unused")
   protected void service(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException 
   {
@@ -457,6 +473,7 @@ public abstract class TextServlet extends HttpServlet
       curServlet.set(null);
       curRequest.set(null);
       curResponse.set(null);
+      XTFSaxonErrorListener.clearThreadErrors();
     } // finally
   } // service()
 
@@ -929,7 +946,7 @@ public abstract class TextServlet extends HttpServlet
         String xtfHome = Path.normalizePath(TextServlet.getCurServlet().getRealPath(""));
         warmer = indexWarmers.get(xtfHome);
         if (warmer == null) {
-          warmer = new IndexWarmer(xtfHome, 60); // TODO: Make interval configurable
+          warmer = new IndexWarmer(xtfHome, getConfig().indexWarmingUpdateInterval);
           indexWarmers.put(xtfHome, warmer);
         }
       }
