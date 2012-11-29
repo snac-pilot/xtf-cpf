@@ -81,6 +81,25 @@ public class IndexWarmer
       bgThread.shouldStop = true;
       bgThread.interrupt();
     }
+    
+    // Close all open indexes.
+    for (Entry e : entries.values()) 
+    {
+      if (e.curSearcher != null) {
+        try {
+          e.curSearcher.close();
+        } catch (IOException e1) {
+          // ignore close problems
+        }
+      }
+      if (e.newSearcher != null) {
+        try {
+          e.curSearcher.close();
+        } catch (IOException e1) {
+          // ignore close problems
+        }
+      }
+    }
   }
   
   /**
@@ -132,7 +151,8 @@ public class IndexWarmer
         ent.curSearcher = new XtfSearcher(indexPath, 0); // disable update check
       }
             
-      assert ent.curSearcher != null;
+      if (ent.curSearcher == null)
+        throw new RuntimeException("Error opening XTF search index. Perhaps you need to run the textIndexer?");
     }
     
     // All done.
