@@ -208,7 +208,7 @@ tranformed elements
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
+ 
   <xsl:template match="eac:localDescription[@localType='VIAF:nationality']" mode="viaf-extra">
     <span title="nationality" class="nationality"><xsl:apply-templates select="eac:placeEntry" mode="eac"/>&#160;</span>
   </xsl:template>
@@ -405,11 +405,13 @@ tranformed elements
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
    <div>
-    <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[@xlink:role='archivalRecords']" />
+    <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[starts-with(@xlink:role,'archival')]" />
     <xsl:variable name="archivalRecords-creatorOf" select="($archivalRecords)[contains(@xlink:arcrole, 'creatorOf')]"/>
     <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
+
+
     <xsl:if test="$archivalRecords">
-        <h3><span><a href="#">Archival Collections (<xsl:value-of select="count($archivalRecords)"/>)</a></span></h3>
+        <h3><span><a href="#">Archival Records (<xsl:value-of select="count($archivalRecords)"/>)</a></span></h3>
 <div>
   <ul>
     <xsl:if test="$archivalRecords-creatorOf">
@@ -457,8 +459,10 @@ tranformed elements
 
   <xsl:template match="eac:dateRange" mode="eac">
     <time title="life dates">
+    <xsl:value-of select="@localType"/>
     <xsl:value-of select="eac:fromDate"/>
     <xsl:text> - </xsl:text>
+    <xsl:value-of select="@localType"/>
     <xsl:value-of select="eac:toDate"/>
     </time>
   </xsl:template>
@@ -626,7 +630,7 @@ tranformed elements
       <xsl:choose>
         <xsl:when test="@xlink:href">
           <a href="{@xlink:href}"><xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/></a>
-          <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
+          <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
           <xsl:if test="$extra-info">
             <div>
               <xsl:apply-templates select="$extra-info" mode="eac">
