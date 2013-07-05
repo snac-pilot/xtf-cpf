@@ -42,7 +42,7 @@
         <xsl:variable name="sortDocsBy" 
 select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) then ('sort-identity') else (false)"/>
         <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-        <xsl:variable name="maxDocs" select="2500"/>
+        <xsl:variable name="maxDocs" select="25"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
           indexPath="index" 
@@ -90,7 +90,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
         <query
           indexPath="index"
           termLimit="1000"
-          workLimit="4000000"
+          workLimit="9000000"
           maxSnippets="0"
           style="{$stylesheet}"
           startDoc="{$startDoc}"
