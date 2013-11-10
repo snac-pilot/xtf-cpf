@@ -118,7 +118,7 @@
         <xsl:text>::</xsl:text>
         <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
     </facet-identityAZ>
-    <xsl:element name="facet-{eac:entityType}">
+    <xsl:element name="facet-{normalize-space(eac:entityType)}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:attribute name="xtf:facet">yes</xsl:attribute>
       <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
@@ -126,8 +126,11 @@
   </xsl:template>
 
   <xsl:template match="eac:nameEntry[position()>1]" mode="meta">
+    <xsl:variable name="parts">
+      <xsl:value-of select="eac:part"/>
+    </xsl:variable>
     <identity xtf:meta="yes"><!-- temp fix for no spaces between subfiled issues -->
-      <xsl:value-of select="normalize-space(replace(replace(eac:part,
+      <xsl:value-of select="normalize-space(replace(replace($parts,
                             '([^0-9]|,*)([0-9].*)','$1 $2'),
                             '(,|\.)([^ ])','$1 $2'))"/>
     </identity>
@@ -155,10 +158,10 @@
     </facet-localDescription>
   </xsl:template>
 
-  <!-- xsl:template match="@localType" mode="meta">
+  <xsl:template match="@localType" mode="meta">
     <xsl:value-of select="replace(.,'^VIAF:','')"/>
     <xsl:text> </xsl:text>
-  </xsl:template -->
+  </xsl:template>
 
   <xsl:template match="eac:term" mode="meta">
     <xsl:value-of select="replace(replace(.
