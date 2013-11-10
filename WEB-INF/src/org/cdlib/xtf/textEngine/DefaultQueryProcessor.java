@@ -868,9 +868,7 @@ public class DefaultQueryProcessor extends QueryProcessor
    * hit queue, depending on whether the query is to be sorted.
    *
    * @param reader     will be used to read the field contents
-   * @param inSize     size of the queue (typically startDoc + maxDocs). If
-   *                   this number is >= 999999, an infinitely resizing
-   *                   queue will be created.
+   * @param size       size of the queue (typically startDoc + maxDocs).
    * @param sortFields space or comma delimited list of fields to sort by
    * @param isSparse   if index is sparse (i.e. more than 5 chunks per doc)
    * @return           an appropriate hit queue
@@ -880,11 +878,6 @@ public class DefaultQueryProcessor extends QueryProcessor
                                               boolean isSparse)
     throws IOException 
   {
-    // If a large size is requested, start with a small queue and expand
-    // later, if necessary.
-    //
-    int size = (inSize >= 999999) ? 1 : inSize;
-
     // If no sort fields, do a simple score sort.
     PriorityQueue ret;
     if (sortFields == null)
@@ -1009,10 +1002,6 @@ public class DefaultQueryProcessor extends QueryProcessor
         ret = new FieldSortedHitQueue(reader, fields, size);
       }
     }
-    
-    // If a ton of hits is requested, make the queue into a resizing one.
-    if (inSize >= 999999)
-      ret.setExpandable();
     
     // All done.
     return ret;
