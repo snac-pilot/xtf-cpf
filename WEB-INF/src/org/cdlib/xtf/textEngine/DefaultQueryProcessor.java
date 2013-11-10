@@ -873,7 +873,7 @@ public class DefaultQueryProcessor extends QueryProcessor
    * @param isSparse   if index is sparse (i.e. more than 5 chunks per doc)
    * @return           an appropriate hit queue
    */
-  private static PriorityQueue createHitQueue(IndexReader reader, int inSize,
+  private static PriorityQueue createHitQueue(IndexReader reader, int size,
                                               String sortFields,
                                               boolean isSparse)
     throws IOException 
