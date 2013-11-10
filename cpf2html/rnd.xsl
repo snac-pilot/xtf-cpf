@@ -16,7 +16,10 @@
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="not($rmode)">
-        <xsl:variable name="rnd" select="round(number(/crossQueryResult/@totalDocs) * math:random())"/>
+        <xsl:variable name="rnd" select="format-number(
+                                               round(number(/crossQueryResult/@totalDocs) * math:random()),
+                                               '##########'
+                                         )"/>
         <xsl:variable name="limit"><xsl:value-of 
                                          select="if ($facet-entityType) then concat('&amp;facet-entityType=',$facet-entityType)
                                          else if ($recordId-merge eq 'true') then '&amp;recordId-merge=true'
