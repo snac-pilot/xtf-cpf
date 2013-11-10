@@ -42,6 +42,36 @@ tranformed elements
 </div>
 <div class="clear">&#160;</div>
 
+
+<div class="content g400">
+    <h2 tmpl:condition="generalContext">General Context</h2>
+    <div tmpl:replace-markup="generalContext"><p>hey</p></div>
+    <h2 tmpl:condition="biogHist">Biographical History</h2>
+    <div tmpl:replace-markup="biogHist">
+      <dl>
+      <dt>1902, May 4</dt>
+      <dd>Born, St. Louis, Mo.</dd>
+      </dl>
+    </div>
+</div>
+
+ <div tmpl:condition="relations" class="relations g400">
+<h2>Related Entries</h2>
+<div tmpl:replace-markup="relations">
+<h3>People</h3>
+<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
+<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
+<h3>Corporate Bodies</h3>
+<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
+<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
+<h3>Resources</h3>
+<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
+<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
+&#160;
+<div tmpl:replace-markup="sameAs">HEY</div>
+</div>
+ </div>
+
 <div tmpl:condition="description" class="description g160">
 <h2 tmpl:condition="occupations">Occupations</h2>
 <ul tmpl:replace-markup="occupations">
@@ -77,35 +107,6 @@ tranformed elements
 <ul tmpl:replace-markup="mandates">
 </ul>
 </div>
-
-<div class="content g400">
-    <h2 tmpl:condition="generalContext">General Context</h2>
-    <div tmpl:replace-markup="generalContext"><p>hey</p></div>
-    <h2 tmpl:condition="biogHist">Biographical History</h2>
-    <div tmpl:replace-markup="biogHist">
-      <dl>
-      <dt>1902, May 4</dt>
-      <dd>Born, St. Louis, Mo.</dd>
-      </dl>
-    </div>
-</div>
-
- <div tmpl:condition="relations" class="relations g400">
-<h2>Related Entries</h2>
-<div tmpl:replace-markup="relations">
-<h3>People</h3>
-<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
-<div class="person">Dirac, P. A. M. (Paul Adrien Maurice), 1902-1984.</div>
-<h3>Corporate Bodies</h3>
-<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
-<div class="corporateBody">National Academy of Sciences (U.S.). Committee on Science and Public Policy.</div>
-<h3>Resources</h3>
-<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
-<div class="resources">Carl Eckart Papers, 1921-1973 (bulk 1935-1970)</div>
-&#160;
-<div tmpl:replace-markup="sameAs">HEY</div>
-</div>
- </div>
 
 <div class="clear">&#160;</div>
 <div class="g960">
