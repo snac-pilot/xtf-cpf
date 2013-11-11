@@ -85,43 +85,9 @@ tranformed elements
 <div tmpl:condition="spelling"/>
 </form>
 </div>
-<div class="clear">&#160;</div> 
-<div tmpl:process-markup="resultWrapper">
-<div tmpl:condition="refine-browse" class="g240 refine-browse">
-<!-- h2>RecordLevel</h2>
-<ul tmpl:replace-markup="recordLevel">
-<li>sparse	 (239)</li>
-<li>hasDescription	 (95)</li>
-</ul -->
-<p class="label">narrow results by</p>
-<h2 tmpl:condition="occupations">Occupation</h2>
-<ul tmpl:replace-markup="occupations">
-<li>Abolitionists. (5) </li>
-<li class="more">more (totalGroups 346)
-</li>
-</ul>
-<h2 tmpl:condition="subjects">Subject</h2>
-<ul tmpl:replace-markup="subjects">
-<li>AIDS (Disease) (1)</li>
-ter
-<li>Aachen, Battle of, Aachen, Germany, 1944. (1)</li>
-<li>Abnormalities, Human--Psychological aspects. (1)</li>
-<li>Abolitionists--United States. (1)</li>
-<li>Abolitionists. (1)</li>
-<li>Abortion--Law and legislation--United States. (1)</li>
-<li>Abortion--Law and legislation. (1)</li>
-<li>Abortion--United States. (1)</li>
-<li>Abortion. (3)</li>
-<li>Acadians--Maine. (1)</li>
-<li>Accordionists--Russia (Federation)--Photographs. (1)</li>
-<li>Acid rain--United States. (1)</li>
-<li>Acoustical engineering. (1)</li>
-<li>Acting. (4)</li>
-<li>Actions and defenses--Mississippi. (1)</li>
-<li class="more">more (totalGroups 3802)</li>
-</ul>
-</div>
 
+
+<div class="clear">&#160;</div> 
 <div class="g720">
 <h2 tmpl:change-value="totalDocs">EAC-CPF Records</h2>
 <div class="results" tmpl:change-value="results">
@@ -155,6 +121,27 @@ ter
 </div>
 </div>
 
+
+<div tmpl:process-markup="resultWrapper">
+<div tmpl:condition="refine-browse" class="g240 refine-browse">
+<p class="label">narrow results by</p>
+<h2 tmpl:condition="occupations">Occupation</h2>
+<ul tmpl:replace-markup="occupations">
+<li>Abolitionists. (5) </li>
+<li class="more">more (totalGroups 346)
+</li>
+</ul>
+<h2 tmpl:condition="subjects">Subject</h2>
+<ul tmpl:replace-markup="subjects">
+<li>AIDS (Disease) (1)</li>
+ter
+<li>Acting. (4)</li>
+<li>Actions and defenses--Mississippi. (1)</li>
+<li class="more">more (totalGroups 3802)</li>
+</ul>
+</div>
+
+<div class="clear">&#160;</div> 
 </div><!-- end resultWrapper  -->
 
 <div class="g240 actions"><a tmpl:replace-markup="show-xml">view source CrossQueryResult</a></div>
