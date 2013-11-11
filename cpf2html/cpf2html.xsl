@@ -521,9 +521,9 @@ tranformed elements
 
   <xsl:template match="eac:localDescription" mode="eac-inlist">
     <xsl:variable name="value">
-      <xsl:value-of select="substring-after(@localType, '#')"/>
+      <!-- xsl:value-of select="substring-after(@localType, '#')"/ -->
       <!-- xsl:apply-templates select="@localType[.!='subject']"/ -->
-      <xsl:text> </xsl:text>
+      <!-- xsl:text> </xsl:text -->
       <xsl:apply-templates mode="eac"/>
     </xsl:variable>
     <xsl:variable name="normalValue" 
