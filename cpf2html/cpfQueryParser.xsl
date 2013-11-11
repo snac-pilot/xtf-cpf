@@ -18,10 +18,15 @@
   <xsl:param name="recordId-eac-merge"/>
   <xsl:param name="autocomplete"/>
   <xsl:param name="mode"/>
+  <xsl:variable name="stylesheet" 
+    select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' 
+            else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
+            else if ($autocomplete) then 'cpf2html/autocomplete.xsl'
+            else ('cpf2html/cpfResultFormatter.xsl')"/>
    
   <xsl:template match="/">
-    <xsl:variable name="browse" 
-      select="if ($keyword='' and not(/parameters/param[matches(@name, '^f[0-9]+-')])) then ('yes') else ('no')"/>
+    <xsl:variable name="browse" select="false" />
+      <!-- select="if ($keyword='' and not(/parameters/param[matches(@name, '^f[0-9]+-')])) then ('yes') else ('no')"/> -->
       <!-- select="if ($keyword='') then ('yes') else ('no')"/ -->
     <xsl:choose>
       <xsl:when test="$mode = 'rnd'">
@@ -37,10 +42,8 @@
         <xsl:apply-templates select="." mode="browse"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="stylesheet" 
-          select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' else ('cpf2html/cpfResultFormatter.xsl')"/>
         <xsl:variable name="sortDocsBy" 
-select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) then ('sort-identity') else (false)"/>
+select="if  ($keyword='') then ('sort-identity') else (false)"/>
         <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
         <xsl:variable name="maxDocs" select="25"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
@@ -62,11 +65,11 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           <xsl:if test="$sortDocsBy">
             <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
           </xsl:if>
-          <!-- facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/ -->
+          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
           <spellcheck/>
           <and>
           <xsl:apply-templates/>
@@ -75,6 +78,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
                 <term><xsl:value-of select="$facet-entityType"/></term>
               </and>
             </xsl:if>
+              <and><allDocs/></and>
           </and>
         </query>
       </xsl:otherwise>
@@ -82,10 +86,9 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
   </xsl:template>
 
   <xsl:template match="/" mode="browse">
-       <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
         <xsl:variable name="sortDocsBy" select="(false)"/>
         <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-        <xsl:variable name="maxDocs" select="0"/>
+        <xsl:variable name="maxDocs" select="25"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query
           indexPath="index"
@@ -97,7 +100,7 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
           returnMetaFields="facet-identityAZ"
           maxDocs="{$maxDocs}">
           <!-- all this does now is trigger the display mode? -->
-          <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#all" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>
+          <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#1-20" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>
           <facet field="facet-person" select="*[1]"/>
           <facet field="facet-corporateBody" select="*[1]"/>
           <facet field="facet-family" select="*[1]"/>
@@ -134,7 +137,6 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
   <!-- autocomplete on identity (the title/subject of an EAC)  -->
 
   <xsl:template match="/" mode="autocomplete">
-    <xsl:variable name="stylesheet" select="'cpf2html/autocomplete.xsl'"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000"
                 style="{$stylesheet}" startDoc="{$startDoc}" maxDocs="20" normalizeScores="false"
 		returnMetaFields="identity">
@@ -207,7 +209,6 @@ select="if  ($keyword='' and (/parameters/param[matches(@name, '^f[0-9]+-')]) ) 
   </xsl:template>
   
   <xsl:template match="/" mode="recordsIds">
-    <xsl:variable name="stylesheet" select="'cpf2html/cpfResultFormatter.xsl'"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       style="{$stylesheet}" maxDocs="1" startDoc="{$startDoc}" >
       <and field="recordIds">
