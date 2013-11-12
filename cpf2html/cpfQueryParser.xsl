@@ -50,7 +50,7 @@ select="if  ($keyword='') then ('sort-identity') else (false)"/>
         <query 
           indexPath="index" 
           termLimit="1000" 
-          workLimit="1000000" 
+          workLimit="2000000" 
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
