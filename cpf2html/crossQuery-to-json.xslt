@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-  Copyright 2011 Regents of the University of California
+  Copyright 2013 Regents of the University of California
   All rights reserved.  
 
   some portions of this file derived from 
@@ -86,6 +86,7 @@
   <xsl:template match="meta" mode="x">
     <xsl:text>
 {"item":{</xsl:text>
+      <xsl:apply-templates select="../@path" mode="dc-json-element"/>
       <xsl:apply-templates select="identity[1]" mode="dc-json-element"/>
       <xsl:apply-templates select="fromDate[1]" mode="dc-json-element"/> 
       <xsl:apply-templates select="toDate[1]" mode="dc-json-element"/> 
@@ -101,14 +102,14 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="*" mode="dc-json-element">
+  <xsl:template match="*|@*" mode="dc-json-element">
     <xsl:param name="terminal"/>
         <xsl:text>
 "</xsl:text>
         <xsl:value-of select="name()"/>
         <xsl:text>":</xsl:text>
     <xsl:call-template name="escape-string">
-      <xsl:with-param name="s" select=".[text()]"/>
+      <xsl:with-param name="s" select="."/>
     </xsl:call-template>
     <xsl:if test="number($terminal) != 1">
       <xsl:text>,</xsl:text>
