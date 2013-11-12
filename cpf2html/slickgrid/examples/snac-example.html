@@ -76,12 +76,13 @@
   var loader = new Slick.Data.RemoteModel();
 
   var storyTitleFormatter = function (row, cell, value, columnDef, dataContext) {
-    s ="<b><a href='" + dataContext["url"] + "' target=_blank>" +
-              dataContext["title"] + "</a></b><br/>";
+    s ="<b><a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "' target=_blank>" +
+              dataContext["identity"] + "</a></b><br/>";
+    /*
     desc = dataContext["text"];
     if (desc) { // on Hackernews many stories don't have a description
         s += desc;
-    }
+    } */
     return s;
   };
 
@@ -92,7 +93,7 @@
 
   var columns = [
     {id: "num", name: "#", field: "index", width: 40},
-    {id: "identity", name: "identity", field: "identity", width: 200},
+    {id: "identity", name: "identity", width: 200, formatter: storyTitleFormatter},
     {id: "facet-entityType", name: "type", field: "facet-entityType", width: 100},
     {id: "fromDate", name: "from", field:"fromDate" , width: 100},
     {id: "toDate", name: "to", field:"toDate", width: 100}
