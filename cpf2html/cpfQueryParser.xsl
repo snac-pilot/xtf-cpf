@@ -54,7 +54,7 @@ select="if  ($keyword='') then ('sort-identity') else (false)"/>
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity"
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -325,6 +325,10 @@ select="if  ($keyword='') then ('sort-identity') else (false)"/>
                              else $sort }">
       </facet>
    </xsl:template>
+
+   <xsl:template match="param[@name='callback']">
+   </xsl:template>
+
 </xsl:stylesheet>
    <!--
       Copyright (c) 2008, Regents of the University of California
