@@ -45,7 +45,7 @@
       <xsl:value-of select="replace(replace($callback,'[^\c]',''),':','')"/>
       <xsl:text>(</xsl:text>
     </xsl:if>
-    <xsl:text>{"api":{"version":"x-002","license":"All Rights Reserved; Unauthorized use is strictly prohibited; http://www.oac.cdlib.org/terms.html"},"objset_total":</xsl:text>
+    <xsl:text>{"objset_total":</xsl:text>
     <xsl:variable name="totaldocs" select="normalize-space(//*[docHit]/@totalDocs)"/>
     <xsl:choose>
         <xsl:when test="$totaldocs=''">
@@ -75,7 +75,7 @@
             <xsl:value-of select="$objsetend"/>
         </xsl:otherwise>
     </xsl:choose>
-    <xsl:text>,"objset":[</xsl:text>
+    <xsl:text>,"results":[</xsl:text>
     <xsl:apply-templates select="/crossQueryResult//docHit/meta" mode="x"/>
     <xsl:text>]}</xsl:text>
     <xsl:if test="$callback">
@@ -84,114 +84,33 @@
   </xsl:template>
 
   <xsl:template match="meta" mode="x">
-      <!-- arbitrarily qualified dublin core 
-           based on http://purl.org/dc/elements/1.1/, but designed before dcterms -->
-      <xsl:variable name="result" select="."/>
-      <xsl:variable name="Institution" select="$result/facet-institution"/>
-      <xsl:variable name="Institution.parts" select="tokenize($Institution,'::')"/>
-      <xsl:variable name="Institution.reversed">
-        <xsl:choose>
-                <xsl:when test="$Institution.parts[1]!=$Institution.parts[2]">
-                        <xsl:value-of select="$Institution.parts[2]"/>
-                        <xsl:text>, </xsl:text>
-                        <xsl:value-of select="$Institution.parts[1]"/>
-                </xsl:when>
-                <xsl:otherwise>
-                        <xsl:value-of select="$Institution.parts[1]"/>
-                </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="ordered-dc">
-        <xsl:for-each select="
-          title, creator, subject, description, publisher, contributor, date, 
-          type, format, identifier, source, language, relation, coverage, rights">
-            <xsl:copy-of select="."/>
-        </xsl:for-each>
-      </xsl:variable>
     <xsl:text>
-{"qdc":{</xsl:text>
-      <xsl:apply-templates select="$ordered-dc" mode="dc-json-element"/>
+{"item":{</xsl:text>
+      <xsl:apply-templates select="identity[1]" mode="dc-json-element"/>
+      <xsl:apply-templates select="fromDate[1]" mode="dc-json-element"/> 
+      <xsl:apply-templates select="toDate[1]" mode="dc-json-element"/> 
+      <xsl:apply-templates select="facet-entityType[1]" mode="dc-json-element"> 
+        <xsl:with-param name="terminal" select="1"/>
+      </xsl:apply-templates>
     <xsl:text>
-},
-"courtesy_of":"</xsl:text><xsl:value-of select="$Institution.reversed"/><xsl:text>",
-"files":{</xsl:text>
-    <xsl:if test="$result/thumbnail">
-      <xsl:text>"thumbnail":</xsl:text>
-      <xsl:apply-templates select="$result/thumbnail"/>
-      <xsl:text></xsl:text>
-    </xsl:if>
-    <xsl:variable name="reference-count" select="count($result/reference-image)"/>
-    <xsl:if test="$reference-count &gt; 0">
-      <xsl:text>,"reference":</xsl:text>
-      <xsl:choose>
-        <xsl:when test="$reference-count = 1">
-          <xsl:apply-templates select="$result/reference-image"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text>[</xsl:text>
-          <xsl:apply-templates select="$result/reference-image"/>
-          <xsl:text>]</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-    <xsl:text>}
-}</xsl:text><!-- end of the record/object -->
+}}
+</xsl:text><!-- end of the record/object -->
     <xsl:if test="following::meta">
       <xsl:text>,
 </xsl:text>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="*[text()]" mode="dc-json-element">
-    <xsl:variable 
-      name="element-count" 
-      select="
-        count(following-sibling::*[name()=name(current())][text()])
-        + count(preceding-sibling::*[name()=name(current())][text()])
-        + count(self::*[text()])
-    "/>
-    <xsl:if test="$element-count &gt; 0">
-      <xsl:if test="not(preceding-sibling::*[name()=name(current())][text()])">
+  <xsl:template match="*" mode="dc-json-element">
+    <xsl:param name="terminal"/>
         <xsl:text>
 "</xsl:text>
         <xsl:value-of select="name()"/>
         <xsl:text>":</xsl:text>
-        <xsl:if test="$element-count &gt; 1">
-          <xsl:text>[</xsl:text>
-        </xsl:if>
-      </xsl:if>
-      <xsl:apply-templates select=".[text()]" mode="dcel"/>
-      <xsl:if test="not(following-sibling::*[name()=name(current())][text()])">
-        <xsl:if test="$element-count &gt; 1">
-          <xsl:text>]</xsl:text>
-        </xsl:if>
-        <xsl:if test="following-sibling::*[text()]">
-          <xsl:text>,</xsl:text>
-        </xsl:if>
-      </xsl:if>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="*[text()][not(@q)]" mode="dcel">
     <xsl:call-template name="escape-string">
-      <xsl:with-param name="s" select="."/>
+      <xsl:with-param name="s" select=".[text()]"/>
     </xsl:call-template>
-    <xsl:if test="following-sibling::*[name()=name(current())][text()]">
-      <xsl:text>,</xsl:text>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="*[text()][@q]" mode="dcel">
-    <xsl:text>{"q":</xsl:text>
-    <xsl:call-template name="escape-string">
-      <xsl:with-param name="s" select="@q"/>
-    </xsl:call-template>
-    <xsl:text>,"v":</xsl:text>
-    <xsl:call-template name="escape-string">
-      <xsl:with-param name="s" select="."/>
-    </xsl:call-template>
-    <xsl:text>}</xsl:text>
-    <xsl:if test="following-sibling::*[name()=name(current())][text()]">
+    <xsl:if test="number($terminal) != 1">
       <xsl:text>,</xsl:text>
     </xsl:if>
   </xsl:template>
