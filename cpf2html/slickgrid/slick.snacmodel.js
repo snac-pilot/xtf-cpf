@@ -74,7 +74,7 @@
         return;
       }
 
-      var url = "http://localhost:8080/xtf/search?sectionType=cpfdescription&rmode=slickgrid&text=" + searchstr + "&startDoc=" + (fromPage * PAGESIZE + 1);
+      var url = "/xtf/search?sectionType=cpfdescription&rmode=slickgrid&text=" + searchstr + "&startDoc=" + (fromPage * PAGESIZE + 1);
 
 
       if (h_request != null) {
