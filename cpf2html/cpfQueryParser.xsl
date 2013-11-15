@@ -42,10 +42,9 @@
         <xsl:apply-templates select="." mode="browse"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="sortDocsBy" 
-select="if  ($keyword='') then ('sort-identity') else (false)"/>
+        <xsl:variable name="sortDocsBy" select="if  ($keyword='') then ('sort-identity') else (false)"/>
         <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-        <xsl:variable name="maxDocs" select="25"/>
+        <xsl:variable name="maxDocs" select="if ($rmode='slickgrid') then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
           indexPath="index" 
@@ -65,12 +64,14 @@ select="if  ($keyword='') then ('sort-identity') else (false)"/>
           <xsl:if test="$sortDocsBy">
             <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
           </xsl:if>
-          <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-          <spellcheck/>
+          <xsl:if test="not($rmode='slickgrid')">
+            <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <spellcheck/>
+          </xsl:if>
           <and>
           <xsl:apply-templates/>
             <xsl:if test="$facet-entityType">

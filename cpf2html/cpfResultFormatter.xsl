@@ -265,13 +265,13 @@
     <xsl:value-of select="if ($entity='') then 'All' 
                      else if ($entity='person') then 'Person'
                      else if ($entity='family') then 'Family'
-                     else if ($entity='corporateBody') then 'Corporate Body'
+                     else if ($entity='corporateBody') then 'Organization'
                         else ''"/>
   </xsl:function>
 
   <xsl:template match='*[@tmpl:replace-markup="navigation"]' mode="html-template">
 <ul>
-  <xsl:for-each select="('','person','corporateBody','family')">
+  <xsl:for-each select="('','person','family','corporateBody')">
     <xsl:choose>
       <xsl:when test="$facet-entityType=.">
         <li class="selected"><a><xsl:value-of select="tmpl:entityTypeLabel(.)"/></a></li>
@@ -457,9 +457,14 @@
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
-      <xsl:text> </xsl:text>
-      <span title="Encoded Archival Context – Corporate bodies, Persons, and Families">EAC-CPF</span>
-      <xsl:text> Records</xsl:text>
+      <xsl:choose>
+        <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
+          <xsl:text> identities</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text> identity</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:element>
   </xsl:template>
 
@@ -568,9 +573,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a href="{$selectLink}"><xsl:value-of select="@value"/></a>
-          <xsl:text> (</xsl:text>
-          <xsl:value-of select="@totalDocs"/>
-          <xsl:text>)</xsl:text>
+          <span style="padding-left: 0.25em; font-size:80%;"><xsl:value-of select="@totalDocs"/></span>
         </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

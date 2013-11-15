@@ -46,10 +46,6 @@ tranformed elements
 <div class="g960 page-header">
 
 <div>
-<div id="logo" onclick="window.location='http://socialarchive.iath.virginia.edu/prototype.html';" style="cursor: pointer; cursor: hand;">
-<a href="http://socialarchive.iath.virginia.edu/" class="noarrow">SNAC</a>
-<span>prototype</span></div>
-<h1 class="home">Find <span class="corporateBody">Corporate</span>, <span class="person">Personal</span>, and <span class="family">Family</span> Archival Context Records</h1>
 <div class="clear"></div>
 </div>
 <!-- div class="clear">&#160;</div -->
@@ -82,6 +78,7 @@ tranformed elements
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
 </label>
+<div style="float: right;" tmpl:change-value="totalDocs">EAC-CPF Records</div>
 <div tmpl:condition="spelling"/>
 </form>
 </div>
@@ -89,7 +86,7 @@ tranformed elements
 
 <div class="clear">&#160;</div> 
 <div class="g720">
-<h2 tmpl:change-value="totalDocs">EAC-CPF Records</h2>
+<div>&#160;</div>
 <div class="results" tmpl:change-value="results">
 	<div class="result">
 		<div>Aaron, Hank, 1934</div>
@@ -144,7 +141,6 @@ ter
 <div class="clear">&#160;</div> 
 </div><!-- end resultWrapper  -->
 
-<div class="g240 actions"><a tmpl:replace-markup="show-xml">view source CrossQueryResult</a></div>
 <div class="clear"/>
   <div class="g960">
     <div class="return-top"><a title="return to top" href="#top">⇧</a></div>
