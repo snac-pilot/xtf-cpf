@@ -33,7 +33,7 @@ $(function () {
   var loader = new Slick.Data.RemoteModel();
 
   var storyTitleFormatter = function (row, cell, value, columnDef, dataContext) {
-    s ="<b><a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "' target=_blank>" +
+    s ="<b><a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "'>" +
               dataContext["identity"] + "</a></b><br/>";
     /*
     desc = dataContext["text"];
