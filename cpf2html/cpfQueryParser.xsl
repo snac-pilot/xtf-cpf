@@ -68,8 +68,8 @@
             <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-occupation" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-localDescription" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-occupation" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-localDescription" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <spellcheck/>
           </xsl:if>
           <and>
