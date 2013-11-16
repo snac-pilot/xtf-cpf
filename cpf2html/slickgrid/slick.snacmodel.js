@@ -8,7 +8,7 @@
     // private
     var PAGESIZE = 25;
     var data = {length: 0};
-    var searchstr = "";
+    // var searchstr = "";
     var sortcol = null;
     var sortdir = 1;
     var h_request = null;
@@ -74,8 +74,7 @@
         return;
       }
 
-      var url = "/xtf/search?sectionType=cpfdescription&rmode=slickgrid&text=" + searchstr + "&startDoc=" + (fromPage * PAGESIZE + 1);
-
+      var url = document.URL + "&rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
 
       if (h_request != null) {
         clearTimeout(h_request);
