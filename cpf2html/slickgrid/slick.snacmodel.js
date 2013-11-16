@@ -73,6 +73,7 @@
         onDataLoaded.notify({from: from, to: to});
         return;
       }
+      // does document.URL have a query string?
       var existsQuery;
       // http://stackoverflow.com/a/1789952/1763984
       if (~document.URL.indexOf('?')){
@@ -80,8 +81,16 @@
       } else {
         existsQuery="?";
       }
-      console.log(existsQuery);
-      var url = document.URL + existsQuery + "rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
+
+      // terminal `#' in document.URL
+      var baseUrl;
+      if (document.URL.charAt(document.URL.length-1) == '#') {
+        baseUrl = document.URL.substring(0, document.URL.length - 1);
+      } else {
+        baseUrl = document.URL;
+      }
+
+      var url = baseUrl + existsQuery + "rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
 
       if (h_request != null) {
         clearTimeout(h_request);
