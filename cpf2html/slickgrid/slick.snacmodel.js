@@ -149,7 +149,7 @@
     }
 
     function setSearch(str) {
-      searchstr = str;
+      // searchstr = str;
       clear();
     }
 
