@@ -73,8 +73,15 @@
         onDataLoaded.notify({from: from, to: to});
         return;
       }
-
-      var url = document.URL + "&rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
+      var existsQuery;
+      // http://stackoverflow.com/a/1789952/1763984
+      if (~document.URL.indexOf('?')){
+        existsQuery="&";
+      } else {
+        existsQuery="?";
+      }
+      console.log(existsQuery);
+      var url = document.URL + existsQuery + "rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
 
       if (h_request != null) {
         clearTimeout(h_request);
