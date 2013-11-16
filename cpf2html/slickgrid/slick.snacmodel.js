@@ -129,8 +129,9 @@
       for (var i = 0; i < resp.results.length; i++) {
         var item = resp.results[i].item; */
 
-      var from = resp.objset_start, to = from + resp.results.length;
-      data.length = parseInt(resp.objset_total+1);
+      var from = resp.objset_start-1
+      var to = from + resp.results.length;
+      data.length = parseInt(resp.objset_total);
       // data.length = Math.min(parseInt(resp.objset_total),1000); // limitation of the API
 
       for (var i = 0; i < resp.results.length; i++) {
@@ -139,8 +140,8 @@
         // item.create_ts = item.create_ts.replace(/^(\d+)-(\d+)-(\d+)T(\d+:\d+:\d+)Z$/, "$2/$3/$1 $4 UTC"); 
         // item.create_ts = new Date(item.create_ts);
 
-        data[from + i - 1] = item;
-        data[from + i - 1].index = from + i - 1;
+        data[from + i] = item;
+        data[from + i].index = from + i;
       }
 
       req = null;
