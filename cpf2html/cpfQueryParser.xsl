@@ -74,12 +74,16 @@
           </xsl:if>
           <and>
           <xsl:apply-templates/>
-            <xsl:if test="$facet-entityType">
+            <xsl:choose>
+            <xsl:when test="$facet-entityType">
               <and field="facet-entityType">
                 <term><xsl:value-of select="$facet-entityType"/></term>
               </and>
-            </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
               <and><allDocs/></and>
+            </xsl:otherwise>
+            </xsl:choose>
           </and>
         </query>
       </xsl:otherwise>
