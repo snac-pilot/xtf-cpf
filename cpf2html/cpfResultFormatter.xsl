@@ -43,6 +43,7 @@
    <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else ''"/>
    <xsl:param name="recordId-merge"/>
    <xsl:param name="recordId-eac-merge"/>
+   <xsl:param name="browse-json"/>
 
    <!-- ====================================================================== -->
    <!-- Root Template                                                          -->
@@ -369,7 +370,10 @@
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
+<style> .selected { background-color: #ff0;} </style>
   <div class="g960">
+      <span class="{if ($browse-json) then '' else 'selected'}">
+      <a href="search?{ editURL:remove($queryString, 'browse-json')}">
       <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
       <xsl:choose>
         <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
@@ -379,14 +383,16 @@
           <xsl:text> identity </xsl:text>
         </xsl:otherwise>
       </xsl:choose>
+      </a>
+      </span>
  <i>narrow by </i>
 
-   <span><a href="search?{ editURL:set(
+   <span class="{if ($browse-json='facet-occupation') then 'selected' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-occupation'),
                              'browse-json', 'facet-occupation')
 }"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups"/> occupations</a></span>
 or
-   <span><a href="search?{ editURL:set(
+   <span class="{if ($browse-json='facet-localDescription') then 'selected' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-localDescription'),
                              'browse-json', 'facet-localDescription')
 }"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups"/> subjects</a></span>
