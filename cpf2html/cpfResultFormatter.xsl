@@ -286,99 +286,6 @@
 </ul>
   </xsl:template>
 
-  <!-- am I a browse page or a results page ? -->
-  <xsl:template match='*[@tmpl:process-markup="resultWrapper"]' mode="html-template">
-    <xsl:choose>
-      <!-- Browse Identities -->
-      <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']">
-        <div class="g480">
-       <xsl:variable name="person-count" select="number(($page)/crossQueryResult/facet[@field='facet-person']/@totalDocs)"/> 
-       <xsl:variable name="family-count" select="number(($page)/crossQueryResult/facet[@field='facet-family']/@totalGroups)"/> 
-       <xsl:variable name="corporateBody-count" 
-            select="number(($page)/crossQueryResult/facet[@field='facet-corporateBody']/@totalGroups)"/>
-        <h2><xsl:value-of select="format-number(number(($page)/crossQueryResult/@totalDocs),'#,##0')"/>
-            <xsl:text> </xsl:text>
-          <xsl:if test="$facet-entityType">
-            <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> 
-            <xsl:text> </xsl:text>
-          </xsl:if>
-          <xsl:text>Names</xsl:text>
-        </h2>
-
-
-  <h3><xsl:value-of select="tmpl:entityTypeLabel($facet-entityType)"/> Names ⇀  <span title="diacritics disregarded in sorting">Alphabetical Index</span> ⇀  <xsl:value-of select="if ($facet-identityAZ='0') then ('0-9') else $facet-identityAZ"/></h3>
-
-
-        <div class="AZletters">
-          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-        </div>
-
-          <div class="AZlist">
-          <!-- process the results -->
-          <xsl:choose>
-            <xsl:when test="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit">
-          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group[@value=$facet-identityAZ]/docHit" mode="AZlist"/>
-            </xsl:when>
-            <xsl:otherwise>
-<xsl:copy-of select="document('./featured.html')"/>
-<!--               <h3>Featured Records</h3> 
-<div class="person"><a href="/xtf/view?docId=Bernstein+Leonard-cr.xml">Bernstein, Leonard, 1918-</a></div>
--->
-
-            </xsl:otherwise>
-           </xsl:choose>
-          </div>
-
-
-        </div><!-- end g480 -->
-        <div class="g240 top-browse">
-          <h2 title="browse">Top Occupations</h2>
-          <xsl:call-template name="browse-occupations"/>
-        </div>
-        <div class="g240 top-browse">
-          <h2 title="browse">Top Subjects</h2>
-          <xsl:call-template name="browse-subjects"/>
-        </div>
-<div class="clear">&#160;</div>
-
-        <div class="g480 AZletters">
-          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-        </div>
-      </xsl:when>
-      <!-- otherwise continue on with the HTML template -->
-      <xsl:otherwise>
-        <xsl:element name="{name(.)}">
-          <xsl:for-each select="@*[namespace-uri='']">
-            <xsl:attribute name="{name(.)}">
-              <xsl:value-of select="."/>
-            </xsl:attribute>
-          </xsl:for-each>
-          <xsl:apply-templates mode="html-template"/>
-        </xsl:element>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <!-- browse page -->
-
-  <xsl:template match="group" mode="AZletters">
-    <xsl:choose>
-     <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
-      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{
-           editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
-                                                    'facet-entityType',$facet-entityType),
-                                                      'recordId-merge',$recordId-merge),
-                                              'recordId-eac-merge',$recordId-eac-merge) }">
-        <xsl:value-of select="@value"/>
-      </a>
-     </xsl:when> 
-     <xsl:otherwise>
-        <span title="{format-number(@totalDocs,'###,###')}"><xsl:value-of select="@value"/></span>
-     </xsl:otherwise>
-    </xsl:choose>
-    <xsl:text>&#160;</xsl:text>
-  </xsl:template>
-
   <xsl:template match="docHit" mode="AZlist">
     <xsl:param name="path" select="@path"/>
       <div class="{meta/facet-entityType}{if (meta/facet-recordLevel[text()='hasBiogHist']) then (' hasBiogHist') else ('')}">
@@ -410,18 +317,6 @@
   
   <xsl:variable name="occupations" select="($page)/crossQueryResult/facet[@field='facet-occupation']"/>
   <xsl:variable name="subjects" select="($page)/crossQueryResult/facet[@field='facet-localDescription']"/>
-  <xsl:template match="*[@tmpl:condition='refine-browse']" mode="html-template">
-    <xsl:choose>
-      <xsl:when test="($occupations)/* or ($subjects)/*">
-        <xsl:call-template name="keep-going">
-          <xsl:with-param name="node" select="."/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <div class="g240">&#160;</div>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
   <xsl:template match="*[@tmpl:condition='occupations']" mode="html-template">
     <xsl:if test="($occupations)/*">
@@ -445,6 +340,8 @@
       <xsl:apply-templates select="$subjects" mode="result"/>
   </xsl:template>
 
+
+
   <xsl:template match='*[@tmpl:replace-markup="cpfRelation"]' mode="html-template">
       <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-cpfRelation']" mode="div-result"/>
   </xsl:template>
@@ -456,15 +353,6 @@
   <xsl:template match='*[@tmpl:change-value="totalDocs"]' mode="html-template">
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
-      <xsl:choose>
-        <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
-          <xsl:text> identities</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text> identity</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
     </xsl:element>
   </xsl:template>
 
@@ -478,6 +366,34 @@
       </div>
       </xsl:if>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
+  <div class="g960">
+      <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
+      <xsl:choose>
+        <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
+          <xsl:text> identities </xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text> identity </xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+ <i>narrow by </i>
+
+   <span><a href="search?{ editURL:set(
+                             editURL:remove($queryString, 'facet-occupation'),
+                             'browse-json', 'facet-occupation')
+}"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups"/> occupations</a></span>
+or
+   <span><a href="search?{ editURL:set(
+                             editURL:remove($queryString, 'facet-localDescription'),
+                             'browse-json', 'facet-localDescription')
+}"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups"/> subjects</a></span>
+
+  <div id="myGrid" style="width:100%;height:400px;"></div>
+  <div id="pager" style="width:100%;height:20px;"></div>
+  </div>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
@@ -517,7 +433,7 @@
       <xsl:apply-templates mode="result"/>
       <xsl:if test="@totalGroups &gt; 15">
         <li class="more">
-          <xsl:value-of select="@totalGroups"/>
+          <xsl:value-of select="format-number(@totalGroups,'###,###')"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="replace(@field,'facet-','')"/>
           <xsl:text>s</xsl:text>
@@ -573,7 +489,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a href="{$selectLink}"><xsl:value-of select="@value"/></a>
-          <span style="padding-left: 0.25em; font-size:80%;"><xsl:value-of select="@totalDocs"/></span>
+          <span style="padding-left: 0.25em; font-size:80%;"><xsl:value-of select="format-number(@totalDocs,'###,###')"/></span>
         </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

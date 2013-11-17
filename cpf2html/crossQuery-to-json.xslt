@@ -32,11 +32,18 @@
 -->
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:editURL="http://cdlib.org/xtf/editURL"
   version="2.0"
 >
+
+  <xsl:include href="../style/crossQuery/resultFormatter/common/resultFormatterCommon.xsl"/>
   <xsl:output indent="no" method="text" encoding="UTF-8" media-type="application/json"/>
   <xsl:strip-space elements="*"/>
   <xsl:param name="callback"/>
+  <xsl:param name="browse-json"/>
+  <xsl:param name="pageSize" select="'20'"/>
+  <xsl:param name="icon.path" select="concat($xtfURL, 'icons/default/')"/>
+  <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
 
   <xsl:template match="/">
     <!-- regex on callback parameter to sanitize user input -->
@@ -46,7 +53,8 @@
       <xsl:text>(</xsl:text>
     </xsl:if>
     <xsl:text>{"objset_total":</xsl:text>
-    <xsl:variable name="totaldocs" select="normalize-space(//*[docHit]/@totalDocs)"/>
+    <xsl:variable name="totaldocs" select="if (//*[docHit]/@totalDocs) then normalize-space(//*[docHit]/@totalDocs) 
+                                          else normalize-space(/crossQueryResult/facet[@field=$browse-json]/@totalGroups)"/>
     <xsl:choose>
         <xsl:when test="$totaldocs=''">
             <xsl:text>0</xsl:text>
@@ -56,7 +64,7 @@
         </xsl:otherwise>
     </xsl:choose>
     <xsl:text>,"objset_start":</xsl:text>
-    <xsl:variable name="objsetstart" select="normalize-space(//*[docHit]/@startDoc)"/>
+    <xsl:variable name="objsetstart" select="if ($startDoc) then string($startDoc) else normalize-space(//*[docHit]/@startDoc) "/>
     <xsl:choose>
         <xsl:when test="$objsetstart=''">
             <xsl:text>0</xsl:text>
@@ -66,7 +74,9 @@
         </xsl:otherwise>
     </xsl:choose>
     <xsl:text>,"objset_end":</xsl:text>
-    <xsl:variable name="objsetend" select="normalize-space(//*[docHit]/@endDoc)"/>
+    <xsl:variable name="objsetend" select="if (//*[docHit]/@endDoc) then normalize-space(//*[docHit]/@endDoc) 
+                                           else string(number($startDoc) + number($pageSize))
+"/>
     <xsl:choose>
         <xsl:when test="$objsetend=''">
             <xsl:text>0</xsl:text>
@@ -76,12 +86,13 @@
         </xsl:otherwise>
     </xsl:choose>
     <xsl:text>,"results":[</xsl:text>
-    <xsl:apply-templates select="/crossQueryResult//docHit/meta" mode="x"/>
+    <xsl:apply-templates select="/crossQueryResult//docHit/meta | /crossQueryResult/facet[@field=$browse-json]/group" mode="x"/>
     <xsl:text>]}</xsl:text>
     <xsl:if test="$callback">
       <xsl:text>)</xsl:text>
     </xsl:if>
   </xsl:template>
+
 
   <xsl:template match="meta" mode="x">
     <xsl:text>
@@ -90,6 +101,7 @@
       <xsl:apply-templates select="identity[1]" mode="dc-json-element"/>
       <xsl:apply-templates select="fromDate[1]" mode="dc-json-element"/> 
       <xsl:apply-templates select="toDate[1]" mode="dc-json-element"/> 
+      <xsl:apply-templates select="facet-recordLevel" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-entityType[1]" mode="dc-json-element"> 
         <xsl:with-param name="terminal" select="1"/>
       </xsl:apply-templates>
@@ -97,6 +109,36 @@
 }}
 </xsl:text><!-- end of the record/object -->
     <xsl:if test="following::meta">
+      <xsl:text>,
+</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="group" mode="x">
+    <xsl:variable name="field" select="replace(ancestor::facet/@field, 'facet-(.*)', '$1')"/>
+    <xsl:variable name="value" select="@value"/>
+    <xsl:variable name="nextName" select="editURL:nextFacetParam($queryString, $field)"/>
+    <xsl:variable name="queryStringCleanHomePage" select="
+      if ($sectionType)
+      then $queryStringClean
+      else editURL:set($queryStringClean,'sectionType', 'cpfdescription')
+    "/>
+    <xsl:variable name="selectLink" select="
+         concat('/xtf/', $crossqueryPath, '?',
+                editURL:remove(editURL:set($queryStringCleanHomePage,
+                            $nextName, $value),'facet-identityAZ'))">
+    </xsl:variable>
+
+    <xsl:text>
+{"item":{</xsl:text>
+      <xsl:apply-templates select="@value" mode="dc-json-element"/>
+      <xsl:apply-templates select="@totalDocs" mode="dc-json-element"> 
+        <xsl:with-param name="terminal" select="1"/>
+      </xsl:apply-templates>
+    <xsl:text>
+}}
+</xsl:text><!-- end of the record/object -->
+    <xsl:if test="following-sibling::group">
       <xsl:text>,
 </xsl:text>
     </xsl:if>
