@@ -125,13 +125,31 @@
     "/>
     <xsl:variable name="selectLink" select="
          concat('/xtf/', $crossqueryPath, '?',
+              editURL:remove(
+              editURL:remove(
+              editURL:remove(
                 editURL:remove(editURL:set($queryStringCleanHomePage,
-                            $nextName, $value),'facet-identityAZ'))">
+                            $nextName, $value),'facet-identityAZ')
+              ,'rmode')
+              ,'callback')
+              ,'browse-json')
+         )">
     </xsl:variable>
+    <xsl:variable name="selected" select="if (//param[matches(@name,concat('f[0-9]+-',$field))]/@value=$value) then 'true' else 'false'"/>
 
     <xsl:text>
 {"item":{</xsl:text>
       <xsl:apply-templates select="@value" mode="dc-json-element"/>
+    <xsl:text>
+  "selectLink":</xsl:text>
+    <xsl:call-template name="escape-string">
+      <xsl:with-param name="s" select="$selectLink"/>
+    </xsl:call-template>
+    <xsl:text>,
+  "selected":</xsl:text>
+    <xsl:value-of select="$selected"/>
+    <xsl:text>,
+</xsl:text>
       <xsl:apply-templates select="@totalDocs" mode="dc-json-element"> 
         <xsl:with-param name="terminal" select="1"/>
       </xsl:apply-templates>

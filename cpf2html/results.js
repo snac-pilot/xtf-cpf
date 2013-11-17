@@ -34,17 +34,18 @@ $(function () {
 
   var storyTitleFormatter = function (row, cell, value, columnDef, dataContext) {
     s ="<b><a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "'>" +
-              dataContext["identity"] + "</a></b><br/>";
-    /*
-    desc = dataContext["text"];
-    if (desc) { // on Hackernews many stories don't have a description
-        s += desc;
-    } */
+              dataContext["identity"] + "</a></b>";
     return s;
   };
 
   var browseFormatter = function (row, cell, value, columnDef, dataContext) {
-    s = dataContext['value'];
+    s = '';
+    if (dataContext['selected']) {
+      s = dataContext['value']; 
+    } else {
+      s = "<b><a href='" + dataContext['selectLink'] + "'>" + 
+              dataContext['value'] + "</a></b>";
+    }
     return s;
   };
 
