@@ -125,45 +125,23 @@ tranformed elements
 <option value="resourcerelation">&#160;&#160;&#160;&#160;&#160;&#160;resourceRelation</option>
 </select>
 </label>
-<div style="float: right;" tmpl:change-value="totalDocs">EAC-CPF Records</div>
 <div tmpl:condition="spelling"/>
 </form>
 </div>
 
+<div tmpl:replace-markup="sumnav" class="g960">
+      <span tmpl:change-value="totalDocs">EAC-CPF Records</span>
+<i>narrow by</i>
+      <li tmpl:replace-markup="occupation-limit">333 occupations</li> or
+      <li tmpl:replace-markup="localDescription-limit">333 local descriptions</li>
 
-<div class="clear">&#160;</div> 
-<div class="g720">
-  <div>&#160;</div>
   <div id="myGrid" style="width:100%;height:400px;"></div>
   <div id="pager" style="width:100%;height:20px;"></div>
 </div>
 
 
-<div tmpl:process-markup="resultWrapper">
-<div tmpl:condition="refine-browse" class="g240 refine-browse">
-<p class="label">narrow results by</p>
-<h2 tmpl:condition="occupations">Occupation</h2>
-<ul tmpl:replace-markup="occupations">
-<li>Abolitionists. (5) </li>
-<li class="more">more (totalGroups 346)
-</li>
-</ul>
-<h2 tmpl:condition="subjects">Subject</h2>
-<ul tmpl:replace-markup="subjects">
-<li>AIDS (Disease) (1)</li>
-ter
-<li>Acting. (4)</li>
-<li>Actions and defenses--Mississippi. (1)</li>
-<li class="more">more (totalGroups 3802)</li>
-</ul>
-</div>
-
-<div class="clear">&#160;</div> 
-</div><!-- end resultWrapper  -->
-
 <div class="clear"/>
   <div class="g960">
-    <div class="return-top"><a title="return to top" href="#top">⇧</a></div>
     <footer/>
 <div class="version" tmpl:replace-markup="version">Code version; data version</div>
   </div>

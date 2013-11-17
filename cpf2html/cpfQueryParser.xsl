@@ -12,12 +12,14 @@
   <xsl:param name="text"/>
   <xsl:param name="keyword" select="$text"/>
   <xsl:param name="facet-entityType"/>
+  <xsl:param name="browse-json"/>
   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
   <xsl:param name="recordIds"/>
   <xsl:param name="recordId-merge"/>
   <xsl:param name="recordId-eac-merge"/>
   <xsl:param name="autocomplete"/>
   <xsl:param name="mode"/>
+  <xsl:param name="sortGroupsBy" select="'totalDocs'"/>
   <xsl:variable name="stylesheet" 
     select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' 
             else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
@@ -25,9 +27,6 @@
             else ('cpf2html/cpfResultFormatter.xsl')"/>
    
   <xsl:template match="/">
-    <xsl:variable name="browse" select="false" />
-      <!-- select="if ($keyword='' and not(/parameters/param[matches(@name, '^f[0-9]+-')])) then ('yes') else ('no')"/> -->
-      <!-- select="if ($keyword='') then ('yes') else ('no')"/ -->
     <xsl:choose>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
@@ -38,12 +37,11 @@
       <xsl:when test="$autocomplete">
         <xsl:apply-templates select="." mode="autocomplete"/>
       </xsl:when>
-      <xsl:when test="$browse='yes'">
-        <xsl:apply-templates select="." mode="browse"/>
+      <xsl:when test="$browse-json">
+        <xsl:apply-templates select="." mode="browsejson"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="sortDocsBy" select="if  ($keyword='') then ('sort-identity') else (false)"/>
-        <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
         <xsl:variable name="maxDocs" select="if ($rmode='slickgrid') then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
@@ -53,7 +51,7 @@
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, fromDate, toDate, facet-entityType"
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -73,16 +71,16 @@
             <spellcheck/>
           </xsl:if>
           <and>
-          <xsl:apply-templates/>
+            <xsl:apply-templates/>
             <xsl:choose>
-            <xsl:when test="$facet-entityType">
-              <and field="facet-entityType">
-                <term><xsl:value-of select="$facet-entityType"/></term>
-              </and>
-            </xsl:when>
-            <xsl:otherwise>
-              <and><allDocs/></and>
-            </xsl:otherwise>
+              <xsl:when test="$facet-entityType">
+                <and field="facet-entityType">
+                  <term><xsl:value-of select="$facet-entityType"/></term>
+                </and>
+              </xsl:when>
+              <xsl:otherwise>
+                <and><allDocs/></and>
+              </xsl:otherwise>
             </xsl:choose>
           </and>
         </query>
@@ -90,51 +88,65 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="/" mode="browse">
-        <xsl:variable name="sortDocsBy" select="(false)"/>
-        <xsl:variable name="sortGroupsBy" select="'totalDocs'"/>
-        <xsl:variable name="maxDocs" select="25"/>
-        <xsl:variable name="includeEmptyGroups" select="'yes'"/>
-        <query
-          indexPath="index"
-          termLimit="1000"
-          workLimit="9000000"
-          maxSnippets="0"
-          style="{$stylesheet}"
-          startDoc="{$startDoc}"
-          returnMetaFields="facet-identityAZ"
-          maxDocs="{$maxDocs}">
-          <!-- all this does now is trigger the display mode? -->
-          <facet field="facet-identityAZ" select="*|{$facet-identityAZ}#1-20" sortGroupsBy="value" sortDocsBy="sort-identity" includeEmptyGroups="true"/>
-          <facet field="facet-person" select="*[1]"/>
-          <facet field="facet-corporateBody" select="*[1]"/>
-          <facet field="facet-family" select="*[1]"/>
-          <facet field="facet-occupation" select="*[1-100]" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-localDescription" select="*[1-100]" sortGroupsBy="{$sortGroupsBy}"/>
-          <xsl:choose>
-            <xsl:when test="$facet-entityType">
-              <and field="facet-entityType">
-                <term><xsl:value-of select="$facet-entityType"/></term>
-              </and>
-            </xsl:when>
-            <xsl:when test="$recordId-merge='true'">
-              <and field="recordId-merge">
-                <term>true</term>
-              </and>
-            </xsl:when>
-            <xsl:when test="$recordId-eac-merge='true'">
-              <and field="recordId-eac-merge">
-                <term>true</term>
-              </and>
-            </xsl:when>
-            <xsl:otherwise>
-              <and><allDocs/></and>
-            </xsl:otherwise>
-          </xsl:choose>
-        </query>
-
+  <xsl:template match="/" mode="browsejson">
+    <xsl:variable name="sortDocsBy" select="(false)"/>
+    <xsl:variable name="maxDocs" select="0"/>
+    <xsl:variable name="includeEmptyGroups" select="'yes'"/>
+    <xsl:variable name="facet-occupation-select">
+      <xsl:choose>
+        <xsl:when test="$browse-json = 'facet-occupation'">
+          <xsl:text>*[</xsl:text>
+          <xsl:value-of select="$startDoc"/>
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="number($startDoc)+number(25)"/>
+          <xsl:text>]</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>*[0]</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="facet-localDescription-select">
+      <xsl:choose>
+        <xsl:when test="$browse-json = 'facet-localDescription'">
+          <xsl:text>*[</xsl:text>
+          <xsl:value-of select="$startDoc"/>
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="number($startDoc)+number(25)"/>
+          <xsl:text>]</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>*[0]</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <query
+      indexPath="index"
+      termLimit="1000"
+      workLimit="9000000"
+      maxSnippets="0"
+      style="{$stylesheet}"
+      startDoc="{$startDoc}"
+      returnMetaFields="facet-identityAZ"
+      maxDocs="{$maxDocs}">
+          <facet field="facet-occupation" select="{$facet-occupation-select}" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-localDescription" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
+          <and>
+            <xsl:apply-templates/>
+            <xsl:choose>
+              <xsl:when test="$facet-entityType">
+                <and field="facet-entityType">
+                  <term><xsl:value-of select="$facet-entityType"/></term>
+                </and>
+              </xsl:when>
+              <xsl:otherwise>
+                <and><allDocs/></and>
+              </xsl:otherwise>
+            </xsl:choose>
+          </and>
+      </query>
   </xsl:template>
-   
+
   <!-- ====================================================================== -->
   <!-- autocomplete  http://gist.github.com/612901                            -->
   <!-- ====================================================================== -->
@@ -331,7 +343,7 @@
       </facet>
    </xsl:template>
 
-   <xsl:template match="param[@name='callback']">
+   <xsl:template match="param[@name='callback'] | param[@name='mode']">
    </xsl:template>
 
 </xsl:stylesheet>
