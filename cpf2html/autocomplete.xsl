@@ -3,7 +3,7 @@
         xmlns:session="java:org.cdlib.xtf.xslt.Session"
         xmlns:editURL="http://cdlib.org/xtf/editURL"
         xmlns:tmpl="xslt://template">
-  <xsl:output method="text" indent="yes" encoding="UTF-8" media-type="text/javascript"/>
+  <xsl:output indent="no" method="text" encoding="UTF-8" media-type="application/json"/>
   <xsl:param name="callback"/>
   <xsl:param name="term"/>
 
