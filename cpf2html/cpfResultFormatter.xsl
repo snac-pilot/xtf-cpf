@@ -370,7 +370,6 @@
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
-<style> .selected { background-color: #ff0;} </style>
   <div class="g960">
       <span class="{if ($browse-json) then '' else 'selected'}">
       <a href="search?{ editURL:remove($queryString, 'browse-json')}">
