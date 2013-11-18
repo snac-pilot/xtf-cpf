@@ -87,16 +87,13 @@ $(function () {
     enableAddRow: false,
     enableColumnReorder: false,
     forceFitColumns: true,
-    enableCellNavigation: false
+    enableCellNavigation: true
   };
 
   var loadingIndicator = null;
 
 
-  $(function () {
-    dataView = new Slick.Data.DataView({ inlineFilters: true });
     grid = new Slick.Grid("#myGrid", loader.data, columns, options);
-    var pager = new Slick.Controls.Pager(dataView, grid, $("#pager"));
 
     grid.onViewportChanged.subscribe(function (e, args) {
       var vp = grid.getViewport();
@@ -104,7 +101,6 @@ $(function () {
     });
 
     grid.onSort.subscribe(function (e, args) {
-console.log("hey");
       loader.setSort(args.sortCol.field, args.sortAsc ? 1 : -1);
       var vp = grid.getViewport();
       loader.ensureData(vp.top, vp.bottom);
@@ -149,9 +145,5 @@ console.log("hey");
 
     // load the first page
     grid.onViewportChanged.notify();
-  })
-
-
-
 
 });
