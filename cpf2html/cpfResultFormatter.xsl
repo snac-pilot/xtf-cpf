@@ -390,12 +390,12 @@
    <span class="{if ($browse-json='facet-occupation') then 'selected' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-occupation'),
                              'browse-json', 'facet-occupation')
-}"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups"/> occupations</a></span>
+}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups, '###,###')"/> occupations</a></span>
 or
    <span class="{if ($browse-json='facet-localDescription') then 'selected' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-localDescription'),
                              'browse-json', 'facet-localDescription')
-}"><xsl:value-of select="($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups"/> subjects</a></span>
+}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups, '###,###')"/> subjects</a></span>
 
   <div id="myGrid" style="width:100%;height:400px;"></div>
   <div id="pager" style="width:100%;height:20px;"></div>
