@@ -92,6 +92,12 @@
 
       var url = baseUrl + existsQuery + "rmode=slickgrid&startDoc=" + (fromPage * PAGESIZE + 1);
 
+      // value and totalDocs
+
+      if (sortcol != null) {
+        url = url + "&sortGroupsBy=" + sortcol;
+      }
+
       if (h_request != null) {
         clearTimeout(h_request);
       }
@@ -160,7 +166,7 @@
 
     function setSort(column, dir) {
       sortcol = column;
-      sortdir = dir;
+      sortdir = 1;
       clear();
     }
 

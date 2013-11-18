@@ -76,8 +76,8 @@ $(function () {
     ];
   } else {
     columns = [
-      {id: "value", name: browseJson, formatter: browseFormatter, width: 400},
-      {id: "totalDocs", name: "totalDocs", field: "totalDocs", width: 50}
+      {id: "value", name: browseJson, field:"value", formatter: browseFormatter, width: 450, sortable: true, resizable: true},
+      {id: "totalDocs", name: "totalDoc", field: "totalDocs", width: 100, sortable: true, resizable: true}
     ];
   }
 
@@ -85,6 +85,8 @@ $(function () {
     // rowHeight: 64,
     editable: false,
     enableAddRow: false,
+    enableColumnReorder: false,
+    forceFitColumns: true,
     enableCellNavigation: false
   };
 
@@ -102,6 +104,7 @@ $(function () {
     });
 
     grid.onSort.subscribe(function (e, args) {
+console.log("hey");
       loader.setSort(args.sortCol.field, args.sortAsc ? 1 : -1);
       var vp = grid.getViewport();
       loader.ensureData(vp.top, vp.bottom);
@@ -140,9 +143,9 @@ $(function () {
       }
     });
 
-    loader.setSearch($("#txtSearch").val());
-    loader.setSort("create_ts", -1);
-    grid.setSortColumn("date", false);
+    // loader.setSearch($("#txtSearch").val());
+    loader.setSort("totalDocs", 1);
+    // grid.setSortColumn("value", false);
 
     // load the first page
     grid.onViewportChanged.notify();
