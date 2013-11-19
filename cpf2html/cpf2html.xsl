@@ -8,6 +8,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:xtf="http://cdlib.org/xtf"
+  xmlns:mods="http://www.loc.gov/mods/v3"
   exclude-result-prefixes="#all"
   xmlns:iso="iso:/3166"
   version="2.0">
@@ -706,7 +707,24 @@ tranformed elements
           </a>
         </xsl:otherwise>
       </xsl:choose>
+      <xsl:apply-templates select="eac:objectXMLWrap/mods:mods/mods:name[mods:role/mods:roleTerm='Repository']"/>
     </div>
+  </xsl:template>
+
+<!-- 
+
+  <name>
+                     <namePart>University of Connecticut</namePart>
+                     <role>
+                        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/rps">Repository</roleTerm>
+                     </role>
+                  </name>
+               </mods>
+
+-->
+
+  <xsl:template match="mods:name">
+    <xsl:apply-templates select="mods:namePart"/>
   </xsl:template>
   
   <xsl:template match="@xlink:href">
