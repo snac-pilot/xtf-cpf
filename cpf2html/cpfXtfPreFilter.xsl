@@ -40,6 +40,7 @@
 
   <!-- add metadata to XTF index -->
   <xsl:template name="get-meta">
+    <xsl:variable name="mergeCount"><xsl:value-of select="count(/eac:eac-cpf/eac:control/eac:otherRecordId[ends-with(@localType,'MergedRecord')])"/></xsl:variable>
     <meta xmlns="">
       <xsl:apply-templates select="/eac:eac-cpf" mode="main-facet"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:control" mode="meta"/>
@@ -55,6 +56,7 @@
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[not(starts-with(@localType,'VIAF'))]" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:cpfRelation" mode="meta"/>
       <xsl:apply-templates select="/eac:eac-cpf/eac:cpfDescription/eac:relations/eac:resourceRelation" mode="meta"/>
+      <mergeCount xtf:meta="yes"><xsl:value-of select="$mergeCount"/></mergeCount>
     </meta>
   </xsl:template>
 
@@ -72,6 +74,7 @@
     <facet-entityType xtf:facet="yes" xtf:meta="yes">
       <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
     </facet-entityType>
+    
   </xsl:template>
 
   <xsl:template match="eac:control" mode="meta">
