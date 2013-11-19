@@ -6,7 +6,9 @@
   xmlns:xtf="http://cdlib.org/xtf"
   xmlns:xs="http://www.w4.org/2001/XMLSchema" 
   xmlns:iso="iso:/3166"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:CharUtils="java:org.cdlib.xtf.xslt.CharUtils"
+  xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -269,6 +271,30 @@
       <xsl:apply-templates select="@*"/>
       <xsl:value-of select="iso:langLookup(@languageCode)"/>
     </xsl:copy>
+  </xsl:template>
+
+<!-- <cpfRelation xlink:arcrole="http://socialarchive.iath.virginia.edu/control/term#sameAs" xlink:href="http://en.wikipedia.org/wiki/Arthur_P._Bagby" xlink:role="http://socialarchive.iath.virginia.edu/control/term#Person" xlink:type="simple"/> -->
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+    <xsl:call-template name="getDbpediaThumbnail">
+      <xsl:with-param name="url" select="@xlink:href"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!-- http://dbpedia.org/data/Charlie_Haden.rdf -->
+  <xsl:template name="getDbpediaThumbnail">
+    <xsl:param name="url"/>
+    <xsl:variable name="dbpediaUrl">
+      <xsl:text>http://dbpedia.org/data/</xsl:text>
+      <xsl:value-of select="substring-after($url,'http://en.wikipedia.org/wiki/')"/>
+      <xsl:text>.rdf</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="thumbUrl" select="replace(
+                                 document($dbpediaUrl)/rdf:RDF/rdf:Description/dbpedia-owl:thumbnail/@rdf:resource
+                                 ,'200px-','150px-')"/>
+    <img src="{$thumbUrl}"/>
   </xsl:template>
 
   <!-- identity transform -->

@@ -259,6 +259,7 @@ tranformed elements
   <xsl:template match='*[@tmpl:condition="description"]'>
     <xsl:choose>
       <xsl:when test="($description)">
+        <xsl:copy-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations//img"/>
         <xsl:call-template name="keep-going">
           <xsl:with-param name="node" select="."/>
         </xsl:call-template>
@@ -680,6 +681,9 @@ tranformed elements
           <a>
             <xsl:apply-templates select="@xlink:href[.!='']"/>
             <xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/>
+            <xsl:if test="local-name(.)='cpfRelation'">
+              <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+            </xsl:if>
           </a>
           <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
           <!-- xsl:if test="$extra-info">
@@ -689,6 +693,12 @@ tranformed elements
               </xsl:apply-templates>
             </div>
           </xsl:if -->
+        </xsl:when>
+        <xsl:when test="@xlink:href">
+          <a href="/xtf/view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
+            <xsl:value-of select="eac:relationEntry"/>
+            <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          </a>
         </xsl:when>
         <xsl:when test="$link-mode = 'worldcat-title'">
           <a href="http://www.worldcat.org/search?q=ti:{
