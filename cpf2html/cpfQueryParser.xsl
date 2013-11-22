@@ -41,7 +41,7 @@
         <xsl:apply-templates select="." mode="browsejson"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="sortDocsBy" select="if  ($keyword='') then ('sort-identity') else (false)"/>
+        <xsl:variable name="sortDocsBy" select="if ($keyword='') then ('sort-identity') else (false)"/>
         <xsl:variable name="maxDocs" select="if ($rmode='slickgrid') then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
@@ -69,6 +69,9 @@
             <facet field="facet-occupation" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-localDescription" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
             <spellcheck/>
+          </xsl:if>
+          <xsl:if test="$keyword=''">
+            <facet field="facet-identityAZ" select="*" sortGroupsBy="value"/>
           </xsl:if>
           <and>
             <xsl:apply-templates/>

@@ -131,6 +131,24 @@ $(function () {
       loadingIndicator.fadeOut();
     });
 
+    $( "#prev" ).click(function() {
+      var pageSize = grid.getViewport().bottom - grid.getViewport().top;
+      grid.scrollRowToTop(grid.getViewport().top - pageSize);
+    });
+
+    $( "#next" ).click(function() {
+      grid.scrollRowToTop(grid.getViewport().bottom);
+    });
+
+    $( ".AZletters a" ).click(function(e) {
+      var address = $(this)[0].getAttribute('data-offset');
+      grid.scrollRowToTop(address);
+      grid.flashCell(address, 1);
+      var vp = grid.getViewport();
+      loader.ensureData(vp.top, vp.bottom);
+      grid.render();
+    });
+
     $("#txtSearch").keyup(function (e) {
       if (e.which == 13) {
         loader.setSearch($(this).val());

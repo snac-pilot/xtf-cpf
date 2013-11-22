@@ -369,6 +369,20 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="*[@tmpl:replace-markup='AZ']" mode="html-template">
+        <div class="g480 AZletters">
+          <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
+        </div>
+  </xsl:template>
+
+  <xsl:template match="group" mode="AZletters">
+      <a title="{format-number(@totalDocs,'###,###')}" href="javascript:void(0)" data-offset="{sum(preceding-sibling::group/@totalDocs)}">
+        <xsl:value-of select="@value"/>
+      </a>
+    <xsl:text>&#160;</xsl:text>
+  </xsl:template>
+
+
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
   <div class="g960">
       <span class="{if ($browse-json) then '' else 'selected'}">
