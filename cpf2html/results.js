@@ -67,7 +67,7 @@ $(function () {
 
   if (!browseJson) {
     columns = [
-      {id: "num", name: "#", formatter: index1, width: 50},
+      // {id: "num", name: "#", formatter: index1, width: 50},
       {id: "identity", name: "identity", width: 300, formatter: storyTitleFormatter},
       {id: "facet-entityType", name: "type", field: "facet-entityType", width: 100},
       {id: "fromDate", name: "from", field:"fromDate" , width: 100},

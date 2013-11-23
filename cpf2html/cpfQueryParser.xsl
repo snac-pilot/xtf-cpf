@@ -42,7 +42,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="sortDocsBy" select="if ($keyword='') then ('sort-identity') else (false)"/>
-        <xsl:variable name="maxDocs" select="if ($rmode='slickgrid') then 25 else 0"/>
+        <xsl:variable name="maxDocs" select="if ($rmode='slickgrid' and $keyword!='') then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
           indexPath="index" 
@@ -71,7 +71,17 @@
             <spellcheck/>
           </xsl:if>
           <xsl:if test="$keyword=''">
-            <facet field="facet-identityAZ" select="*" sortGroupsBy="value"/>
+            <facet field="facet-identityAZ" select="*{
+              if ($facet-identityAZ) 
+              then concat(
+                '|',
+                $facet-identityAZ,
+                '#',
+                $startDoc,
+                '-',
+                number($startDoc)+number(25)
+              )
+              else '' }" sortGroupsBy="value"/>
           </xsl:if>
           <and>
             <xsl:apply-templates/>
