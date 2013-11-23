@@ -376,9 +376,20 @@
   </xsl:template>
 
   <xsl:template match="group" mode="AZletters">
-      <a title="{format-number(@totalDocs,'###,###')}" href="javascript:void(0)" data-offset="{sum(preceding-sibling::group/@totalDocs)}">
+    <xsl:choose>
+     <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
+      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{
+           editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
+                                                    'facet-entityType',$facet-entityType),
+                                                      'recordId-merge',$recordId-merge),
+                                              'recordId-eac-merge',$recordId-eac-merge) }">
         <xsl:value-of select="@value"/>
       </a>
+     </xsl:when>
+     <xsl:otherwise>
+        <span title="{format-number(@totalDocs,'###,###')}"><xsl:value-of select="@value"/></span>
+     </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>&#160;</xsl:text>
   </xsl:template>
 
