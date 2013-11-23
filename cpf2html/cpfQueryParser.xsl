@@ -25,8 +25,8 @@
             else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
             else if ($autocomplete) then 'cpf2html/autocomplete.xsl'
             else ('cpf2html/cpfResultFormatter.xsl')"/>
-   
   <xsl:template match="/">
+  <xsl:variable name="hasFacets" select="count(parameters/param[matches(@name,'f[0-9]+-')])"/>
     <xsl:choose>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
@@ -42,7 +42,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="sortDocsBy" select="if ($keyword='') then ('sort-identity') else (false)"/>
-        <xsl:variable name="maxDocs" select="if ($rmode='slickgrid' and $keyword!='') then 25 else 0"/>
+        <xsl:variable name="maxDocs" select="if ($rmode='slickgrid' and ($keyword!='' or $hasFacets)) then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
         <query 
           indexPath="index" 
@@ -63,14 +63,14 @@
             <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
           </xsl:if>
           <xsl:if test="not($rmode='slickgrid')">
-            <facet field="facet-entityType" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-person" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-corporateBody" select="*[1-15]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-occupation" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-localDescription" select="*[1-5]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-entityType" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-person" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-corporateBody" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-occupation" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-localDescription" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <spellcheck/>
           </xsl:if>
-          <xsl:if test="$keyword=''">
+          <xsl:if test="$text='' and not($hasFacets)"><xsl:value-of select="$keyword!='' or $hasFacets"/>
             <facet field="facet-identityAZ" select="*{
               if ($facet-identityAZ) 
               then concat(
@@ -81,7 +81,7 @@
                 '-',
                 number($startDoc)+number(25)
               )
-              else '' }" sortGroupsBy="value"/>
+              else '' }" sortGroupsBy="value" sortDocsBy="sort-identity"/>
           </xsl:if>
           <and>
             <xsl:apply-templates/>

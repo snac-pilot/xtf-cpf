@@ -40,7 +40,7 @@
    <!-- xsl:param name="text"/ -->
    <!-- xsl:param name="keyword" select="$text"/ -->
    <xsl:param name="facet-entityType"/>
-   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else ''"/>
+   <xsl:param name="facet-identityAZ" select="if ($facet-entityType) then 'A' else '0'"/>
    <xsl:param name="recordId-merge"/>
    <xsl:param name="recordId-eac-merge"/>
    <xsl:param name="browse-json"/>
