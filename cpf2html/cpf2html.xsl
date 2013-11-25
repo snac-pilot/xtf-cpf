@@ -647,7 +647,11 @@ tranformed elements
         </xsl:apply-templates>
       </div>
     </xsl:if>
-    <xsl:variable name="corporateBodies" select="eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative']">
+    <xsl:variable name="corporateBodies" select="
+          eac:cpfRelation[
+            ends-with(lower-case(@xlink:role),'corporatebody') 
+            or @cpfRelationType='associative'
+          ][not(ends-with(@xlink:arcrole,'#sameAs'))]">
     </xsl:variable>
     <xsl:if test="$corporateBodies">
       <h3><span><a href="#">Corporate Bodies (<xsl:value-of select="count($corporateBodies)"/>)</a></span></h3>
@@ -681,10 +685,10 @@ tranformed elements
           <a>
             <xsl:apply-templates select="@xlink:href[.!='']"/>
             <xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/>
+          </a>
             <xsl:if test="local-name(.)='cpfRelation'">
               <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
             </xsl:if>
-          </a>
           <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
           <!-- xsl:if test="$extra-info">
             <div>
