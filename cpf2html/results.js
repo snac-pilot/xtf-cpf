@@ -33,18 +33,18 @@ $(function () {
   var loader = new Slick.Data.RemoteModel();
 
   var storyTitleFormatter = function (row, cell, value, columnDef, dataContext) {
-    s ="<b><a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "'>" +
-              dataContext["identity"] + "</a></b>";
+    s ="<a href='" + dataContext["path"].replace('default:', '/xtf/view?docId=') + "'>" +
+              dataContext["identity"] + "</a>";
     return s;
   };
 
   var browseFormatter = function (row, cell, value, columnDef, dataContext) {
     s = '';
     if (dataContext['selected']) {
-      s = dataContext['value']; 
+      s = "<b>" + dataContext['value'] + "</b>"; 
     } else {
-      s = "<b><a href='" + dataContext['selectLink'] + "'>" + 
-              dataContext['value'] + "</a></b>";
+      s = "<a href='" + dataContext['selectLink'] + "'>" + 
+              dataContext['value'] + "</a>";
     }
     return s;
   };
