@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
    xmlns:session="java:org.cdlib.xtf.xslt.Session"
    xmlns:editURL="http://cdlib.org/xtf/editURL"
-   xmlns="http://www.w3.org/1999/xhtml"
+   xmlns=""
   xmlns:eac="urn:isbn:1-931666-33-4"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:tmpl="xslt://template"
@@ -23,10 +23,11 @@
 
    <xsl:output method="xhtml" indent="no" 
       encoding="UTF-8" media-type="text/html; charset=UTF-8" 
-      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+      doctype-public="" 
+      doctype-system=""
       omit-xml-declaration="yes"
       exclude-result-prefixes="#all"/>
+
    
    
    <!-- ====================================================================== -->
@@ -370,9 +371,17 @@
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='AZ']" mode="html-template">
-        <div class="g480 AZletters">
+        <div class="g480 AZletters btn">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
         </div>
+  <div class="pull-right">
+  <button id="prev" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-backward"></span>
+  </button>
+  <button id="next" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-forward"></span>
+  </button>
+  </div>
   </xsl:template>
 
   <xsl:template match="group" mode="AZletters">
@@ -395,35 +404,30 @@
 
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
-  <div class="g960">
-      <span class="{if ($browse-json) then '' else 'selected'}">
-      <a href="search?{ editURL:remove($queryString, 'browse-json')}">
-      <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
-      <xsl:choose>
-        <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
-          <xsl:text> identities </xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text> identity </xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-      </a>
-      </span>
- <i>narrow by </i>
 
-   <span class="{if ($browse-json='facet-occupation') then 'selected' else''}"><a href="search?{ editURL:set(
+<ul tmpl:replace-markup="sumnav" class="btn-group" style="padding-left: 0; margin-bottom: 0;">
+      <li type="button" class="btn btn-default {if ($browse-json) then '' else 'active'}">
+        <a href="search?{ editURL:remove($queryString, 'browse-json')}">
+          <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
+          <xsl:choose>
+            <xsl:when test="($page)/crossQueryResult/@totalDocs &gt; 1">
+              <xsl:text> identities </xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text> identity </xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+        </a>
+      </li>
+   <li type="button" class="btn btn-default {if ($browse-json='facet-occupation') then 'active' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-occupation'),
                              'browse-json', 'facet-occupation')
-}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups, '###,###')"/> occupations</a></span>
-or
-   <span class="{if ($browse-json='facet-localDescription') then 'selected' else''}"><a href="search?{ editURL:set(
+}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups, '###,###')"/> occupations</a></li>
+   <li type="button" class="btn btn-default {if ($browse-json='facet-localDescription') then 'active' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-localDescription'),
                              'browse-json', 'facet-localDescription')
-}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups, '###,###')"/> subjects</a></span>
-
-  <div id="myGrid" style="width:100%;height:400px;"></div>
-  <div id="pager" style="width:100%;height:20px;"></div>
-  </div>
+}"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups, '###,###')"/> subjects</a></li>
+</ul>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
