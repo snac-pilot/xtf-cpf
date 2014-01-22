@@ -11,8 +11,51 @@
     <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png" />
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="icon" type="image/ico" href="favicon.ico" />
+    <!-- script src="cpf2html/mm-js/all.js" type="text/javascript"></script -->
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js" type="text/javascript"/>
+<script src="/xtf/cpf2html/formalize/formalize.js" type="text/javascript"/>
+<script src="/xtf/cpf2html/jquery.hoverIntent.minified.js" type="text/javascript"/>
+
+<!-- script src="../lib/jquery-1.7.min.js"></script>
+<script src="../lib/jquery-ui-1.8.16.custom.min.js"></script -->
+<script src="/xtf/cpf2html/slickgrid/lib/jquery.event.drag-2.2.js"></script> 
+<script src="/xtf/cpf2html/slickgrid/lib/jquery.jsonp-2.4.min.js"></script>
+
+<script src="/xtf/cpf2html/slickgrid/slick.core.js"></script>
+<script src="/xtf/cpf2html/slickgrid/slick.snacmodel.js"></script>
+<script src="/xtf/cpf2html/slickgrid/slick.grid.js"></script>
+
+<style>
+ul.ui-autocomplete {
+    z-index: 3 !important; 
+    width: 500px;
+    padding-left: 1em;
+}
+ul.ui-autocomplete li {
+    list-style-type:none;
+}
+</style>
 
     <title tmpl:change-value="html-title">title</title>
+<script tmpl:condition="autocomplete">
+  $(function() {
+    $("input#userInput").autocomplete({
+      source: "",  /* JSONP '?' turns to callback; term=letters gets added */
+      minLength: 3,
+      delay: 250
+    }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
+      if (e.keyCode === 13) {
+        $(this).autocomplete("close");
+        $(this).closest('form').trigger('submit');
+      }
+    });
+    /* http://stackoverflow.com/a/6762760/1763984 */
+    $("input#userInput").autocomplete('widget').css('z-index', 100);;
+  });
+</script>
 
     <link href="cpf2html/mm-css/index.css" media="screen" rel="stylesheet" type="text/css" />
     
@@ -96,22 +139,7 @@
 
     </div>
     <!-- /.container -->
-    <script src="cpf2html/mm-js/all.js" type="text/javascript"></script>
     <script src="cpf2html/results.js"> </script>
-    <script tmpl:condition="autocomplete">
-  $(function() {
-    $("input#userInput").autocomplete({
-      source: "",  /* JSONP '?' turns to callback; term=letters gets added */
-      minLength: 3,
-      delay: 250
-    }).keydown(function(e) {            /* http://stackoverflow.com/questions/3785993/ */
-      if (e.keyCode === 13) {
-        $(this).autocomplete("close");
-        $(this).closest('form').trigger('submit');
-      }
-    });
-  });
-</script>
 
   </body>
 </html>
