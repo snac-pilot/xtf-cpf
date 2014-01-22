@@ -51,7 +51,7 @@
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel"
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -68,6 +68,11 @@
             <facet field="facet-corporateBody" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-occupation" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-localDescription" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-ArchivalResource" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-BibliographicalResource" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-RelatedRecords" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-LinkedData" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-Wikipedia" select="*" sortGroupsBy="{$sortGroupsBy}"/>
             <spellcheck/>
           </xsl:if>
           <xsl:if test="$text='' and not($hasFacets)"><xsl:value-of select="$keyword!='' or $hasFacets"/>
