@@ -76,7 +76,55 @@
     <facet-entityType xtf:facet="yes" xtf:meta="yes">
       <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
     </facet-entityType>
-    
+    <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" mode="main-facets"/>
+
+  <xsl:variable name="ArchivalResource"
+    select="eac:cpfDescription/eac:relations/eac:resourceRelation[ends-with(@xlink:role,'#ArchivalResource')]"/>
+  <xsl:variable name="BibliographicalResource"
+    select="eac:cpfDescription/eac:relations/eac:resourceRelation[ends-with(@xlink:role,'#BibliographicResource')]"/>
+  <xsl:variable name="RelatedRecords"
+    select="eac:cpfDescription/eac:relations/eac:cpfRelation[not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
+  <xsl:variable name="LinkedData"
+    select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]"/>
+
+  <xsl:call-template name="count-facet">
+    <xsl:with-param name="facet" select="'ArchivalResource'"/>
+    <xsl:with-param name="tree" select="$ArchivalResource"/>
+  </xsl:call-template>
+  <xsl:call-template name="count-facet">
+    <xsl:with-param name="facet" select="'BibliographicalResource'"/>
+    <xsl:with-param name="tree" select="$BibliographicalResource"/>
+  </xsl:call-template>
+  <xsl:call-template name="count-facet">
+    <xsl:with-param name="facet" select="'RelatedRecords'"/>
+    <xsl:with-param name="tree" select="$RelatedRecords"/>
+  </xsl:call-template>
+  <xsl:call-template name="count-facet">
+    <xsl:with-param name="facet" select="'LinkedData'"/>
+    <xsl:with-param name="tree" select="$LinkedData"/>
+  </xsl:call-template>
+
+  </xsl:template>
+
+  <xsl:template name="count-facet">
+    <xsl:param name="facet" />
+    <xsl:param name="tree" />
+    <xsl:if test="boolean($tree)">
+      <xsl:element name="facet-{$facet}">
+        <xsl:attribute name="xtf:meta" select="'yes'"/>
+        <xsl:attribute name="xtf:facet" select="'yes'"/>
+        <xsl:value-of select="$facet"/>
+      </xsl:element>
+    </xsl:if>
+    <xsl:element name="count-{$facet}">
+        <xsl:attribute name="xtf:meta" select="'yes'"/>
+        <xsl:value-of select="count($tree)"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" 
+                mode="main-facets">
+    <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
   </xsl:template>
 
   <xsl:template match="eac:control" mode="meta">
