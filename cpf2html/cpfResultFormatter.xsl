@@ -371,14 +371,14 @@
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='AZ']" mode="html-template">
-        <div class="g480 AZletters btn">
+        <span class="g480 AZletters">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-        </div>
+        </span>
   <div class="pull-right">
-  <button id="prev" type="button" class="btn btn-default">
+  <button id="prev" type="button" class="btn btn-sm btn-default">
     <span class="glyphicon glyphicon-backward"></span>
   </button>
-  <button id="next" type="button" class="btn btn-default">
+  <button id="next" type="button" class="btn btn-sm btn-default">
     <span class="glyphicon glyphicon-forward"></span>
   </button>
   </div>
@@ -406,7 +406,7 @@
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
 
 <ul tmpl:replace-markup="sumnav" class="btn-group" style="padding-left: 0; margin-bottom: 0;">
-      <li type="button" class="btn btn-default {if ($browse-json) then '' else 'active'}">
+      <li type="button" class="btn btn-sm btn-default {if ($browse-json) then '' else 'active'}">
         <a href="search?{ editURL:remove($queryString, 'browse-json')}">
           <xsl:value-of select="format-number(($page)/crossQueryResult/@totalDocs, '###,###')"/>
           <xsl:choose>
@@ -419,11 +419,11 @@
           </xsl:choose>
         </a>
       </li>
-   <li type="button" class="btn btn-default {if ($browse-json='facet-occupation') then 'active' else''}"><a href="search?{ editURL:set(
+   <li type="button" class="btn btn-sm btn-default {if ($browse-json='facet-occupation') then 'active' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-occupation'),
                              'browse-json', 'facet-occupation')
 }"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-occupation']/@totalGroups, '###,###')"/> occupations</a></li>
-   <li type="button" class="btn btn-default {if ($browse-json='facet-localDescription') then 'active' else''}"><a href="search?{ editURL:set(
+   <li type="button" class="btn btn-sm btn-default {if ($browse-json='facet-localDescription') then 'active' else''}"><a href="search?{ editURL:set(
                              editURL:remove($queryString, 'facet-localDescription'),
                              'browse-json', 'facet-localDescription')
 }"><xsl:value-of select="format-number(($page)/crossQueryResult/facet[@field='facet-localDescription']/@totalGroups, '###,###')"/> subjects</a></li>

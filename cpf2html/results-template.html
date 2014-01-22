@@ -65,6 +65,36 @@ ul.ui-autocomplete li {
 <script src="cpf2html/mm-js/ie/respond.min.js" type="text/javascript"></script>
     <![endif]-->
     <script tmpl:replace-markup="google-tracking-code"/>
+<style>
+    .loading-indicator {
+      display: inline-block;
+      padding: 12px;
+      background: white;
+      -opacity: 0.5;
+      color: black;
+      font-weight: bold;
+      z-index: 9999;
+      border: 1px solid red;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-box-shadow: 0 0 5px red;
+      -webkit-box-shadow: 0px 0px 5px red;
+      -text-shadow: 1px 1px 1px white;
+    }
+
+    .loading-indicator label {
+      padding-left: 20px;
+      background: url('../images/ajax-loader-small.gif') no-repeat center left;
+    }
+    .grid-canvas .active { 
+    background: yellow;
+    }
+#myGrid .slick-viewport {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+</style>
+
   </head>
 
 
@@ -99,8 +129,18 @@ ul.ui-autocomplete li {
 
     <div class="container" style="padding-top:29px;">
         <div class="tabs">
-<ul tmpl:replace-markup="navigation"><li class="selected"><a>All</a></li><li><a href="/xtf/search?facet-entityType=person">Person</a></li><li><a href="/xtf/search?facet-entityType=family">Family</a></li><li><a href="/xtf/search?facet-entityType=corporateBody">Organization</a></li></ul>
-</div>
+          <ul tmpl:replace-markup="navigation"><li class="selected"><a>All</a></li><li><a href="/xtf/search?facet-entityType=person">Person</a></li><li><a href="/xtf/search?facet-entityType=family">Family</a></li><li><a href="/xtf/search?facet-entityType=corporateBody">Organization</a></li>
+          </ul>
+        </div>
+          <div class="dropdown pull-right">
+            <a data-toggle="dropdown" href="#">Random</a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li><a href="/xtf/search?mode=rnd">record</a></li>
+              <li><a href="/xtf/search?mode=rnd;facet-entityType=person">person</a></li>
+              <li><a href="/xtf/search?mode=rnd;facet-entityType=family">family</a></li>
+              <li><a href="/xtf/search?mode=rnd;facet-entityType=corporateBody">orgainization</a></li>
+            </ul>
+          </div>
 <form methon="GET" action="/xtf/search" class="cpfSearch">
 <div class="top-facets" tmpl:condition="top-facets">top facets</div>
 <a tmpl:condition="search" href="/xtf/search">☒ </a>
@@ -140,6 +180,8 @@ ul.ui-autocomplete li {
     </div>
     <!-- /.container -->
     <script src="cpf2html/results.js"> </script>
+
+
 
   </body>
 </html>

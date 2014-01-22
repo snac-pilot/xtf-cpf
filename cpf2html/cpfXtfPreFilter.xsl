@@ -290,9 +290,16 @@
     <xsl:copy>
       <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
       <xsl:choose>
-        <xsl:when test="$hasDescription='true'">
-          <xsl:attribute name="xtf:wordBoost" select="'100'"/>
+        <xsl:when test="$hasDescription='true'" xmlns:math="java:java.lang.Math">
+          <xsl:attribute name="xtf:wordBoost" select="
+                                number(100) * 
+                                (math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 )"/>
+          <xsl:message>
+            <xsl:value-of select="count(../eac:description/eac:biogHist) + 1"/>,
+            <xsl:value-of select="math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 "/>
+          </xsl:message>
         </xsl:when>
+        <!-- xsl:attribute name="xtf:wordBoost" select="number(100) * ( math:log(count(../eac:description/eac:biogHist) + 1 ) )"/ -->
         <xsl:otherwise>
           <xsl:attribute name="xtf:wordBoost" select="'1.5'"/>
         </xsl:otherwise>
