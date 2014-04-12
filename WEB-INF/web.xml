@@ -90,5 +90,15 @@
             <servlet-name>org.cdlib.xtf.zing.SRU</servlet-name>
             <url-pattern>/servlet/org.cdlib.xtf.zing.SRU</url-pattern>
         </servlet-mapping>
+
+        <filter>
+          <filter-name>CorsFilter</filter-name>
+          <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        </filter>
+
+        <filter-mapping>
+          <filter-name>CorsFilter</filter-name>
+          <url-pattern>/*</url-pattern>
+        </filter-mapping>
     
     </web-app>
