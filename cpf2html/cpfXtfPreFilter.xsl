@@ -79,7 +79,13 @@
       <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
     </facet-entityType>
     <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" mode="main-facets"/>
-    <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart" mode="main-facets"/>
+    <xsl:for-each-group 
+      select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart"
+      group-by="."
+    >
+      <xsl:sort order="ascending" select="."/>
+      <xsl:apply-templates select="." mode="main-facets"/>
+    </xsl:for-each-group>
 
   <xsl:variable name="ArchivalResource"
     select="eac:cpfDescription/eac:relations/eac:resourceRelation[ends-with(@xlink:role,'#ArchivalResource')]"/>
