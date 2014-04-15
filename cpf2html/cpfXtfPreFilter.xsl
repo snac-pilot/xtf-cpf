@@ -8,6 +8,7 @@
   xmlns:iso="iso:/3166"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:FileUtils="java:org.cdlib.xtf.xslt.FileUtils"
   xmlns:CharUtils="java:org.cdlib.xtf.xslt.CharUtils"
   xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
   exclude-result-prefixes="#all" 
@@ -127,6 +128,20 @@
   <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" 
                 mode="main-facets">
     <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
+    <xsl:variable name="wikipage">
+      <xsl:value-of select="concat('../data-wikithumbs/',
+                                   substring-after(@xlink:href,'http://en.wikipedia.org/wiki/'),
+                                   '.xml'
+                                  )"/>
+    </xsl:variable>
+    <xsl:if test="FileUtils:exists($wikipage)" >
+      <xsl:variable name="data-wikithumb" select="document($wikipage)"/>
+      <xsl:message><xsl:copy-of select="$data-wikithumb"/></xsl:message>
+      <facet-wikithumb xtf:meta="yes" xtf:store="yes">
+        <xsl:apply-templates select="($data-wikithumb)/nail/@*"/>
+        <xsl:text>true</xsl:text>
+      </facet-wikithumb>
+    </xsl:if>
   </xsl:template>
 
 <!-- <name>
