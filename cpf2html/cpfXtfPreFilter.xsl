@@ -6,6 +6,7 @@
   xmlns:xtf="http://cdlib.org/xtf"
   xmlns:xs="http://www.w4.org/2001/XMLSchema" 
   xmlns:iso="iso:/3166"
+  xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:CharUtils="java:org.cdlib.xtf.xslt.CharUtils"
   xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
@@ -77,6 +78,7 @@
       <xsl:value-of select="eac:cpfDescription/eac:identity/eac:entityType"/>
     </facet-entityType>
     <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" mode="main-facets"/>
+    <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart" mode="main-facets"/>
 
   <xsl:variable name="ArchivalResource"
     select="eac:cpfDescription/eac:relations/eac:resourceRelation[ends-with(@xlink:role,'#ArchivalResource')]"/>
@@ -125,6 +127,17 @@
   <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" 
                 mode="main-facets">
     <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
+  </xsl:template>
+
+<!-- <name>
+  <namePart>University of California, San Diego</namePart>
+  <role> <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/rps">Repository</roleTerm> </role>
+</name> -->
+  <xsl:template
+    match="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart" mode="main-facets">
+    <facet-Location xtf:facet="yes" xtf:meta="yes">
+      <xsl:apply-templates/>
+    </facet-Location>
   </xsl:template>
 
   <xsl:template match="eac:control" mode="meta">
@@ -291,13 +304,9 @@
       <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
       <xsl:choose>
         <xsl:when test="$hasDescription='true'" xmlns:math="java:java.lang.Math">
-          <xsl:attribute name="xtf:wordBoost" select="
+          <!-- xsl:attribute name="xtf:wordBoost" select="
                                 number(100) * 
-                                (math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 )"/>
-          <xsl:message>
-            <xsl:value-of select="count(../eac:description/eac:biogHist) + 1"/>,
-            <xsl:value-of select="math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 "/>
-          </xsl:message>
+                                (math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 )"/ -->
         </xsl:when>
         <!-- xsl:attribute name="xtf:wordBoost" select="number(100) * ( math:log(count(../eac:description/eac:biogHist) + 1 ) )"/ -->
         <xsl:otherwise>
