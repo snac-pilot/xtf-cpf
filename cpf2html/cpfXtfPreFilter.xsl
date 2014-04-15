@@ -317,26 +317,7 @@
   <xsl:template match="eac:identity">
     <xsl:copy>
       <xsl:attribute name="xtf:sectionTypeAdd" select="name()"/>
-      <xsl:choose>
-        <xsl:when test="$hasDescription='true'" xmlns:math="java:java.lang.Math">
-          <!-- xsl:attribute name="xtf:wordBoost" select="
-                                number(100) * 
-                                (math:log(count(../eac:description/eac:biogHist) + 1 ) + 1 )"/ -->
-        </xsl:when>
-        <!-- xsl:attribute name="xtf:wordBoost" select="number(100) * ( math:log(count(../eac:description/eac:biogHist) + 1 ) )"/ -->
-        <xsl:otherwise>
-          <xsl:attribute name="xtf:wordBoost" select="'1.5'"/>
-        </xsl:otherwise>
-      </xsl:choose>
-      <!-- xsl:apply-templates select="@*|node()"/ -->
-      <!-- //preceding::item/preceding::item[not(.=preceding-sibling::item)]/text() -->
-      <!-- xsl:variable 
-        name="deDuplicateNameEntry" 
-        select="
-          if (eac:nameEntry/preceding::eac:nameEntry[not(.=preceding-sibling::eac:nameEntry)])
-          then (eac:nameEntry/preceding::eac:nameEntry[not(.=preceding-sibling::eac:nameEntry)])
-          else (eac:nameEntry)
-      "/ -->
+      <xsl:attribute name="xtf:wordBoost" select="'1.5'"/>
       <xsl:variable 
         name="deDuplicateNameEntry" 
         select="eac:nameEntry[not(eac:part=preceding::eac:nameEntry/eac:part)]
@@ -352,30 +333,6 @@
     </xsl:copy>
   </xsl:template>
 
-<!-- <cpfRelation xlink:arcrole="http://socialarchive.iath.virginia.edu/control/term#sameAs" xlink:href="http://en.wikipedia.org/wiki/Arthur_P._Bagby" xlink:role="http://socialarchive.iath.virginia.edu/control/term#Person" xlink:type="simple"/> -->
-  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-    <xsl:call-template name="getDbpediaThumbnail">
-      <xsl:with-param name="url" select="@xlink:href"/>
-    </xsl:call-template>
-  </xsl:template>
-
-  <!-- http://dbpedia.org/data/Charlie_Haden.rdf -->
-  <xsl:template name="getDbpediaThumbnail">
-    <xsl:param name="url"/>
-    <xsl:variable name="dbpediaUrl">
-      <xsl:text>http://dbpedia.org/data/</xsl:text>
-      <xsl:value-of select="substring-after($url,'http://en.wikipedia.org/wiki/')"/>
-      <xsl:text>.rdf</xsl:text>
-    </xsl:variable>
-    <xsl:variable name="thumbUrl" select="replace(
-                                 document($dbpediaUrl)/rdf:RDF/rdf:Description/dbpedia-owl:thumbnail/@rdf:resource
-                                 ,'200px-','150px-')"/>
-    <img src="{$thumbUrl}"/>
-  </xsl:template>
-
   <!-- identity transform -->
   <xsl:template match="@*|node()">
     <xsl:copy>
@@ -386,7 +343,7 @@
 </xsl:stylesheet>
 <!--
 
-Copyright (c) 2010, Regents of the University of California
+Copyright (c) 2014, Regents of the University of California
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
