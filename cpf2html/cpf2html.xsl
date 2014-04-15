@@ -14,18 +14,14 @@
   version="2.0">
 
 <!-- 
-uses the golden grid http://code.google.com/p/the-golden-grid/
-
 uses the Style-free XSLT Style Sheets style documented by Eric van
 der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
 
-xmlns:tmpl="xslt://template" attributes are used in the HTML template to indicate
-tranformed elements
+use html5 data-evv-* attributes to trigger xslt
 
 -->
 
   <xsl:include href="iso_3166.xsl"/>
-  <!-- xsl:import href="xmlverbatim-xsl/xmlverbatim.xsl"/ -->
   <xsl:include href="google-tracking.xsl"/>
 
   <xsl:strip-space elements="*"/>
@@ -38,10 +34,8 @@ tranformed elements
       exclude-result-prefixes="#all"/>
   
 
-  <!-- options -->
-  <xsl:param name="showXML"/>
   <xsl:param name="docId"/>
-
+  <!-- poor man's ARK resolver -->
   <xsl:variable name="pathId">
     <xsl:choose>
       <xsl:when test="starts-with($docId,'ark:/')">
@@ -54,27 +48,13 @@ tranformed elements
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:param name="mode"/>
-
-  <!-- in dynaXML-config put
-	<spreadsheets formkey="XXXX"/>
-	and the "report issue" link will turn on
-  -->
-  <xsl:variable name="spreadsheets.code" select="document('spreadsheets-code.xml')/spreadsheets/@formkey" />
-  <xsl:param name="spreadsheets.formkey" select="$spreadsheets.code"/>
-
-  <xsl:param name="http.URL"/>
+  <xsl:param name="http.URL"/><!-- XTF supplied param -->
   <xsl:variable name="rel.URL" select="replace($http.URL,'http://[^/]*/','/')"/>
 
-
+  <xsl:param name="mode"/>
+  <xsl:variable name="layoutDoc"/>
   <!-- keep gross layout in an external file -->
-  <xsl:variable name="layout" select="document(
-    if ($mode='dracula') 
-    then 'dracula-rexster.html' 
-    else if( $mode='RGraph')
-    then 'snac-jit.html' 
-    else 'html-template.html'
-  )"/>
+  <xsl:variable name="layout" select="document('html-template.html')"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
@@ -82,27 +62,7 @@ tranformed elements
 
   <!-- apply templates on the layout file; rather than walking the input XML -->
   <xsl:template match="/">
-    <xsl:apply-templates select="($layout)//*[local-name()='html']"/>
-  </xsl:template>
-
-  <xsl:template match="link[@rel='alternate'][@type='application/rdf+xml']">
-    <xsl:variable name="LOD_URI">
-      <xsl:text>http://socialarchive.iath.virginia.edu/xtf/view?docId=</xsl:text>
-      <xsl:value-of select="replace(escape-html-uri($docId),'\s','+')"/>
-      <xsl:text>#entity</xsl:text>
-    </xsl:variable>
-    <xsl:variable name="sparql_describe">
-      <xsl:text>http://socialarchive.iath.virginia.edu//sparql/eac?query=DESCRIBE+%3C</xsl:text>
-      <xsl:value-of select="encode-for-uri($LOD_URI)"/>
-      <xsl:text>%3E%0D%0A</xsl:text>
-    </xsl:variable>
-    <link rel="alternate" type="application/rdf+xml" href="{$sparql_describe}"/>
-  </xsl:template>
-
-  <xsl:template match='script[@tmpl:replace="excanvas"]'>
-<xsl:comment>[if IE]>
-&lt;script language="javascript" type="text/javascript" src="/xtf/cpf2html/Jit/Extras/excanvas.js">
-&lt;/script>&lt;![endif]</xsl:comment>
+    <xsl:apply-templates select="($layout)//*:html"/>
   </xsl:template>
 
   <xsl:template match='script[@tmpl:replace="identity-script"]'>
@@ -135,12 +95,7 @@ tranformed elements
   <xsl:template match='*[@tmpl:change-value="actions"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <div><a href="/xtf/view?mode=RGraph&amp;docId={escape-html-uri($docId)}">radial graph demo</a></div>
-      <xsl:if test="$spreadsheets.formkey!=''">
-        <div><a title="form in new window/tab" target="_blank" href="http://spreadsheets.google.com/viewform?formkey={$spreadsheets.formkey}&amp;entry_0={encode-for-uri($http.URL)}">note data issue</a></div>
-      </xsl:if>
       <a title="raw XML" href="/xtf/data/{escape-html-uri($pathId)}">view source EAC-CPF</a>
-      <div><a href="/xtf/search?mode=rnd">random record</a></div>
     </xsl:element>
   </xsl:template>
 
