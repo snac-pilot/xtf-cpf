@@ -54,7 +54,8 @@ use html5 data-evv-* attributes to trigger xslt
   <xsl:param name="mode"/>
   <xsl:variable name="layoutDoc"/>
   <!-- keep gross layout in an external file -->
-  <xsl:variable name="layout" select="document('html-template.html')"/>
+  <xsl:variable name="layout" select="if ($mode='old') then document('html-template.html') 
+                                      else document('identity.html')"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
 
   <!-- load input XML into page variable -->
