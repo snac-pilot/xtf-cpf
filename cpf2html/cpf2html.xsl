@@ -17,7 +17,7 @@
 uses the Style-free XSLT Style Sheets style documented by Eric van
 der Vlist July 26, 2000 http://www.xml.com/pub/a/2000/07/26/xslt/xsltstyle.html
 
-use html5 data-evv-* attributes to trigger xslt
+use html5 data-xsl* attributes to trigger xslt
 
 -->
 
@@ -82,7 +82,20 @@ use html5 data-evv-* attributes to trigger xslt
 
   <!-- templates that hook the html template to the EAC -->
 
-  <xsl:template match='*[@tmpl:change-value="html-title"]'>
+  <xsl:template match="*[@data-xsl='wikipedia_thumbnail']">
+    <xsl:variable name="wt" select="$page/eac:eac-cpf/meta/facet-wikithumb"/>
+    <xsl:if test="$wt">
+      <xsl:element name="{name()}">
+      <xsl:copy-of select="@*"/>
+        <a href="{($wt)//@rights}">
+          <img src="{($wt)//@thumb}" alt= "" />
+          <div>Image from Wikipedia</div>
+        </a>
+      </xsl:element>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:change-value="html-title"]|*[@data-xsl="title"]'>
     <xsl:element name="{name()}">
 
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
@@ -100,14 +113,13 @@ use html5 data-evv-* attributes to trigger xslt
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:change-value="nameEntry-part"]'>
+  <xsl:template match='*[@tmpl:change-value="nameEntry-part"]|*[@data-xsl="identity"]'>
     <xsl:element name="{name()}">
       <span title="authorized form of name" class="{($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
       </span>
       <xsl:text> </xsl:text>
-    <xsl:apply-templates select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:authorizedForm" mode="extra-names"/>
     </xsl:element>
   </xsl:template>
 
@@ -136,6 +148,14 @@ use html5 data-evv-* attributes to trigger xslt
   <xsl:template match="eac:authorizedForm" mode="extra-names">
     <xsl:text> </xsl:text>
     <span title="authority" class="authorizedForm"><xsl:apply-templates mode="eac"/></span>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='authoritySource']">
+    <xsl:variable name="ident" select="$page/eac:eac-cpf/eac:cpfDescription/eac:identity"/>
+    <div data-xsl='authoritySource'>
+      <label>Authority Source:</label>
+      <xsl:apply-templates select="$ident/eac:nameEntry[1]/eac:authorizedForm" mode="eac"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="eac:nameEntry" mode="extra-names">
@@ -191,6 +211,22 @@ use html5 data-evv-* attributes to trigger xslt
 
   <xsl:template match="eac:languageUsed" mode="viaf-extra">
     <span title="language used" class="languageUsed"><xsl:apply-templates mode="eac"/>&#160;</span>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='nationality']">
+    <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
+    <div data-xsl='nationality'>
+      <label>Nationality: </label>
+      <xsl:value-of select="$desc/eac:localDescription[@localType='http://viaf.org/viaf/terms#nationalityOfEntity']/eac:placeEntry/iso:lookup(lower-case(@countryCode))"/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='language']">
+    <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
+    <div data-xsl='language'>
+      <label>Language: </label>
+      <xsl:apply-templates select="$page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:languageUsed" mode="eac"/>
+    </div>
   </xsl:template>
 
   <!-- continuation template for conditional sections -->
@@ -318,7 +354,7 @@ use html5 data-evv-* attributes to trigger xslt
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template match='*[@tmpl:replace-markup="biogHist"]'>
+  <xsl:template match='*[@tmpl:replace-markup="biogHist"]|*[@data-xsl="bioghist"]'>
     <!-- contain div is to get :first-child to work -->
     <div><xsl:apply-templates select="$biogHist" mode="eac"/></div>
   </xsl:template>
@@ -421,6 +457,27 @@ use html5 data-evv-* attributes to trigger xslt
     <xsl:text> - </xsl:text>
     <xsl:apply-templates select="eac:toDate" mode="eac"/>
     </time>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='life']">
+    <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
+    <div class="life" data-xsl='life'>
+     <dt>Dates:</dt>
+     <dd>
+       <xsl:apply-templates select="$desc/eac:existDates/eac:dateRange/eac:fromDate" mode="eac"/>
+     </dd>
+     <dd>
+      <xsl:apply-templates select="$desc/eac:existDates/eac:dateRange/eac:toDate" mode="eac"/>
+     </dd>
+     <dt>Gender:</dt>
+     <dd>
+       <xsl:apply-templates select="$desc/eac:localDescription[@localType='http://viaf.org/viaf/terms#gender']"/>
+     </dd>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='maybeSame']">
+    <!-- div data-xsl='maybeSame'><label>Maybe same as</label></div -->
   </xsl:template>
 
   <xsl:template match="eac:fromDate | eac:toDate | eac:date" mode="eac">
