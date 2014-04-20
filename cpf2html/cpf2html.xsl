@@ -26,7 +26,7 @@ use html5 data-xsl* attributes to trigger xslt
 
   <xsl:strip-space elements="*"/>
 
-   <xsl:output encoding="UTF-8" media-type="text/html"
+   <xsl:output encoding="UTF-8" media-type="text/html" indent="yes"
       method="xhtml" doctype-system="about:legacy-compat"
       omit-xml-declaration="yes"
       exclude-result-prefixes="#all"/>
