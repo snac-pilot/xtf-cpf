@@ -106,10 +106,10 @@ use html5 data-xsl* attributes to trigger xslt
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:change-value="actions"]'>
+  <xsl:template match='*[@tmpl:change-value="actions"]|*[@data-xsl="viewSource"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <a title="raw XML" href="/xtf/data/{escape-html-uri($pathId)}">view source EAC-CPF</a>
+      <a title="raw XML" href="/xtf/data/{escape-html-uri($pathId)}">View source EAC-CPF</a>
     </xsl:element>
   </xsl:template>
 
@@ -123,7 +123,16 @@ use html5 data-xsl* attributes to trigger xslt
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:change-value="extra-names"]'>
+  <xsl:template match="*[@data-xsl='collection_locations']">
+    <div class="modal-body">
+      <xsl:apply-templates select="$page/eac:eac-cpf/meta/facet-Location" mode="eac"/>
+    </div>
+  </xsl:template>
+  <xsl:template match="facet-Location" mode="eac">
+    <div><xsl:apply-templates/></div>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:change-value="extra-names"]|*[@data-xsl="alternative_names"]'>
     <xsl:variable 
       name="extra-names" 
       select="($page)/eac:eac-cpf/meta/identity[position()>1][not(.=preceding::identity)]"
@@ -131,7 +140,7 @@ use html5 data-xsl* attributes to trigger xslt
     <xsl:if test="$extra-names">
       <xsl:element name="{name()}">
         <xsl:attribute name="title" select="'alternative forms of name'"/>
-        <xsl:attribute name="class" select="'extra-names'"/>
+        <xsl:attribute name="class" select="'extra-names modal-body'"/>
         <xsl:apply-templates select="$extra-names" mode="extra-names"/>
       </xsl:element>
     </xsl:if>
@@ -264,23 +273,45 @@ use html5 data-xsl* attributes to trigger xslt
     </xsl:choose>
   </xsl:template>
 
-  <xsl:variable name="occupations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations 
-        | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupation"/>
+  <xsl:variable name="occupations"> 
+    <xsl:for-each-group select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupations 
+        | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:occupation"
+      group-by="."
+    >
+      <xsl:sort order="ascending" select="."/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each-group>
+  </xsl:variable>
 
-  <xsl:template match='*[@tmpl:condition="occupations"]'>
+  <xsl:template match='*[@tmpl:replace-markup="localDescriptions"]|*[@data-xsl="subjects"]'>
+    <xsl:apply-templates select="$localDescriptions" mode="eac"/>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:condition="occupations"]'> 
     <xsl:if test="($occupations)">
       <xsl:call-template name="keep-going">
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  <xsl:template match='*[@tmpl:replace-markup="occupations"]'>
+
+  <xsl:template match='*[@tmpl:replace-markup="occupations"]|*[@data-xsl="occupations"]'>
     <xsl:apply-templates select="$occupations" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="localDescriptions" select="
-          ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescriptions
-        | ($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:localDescription[not(starts-with(@localType,'http://viaf.org/viaf/terms'))]"/>
+  <xsl:variable name="localDescriptions">
+    <xsl:for-each-group 
+      group-by="."
+      select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description
+                  //eac:localDescription
+                    [not(starts-with(@localType,'http://viaf.org/viaf/terms'))]
+                    [not(matches(.,'^[\d|\s|-]+$'))]
+      "
+    ><!-- /^\d+$/  -->
+      <xsl:sort/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each-group>
+  </xsl:variable>
 
   <xsl:template match='*[@tmpl:condition="localDescriptions"]'>
     <xsl:if test="($localDescriptions)">
@@ -293,9 +324,6 @@ use html5 data-xsl* attributes to trigger xslt
         <xsl:with-param name="node" select="."/>
       </xsl:call-template>
     </xsl:if>
-  </xsl:template>
-  <xsl:template match='*[@tmpl:replace-markup="localDescriptions"]'>
-    <xsl:apply-templates select="$localDescriptions" mode="eac"/>
   </xsl:template>
 
   <xsl:variable name="places" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:places
@@ -356,7 +384,7 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]|*[@data-xsl="bioghist"]'>
     <!-- contain div is to get :first-child to work -->
-    <div><xsl:apply-templates select="$biogHist" mode="eac"/></div>
+    <xsl:apply-templates select="$biogHist" mode="eac"/>
   </xsl:template>
 
   <xsl:variable name="generalContext" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:generalContext"/>
@@ -399,60 +427,154 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:variable name="relatedPeople" select="($relations)/eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family'][not(    contains(@xlink:arcrole,'#sameAs'))]"/>
   <xsl:variable name="relatedFamilies" select="($relations)/eac:cpfRelation[
             ends-with(lower-case(@xlink:role),'family')][not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
-  <xsl:variable name="relatedOrganizations" select="($relations)/eac:cpfRelation[
-            ends-with(lower-case(@xlink:role),'corporatebody') 
-            or @cpfRelationType='associative' ][not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
+  <xsl:variable
+    name="relatedOrganizations"
+    select="($relations)/
+      eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative' ]
+                     [not(ends-with(@xlink:arcrole,'#sameAs'))]
+  "/>
   <xsl:variable name="linkedData" select="($relations)/*[contains(@xlink:arcrole,'#sameAs')]"/>
+  <xsl:variable name="maybeSame" select="($relations)/*[contains(@xlink:arcrole,'#mayBeSameAs')]"/>
   <!--
    data-xsl="relatedCollections"
    data-xsl="relatedWorks"
    data-xsl="relatedPeople"
    data-xsl="relatedFamilies"
    data-xsl="relatedOrganizations"
+   data-xsl="linkedData"
   -->
 
+  <xsl:template match="*[@data-xsl='linkedData']">
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'linkedData'"/>
+      <xsl:with-param name="head">
+        <xsl:text>Linked Data</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body">
+        <xsl:apply-templates select="$linkedData" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+      <xsl:with-param name="count" select="count($linkedData)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='relatedWorks']">
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'relatedWorks'"/>
+      <xsl:with-param name="head">
+        <xsl:text>Resources</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body">
+        <xsl:apply-templates select="$relatedWorks" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+          <xsl:with-param name="link-mode" select="'worldcat-title'"/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+      <xsl:with-param name="count" select="count($relatedWorks)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='relatedPeople']">
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'relatedPeople'"/>
+      <xsl:with-param name="head">
+        <xsl:text>People</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body">
+        <xsl:apply-templates select="$relatedPeople" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+      <xsl:with-param name="count" select="count($relatedPeople)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='relatedFamilies']">
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'relatedFamilies'"/>
+      <xsl:with-param name="head">
+        <xsl:text>Families</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body">
+        <xsl:apply-templates select="$relatedFamilies" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+      <xsl:with-param name="count" select="count($relatedFamilies)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl='relatedOrganizations']">
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'relatedOrganizations'"/>
+      <xsl:with-param name="head">
+        <xsl:text>Organizations</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body">
+        <xsl:apply-templates select="$relatedOrganizations" mode="eac">
+          <xsl:sort/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+      <xsl:with-param name="count" select="count($relatedOrganizations)"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template match="*[@data-xsl='relatedCollections']">
-linked <xsl:value-of select="count($linkedData)"/>
-orgs <xsl:value-of select="count($relatedOrganizations)"/>
-families<xsl:value-of select="count($relatedFamilies)"/>
-people<xsl:value-of select="count($relatedPeople)"/>
-works <xsl:value-of select="count($relatedWorks)"/>
-        <div class="panel panel-default" data-xsl='relatedCollections'>
-          <div class="panel-heading">
-            <h4>
-              <a data-toggle="collapse" data-parent="#relations" href="#relatedCollections">
-              Archival Collections
-                <span class="badge pull-right"><xsl:value-of select="count($archivalRecords)"/></span>
-              </a>
-            </h4>
+    <xsl:variable name="body">
+      <div class="list">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#creatorOf" data-toggle="tab">creator of</a>
+          </li>
+          <li>
+            <a href="#referencedIn" data-toggle="tab">referenced in</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="creatorOf">
+          <div class="tab-pane active list">
+            <xsl:apply-templates select="($archivalRecords-creatorOf)" mode="eac">
+              <xsl:sort select="eac:relationEntry"/>
+            </xsl:apply-templates>
           </div>
-          <div id="relatedCollections" class="panel-collapse collapse">
-            <div class="panel-body">
-              <div class="list">
-                <ul class="nav nav-tabs">
-                  <li class="active">
-                    <a href="#creatorOf" data-toggle="tab">creator of</a>
-                  </li>
-                  <li>
-                    <a href="#referencedIn" data-toggle="tab">referenced in</a>
-                  </li>
-                </ul>
-                <div class="tab-content" id="creatorOf">
-                  <div class="tab-pane active list">
-        <xsl:apply-templates select="($archivalRecords-creatorOf)" mode="eac">
-          <xsl:sort select="eac:relationEntry"/>
-        </xsl:apply-templates>
-                  </div>
-                  <div class="tab-pane list" id="referencedIn">
-        <xsl:apply-templates select="($archivalRecords-referencedIn)" mode="eac">
-          <xsl:sort select="eac:relationEntry"/>
-        </xsl:apply-templates>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="tab-pane list" id="referencedIn">
+            <xsl:apply-templates select="($archivalRecords-referencedIn)" mode="eac">
+              <xsl:sort select="eac:relationEntry"/>
+            </xsl:apply-templates>
           </div>
         </div>
+      </div>
+    </xsl:variable>
+    <xsl:call-template name="panel">
+      <xsl:with-param name="id" select="'relatedCollections'"/>
+      <xsl:with-param name="head">
+        <xsl:text>Archival Collections</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="body" select="$body"/>
+      <xsl:with-param name="count" select="count($archivalRecords)"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name='panel'>
+    <xsl:param name="id"/>
+    <xsl:param name="head"/>
+    <xsl:param name="body"/>
+    <xsl:param name="count"/>
+    <div class="panel panel-default" data-xsl="{$id}">
+      <div class="panel-heading">
+        <h4>
+          <a data-toggle="collapse" data-parent="#relations" href="#{$id}">
+            <xsl:copy-of select="$head"/>
+            <span class="badge pull-right"><xsl:value-of select="$count"/></span>
+          </a>
+        </h4>
+      </div>
+      <div id="{$id}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <xsl:copy-of select="$body"/>
+        </div>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:condition="relations"]'>
@@ -536,8 +658,8 @@ works <xsl:value-of select="count($relatedWorks)"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="*[@data-xsl='maybeSame']">
-    <!-- div data-xsl='maybeSame'><label>Maybe same as</label></div -->
+  <xsl:template match="*[@data-xsl='maybeSame']"><!-- mayBeSame -->
+    <xsl:apply-templates select="($maybeSame)[1]" mode="eac"/>
   </xsl:template>
 
   <xsl:template match="eac:fromDate | eac:toDate | eac:date" mode="eac">
@@ -746,6 +868,19 @@ works <xsl:value-of select="count($relatedWorks)"/>
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
+    <div data-xsl='maybeSame'><label>Maybe same as</label>
+      <a href="/xtf/view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
+        <xsl:choose>
+          <xsl:when test="text()">
+            <xsl:value-of select="."/>
+          </xsl:when>
+          <xsl:otherwise>NEED FINAL XML</xsl:otherwise>
+        </xsl:choose>
+      </a>
+    </div>
+  </xsl:template>
+
   <xsl:template match="eac:cpfRelation | eac:resourceRelation" mode="eac">
     <xsl:param name="link-mode" select="'snac'"/>
     <div class="{if (ends-with(lower-case(@xlink:role),'person')) then ('person') 
@@ -860,7 +995,7 @@ works <xsl:value-of select="count($relatedWorks)"/>
 </xsl:stylesheet>
 <!--
 
-Copyright (c) 2010, Regents of the University of California
+Copyright (c) 2014, Regents of the University of California
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
