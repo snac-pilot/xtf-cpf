@@ -26,10 +26,8 @@ use html5 data-xsl* attributes to trigger xslt
 
   <xsl:strip-space elements="*"/>
 
-   <xsl:output method="xhtml" indent="yes" 
-      encoding="UTF-8" media-type="text/html; charset=UTF-8" 
-      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+   <xsl:output encoding="UTF-8" media-type="text/html"
+      method="xhtml" doctype-system="about:legacy-compat"
       omit-xml-declaration="yes"
       exclude-result-prefixes="#all"/>
   
@@ -72,12 +70,6 @@ use html5 data-xsl* attributes to trigger xslt
 <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
 <xsl:text>";</xsl:text>
 </script>
-  </xsl:template>
-
-  <xsl:template match="*:footer">
-<div class="clear">&#160;</div>
-    <xsl:copy-of select="$footer"/>
-    <xsl:copy-of select="document('VERSION')"/>
   </xsl:template>
 
   <!-- templates that hook the html template to the EAC -->
@@ -981,7 +973,7 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
 
   <!-- identity transform copies HTML from the layout file -->
-  <xsl:template match="*">
+  <xsl:template match="*" mode="xxlx">
     <xsl:element name="{name(.)}">
       <xsl:for-each select="@*">
         <xsl:attribute name="{name(.)}">
@@ -991,6 +983,13 @@ use html5 data-xsl* attributes to trigger xslt
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+ 
 
 </xsl:stylesheet>
 <!--
