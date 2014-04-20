@@ -372,8 +372,6 @@ use html5 data-xsl* attributes to trigger xslt
     <xsl:apply-templates select="$generalContext" mode="eac"/>
   </xsl:template>
 
-  <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
-
   <xsl:template match="*[@tmpl:replace-markup='sameAs']" name="sameAs">
     <xsl:variable name="sameAs" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations/*[contains(@xlink:arcrole,'#sameAs')]" />
     <xsl:if test="$sameAs">
@@ -392,6 +390,71 @@ use html5 data-xsl* attributes to trigger xslt
     </div>
   </xsl:template>
 
+  <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
+  <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[contains(lower-case(@xlink:role),'archival')]" />
+  <xsl:variable name="archivalRecords-creatorOf" select="($archivalRecords)[contains(@xlink:arcrole, 'creatorOf')]"/>
+  <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
+
+  <xsl:variable name="relatedWorks" select="($relations)/eac:resourceRelation[not(contains(lower-case(@xlink:role),'archival'))]"/>
+  <xsl:variable name="relatedPeople" select="($relations)/eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family'][not(    contains(@xlink:arcrole,'#sameAs'))]"/>
+  <xsl:variable name="relatedFamilies" select="($relations)/eac:cpfRelation[
+            ends-with(lower-case(@xlink:role),'family')][not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
+  <xsl:variable name="relatedOrganizations" select="($relations)/eac:cpfRelation[
+            ends-with(lower-case(@xlink:role),'corporatebody') 
+            or @cpfRelationType='associative' ][not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
+  <xsl:variable name="linkedData" select="($relations)/*[contains(@xlink:arcrole,'#sameAs')]"/>
+  <!--
+   data-xsl="relatedCollections"
+   data-xsl="relatedWorks"
+   data-xsl="relatedPeople"
+   data-xsl="relatedFamilies"
+   data-xsl="relatedOrganizations"
+  -->
+
+  <xsl:template match="*[@data-xsl='relatedCollections']">
+linked <xsl:value-of select="count($linkedData)"/>
+orgs <xsl:value-of select="count($relatedOrganizations)"/>
+families<xsl:value-of select="count($relatedFamilies)"/>
+people<xsl:value-of select="count($relatedPeople)"/>
+works <xsl:value-of select="count($relatedWorks)"/>
+        <div class="panel panel-default" data-xsl='relatedCollections'>
+          <div class="panel-heading">
+            <h4>
+              <a data-toggle="collapse" data-parent="#relations" href="#relatedCollections">
+              Archival Collections
+                <span class="badge pull-right"><xsl:value-of select="count($archivalRecords)"/></span>
+              </a>
+            </h4>
+          </div>
+          <div id="relatedCollections" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="list">
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a href="#creatorOf" data-toggle="tab">creator of</a>
+                  </li>
+                  <li>
+                    <a href="#referencedIn" data-toggle="tab">referenced in</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="creatorOf">
+                  <div class="tab-pane active list">
+        <xsl:apply-templates select="($archivalRecords-creatorOf)" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+        </xsl:apply-templates>
+                  </div>
+                  <div class="tab-pane list" id="referencedIn">
+        <xsl:apply-templates select="($archivalRecords-referencedIn)" mode="eac">
+          <xsl:sort select="eac:relationEntry"/>
+        </xsl:apply-templates>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </xsl:template>
+
   <xsl:template match='*[@tmpl:condition="relations"]'>
     <xsl:if test="($relations)">
       <xsl:call-template name="keep-going">
@@ -401,9 +464,6 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
   <xsl:template match='*[@tmpl:replace-markup="relations"]'>
    <div>
-    <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[contains(lower-case(@xlink:role),'archival')]" />
-    <xsl:variable name="archivalRecords-creatorOf" select="($archivalRecords)[contains(@xlink:arcrole, 'creatorOf')]"/>
-    <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
     <xsl:if test="$archivalRecords">
         <h3><span><a href="#">Archival Records (<xsl:value-of select="count($archivalRecords)"/>)</a></span></h3>
 <div>
@@ -628,7 +688,7 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
 
   <xsl:template match="eac:citation" mode="eac">
-    <small><xsl:apply-templates mode="eac"/></small>
+    <p class="source"><xsl:apply-templates mode="eac"/></p>
   </xsl:template>
 
   <xsl:template match="eac:chronItem" mode="eac">
