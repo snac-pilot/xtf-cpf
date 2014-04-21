@@ -523,8 +523,8 @@ use html5 data-xsl* attributes to trigger xslt
             <a href="#referencedIn" data-toggle="tab">referenced in</a>
           </li>
         </ul>
-        <div class="tab-content" id="creatorOf">
-          <div class="tab-pane active list">
+        <div class="tab-content">
+          <div class="tab-pane active list" id="creatorOf">
             <xsl:apply-templates select="($archivalRecords-creatorOf)" mode="eac">
               <xsl:sort select="eac:relationEntry"/>
             </xsl:apply-templates>
@@ -899,9 +899,8 @@ use html5 data-xsl* attributes to trigger xslt
           </xsl:if -->
         </xsl:when>
         <xsl:when test="@xlink:href">
-          <a href="/xtf/view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
-            <xsl:value-of select="eac:relationEntry"/>
-            <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
+          <a href="{@xlink:href}">
+            <xsl:value-of select="substring-after(@xlink:href,'http://')"/>
           </a>
         </xsl:when>
         <xsl:when test="$link-mode = 'worldcat-title'">
@@ -910,8 +909,8 @@ use html5 data-xsl* attributes to trigger xslt
             encode-for-uri(($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part)}"
           >
             <xsl:value-of select="eac:relationEntry"/>
-            <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           </a>
+              <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
         </xsl:when>
         <xsl:otherwise>
           <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
@@ -955,7 +954,7 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
  
   <xsl:template match="@xlink:arcrole" mode="arcrole">
-            <span class="arcrole"><xsl:value-of select="."/></span>
+            <span class="arcrole"><xsl:value-of select="substring-after(.,'#')"/></span>
   </xsl:template>
 
   <xsl:template match="ead:repository" mode="eac">
