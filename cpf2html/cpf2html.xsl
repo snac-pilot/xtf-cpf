@@ -416,15 +416,34 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
 
   <xsl:variable name="relatedWorks" select="($relations)/eac:resourceRelation[not(contains(lower-case(@xlink:role),'archival'))]"/>
-  <xsl:variable name="relatedPeople" select="($relations)/eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family'][not(    contains(@xlink:arcrole,'#sameAs'))]"/>
-  <xsl:variable name="relatedFamilies" select="($relations)/eac:cpfRelation[
-            ends-with(lower-case(@xlink:role),'family')][not(ends-with(@xlink:arcrole,'#sameAs'))]"/>
-  <xsl:variable
-    name="relatedOrganizations"
+  <xsl:variable name="relatedPeople">
+ <!-- select="($relations)/eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family'][not(    contains(@xlink:arcrole,'#sameAs'))]"> -->
+    <xsl:for-each-group group-by="@xlink:href"
+   select="($relations)/eac:cpfRelation[ends-with(lower-case(@xlink:role),'person') or @cpfRelationType='family'][not(    contains(@xlink:arcrole,'#sameAs'))]"> 
+      <xsl:sort/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each-group>
+  </xsl:variable>
+
+  <xsl:variable name="relatedFamilies">
+    <xsl:for-each-group group-by="@xlink:href"
+select="($relations)/eac:cpfRelation[
+            ends-with(lower-case(@xlink:role),'family')][not(ends-with(@xlink:arcrole,'#sameAs'))]">
+      <xsl:sort/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each-group>
+  </xsl:variable>
+
+  <xsl:variable name="relatedOrganizations">
+    <xsl:for-each-group group-by="@xlink:href"
     select="($relations)/
       eac:cpfRelation[ends-with(lower-case(@xlink:role),'corporatebody') or @cpfRelationType='associative' ]
                      [not(ends-with(@xlink:arcrole,'#sameAs'))]
-  "/>
+  ">
+      <xsl:sort/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each-group>
+  </xsl:variable>
   <xsl:variable name="linkedData" select="($relations)/*[contains(@xlink:arcrole,'#sameAs')]"/>
   <xsl:variable name="maybeSame" select="($relations)/*[contains(@xlink:arcrole,'#mayBeSameAs')]"/>
   <!--
@@ -478,7 +497,7 @@ use html5 data-xsl* attributes to trigger xslt
           <xsl:sort/>
         </xsl:apply-templates>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($relatedPeople)"/>
+      <xsl:with-param name="count" select="count($relatedPeople/*)"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -493,7 +512,7 @@ use html5 data-xsl* attributes to trigger xslt
           <xsl:sort/>
         </xsl:apply-templates>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($relatedFamilies)"/>
+      <xsl:with-param name="count" select="count($relatedFamilies/*)"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -508,7 +527,7 @@ use html5 data-xsl* attributes to trigger xslt
           <xsl:sort/>
         </xsl:apply-templates>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($relatedOrganizations)"/>
+      <xsl:with-param name="count" select="count($relatedOrganizations/*)"/>
     </xsl:call-template>
   </xsl:template>
 
