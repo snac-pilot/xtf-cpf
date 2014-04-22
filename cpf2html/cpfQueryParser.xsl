@@ -51,7 +51,7 @@
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, facet-wikithumb, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
