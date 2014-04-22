@@ -102,6 +102,12 @@
       <xsl:apply-templates select="fromDate[1]" mode="dc-json-element"/> 
       <xsl:apply-templates select="toDate[1]" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-recordLevel" mode="dc-json-element"/> 
+      <xsl:apply-templates select="count-ArchivalResource" mode="dc-json-element"/> 
+      <xsl:apply-templates select="count-BibliographicalResource" mode="dc-json-element"/> 
+      <xsl:apply-templates select="count-RelatedRecords" mode="dc-json-element"/> 
+      <xsl:apply-templates select="count-LinkedData" mode="dc-json-element"/> 
+      <xsl:apply-templates select="facet-Wikipedia" mode="dc-json-element"/> 
+      <xsl:apply-templates select="facet-wikithumb" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-entityType[1]" mode="dc-json-element"> 
         <xsl:with-param name="terminal" select="1"/>
       </xsl:apply-templates>
@@ -171,6 +177,23 @@
     <xsl:call-template name="escape-string">
       <xsl:with-param name="s" select="."/>
     </xsl:call-template>
+    <xsl:if test="number($terminal) != 1">
+      <xsl:text>,</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="facet-wikithumb" mode="dc-json-element">
+    <xsl:param name="terminal"/>
+        <xsl:text>
+"</xsl:text>
+        <xsl:value-of select="name()"/>
+        <xsl:text>":{</xsl:text>
+        <xsl:apply-templates select="@id" mode="dc-json-element"/>
+        <xsl:apply-templates select="@thumb" mode="dc-json-element"/>
+        <xsl:apply-templates select="@rights" mode="dc-json-element">
+          <xsl:with-param name="terminal" select="1"/>
+        </xsl:apply-templates>
+        <xsl:text>}</xsl:text>
     <xsl:if test="number($terminal) != 1">
       <xsl:text>,</xsl:text>
     </xsl:if>
