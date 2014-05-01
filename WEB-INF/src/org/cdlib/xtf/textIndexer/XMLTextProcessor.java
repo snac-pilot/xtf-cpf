@@ -35,8 +35,11 @@ package org.cdlib.xtf.textIndexer;
  * was made possible by a grant from the Andrew W. Mellon Foundation,
  * as part of the Melvyl Recommender Project.
  */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1643,12 +1646,14 @@ public class XMLTextProcessor extends DefaultHandler
       if (attrUri.equals(xtfUri))
         continue;
 
-      // Found one. Add it to the buffer.
+      // Found one. Add it to the buffer, being certain to map special chars
+      // (e.g. attribute values with ampersands in the string).
+      //
       if (buf.length() > 0)
         buf.append(' ');
       String name = atts.getLocalName(i);
       String value = atts.getValue(i);
-      buf.append(name + "=\"" + value + "\"");
+      buf.append(name + "=\"" + mapXMLChars(value) + "\"");
     } // for i
 
     // All done.
@@ -2050,12 +2055,7 @@ public class XMLTextProcessor extends DefaultHandler
       // Map special XML characters to entities, so we can tell the difference
       // between these and embedded XML in the meta-data.
       //
-      if (tmp.indexOf('&') >= 0)
-        tmp = tmp.replaceAll("&", "&amp;");
-      if (tmp.indexOf('<') >= 0)
-        tmp = tmp.replaceAll("<", "&lt;");
-      if (tmp.indexOf('>') >= 0)
-        tmp = tmp.replaceAll(">", "&gt;");
+      tmp = mapXMLChars(tmp);
       metaBuf.append(tmp);
       return;
     }
@@ -2282,6 +2282,20 @@ public class XMLTextProcessor extends DefaultHandler
     // Trim all the trailing spaces off the accumulated text buffer.
     trimAccumText(false);
   } // public characters()
+  
+  /**
+   * Map special characters in XML to their entity equivalents.
+   */
+  private String mapXMLChars(String str)
+  {
+    if (str.indexOf('&') >= 0)
+      str = str.replaceAll("&", "&amp;");
+    if (str.indexOf('<') >= 0)
+      str = str.replaceAll("<", "&lt;");
+    if (str.indexOf('>') >= 0)
+      str = str.replaceAll(">", "&gt;");
+    return str;
+  }
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -3650,11 +3664,43 @@ public class XMLTextProcessor extends DefaultHandler
   {
     try 
     {
-      File tokFieldsFile = new File(
-          Path.normalizePath(indexPath + "tokenizedFields.txt"));
-      FileWriter writer = new FileWriter(tokFieldsFile, true /*append*/);
-      writer.append(field + "\n");
-      writer.close();
+      // If we wrote directly to the file, it could mess with indexes that have
+      // hard-links to the existing file. Instead, write a new one and then rename.
+      //
+      String path = Path.normalizePath(indexPath) + "tokenizedFields.txt";
+      File oldFile = new File(path);
+      File tmpFile = new File(path + ".tmp");
+      BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile));
+      try
+      {
+        // If there is an existing file...
+        if (oldFile.canRead())
+        {
+          BufferedReader reader = new BufferedReader(new FileReader(oldFile));
+          try 
+          {
+            // ...copy the existing fields
+            while (true) {
+              String line = reader.readLine();
+              if (line == null)
+                break;
+              writer.write(line + "\n");
+            }
+          }
+          finally {
+            reader.close();
+          }
+        }
+        
+        // Write the new field
+        writer.write(field + "\n");
+      }
+      finally {
+        writer.close();
+      }
+      
+      // Now replace the old file with the new one.
+      tmpFile.renameTo(oldFile);
     }
 
     // If something went wrong...
