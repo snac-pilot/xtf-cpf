@@ -31,6 +31,7 @@ use html5 data-xsl* attributes to trigger xslt
       omit-xml-declaration="yes"
       exclude-result-prefixes="#all"/>
   
+  <xsl:param name="asset-base.value"/>
 
   <xsl:param name="docId"/>
   <!-- poor man's ARK resolver -->
@@ -484,6 +485,22 @@ select="($relations)/eac:cpfRelation[
       </xsl:with-param>
       <xsl:with-param name="count" select="count($relatedWorks)"/>
     </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="*[@data-xsl-asset]">
+    <xsl:element name="{name(.)}">
+      <xsl:for-each select="@*">
+        <xsl:attribute name="{name(.)}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates mode="asset-base"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="@href" mode="asset-base">
+    <xsl:value-of select="$asset-base.value"/>
+    <xsl:value-of select="../@data-xsl-asset"/>
   </xsl:template>
 
   <xsl:template match="*[@data-xsl='relatedPeople']">
@@ -1003,6 +1020,12 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+ 
+  <xsl:template match="@*|node()" mode="asset-base">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
