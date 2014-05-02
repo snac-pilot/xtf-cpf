@@ -24,10 +24,15 @@
     select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' 
             else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
             else if ($autocomplete) then 'cpf2html/autocomplete.xsl'
+            else if (count(parameters/param) = 0) then 'cpf2html/featured.xsl'
             else ('cpf2html/cpfResultFormatter.xsl')"/>
+
   <xsl:template match="/">
-  <xsl:variable name="hasFacets" select="count(parameters/param[matches(@name,'f[0-9]+-')])"/>
+    <xsl:variable name="hasFacets" select="count(parameters/param[matches(@name,'f[0-9]+-')])"/>
     <xsl:choose>
+      <xsl:when test="count(parameters/param) = 0">
+        <xsl:apply-templates select="." mode="featured"/>
+      </xsl:when>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
       </xsl:when>
@@ -51,7 +56,7 @@
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, facet-wikithumb, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -97,7 +102,9 @@
                 </and>
               </xsl:when>
               <xsl:otherwise>
-                <and><allDocs/></and>
+                <and field="facet-wikithumb">
+                  <term>true</term>
+                </and>
               </xsl:otherwise>
             </xsl:choose>
           </and>
@@ -240,6 +247,21 @@
               <and><allDocs/></and>
             </xsl:otherwise>
           </xsl:choose>
+    </query>
+  </xsl:template>
+  
+  <xsl:template match="/" mode="featured">
+    <query indexPath="index" termLimit="1000" workLimit="20000000" 
+      returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location"
+      style="{$stylesheet}" maxDocs="20" startDoc="{$startDoc}" >
+      <and>
+        <and field="facet-wikithumb">
+          <term>true</term>
+        </and>
+        <and field="facet-recordLevel">
+          <term>hasBiogHist</term>
+        </and>
+      </and>
     </query>
   </xsl:template>
   
