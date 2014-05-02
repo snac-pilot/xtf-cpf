@@ -251,7 +251,7 @@
   
   <xsl:template match="/" mode="featured">
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
-      returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location"
+      returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
       style="{$stylesheet}" maxDocs="20" startDoc="{$startDoc}" >
       <and>
         <and field="facet-wikithumb">
@@ -260,6 +260,9 @@
         <and field="facet-recordLevel">
           <term>hasBiogHist</term>
         </and>
+        <not field="count-ArchivalResource">
+          <term>1</term>
+        </not>
       </and>
     </query>
   </xsl:template>
