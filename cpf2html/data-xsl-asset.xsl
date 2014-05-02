@@ -19,6 +19,12 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="*[@data-xsl-asset]" mode="html-template">
+    <xsl:element name="{name(.)}">
+      <xsl:apply-templates select="@*" mode="asset-base"/>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="@href|@src" mode="asset-base">
     <xsl:attribute name="{name(.)}">
       <xsl:value-of select="$asset-base.value"/>

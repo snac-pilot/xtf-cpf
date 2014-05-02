@@ -21,14 +21,13 @@
    <!-- Output                                                                 -->
    <!-- ====================================================================== -->
 
-   <xsl:output method="xhtml" indent="no" 
-      encoding="UTF-8" media-type="text/html; charset=UTF-8" 
-      doctype-public="" 
-      doctype-system=""
+   <xsl:output encoding="UTF-8" media-type="text/html" indent="yes"
+      method="xhtml" doctype-system="about:legacy-compat"
       omit-xml-declaration="yes"
       exclude-result-prefixes="#all"/>
 
-   
+   <xsl:param name="asset-base.value"/>
+   <xsl:include href="data-xsl-asset.xsl"/> 
    
    <!-- ====================================================================== -->
    <!-- Local Parameters                                                       -->
@@ -51,7 +50,7 @@
    <!-- ====================================================================== -->
 
   <!-- keep gross layout in an external file -->
-  <xsl:variable name="layout" select="document('results-template.html')"/>
+  <xsl:variable name="layout" select="document('search.html')"/>
   <xsl:variable name="footer" select="document('footer.html')"/>
   <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
 
