@@ -445,12 +445,8 @@
     <xsl:param name="path" select="@path"/>
     <div class="result">
       <div class="{meta/facet-entityType}">
-      <xsl:variable name="href">
-          <xsl:text>/xtf/view?docId=</xsl:text>
-          <xsl:value-of select="replace(replace(editURL:protectValue($path),'^default:',''),'\s','+')"/>
-      </xsl:variable>
       <a>
-        <xsl:attribute name="href" select="replace($href,'^http://[^/]*/(.*)','/$1')"/>
+        <xsl:attribute name="href" select="meta/recordIds[1]"/>
         <xsl:apply-templates select="meta/identity[1]"/>
       </a> 
       </div>

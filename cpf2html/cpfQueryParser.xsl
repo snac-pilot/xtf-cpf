@@ -49,14 +49,16 @@
         <xsl:variable name="sortDocsBy" select="if ($keyword='') then ('sort-identity') else (false)"/>
         <xsl:variable name="maxDocs" select="if ($rmode='slickgrid' and ($keyword!='' or $hasFacets)) then 25 else 0"/>
         <xsl:variable name="includeEmptyGroups" select="'yes'"/>
+<!--
+-->
         <query 
           indexPath="index" 
+	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, facet-wikithumb, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource, recordIds"
           termLimit="1000" 
           workLimit="2000000" 
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
-	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, facet-wikithumb, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource"
           maxDocs="{$maxDocs}">
           <xsl:if test="$normalizeScores">
             <xsl:attribute name="normalizeScores" select="$normalizeScores"/>
@@ -102,9 +104,6 @@
                 </and>
               </xsl:when>
               <xsl:otherwise>
-                <and field="facet-wikithumb">
-                  <term>true</term>
-                </and>
               </xsl:otherwise>
             </xsl:choose>
           </and>
