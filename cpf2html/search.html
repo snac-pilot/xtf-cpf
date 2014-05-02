@@ -1,0 +1,316 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en">
+   
+   <head>
+      
+      <meta charset="utf-8"></meta>
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+      
+      <meta name="description" content=""></meta>
+      
+      <meta name="author" content=""></meta>
+      
+      
+      <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png"></link>
+      
+      <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png"></link>
+      
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png"></link>
+      
+      <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png"></link>
+      
+      <link rel="shortcut icon" href="favicon.png"></link>
+      
+      <link rel="icon" type="image/ico" href="favicon.ico"></link>
+      
+      
+      <title>snac search results</title>
+      
+      <link data-xsl-asset="stylesheets/index.css" href="../stylesheets/index.css" media="all" rel="stylesheet" type="text/css"></link>
+      
+      
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      
+      <!--[if lt IE 9]>
+      <script src="../javascripts/ie/html5shiv.js" type="text/javascript"></script>
+<script src="../javascripts/ie/respond.min.js" type="text/javascript"></script>
+    <![endif]-->
+      
+   </head>
+   
+   
+   <body class="search search_index">
+      
+      <!-- Fixed navbar -->
+      
+      <div id="snacnav" role="navigation">
+         
+         <div>
+            
+            <div class="navbar-header">
+               
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  
+                  <span class="sr-only">Toggle navigation</span>
+                  
+                  <span class="icon-bar"></span>
+                  
+                  <span class="icon-bar"></span>
+                  
+                  <span class="icon-bar"></span>
+                  
+               </button>
+               
+               <a class="navbar-brand" id="snacnav-logo-left" href="#" style="padding: 0px;">
+                  <img data-xsl-asset="images/snac_logo_small.svg" src="../images/snac_logo_small.svg"></img>
+               </a>
+               
+            </div>
+            
+            <div class="navbar-collapse collapse">
+               
+               <ul class="nav navbar-nav">
+                  
+                  <li>
+                     <a href="#">about</a>
+                  </li>
+                  
+                  <li class="active">
+                     <a href="/xtf/search">prototype</a>
+                  </li>
+                  
+                  <li>
+                     <a href="#">news</a>
+                  </li>
+                  
+                  <li>
+                     <a href="#">resources</a>
+                  </li>
+                  
+               </ul>
+               
+               <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs">
+                  
+                  <li>
+                     
+                     <a class="navbar-brand" id="snacnav-logo-right" href="#">
+                        <img data-xsl-asset="images/snac_spelled_out_300.svg" src="../images/snac_spelled_out_300.svg"></img>
+                     </a>
+                     
+                  </li>
+                  
+               </ul>
+               
+            </div>
+            <!--/.nav-collapse -->
+            
+         </div>
+         
+      </div>
+      
+      
+      <div class="main_content">
+         
+         <div id="search_by">
+            
+            <h3>Search by:</h3>
+            
+            <ul>
+               
+               <li class="active">
+                  <a href="#home" data-toggle="tab">All</a>
+               </li>
+               
+               <li>
+                  <a href="#profile" data-toggle="tab">
+                     <span class="icon-ind x2"></span>Person
+                  </a>
+               </li>
+               
+               <li>
+                  <a href="#messages" data-toggle="tab">
+                     <span class="icon-fam x2"></span>Family
+                  </a>
+               </li>
+               
+               <li>
+                  <a href="#settings" data-toggle="tab">
+                     <span class="icon-org x2"></span>Organization
+                  </a>
+               </li>
+               
+               <!-- li class="count">Showing 1,336 results for "Washington, George, 1732-1799."</li -->
+               
+            </ul>
+            
+            <form method="GET" action="/xtf/search">
+               
+               <input id="userInput" type="text" style="width: 100%;" title="enter       a name or keywords" placeholder="enter a name or keywords" name="text" value="Washington, George, 1732-1799." class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></input>
+               
+               <input class="button" title="full text" type="submit" value="search"></input>
+               
+               <label class="advancedSearch" title="Advanced Search" style="display: none;">
+                  
+                  <i>advanced</i>… limit to
+                  
+                  <a title="EAC tag library" class="noarrow" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">section</a>
+                  
+                  <select name="sectionType">
+                     
+                     <option value="" selected="selected">eac-cpf</option>
+                     
+                     <option value="control">  control</option>
+                     
+                     <option value="cpfdescription" title="default" class="default" selected="selected">  cpfDescription</option>
+                     
+                     <option value="identity">    identity</option>
+                     
+                     <option value="description">    description</option>
+                     
+                     <option value="existdates">      existDates</option>
+                     
+                     <option value="bioghist">      biogHist</option>
+                     
+                     <option value="generalcontext">      generalContext</option>
+                     
+                     <option value="occupation">      occupation</option>
+                     
+                     <option value="localdescription">      localDescription</option>
+                     
+                     <option value="relation">    relations</option>
+                     
+                     <option value="cpfrelation">      cpfRelation</option>
+                     
+                     <option value="resourcerelation">      resourceRelation</option>
+                     
+                  </select>
+                  
+               </label>
+               
+            </form>
+            
+         </div>
+         
+         <div id="browsefilterby">
+            
+            <div>
+               
+               <h3>Browse or filter by:</h3>
+               
+               <!-- div class="result_summary">
+      <i>Showing results for "some search"</i>
+    </div -->
+               
+            </div>
+            
+            <div class="tabbar">
+               
+               <div class="filternav">
+                  
+                  <small>Show records with:
+                     
+                  </small>
+                  
+                  <ul>
+                     
+                     <li>
+                        <a href="#" class="active" role="button">All</a>
+                     </li>
+                     
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-B"></div>Biographies
+                        </a>
+                     </li>
+                     
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-W"></div>Wikipedia Links
+                        </a>
+                     </li>
+                     
+                     <!-- li><a href="#" role="button"><i class="C_icon"></i>Collection Links</a></li -->
+                     
+                  </ul>
+                  
+                  <span></span>
+                  <!-- this span to prepend select/option to -->
+                  
+               </div>
+               
+               <div class="browsenav">
+                  
+                  <ul>
+                     
+                     <!-- li><a href="">Featured</a></li -->
+                     
+                     <li class="active">
+                        <a href="">Name</a>
+                     </li>
+                     
+                     <li>
+                        <a href="">Occupation</a>
+                     </li>
+                     
+                     <li>
+                        <a href="">Subject</a>
+                     </li>
+                     
+                  </ul>
+                  
+               </div>
+               
+            </div>
+            
+         </div>
+         
+         
+         <div class="svg-fam"> </div>
+         
+         <div style="width: 100%;" data-snac-grid="{&#34;url&#34;:&#34;http://socialarchive.iath.virginia.edu:8888/xtf/search?text=Washington%2C+George%2C+1732-1799.&amp;sectionType=cpfdescription&#34;}">
+            
+            <div class="alert alert-danger">Javascript failed.  Please contact the system operator.</div>
+            
+         </div>
+         
+         
+      </div>
+      
+      <!-- div id="footer_body" class="footer_color" style="font-size: .8em;">
+          <p class="dashed">
+            Published by the <a href="http://iath.virginia.edu/" class="inactive">Institute for Advanced Technology in the Humanities</a> |
+            <a href="contact.html" class="inactive">Contact &gt;</a>
+            <br>
+            © 2013 Rectors and Visitors of the <a href="http://www.virginia.edu/" class="inactive">University of Virginia</a>
+          </p>
+          <p class="dashed"> 
+            Sponsors: <a href="http://www.mellon.org/" class="inactive">Andrew W. Mellon Foundation</a> | 
+            <a href="http://www.imls.gov/" class="inactive">The Institute for Museum and Library Services</a> |
+            <a href="http://www.neh.gov/" class="inactive">National Endowment for the Humanities</a>
+          </p>
+            <p class="dashed">
+              <span class="gray">Collaborators: </span>
+              <a href="http://iath.virginia.edu/" class="inactive">UVa IATH</a> |
+              <a href="http://www.ischool.berkeley.edu/" class="inactive">UC Berkeley School of Information</a> | 
+              <a href="http://www.cdlib.org/" class="inactive">California Digital Library</a> | 
+              <a href="http://www.archives.gov/" class="inactive">National Archives and Records Administration</a>
+            </p>
+      </div -->
+      
+      
+      <!-- /.container -->
+      
+      <script data-xsl-asset="javascripts/all.js" src="../javascripts/all.js" charset="utf-8" type="text/javascript"></script>
+      
+      
+      <script data-xsl-asset="javascripts/sample.js" src="../javascripts/sample.js" charset="utf-8" type="text/javascript"></script>
+      
+      <script data-xsl-asset="javascripts/results.js" src="../javascripts/results.js" charset="utf-8" type="text/javascript"></script>
+      
+      
+      
+   </body>
+   
+</html>
