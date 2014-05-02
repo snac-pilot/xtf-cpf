@@ -89,7 +89,7 @@
 
   <!-- templates that hook the html template to the results -->
 
-  <xsl:template match="*[@tmpl:change-value='html-title']" mode="html-template">
+  <xsl:template match="*[@tmpl:change-value='html-title']|*[@data-xsl='html-title']" mode="html-template">
     <title>
       <xsl:text>Find Records: </xsl:text>
       <xsl:value-of select="tmpl:entityTypeLabel($facet-entityType), $page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]/@value, $text"/>
@@ -138,7 +138,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:condition='top-facets']" mode="html-template">
+  <xsl:template match="*[@tmpl:condition='top-facets']|*[@data-xsl='top-facets']" mode="html-template">
     <div>
       <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
       <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]" mode="top-facets"/>
@@ -154,7 +154,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:condition='spelling']" mode="html-template">
+  <xsl:template match="*[@tmpl:condition='spelling']|*[@data-xsl='spelling']" mode="html-template">
     <xsl:apply-templates select="$page/crossQueryResult/spelling" mode="spelling"/>
   </xsl:template>
 
@@ -191,7 +191,7 @@
     <a title="raw XML" href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:add-value='search']" mode="html-template">
+  <xsl:template match="*[@tmpl:add-value='search']|*[@data-xsl='search']" mode="html-template">
     <!-- hidden search elements -->
     <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')],$page/crossQueryResult/parameters/param[@name='facet-entityType']" mode="hidden-facets"/>
     <xsl:element name="{name()}">
@@ -206,7 +206,7 @@
     <input type="hidden" value="{@value}" name="{@name}"/>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:process-markup="sectionType"]' mode="html-template">
+  <xsl:template match='*[@tmpl:process-markup="sectionType"]|*[data-xsl="sectionType"]' mode="html-template">
     <xsl:element name="{name(.)}">
       <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
       <xsl:attribute name="title"><xsl:value-of select="@title"/></xsl:attribute>
@@ -270,7 +270,7 @@
                         else ''"/>
   </xsl:function>
 
-  <xsl:template match='*[@tmpl:replace-markup="navigation"]' mode="html-template">
+  <xsl:template match='*[@tmpl:replace-markup="navigation"]|*[@data-xsl="navigation"]' mode="html-template">
 <ul>
   <xsl:for-each select="('','person','family','corporateBody')">
     <xsl:choose>
