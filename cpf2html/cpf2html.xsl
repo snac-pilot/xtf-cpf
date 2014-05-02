@@ -489,18 +489,21 @@ select="($relations)/eac:cpfRelation[
 
   <xsl:template match="*[@data-xsl-asset]">
     <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates mode="asset-base"/>
+      <xsl:apply-templates select="@*" mode="asset-base"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="@href" mode="asset-base">
-    <xsl:value-of select="$asset-base.value"/>
-    <xsl:value-of select="../@data-xsl-asset"/>
+  <xsl:template match="@href|@src" mode="asset-base">
+    <xsl:attribute name="{name(.)}">
+      <xsl:value-of select="$asset-base.value"/>
+      <xsl:value-of select="../@data-xsl-asset"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="@*" mode="asset-base">
+    <xsl:attribute name="{name(.)}">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="*[@data-xsl='relatedPeople']">
@@ -1025,13 +1028,6 @@ select="($relations)/eac:cpfRelation[
     </xsl:copy>
   </xsl:template>
  
-  <xsl:template match="@*|node()" mode="asset-base">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-  </xsl:template>
- 
-
 </xsl:stylesheet>
 <!--
 
