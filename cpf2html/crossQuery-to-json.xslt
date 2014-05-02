@@ -108,6 +108,7 @@
       <xsl:apply-templates select="count-LinkedData" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-Wikipedia" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-wikithumb" mode="dc-json-element"/> 
+      <xsl:apply-templates select="recordIds[1]" mode="dc-json-element"/> 
       <xsl:apply-templates select="facet-entityType[1]" mode="dc-json-element"> 
         <xsl:with-param name="terminal" select="1"/>
       </xsl:apply-templates>

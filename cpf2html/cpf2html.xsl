@@ -33,6 +33,7 @@ use html5 data-xsl* attributes to trigger xslt
   
   <xsl:param name="asset-base.value"/>
   <xsl:include href="data-xsl-asset.xsl"/>
+  <xsl:param name="appBase.path"/>
 
   <xsl:param name="docId"/>
   <!-- poor man's ARK resolver -->
@@ -103,7 +104,7 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:template match='*[@tmpl:change-value="actions"]|*[@data-xsl="viewSource"]'>
     <xsl:element name="{name()}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
-      <a title="raw XML" href="/xtf/data/{escape-html-uri($pathId)}">View source EAC-CPF</a>
+      <a title="raw XML" href="{$appBase.path}data/{escape-html-uri($pathId)}">View source EAC-CPF</a>
     </xsl:element>
   </xsl:template>
 
@@ -715,7 +716,8 @@ select="($relations)/eac:cpfRelation[
       ,'--.*$','')
     "/>
     <xsl:variable name="href">
-      <xsl:text>/xtf/search?sectionType=cpfdescription&amp;f1-occupation=</xsl:text>
+      <xsl:value-of select="$appBase.path"/>
+      <xsl:text>search?sectionType=cpfdescription&amp;f1-occupation=</xsl:text>
       <xsl:value-of select="$normalValue"/>
       <xsl:if test="matches($value,'--.*')">
         <xsl:text>&amp;text=</xsl:text>
@@ -743,7 +745,7 @@ select="($relations)/eac:cpfRelation[
       ,'^VIAF:','')
     "/>
     <xsl:variable name="href">
-      <xsl:text>/xtf/search?sectionType=cpfdescription&amp;f1-localDescription=</xsl:text>
+      <xsl:text>{$appBase.path}search?sectionType=cpfdescription&amp;f1-localDescription=</xsl:text>
       <xsl:value-of select="normalize-space($normalValue)"/>
       <xsl:if test="matches($value,'--.*')">
         <xsl:text>&amp;text=</xsl:text>
@@ -883,7 +885,7 @@ select="($relations)/eac:cpfRelation[
 
   <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
     <div data-xsl='maybeSame'><label>Maybe same as</label>
-      <a href="/xtf/view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
+      <a href="{$appBase.path}view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
         <xsl:choose>
           <xsl:when test="text()">
             <xsl:value-of select="."/>
@@ -935,7 +937,7 @@ select="($relations)/eac:cpfRelation[
         </xsl:when>
         <xsl:otherwise>
           <!-- xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/ -->
-          <a href="/xtf/search?text={encode-for-uri(eac:relationEntry)};browse=">
+          <a href="{$appBase.path}search?text={encode-for-uri(eac:relationEntry)};browse=">
             <xsl:value-of select="eac:relationEntry"/>
             <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
           </a>
@@ -963,14 +965,7 @@ select="($relations)/eac:cpfRelation[
   
   <xsl:template match="@xlink:href">
     <xsl:attribute name="href">
-      <xsl:choose>
-        <xsl:when test="starts-with(.,'http://n2t.net/')">
-          <xsl:value-of select="replace(.,'http://n2t.net/','/xtf/view?docId=')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="."/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:value-of select="."/>
     </xsl:attribute>
   </xsl:template>
  
