@@ -27,6 +27,7 @@
       exclude-result-prefixes="#all"/>
 
    <xsl:param name="asset-base.value"/>
+   <xsl:param name="appBase.path"/>
    <xsl:include href="data-xsl-asset.xsl"/> 
    
    <!-- ====================================================================== -->
@@ -77,7 +78,7 @@
       <xsl:otherwise>
         <h1>
           <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
-          <a href="/xtf/search" title="new search"><xsl:apply-templates mode="html-template"/></a>
+          <a href="{$appBase.path}search" title="new search"><xsl:apply-templates mode="html-template"/></a>
         </h1>
       </xsl:otherwise>
     </xsl:choose>
@@ -101,7 +102,8 @@
       <xsl:when test="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]"/>
       <xsl:otherwise>
 <xsl:variable name="autoUrl">
-  <xsl:text>/xtf/search?autocomplete=yes;</xsl:text>
+  <xsl:value-of select="$appBase.path"/>
+  <xsl:text>search?autocomplete=yes;</xsl:text>
   <xsl:if test="$facet-entityType">
     <xsl:text>facet-entityType=</xsl:text>
     <xsl:value-of select="$facet-entityType"/>
@@ -132,7 +134,7 @@
 
   <xsl:template match="*:a[@tmpl:condition='search']" mode="html-template">
     <xsl:if test="($text!='')">
-      <a title="remove keyword search" href="/xtf/search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
+      <a title="remove keyword search" href="{$appBase.path}search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
         <xsl:apply-templates select="text()" mode="html-template"/>
       </a>
     </xsl:if>
@@ -147,7 +149,7 @@
  
   <xsl:template match="param" mode="top-facets">
     <div class="facet-limit" title="search limit">
-      <a title="remove {@value}" class="x" href="/xtf/search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒</a>
+      <a title="remove {@value}" class="x" href="{$appBase.path}search?{editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'), @name)}">☒</a>
       <xsl:text>&#160;</xsl:text>
       <xsl:value-of select="@value"/>
       <xsl:text>&#160;</xsl:text>
@@ -161,7 +163,7 @@
   <xsl:template match="spelling" mode="spelling">
     <xsl:variable name="suggestQ" select="editURL:spellingFix($text,suggestion)"/>
     <div class="spelling-suggestion">Did you mean: 
-      <a href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'text', $suggestQ)}">
+      <a href="{$appBase.path}search?{editURL:set(substring-after($http.URL,'?'), 'text', $suggestQ)}">
         <xsl:value-of select="$suggestQ"/>
       </a>
     </div>
@@ -188,7 +190,7 @@
   </xsl:template>
 
   <xsl:template match='*[@tmpl:replace-markup="show-xml"]' mode="html-template">
-    <a title="raw XML" href="/xtf/search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
+    <a title="raw XML" href="{$appBase.path}search?{editURL:set(substring-after($http.URL,'?'), 'raw', '1')}">view source CrossQueryResult</a>
   </xsl:template>
 
   <xsl:template match="*[@tmpl:add-value='search']|*[@data-xsl='search']" mode="html-template">
@@ -270,15 +272,33 @@
                         else ''"/>
   </xsl:function>
 
+  <xsl:function name="tmpl:entityTypeIcon">
+    <xsl:param name="entity"/>
+    <xsl:variable name="type" select="if ($entity='') then '' 
+                     else if ($entity='person') then 'ind'
+                     else if ($entity='family') then 'fam'
+                     else if ($entity='corporateBody') then 'org'
+                        else ''"/>
+    <xsl:if test="$type">
+      <span class="icon-{$type} x2"></span>
+    </xsl:if>
+  </xsl:function>
+
   <xsl:template match='*[@tmpl:replace-markup="navigation"]|*[@data-xsl="navigation"]' mode="html-template">
 <ul>
   <xsl:for-each select="('','person','family','corporateBody')">
     <xsl:choose>
       <xsl:when test="$facet-entityType=.">
-        <li class="selected"><a><xsl:value-of select="tmpl:entityTypeLabel(.)"/></a></li>
+        <li class="selected active">
+          <a>
+            <xsl:copy-of select="tmpl:entityTypeIcon(.)"/>
+            <xsl:value-of select="tmpl:entityTypeLabel(.)"/>
+          </a>
+        </li>
       </xsl:when>
       <xsl:otherwise>
-        <li><a href="/xtf/search?{editURL:set($queryStringClean,'facet-entityType',.)}">
+        <li><a href="{$appBase.path}search?{editURL:set($queryStringClean,'facet-entityType',.)}">
+          <xsl:copy-of select="tmpl:entityTypeIcon(.)"/>
           <xsl:value-of select="tmpl:entityTypeLabel(.)"/>
         </a></li>
       </xsl:otherwise>
@@ -291,7 +311,8 @@
     <xsl:param name="path" select="@path"/>
       <div class="{meta/facet-entityType}{if (meta/facet-recordLevel[text()='hasBiogHist']) then (' hasBiogHist') else ('')}">
       <xsl:variable name="href">
-          <xsl:text>/xtf/view?docId=</xsl:text>
+          <xsl:value-of select="$appBase.path"/>
+          <xsl:text>view?docId=</xsl:text>
           <xsl:value-of select="replace(replace(editURL:protectValue($path),'^default:',''),'\s','+')"/>
       </xsl:variable>
       <a>
@@ -386,7 +407,7 @@
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
      <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
-      <a title="{format-number(@totalDocs,'###,###')}" href="/xtf/search?{
+      <a title="{format-number(@totalDocs,'###,###')}" href="{$appBase.path}search?{
            editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
                                                     'facet-entityType',$facet-entityType),
                                                       'recordId-merge',$recordId-merge),
@@ -497,13 +518,13 @@
       else editURL:set($queryStringClean,'sectionType', 'cpfdescription')
     "/>
     <xsl:variable name="selectLink" select="
-         concat('/xtf/', $crossqueryPath, '?',
+         concat($appBase.path, $crossqueryPath, '?',
                 editURL:remove(editURL:set($queryStringCleanHomePage,
                             $nextName, $value),'facet-identityAZ'))">
     </xsl:variable>
 
     <xsl:variable name="clearLink" select="
-         concat('/xtf/', $crossqueryPath, '?',
+         concat($appBase.path, $crossqueryPath, '?',
                 editURL:replaceEmpty(editURL:remove($queryString, concat('f[0-9]+-',$field,'=',$value)),
                                      'browse-all=yes'))">
     </xsl:variable>
@@ -611,6 +632,14 @@
       </xsl:choose> 
       
    </xsl:template>
+
+
+
+  <xsl:template match="form[@action='/xtf/search']" mode="html-template">
+    <form method="GET" action="{$appBase.path}search">
+      <xsl:apply-templates mode="html-template"/>
+    </form>
+  </xsl:template>
 
 
   <!-- identity transform copies HTML from the layout file -->
