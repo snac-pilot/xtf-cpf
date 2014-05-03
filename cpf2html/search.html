@@ -124,19 +124,19 @@
                </li>
                
                <li>
-                  <a href="#profile" data-toggle="tab">
+                  <a href="search?facet-entityType=person">
                      <span class="icon-ind x2"></span>Person
                   </a>
                </li>
                
                <li>
-                  <a href="#messages" data-toggle="tab">
+                  <a href="search?facet-entityType=family">
                      <span class="icon-fam x2"></span>Family
                   </a>
                </li>
                
                <li>
-                  <a href="#settings" data-toggle="tab">
+                  <a href="search?facet-entityType=corporateBody">
                      <span class="icon-org x2"></span>Organization
                   </a>
                </li>
@@ -147,6 +147,7 @@
             
             <form method="GET" action="/xtf/search">
                <div class="top-facets" data-xsl="top-facets">top facets</div>
+               <a data-xsl="clear-search" href="/xtf/search">☒ </a>
                <input id="userInput" type="text" style="width: 100%;" title="enter       a name or keywords" placeholder="enter a name or keywords" name="text" value="Washington, George, 1732-1799." class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" data-xsl="search"></input>
                
                <input class="button" title="full text" type="submit" value="search"></input>
@@ -240,41 +241,31 @@
                   
                </div>
                
-               <div class="browsenav">
-                  
+               <div class="browsenav" data-xsl='browsenav'>
                   <ul>
-                     
-                     <!-- li><a href="">Featured</a></li -->
-                     
+                     <li><a href="">Featured</a></li>
                      <li class="active">
                         <a href="">Name</a>
                      </li>
-                     
                      <li>
                         <a href="">Occupation</a>
                      </li>
-                     
                      <li>
                         <a href="">Subject</a>
                      </li>
-                     
                   </ul>
-                  
                </div>
                
             </div>
             
          </div>
          
-         
-         <div class="svg-fam"> </div>
-         
+       <div class="azgrid" style="position: relative;"> 
+         <div data-xsl="AZ">A B C D ... Z </div> 
          <div style="width: 100%;" data-snac-grid="{}">
-         <!-- div style="width: 100%;" data-snac-grid="{&#34;url&#34;:&#34;http://localhost:8080/xtf-x/search?text=Washington%2C+George%2C+1732-1799.&amp;sectionType=cpfdescription&#34;}" -->
-            
-            <div class="alert alert-danger">Javascript failed.  Please contact the system operator.</div>
-            
+           <div class="alert alert-danger">Javascript failed.  Please contact the system operator.</div>
          </div>
+       </div>
          
          
       </div>

@@ -132,9 +132,9 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="*:a[@tmpl:condition='search']" mode="html-template">
+  <xsl:template match="*:a[@tmpl:condition='search']|*[@data-xsl='clear-search']" mode="html-template">
     <xsl:if test="($text!='')">
-      <a title="remove keyword search" href="{$appBase.path}search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
+      <a title="remove keyword search" class="pull-left" href="{$appBase.path}search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
         <xsl:apply-templates select="text()" mode="html-template"/>
       </a>
     </xsl:if>
@@ -390,36 +390,61 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="*[@tmpl:replace-markup='AZ']" mode="html-template">
-        <span class="g480 AZletters">
+  <xsl:template match="*[@tmpl:replace-markup='AZ']|*[@data-xsl='AZ']" mode="html-template">
+        <ul class="alphascroll">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
-        </span>
-  <div class="pull-right">
+        </ul>
+  <!-- div class="pull-right">
   <button id="prev" type="button" class="btn btn-sm btn-default">
     <span class="glyphicon glyphicon-backward"></span>
   </button>
   <button id="next" type="button" class="btn btn-sm btn-default">
     <span class="glyphicon glyphicon-forward"></span>
   </button>
-  </div>
+  </div -->
   </xsl:template>
 
   <xsl:template match="group" mode="AZletters">
     <xsl:choose>
      <xsl:when test="not($facet-identityAZ=@value) and @totalDocs &gt; 0">
-      <a title="{format-number(@totalDocs,'###,###')}" href="{$appBase.path}search?{
-           editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
+      <li><a title="{format-number(@totalDocs,'###,###')}" href="{$appBase.path}search?{
+                    editURL:set(editURL:set(editURL:set(editURL:set('','facet-identityAZ', @value),
                                                     'facet-entityType',$facet-entityType),
                                                       'recordId-merge',$recordId-merge),
-                                              'recordId-eac-merge',$recordId-eac-merge) }">
-        <xsl:value-of select="@value"/>
-      </a>
+                                              'recordId-eac-merge',$recordId-eac-merge) }"
+            data-toggle="tooltip" data-placement="right"
+          >
+         <xsl:value-of select="@value"/>
+       </a></li>
      </xsl:when>
      <xsl:otherwise>
-        <span title="{format-number(@totalDocs,'###,###')}"><xsl:value-of select="@value"/></span>
+        <li data-toggle="tooltip" data-placement="right"  title="{format-number(@totalDocs,'###,###')}"><xsl:value-of select="@value"/></li>
      </xsl:otherwise>
     </xsl:choose>
-    <xsl:text>&#160;</xsl:text>
+  </xsl:template>
+
+
+  <xsl:template match="*[@data-xsl='browsenav']" mode="html-template">
+               <div class="browsenav" data-xsl='browsenav'>
+                  <ul>
+                     <xsl:if test="$text=''">
+                       <li><a href="search">Featured</a></li>
+                     </xsl:if>
+                     <li class="{if ($browse-json!='') then '' else 'active'}">
+                        <a href="search?{ editURL:remove($queryString, 'browse-json')}">Name</a>
+                     </li>
+                     <li class="{if ($browse-json!='facet-occupation') then '' else 'active'}">
+                        <a href="search?{ editURL:set(
+                             editURL:remove($queryString, 'facet-occupation'),
+                             'browse-json', 'facet-occupation') }">Occupation</a>
+                     </li>
+                     <li class="{if ($browse-json!='facet-localDescription') then '' else 'active'}">
+                        <a href="search?{ editURL:set(
+                             editURL:remove($queryString, 'facet-localDescription'),
+                             'browse-json', 'facet-localDescription') }">Subject</a>
+                     </li>
+                  </ul>
+               </div>
   </xsl:template>
 
 
