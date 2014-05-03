@@ -104,6 +104,7 @@
                 </and>
               </xsl:when>
               <xsl:otherwise>
+                <and><allDocs/></and>
               </xsl:otherwise>
             </xsl:choose>
           </and>
@@ -252,7 +253,7 @@
   <xsl:template match="/" mode="featured">
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
-      style="{$stylesheet}" maxDocs="20" startDoc="{$startDoc}" >
+      style="{$stylesheet}" maxDocs="50" startDoc="{$startDoc}" >
       <and>
         <and field="facet-wikithumb">
           <term>true</term>

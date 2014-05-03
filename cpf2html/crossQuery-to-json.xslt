@@ -43,6 +43,7 @@
   <xsl:param name="browse-json"/>
   <xsl:param name="pageSize" select="'20'"/>
   <xsl:param name="icon.path" select="concat($xtfURL, 'icons/default/')"/>
+  <xsl:param name="appBase.path"/>
   <xsl:variable name="queryStringClean" select="replace($queryString,'http://.*/xtf/search','')"/>
 
   <xsl:template match="/">
@@ -131,7 +132,7 @@
       else editURL:set($queryStringClean,'sectionType', 'cpfdescription')
     "/>
     <xsl:variable name="selectLink" select="
-         concat('/xtf/', $crossqueryPath, '?',
+         concat($appBase.path, $crossqueryPath, '?',
               editURL:remove(
               editURL:remove(
               editURL:remove(
