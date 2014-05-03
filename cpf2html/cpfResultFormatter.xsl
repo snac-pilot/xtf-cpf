@@ -146,6 +146,8 @@
       <xsl:apply-templates select="$page/crossQueryResult/parameters/param[matches(@name,'^f[0-9]+-')]" mode="top-facets"/>
     </div>
   </xsl:template>
+
+  <xsl:template match="param[@name='f1-recordLevel']|param[@name='f1-Wikipedia']" mode="top-facets"/>
  
   <xsl:template match="param" mode="top-facets">
     <div class="facet-limit" title="search limit">
@@ -445,6 +447,24 @@
                      </li>
                   </ul>
                </div>
+  </xsl:template>
+
+  <xsl:template match='*[@data-xsl="BW-facet"]' mode="html-template">
+                  <ul data-xsl='BW-facet'>
+                     <li>
+                        <a href="#" class="{if ( 1 = 1 ) then '' else 'active'}" role="button">All</a>
+                     </li>
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-B"></div>Biographies
+                        </a>
+                     </li>
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-W"></div>Wikipedia Links
+                        </a>
+                     </li>
+                  </ul>
   </xsl:template>
 
 
