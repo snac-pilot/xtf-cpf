@@ -78,7 +78,7 @@ use html5 data-xsl* attributes to trigger xslt
   <!-- templates that hook the html template to the EAC -->
 
   <xsl:template match="*[@data-xsl='wikipedia_thumbnail']">
-    <xsl:variable name="wt" select="$page/eac:eac-cpf/meta/facet-wikithumb"/>
+    <xsl:variable name="wt" select="$page/eac:eac-cpf/meta/facet-wikithumb[1]"/>
     <xsl:if test="$wt">
       <xsl:element name="{name()}">
       <xsl:copy-of select="@*"/>
@@ -745,7 +745,8 @@ select="($relations)/eac:cpfRelation[
       ,'^VIAF:','')
     "/>
     <xsl:variable name="href">
-      <xsl:text>{$appBase.path}search?sectionType=cpfdescription&amp;f1-localDescription=</xsl:text>
+      <xsl:value-of select="$appBase.path"/>
+      <xsl:text>search?sectionType=cpfdescription&amp;f1-localDescription=</xsl:text>
       <xsl:value-of select="normalize-space($normalValue)"/>
       <xsl:if test="matches($value,'--.*')">
         <xsl:text>&amp;text=</xsl:text>

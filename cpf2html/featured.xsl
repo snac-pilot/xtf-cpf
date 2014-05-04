@@ -177,8 +177,8 @@
 <div class="media">
   <a class="pull-left" href="#">
     <div class="media-object wikipedia_thumbnail" style="min-width: 150px;">
-      <a href="{meta/facet-wikithumb/@rights}">
-        <img src="{meta/facet-wikithumb/@thumb}" style="min-width: 155px;" alt=""></img>
+      <a href="{meta/facet-wikithumb[1]/@rights}">
+        <img src="{meta/facet-wikithumb[1]/@thumb}" style="min-width: 155px;" alt=""></img>
         <div>Image from Wikipedia</div>
       </a>
     </div>
