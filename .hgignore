@@ -13,3 +13,5 @@
 docs/_*
 cpf2html/VERSION
 data
+thumbs
+data-thumbs
