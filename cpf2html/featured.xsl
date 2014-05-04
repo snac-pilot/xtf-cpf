@@ -133,6 +133,10 @@
     mode="html-template">
   </xsl:template>
 
+  <xsl:template match="*[@data-xsl='BW-facet']" mode="html-template">
+    <div class="filternav">&#160;</div>
+  </xsl:template>
+
   <xsl:template match="*[@data-xsl='browsenav']" mode="html-template">
                <div class="browsenav" data-xsl='browsenav'>
                   <ul>

@@ -63,7 +63,7 @@
                   
                </button>
                
-               <a class="navbar-brand" id="snacnav-logo-left" href="#" style="padding: 0px;">
+               <a class="navbar-brand" id="snacnav-logo-left" href="/" style="padding: 0px;">
                   <img data-xsl-asset="images/snac_logo_small.svg" src="../images/snac_logo_small.svg"></img>
                </a>
                
@@ -74,7 +74,7 @@
                <ul class="nav navbar-nav">
                   
                   <li>
-                     <a href="#">about</a>
+                     <a href="/about.html">about</a>
                   </li>
                   
                   <li class="active">
@@ -82,11 +82,11 @@
                   </li>
                   
                   <li>
-                     <a href="#">news</a>
+                     <a href="/news.html">news</a>
                   </li>
                   
                   <li>
-                     <a href="#">resources</a>
+                     <a href="/resources.html">resources</a>
                   </li>
                   
                </ul>
@@ -95,7 +95,7 @@
                   
                   <li>
                      
-                     <a class="navbar-brand" id="snacnav-logo-right" href="#">
+                     <a class="navbar-brand" id="snacnav-logo-right" href="/">
                         <img data-xsl-asset="images/snac_spelled_out_300.svg" src="../images/snac_spelled_out_300.svg"></img>
                      </a>
                      
@@ -208,13 +208,9 @@
             
             <div class="tabbar">
                
-               <div class="filternav">
-                  
-                  <small>Show records with:
-                     
-                  </small>
-                  
-                  <ul data-xsl='BW-facet'>
+               <div data-xsl='BW-facet' class="filternav">
+                  <small>Show records with: </small>
+                  <ul>
                      <li>
                         <a href="#" class="active" role="button">All</a>
                      </li>
@@ -230,10 +226,8 @@
                      </li>
                   </ul>
                      <!-- li><a href="#" role="button"><i class="C_icon"></i>Collection Links</a></li -->
-                  
                   <span></span>
                   <!-- this span to prepend select/option to -->
-                  
                </div>
                
                <div class="browsenav" data-xsl='browsenav'>

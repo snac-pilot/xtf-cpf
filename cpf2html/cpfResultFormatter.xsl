@@ -450,8 +450,9 @@
   </xsl:template>
 
   <xsl:template match='*[@data-xsl="BW-facet"]' mode="html-template">
-    <xsl:value-of select="boolean($page//param[@name='f00-Wikipedia'])"/>
-                  <ul data-xsl='BW-facet'>
+                   <div data-xsl='BW-facet' class="filternav">
+                                     <small>Show records with: </small>
+                  <ul>
                      <li>
                         <a href="{$appBase.path}search?{
                               editURL:remove(editURL:remove($queryString, 'f00-Wikipedia'),'f00-recordLevel')
@@ -483,6 +484,7 @@
                         </a>
                      </li>
                   </ul>
+                  </div>
   </xsl:template>
 
 
