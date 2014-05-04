@@ -885,7 +885,7 @@ select="($relations)/eac:cpfRelation[
 
   <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
     <div data-xsl='maybeSame'><label>Maybe same as</label>
-      <a href="{$appBase.path}view?docId={substring-after(@xlink:href, 'http://n2t.net/')}">
+      <a href="{@xlink:href}">
         <xsl:choose>
           <xsl:when test="text()">
             <xsl:value-of select="."/>
