@@ -72,14 +72,16 @@
           <xsl:if test="not($rmode='slickgrid')">
             <facet field="facet-entityType" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-person" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-family" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-corporateBody" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-occupation" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-localDescription" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <!-- facet field="facet-localDescription" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-ArchivalResource" select="*" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-BibliographicalResource" select="*" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-RelatedRecords" select="*" sortGroupsBy="{$sortGroupsBy}"/>
-            <facet field="facet-LinkedData" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-LinkedData" select="*" sortGroupsBy="{$sortGroupsBy}"/ -->
             <facet field="facet-Wikipedia" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-recordLevel" select="**" sortGroupsBy="{$sortGroupsBy}"/>
             <spellcheck/>
           </xsl:if>
           <xsl:if test="$text='' and not($hasFacets)"><xsl:value-of select="$keyword!='' or $hasFacets"/>

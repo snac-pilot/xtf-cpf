@@ -466,7 +466,10 @@
                                                 editURL:set($queryString, 'f00-recordLevel', 'hasBiogHist'),
                                                 'f00-Wikipedia')
                                                        }" 
-                           class="{if ($page//param[@name='f00-recordLevel']) then 'active' else ''}"
+                           class="{if ($page//param[@name='f00-recordLevel']) then 'active' else ''
+                                 }{if ($page/crossQueryResult/facet[@field='facet-recordLevel']/group[@value='hasBiogHist'])
+                                   then '' else 'disabled'
+                                 }"
                            role="button"
                         >
                            <div class="icon-B"></div>Biographies
@@ -478,7 +481,11 @@
                                                 editURL:set($queryString, 'f00-Wikipedia', 'Wikipedia'),
                                                 'f00-recordLevel')
                                                        }" 
-                           class="{if ($page//param[@name='f00-Wikipedia']) then 'active' else ''}"
+                           class="{if ($page//param[@name='f00-Wikipedia']) then 'active' else ''
+                                  }
+                                  {if ($page/crossQueryResult/facet[@field='facet-Wikipedia']/@totalDocs = 0)
+                                   then 'disabled' else ''
+                                  }"
                            role="button">
                            <div class="icon-W"></div>Wikipedia Links
                         </a>
