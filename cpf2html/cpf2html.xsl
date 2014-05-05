@@ -459,6 +459,7 @@ select="($relations)/eac:cpfRelation[
   -->
 
   <xsl:template match="*[@data-xsl='linkedData']">
+    <xsl:variable name="ident" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'linkedData'"/>
       <xsl:with-param name="head">
@@ -468,8 +469,11 @@ select="($relations)/eac:cpfRelation[
         <xsl:apply-templates select="$linkedData" mode="eac">
           <xsl:sort/>
         </xsl:apply-templates>
+        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}"><b>archivegrid</b>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$ident"/></a>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($linkedData)"/>
+      <xsl:with-param name="count" select="count($linkedData) + 1"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -923,8 +927,11 @@ select="($relations)/eac:cpfRelation[
           </xsl:if -->
         </xsl:when>
         <xsl:when test="@xlink:href">
+          <xsl:variable name="sans-http" select="substring-after(@xlink:href,'http://')"/>
           <a href="{@xlink:href}">
-            <xsl:value-of select="substring-after(@xlink:href,'http://')"/>
+            <b><xsl:value-of select="substring-before($sans-http,'/')"/></b>
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="substring-after($sans-http,'/')"/>
           </a>
         </xsl:when>
         <xsl:when test="$link-mode = 'worldcat-title'">
