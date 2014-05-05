@@ -499,8 +499,9 @@
       <xsl:if test="$text"> for
       "<xsl:value-of select="$text"/>"
       </xsl:if>
-      <span><xsl:apply-templates select="$page/crossQueryResult/parameters/param[starts-with(@name,'f00')]|
-                                   $page/crossQueryResult/parameters/param[@name='facet-entityType']" mode="result_summary"/></span>
+      <span><xsl:apply-templates select="$page/crossQueryResult/parameters/param[@name='facet-entityType'],
+                                         $page/crossQueryResult/parameters/param[starts-with(@name,'f00')]" 
+               mode="result_summary"/></span>
       </i>
     </div>
   </xsl:template>
