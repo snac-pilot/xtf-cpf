@@ -500,6 +500,8 @@
       "<xsl:value-of select="$text"/>"
       </xsl:if>
       <span><xsl:apply-templates select="$page/crossQueryResult/parameters/param[@name='facet-entityType'],
+                                         $page/crossQueryResult/parameters/param[ends-with(@name,'occupation')], 
+                                         $page/crossQueryResult/parameters/param[ends-with(@name,'localDescription')], 
                                          $page/crossQueryResult/parameters/param[starts-with(@name,'f00')]" 
                mode="result_summary"/></span>
       </i>
@@ -516,6 +518,14 @@
 
   <xsl:template match="param[@name='facet-entityType']" mode="result_summary">
     in <xsl:value-of select="replace(@value,'corporateBody','Organization')"/>
+  </xsl:template>
+
+  <xsl:template match="param[ends-with(@name,'localDescription')]" mode="result_summary">
+    Subject: «<xsl:value-of select="@value"/>»
+  </xsl:template>
+
+  <xsl:template match="param[ends-with(@name,'occupation')]" mode="result_summary">
+    Occupation: «<xsl:value-of select="@value"/>»
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
