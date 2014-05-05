@@ -147,10 +147,11 @@
             
             <form method="GET" action="/xtf/search">
                <div class="top-facets" data-xsl="top-facets">top facets</div>
+          <div>
                <a data-xsl="clear-search" href="/xtf/search">☒ </a>
-               <input id="userInput" type="text" style="width: 100%;" title="enter       a name or keywords" placeholder="enter a name or keywords" name="text" value="Washington, George, 1732-1799." class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" data-xsl="search"></input>
+               <input id="userInput" type="text" style="width: 100%;" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" value="Washington, George, 1732-1799." class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" data-xsl="search"></input>
                
-               <input class="button" title="full text" type="submit" value="search"></input>
+               <input class="button" style="margin-top: 5px;" title="full text" type="submit" value="search"></input>
                
                <label class="advancedSearch" title="Advanced Search" style="display: none;" data-xsl="sectionType">
                   
@@ -189,6 +190,7 @@
                   </select>
                   
                </label>
+          </div>
                <div data-xsl="spelling"/> 
             </form>
             
@@ -200,9 +202,9 @@
                
                <h3>Browse or filter by:</h3>
                
-               <!-- div class="result_summary">
+               <div class="result_summary" data-xsl="result_summary">
       <i>Showing results for "some search"</i>
-    </div -->
+    </div>
                
             </div>
             

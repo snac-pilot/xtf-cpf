@@ -134,7 +134,7 @@
 
   <xsl:template match="*:a[@tmpl:condition='search']|*[@data-xsl='clear-search']" mode="html-template">
     <xsl:if test="($text!='')">
-      <a title="remove keyword search" class="pull-left" href="{$appBase.path}search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
+      <a title="remove keyword search" class="ppull-left" href="{$appBase.path}search?{editURL:remove(editURL:remove(replace(substring-after($http.URL,'?'),'&amp;',';'),'browse-ignore'),'text')}">
         <xsl:apply-templates select="text()" mode="html-template"/>
       </a>
     </xsl:if>
@@ -487,6 +487,35 @@
                   </div>
   </xsl:template>
 
+
+  <xsl:template match="*[@data-xsl='result_summary']" mode="html-template">
+    <div class="result_summary" data-xsl="result_summary"><i>
+      <xsl:if test="not($browse-json)">Showing </xsl:if>
+      <xsl:if test="$browse-json = 'facet-occupation'">Occupations from </xsl:if>
+      <xsl:if test="$browse-json = 'facet-localDescription'">Subjects from </xsl:if>
+      <xsl:value-of select="format-number($page/crossQueryResult/@totalDocs, '###,###')"/>
+      <xsl:text> result</xsl:text>
+      <xsl:if test="$page/crossQueryResult/@totalDocs != 1"><xsl:text>s</xsl:text></xsl:if>
+      <xsl:if test="$text"> for
+      "<xsl:value-of select="$text"/>"
+      </xsl:if>
+      <span><xsl:apply-templates select="$page/crossQueryResult/parameters/param[starts-with(@name,'f00')]|
+                                   $page/crossQueryResult/parameters/param[@name='facet-entityType']" mode="result_summary"/></span>
+      </i>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="param[@name='f00-recordLevel']" mode="result_summary">
+    with Biography/History
+  </xsl:template>
+
+  <xsl:template match="param[@name='f00-Wikipedia']" mode="result_summary">
+    with Wikipedia link
+  </xsl:template>
+
+  <xsl:template match="param[@name='facet-entityType']" mode="result_summary">
+    in <xsl:value-of select="replace(@value,'corporateBody','Organization')"/>
+  </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
 
