@@ -129,7 +129,7 @@
 
   <!-- skips -->
   <xsl:template
-    match="*[@data-xsl='top-facets']|*[@data-xsl='AZ']|*[@data-xsl='clear-search']"
+    match="*[@data-xsl='top-facets']|*[@data-xsl='AZ']|*[@data-xsl='clear-search']|*[@data-xsl='result_summary']"
     mode="html-template">
   </xsl:template>
 
