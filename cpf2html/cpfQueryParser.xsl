@@ -158,6 +158,8 @@
       maxDocs="{$maxDocs}">
           <facet field="facet-occupation" select="{$facet-occupation-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-localDescription" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-Wikipedia" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-recordLevel" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <and>
             <xsl:apply-templates/>
             <xsl:choose>
