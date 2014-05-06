@@ -2,6 +2,7 @@
   xmlns:session="java:org.cdlib.xtf.xslt.Session"
   xmlns:freeformQuery="java:org.cdlib.xtf.xslt.FreeformQuery"
   xmlns:math="java:java.lang.Math"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   extension-element-prefixes="session freeformQuery"
   exclude-result-prefixes="#all" 
   version="2.0">
@@ -256,13 +257,10 @@
   </xsl:template>
   
   <xsl:template match="/" mode="featured">
-    <xsl:variable name="rnd" select="format-number(
-                                           round(number(15000) * math:random()),
-                                           '##########'
-                                     )"/>
+    <xsl:variable name="rnd" select="xs:integer(round(number(15000) * math:random()))" as="xs:integer"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
-      style="{$stylesheet}" maxDocs="25" startDoc="$rnd" >
+      style="{$stylesheet}" maxDocs="25" startDoc="{$rnd}" >
       <and>
         <and field="facet-wikithumb">
           <term>true</term>
