@@ -174,19 +174,21 @@
   </xsl:template>
 
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
-      <xsl:apply-templates select="$page/crossQueryResult/docHit" mode="thumb"/>
+      <xsl:apply-templates select="$page/crossQueryResult/docHit" mode="thumb">
+        <xsl:sort select="meta/identity[1]"/>
+      </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template match="docHit" mode="thumb">
+<div class="panel panel-default">
+<div class="panel-body">
 <div class="media">
-  <a class="pull-left" href="#">
+      <a href="{meta/facet-wikithumb[1]/@rights}" class="pull-left">
     <div class="media-object wikipedia_thumbnail" style="min-width: 150px;">
-      <a href="{meta/facet-wikithumb[1]/@rights}">
         <img src="{meta/facet-wikithumb[1]/@thumb}" style="min-width: 155px;" alt=""></img>
         <div>Image from Wikipedia</div>
-      </a>
     </div>
-  </a>
+      </a>
   <div class="media-body">
     <h4 class="media-heading">
       <a href="{meta/recordIds[1]}"><xsl:value-of select="meta/identity[1]"/></a>
@@ -194,6 +196,8 @@
     <div style="font-size: 200%;"><xsl:value-of select="meta/count-ArchivalResource"/> collections</div>
     <xsl:apply-templates select="meta/facet-Location" mode="locations"/>
   </div>
+</div>
+</div>
 </div>
   </xsl:template>
 

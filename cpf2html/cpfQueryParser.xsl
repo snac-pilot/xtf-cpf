@@ -1,6 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:session="java:org.cdlib.xtf.xslt.Session"
   xmlns:freeformQuery="java:org.cdlib.xtf.xslt.FreeformQuery"
+  xmlns:math="java:java.lang.Math"
   extension-element-prefixes="session freeformQuery"
   exclude-result-prefixes="#all" 
   version="2.0">
@@ -158,8 +159,8 @@
       maxDocs="{$maxDocs}">
           <facet field="facet-occupation" select="{$facet-occupation-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-localDescription" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-Wikipedia" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
-          <facet field="facet-recordLevel" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-Wikipedia" select="*" sortGroupsBy="{$sortGroupsBy}"/>
+          <facet field="facet-recordLevel" select="**" sortGroupsBy="{$sortGroupsBy}"/>
           <and>
             <xsl:apply-templates/>
             <xsl:choose>
@@ -255,9 +256,13 @@
   </xsl:template>
   
   <xsl:template match="/" mode="featured">
+    <xsl:variable name="rnd" select="format-number(
+                                           round(number(15000) * math:random()),
+                                           '##########'
+                                     )"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
-      style="{$stylesheet}" maxDocs="50" startDoc="{$startDoc}" >
+      style="{$stylesheet}" maxDocs="25" startDoc="$rnd" >
       <and>
         <and field="facet-wikithumb">
           <term>true</term>
