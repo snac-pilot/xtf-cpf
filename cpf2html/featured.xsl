@@ -183,12 +183,16 @@
 <div class="panel panel-default">
 <div class="panel-body">
 <div class="media">
-      <a href="{meta/facet-wikithumb[1]/@rights}" class="pull-left">
     <div class="media-object wikipedia_thumbnail" style="min-width: 150px;">
+      <a href="{meta/recordIds[1]}">
         <img src="{meta/facet-wikithumb[1]/@thumb}" style="min-width: 155px;" alt=""></img>
-        <div>Image from Wikipedia</div>
-    </div>
       </a>
+          <a href="{meta/facet-wikithumb[1]/@rights}" class="pull-left">
+        <div>
+          Image from Wikipedia
+        </div>
+          </a>
+    </div>
   <div class="media-body">
     <h4 class="media-heading">
       <a href="{meta/recordIds[1]}"><xsl:value-of select="meta/identity[1]"/></a>
