@@ -113,6 +113,10 @@ use html5 data-xsl* attributes to trigger xslt
       <span title="authorized form of name" class="{($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType}">
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
+      <span class="icon-{ if ($page/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType='person')
+                            then 'ind' else 
+                          if ($page/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityType='family')
+                            then 'fam' else 'org'} x2"></span>
       </span>
       <xsl:text> </xsl:text>
     </xsl:element>
@@ -463,7 +467,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'linkedData'"/>
       <xsl:with-param name="head">
-        <xsl:text>Linked Data</xsl:text>
+        <i style="font-size: 80%;" class="glyphicon glyphicon-new-window"></i>
+        <xsl:text> Linked Data</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$linkedData" mode="eac">
@@ -481,7 +486,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'relatedWorks'"/>
       <xsl:with-param name="head">
-        <xsl:text>Resources</xsl:text>
+        <i style="font-size: 80%;" class="glyphicon glyphicon-new-window"></i>
+        <xsl:text> Resources</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$relatedWorks" mode="eac">
@@ -497,7 +503,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'relatedPeople'"/>
       <xsl:with-param name="head">
-        <xsl:text>People</xsl:text>
+        <span class="icon-ind"></span>
+        <xsl:text> People</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$relatedPeople" mode="eac">
@@ -512,7 +519,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'relatedFamilies'"/>
       <xsl:with-param name="head">
-        <xsl:text>Families</xsl:text>
+        <span class="icon-fam"></span>
+        <xsl:text> Families</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$relatedFamilies" mode="eac">
@@ -527,7 +535,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'relatedOrganizations'"/>
       <xsl:with-param name="head">
-        <xsl:text>Organizations</xsl:text>
+        <span class="icon-org"></span>
+        <xsl:text> Organizations</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$relatedOrganizations" mode="eac">
@@ -566,7 +575,8 @@ select="($relations)/eac:cpfRelation[
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'relatedCollections'"/>
       <xsl:with-param name="head">
-        <xsl:text>Archival Collections</xsl:text>
+        <i style="font-size: 80%;" class="glyphicon glyphicon-new-window"></i>
+        <xsl:text> Archival Collections</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body" select="$body"/>
       <xsl:with-param name="count" select="count($archivalRecords)"/>
