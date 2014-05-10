@@ -284,6 +284,9 @@ use html5 data-xsl* attributes to trigger xslt
 
   <xsl:template match='*[@tmpl:replace-markup="localDescriptions"]|*[@data-xsl="subjects"]'>
     <xsl:apply-templates select="$localDescriptions" mode="eac"/>
+    <xsl:if test="$localDescriptions=''">
+      <div class="alert alert-info">not available for this record</div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match='*[@tmpl:condition="occupations"]'> 
@@ -296,6 +299,9 @@ use html5 data-xsl* attributes to trigger xslt
 
   <xsl:template match='*[@tmpl:replace-markup="occupations"]|*[@data-xsl="occupations"]'>
     <xsl:apply-templates select="$occupations" mode="eac"/>
+    <xsl:if test="$occupations=''">
+      <div class="alert alert-info">not available for this record</div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:variable name="localDescriptions">
@@ -384,6 +390,9 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:template match='*[@tmpl:replace-markup="biogHist"]|*[@data-xsl="bioghist"]'>
     <!-- contain div is to get :first-child to work -->
     <xsl:apply-templates select="$biogHist" mode="eac"/>
+    <xsl:if test="not($biogHist)">
+    <div class="alert alert-info{ if ($page/eac:eac-cpf/meta/facet-wikithumb[1]) then ' pull-right' else ''}">not available for this record</div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:variable name="generalContext" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description/eac:generalContext"/>
@@ -468,15 +477,14 @@ select="($relations)/eac:cpfRelation[
       <xsl:with-param name="id" select="'linkedData'"/>
       <xsl:with-param name="head">
         <i style="font-size: 80%;" class="glyphicon glyphicon-new-window"></i>
-        <xsl:text> Linked Data</xsl:text>
+        <xsl:text> Related External Links</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
+        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}"><b>archivegrid</b> search</a>
         <xsl:apply-templates select="$linkedData" mode="eac">
-          <xsl:sort/>
+          <xsl:sort select="@xlink:href"/>
         </xsl:apply-templates>
-        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}"><b>archivegrid</b>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="$ident"/></a>
       </xsl:with-param>
       <xsl:with-param name="count" select="count($linkedData) + 1"/>
     </xsl:call-template>
@@ -487,7 +495,7 @@ select="($relations)/eac:cpfRelation[
       <xsl:with-param name="id" select="'relatedWorks'"/>
       <xsl:with-param name="head">
         <i style="font-size: 80%;" class="glyphicon glyphicon-new-window"></i>
-        <xsl:text> Resources</xsl:text>
+        <xsl:text> Related Resources</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
         <xsl:apply-templates select="$relatedWorks" mode="eac">
