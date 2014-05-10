@@ -26,7 +26,7 @@
     select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' 
             else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
             else if ($autocomplete) then 'cpf2html/autocomplete.xsl'
-            else if (count(parameters/param) = 0) then 'cpf2html/featured.xsl'
+            else if (count(parameters/param) = 0 or $rmode='stats') then 'cpf2html/featured-stats.xsl'
             else ('cpf2html/cpfResultFormatter.xsl')"/>
 
   <xsl:template match="/">
@@ -34,6 +34,9 @@
     <xsl:choose>
       <xsl:when test="count(parameters/param) = 0">
         <xsl:apply-templates select="." mode="featured"/>
+      </xsl:when>
+      <xsl:when test="$rmode = 'stats'">
+        <xsl:apply-templates select="." mode="stats"/>
       </xsl:when>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
@@ -72,7 +75,7 @@
             <xsl:attribute name="sortDocsBy" select="$sortDocsBy"/>
           </xsl:if>
           <xsl:if test="not($rmode='slickgrid')">
-            <facet field="facet-entityType" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
+            <facet field="facet-entityType" select="*" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-person" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-family" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
             <facet field="facet-corporateBody" select="*[0]" sortGroupsBy="{$sortGroupsBy}"/>
@@ -178,6 +181,24 @@
       </query>
   </xsl:template>
 
+  <xsl:template match="/" mode="stats">
+    <query indexPath="index" termLimit="1000" workLimit="20000000"
+                style="{$stylesheet}" startDoc="{$startDoc}" maxDocs="0" normalizeScores="false">
+      <facet field="facet-Wikipedia" select="*[0]"/>
+      <facet field="facet-wikithumb" select="*[0]"/>
+      <facet field="fromDate" select="*[0]"/>
+      <facet field="toDate" select="*[0]"/>
+      <facet field="facet-entityType" select="**"/>
+      <facet field="facet-recordLevel" select="**"/>
+      <facet field="facet-Location" select="*[1-10]"/>
+      <facet field="facet-occupation" select="*[1-10]"/>
+      <facet field="facet-localDescription" select="*[1-10]"/>
+      <facet field="facet-resourceRelation" select="*[1-10]"/>
+      <facet field="facet-cpfRelation" select="*[1-10]"/>
+      <and><allDocs/></and>
+    </query>
+  </xsl:template>
+
   <!-- ====================================================================== -->
   <!-- autocomplete  http://gist.github.com/612901                            -->
   <!-- ====================================================================== -->
@@ -260,7 +281,7 @@
     <xsl:variable name="rnd" select="xs:integer(round(number(15000) * math:random()))" as="xs:integer"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
-      style="{$stylesheet}" maxDocs="25" startDoc="{$rnd}" >
+      style="{$stylesheet}" maxDocs="25" startDoc="1" >
       <and>
         <and field="facet-wikithumb">
           <term>true</term>
