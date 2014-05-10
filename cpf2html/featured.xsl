@@ -174,34 +174,37 @@
   </xsl:template>
 
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
+      <div style="padding: 1em; ">
+  <a href=""><button type="button" class="btn btn-warning btn-lg">
+    <span class="glyphicon glyphicon-refresh"></span>
+    Explore featured records
+    </button></a>
+
+      </div>
+
+      <div class="row list-comments">
       <xsl:apply-templates select="$page/crossQueryResult/docHit" mode="thumb">
         <xsl:sort select="meta/identity[1]"/>
       </xsl:apply-templates>
+      </div>
   </xsl:template>
 
   <xsl:template match="docHit" mode="thumb">
-<div class="panel panel-default">
-<div class="panel-body">
-<div class="media">
-    <div class="media-object wikipedia_thumbnail" style="min-width: 150px;">
-      <a href="{meta/recordIds[1]}">
-        <img src="{meta/facet-wikithumb[1]/@thumb}" style="min-width: 155px;" alt=""></img>
-      </a>
-          <a href="{meta/facet-wikithumb[1]/@rights}" class="pull-left">
-        <div>
-          Image from Wikipedia
-        </div>
-          </a>
-    </div>
-  <div class="media-body">
-    <h4 class="media-heading">
-      <a href="{meta/recordIds[1]}"><xsl:value-of select="meta/identity[1]"/></a>
-    </h4>
-    <div style="font-size: 200%;"><xsl:value-of select="meta/count-ArchivalResource"/> collections</div>
-    <xsl:apply-templates select="meta/facet-Location" mode="locations"/>
+
+<div class="thumbnail">
+  <div style="float: none;">
+    <a href="{meta/recordIds[1]}">
+      <!-- img src="{meta/facet-wikithumb[1]/@thumb}" style="Min-width: 155px;" class="Img-responsive" alt=""></img -->
+      <img src="{meta/facet-wikithumb[1]/@thumb}" alt=""></img>
+    </a>
+    <a href="{meta/facet-wikithumb[1]/@rights}" class="wikicreditlink">
+      <p class="text-center" style="margin-top: -1.5em;"><span class="wikicredit">Image from Wikipedia</span></p>
+    </a>
   </div>
-</div>
-</div>
+  <div class="caption">
+    <div class="text-muted"><xsl:value-of select="meta/count-ArchivalResource"/> related collections</div>
+    <h4><a href="{meta/recordIds[1]}"><xsl:value-of select="meta/identity[1]"/></a></h4>
+  </div>
 </div>
   </xsl:template>
 
