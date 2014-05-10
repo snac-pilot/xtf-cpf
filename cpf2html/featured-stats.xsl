@@ -137,6 +137,9 @@
     <div class="filternav">&#160;</div>
   </xsl:template>
 
+  <xsl:template match="div[@id='browsefilterby']" mode="html-template">
+  </xsl:template>
+
   <xsl:template match="*[@data-xsl='browsenav']" mode="html-template">
                <div class="browsenav" data-xsl='browsenav'>
                   <ul>
@@ -174,19 +177,80 @@
   </xsl:template>
 
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
+    <xsl:if test="$rmode=''">
       <div style="padding: 1em; ">
-  <a href=""><button type="button" class="btn btn-warning btn-lg">
-    <span class="glyphicon glyphicon-refresh"></span>
-    Explore featured records
-    </button></a>
-
+        <a href="">
+          <button type="button" class="btn btn-warning btn-lg">
+            <span class="glyphicon glyphicon-refresh"></span>
+            Explore featured records
+          </button>
+        </a>
       </div>
-
-      <div class="row list-comments">
+    </xsl:if>
+    <div class="row list-comments">
+      <!-- featured -->
       <xsl:apply-templates select="$page/crossQueryResult/docHit" mode="thumb">
         <xsl:sort select="meta/identity[1]"/>
       </xsl:apply-templates>
+    </div>
+
+      <!-- stats -->
+      <xsl:if test="$rmode='stats'">
+        <xsl:variable name="totalDocs" select="number($page/crossQueryResult/@totalDocs)"/>
+        <div>Total Docs: <xsl:value-of select="$totalDocs"/></div>
+        <xsl:apply-templates select="$page/crossQueryResult/facet" mode="stats">
+          <xsl:with-param name="totalDocs" select="$totalDocs"/>
+        </xsl:apply-templates>
+      </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="facet[@field='facet-entityType']|facet[@field='facet-recordLevel']" mode="stats">
+    <xsl:param name="totalDocs"/>
+    <div style="padding: 1em;">
+      <xsl:for-each select="group">
+        <div><xsl:value-of select="@value"/> : 
+        <xsl:value-of select="@totalDocs"/> : 
+        <xsl:value-of select="format-number(@totalDocs div $totalDocs, '#.##%') "/>
+        </div>
+      </xsl:for-each>
+    </div>
+  </xsl:template>
+
+  <xsl:template
+    match="facet[@field='facet-Location']|
+           facet[@field='facet-occupation']|
+           facet[@field='facet-localDescription']|
+           facet[@field='facet-resourceRelation']|
+           facet[@field='facet-cpfRelation']
+          " 
+    mode="stats">
+    <xsl:param name="totalDocs"/>
+    <div style="padding: 1em;">
+      <xsl:value-of select="format-number(@totalDocs div $totalDocs, '#.##%') "/> of records have
+      <xsl:value-of select="@field"/>
+      <div>top 10 of <xsl:value-of select="@totalGroups"/>
+        <xsl:apply-templates select="group" mode="stats">
+          <xsl:with-param name="totalDocs" select="$totalDocs"/>
+        </xsl:apply-templates>
       </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="group" mode="stats">
+    <xsl:param name="totalDocs"/>
+    <div style="padding-left: 1em;">
+      <xsl:value-of select="@value"/>
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="format-number(@totalDocs div $totalDocs, '#.##%') "/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="facet" mode="stats">
+    <xsl:param name="totalDocs"/>
+    <div><xsl:value-of select="@field"/><xsl:text> </xsl:text>
+        <xsl:value-of select="@totalDocs"/> : 
+      <xsl:value-of select="format-number(@totalDocs div $totalDocs, '#.##%') "/>
+    </div>
   </xsl:template>
 
   <xsl:template match="docHit" mode="thumb">
