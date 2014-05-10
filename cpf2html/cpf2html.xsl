@@ -480,7 +480,8 @@ select="($relations)/eac:cpfRelation[
         <xsl:text> Related External Links</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
-        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}"><b>archivegrid</b> search</a>
+        <div class="sprite-icons-archivegrid"></div>
+        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}">ArchiveGrid search</a>
         <xsl:apply-templates select="$linkedData" mode="eac">
           <xsl:sort select="@xlink:href"/>
         </xsl:apply-templates>
@@ -916,6 +917,30 @@ select="($relations)/eac:cpfRelation[
           <xsl:otherwise>NEED FINAL XML</xsl:otherwise>
         </xsl:choose>
       </a>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]
+                                      [contains(@xlink:href,'wikipedia.org')]"  mode="eac">
+    <div><div class="sprite-icons-wikipedia"></div><a href="{@xlink:href}">Wikipedia</a>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]
+                                      [contains(@xlink:href,'id.loc.gov')]"  mode="eac">
+    <div><div class="sprite-icons-idlocgov"></div><a href="{@xlink:href}">LC Name Authority File</a>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]
+                                      [contains(@xlink:href,'worldcat')]"  mode="eac">
+    <div><div class="sprite-icons-worldcat"></div><a href="{@xlink:href}">WorldCat Identities</a>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]
+                                      [contains(@xlink:href,'viaf.org')]"  mode="eac">
+    <div><div class="sprite-icons-viaf"></div><a href="{@xlink:href}">Virtual International Authority File</a>
     </div>
   </xsl:template>
 
