@@ -481,7 +481,7 @@ select="($relations)/eac:cpfRelation[
       </xsl:with-param>
       <xsl:with-param name="body">
         <div class="sprite-icons-archivegrid"></div>
-        <a href="http://beta.worldcat.org/archivegrid/?ft=1&amp;q={$ident}">ArchiveGrid search</a>
+        <a href="http://beta.worldcat.org/archivegrid/?p=1&amp;q={$ident}">ArchiveGrid search</a>
         <xsl:apply-templates select="$linkedData" mode="eac">
           <xsl:sort select="@xlink:href"/>
         </xsl:apply-templates>
