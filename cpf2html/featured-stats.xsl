@@ -177,7 +177,7 @@
   </xsl:template>
 
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
-    <xsl:if test="$rmode=''">
+    <xsl:if test="$rmode!='stats'">
       <div style="padding: 1em; ">
         <a href="">
           <button type="button" class="btn btn-warning btn-lg">
