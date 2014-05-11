@@ -281,7 +281,7 @@
     <xsl:variable name="rnd" select="xs:integer(round(number(15000) * math:random()))" as="xs:integer"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
-      style="{$stylesheet}" maxDocs="25" startDoc="1" >
+      style="{$stylesheet}" maxDocs="25" startDoc="{$rnd}" >
       <and>
         <and field="facet-wikithumb">
           <term>true</term>
