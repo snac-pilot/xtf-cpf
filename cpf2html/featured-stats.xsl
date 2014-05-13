@@ -63,7 +63,17 @@
     </xsl:comment>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:process-markup="sectionType"]|*[data-xsl="sectionType"]' mode="html-template">
+  <xsl:template match='*[@data-xsl="html-title"]' mode="html-template">
+    <title>
+      <xsl:choose>
+        <xsl:when test="$rmode='terms'">SNAC Terms and Conditions</xsl:when>
+        <xsl:when test="$rmode='stats'">SNAC Index Stats</xsl:when>
+        <xsl:otherwise>SNAC Featured Items</xsl:otherwise>
+      </xsl:choose>
+    </title>
+  </xsl:template>
+
+  <xsl:template match='*[@tmpl:process-markup="sectionType"]|*[@data-xsl="sectionType"]' mode="html-template">
     <xsl:element name="{name(.)}">
       <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
       <xsl:attribute name="title"><xsl:value-of select="@title"/></xsl:attribute>
