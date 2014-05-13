@@ -26,7 +26,7 @@
     select="if ($rmode='dot') then 'cpf2html/dotResults.xsl' 
             else if ($rmode='slickgrid') then 'cpf2html/crossQuery-to-json.xslt'
             else if ($autocomplete) then 'cpf2html/autocomplete.xsl'
-            else if (count(parameters/param) = 0 or $rmode='stats') then 'cpf2html/featured-stats.xsl'
+            else if (count(parameters/param) = 0 or $rmode='stats' or $rmode='terms') then 'cpf2html/featured-stats.xsl'
             else ('cpf2html/cpfResultFormatter.xsl')"/>
 
   <xsl:template match="/">
@@ -37,6 +37,9 @@
       </xsl:when>
       <xsl:when test="$rmode = 'stats'">
         <xsl:apply-templates select="." mode="stats"/>
+      </xsl:when>
+      <xsl:when test="$rmode = 'terms'">
+        <xsl:apply-templates select="." mode="terms"/>
       </xsl:when>
       <xsl:when test="$mode = 'rnd'">
         <xsl:apply-templates select="." mode="rnd"/>
@@ -277,6 +280,12 @@
     </query>
   </xsl:template>
   
+  <xsl:template match="/" mode="terms">
+    <query indexPath="index" style="{$stylesheet}">
+      <and></and>
+    </query>
+  </xsl:template>
+
   <xsl:template match="/" mode="featured">
     <xsl:variable name="rnd" select="xs:integer(round(number(15000) * math:random()))" as="xs:integer"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
