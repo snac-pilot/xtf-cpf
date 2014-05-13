@@ -8,7 +8,7 @@
    extension-element-prefixes="session"
    exclude-result-prefixes="#all"
    version="2.0">
-   
+
    <!-- ====================================================================== -->
    <!-- Import Common Templates                                                -->
    <!-- ====================================================================== -->
@@ -187,7 +187,7 @@
     </xsl:choose>
   </xsl:function>
 
-  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]' mode="html-template">
+  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]|*[@data-xsl-ga="ga"]' mode="html-template">
     <xsl:call-template name="google-tracking-code"/>
   </xsl:template>
 

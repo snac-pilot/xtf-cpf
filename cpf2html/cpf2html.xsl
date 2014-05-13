@@ -480,14 +480,16 @@ select="($relations)/eac:cpfRelation[
         <xsl:text> Related External Links</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="body">
-        <div class="sprite-icons-archivegrid"></div>
-        <a href="http://beta.worldcat.org/archivegrid/?p=1&amp;q={$ident}">ArchiveGrid search</a>
+        <div><div class="sprite-icons-archivegrid"></div>
+        <a href="http://beta.worldcat.org/archivegrid/?p=1&amp;q={$ident}">ArchiveGrid search</a></div>
+        <div><div class="sprite-icons-dpla"></div>
+        <a href="http://dp.la/search?utf8=✓&amp;q={$ident}">DPLA search</a></div>
         <xsl:apply-templates select="$linkedData" mode="eac">
           <xsl:sort select="@xlink:href"/>
         </xsl:apply-templates>
         <xsl:text> </xsl:text>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($linkedData) + 1"/>
+      <xsl:with-param name="count" select="count($linkedData) + 2"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -653,7 +655,7 @@ select="($relations)/eac:cpfRelation[
    </div>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]'>
+  <xsl:template match='*[@tmpl:replace-markup="google-tracking-code"]|*[@data-xsl-ga="ga"]'>
     <xsl:call-template name="google-tracking-code"/>
 <xsl:text disable-output-escaping="yes">
 <![CDATA[
