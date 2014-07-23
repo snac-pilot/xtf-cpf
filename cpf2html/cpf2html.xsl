@@ -161,7 +161,7 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:template match="*[@data-xsl='authoritySource']">
     <xsl:variable name="ident" select="$page/eac:eac-cpf/eac:cpfDescription/eac:identity"/>
     <div data-xsl='authoritySource'>
-      <label>Authority Source:</label>
+      <label>Authority Source:</label><xsl:text> </xsl:text>
       <xsl:apply-templates select="$ident/eac:nameEntry[1]/eac:authorizedForm" mode="eac"/>
     </div>
   </xsl:template>
@@ -224,7 +224,7 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:template match="*[@data-xsl='nationality']">
     <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
     <div data-xsl='nationality'>
-      <label>Nationality: </label>
+      <label>Nationality: </label><xsl:text> </xsl:text>
       <xsl:value-of select="$desc/eac:localDescription[@localType='http://viaf.org/viaf/terms#nationalityOfEntity']/eac:placeEntry/iso:lookup(lower-case(@countryCode))"/>
     </div>
   </xsl:template>
@@ -232,7 +232,7 @@ use html5 data-xsl* attributes to trigger xslt
   <xsl:template match="*[@data-xsl='language']">
     <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
     <div data-xsl='language'>
-      <label>Language: </label>
+      <label>Language: </label><xsl:text> </xsl:text>
       <xsl:apply-templates select="$page/eac:eac-cpf/eac:cpfDescription/eac:description/eac:languageUsed" mode="eac"/>
     </div>
   </xsl:template>
