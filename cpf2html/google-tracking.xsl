@@ -20,6 +20,7 @@
 
   ga('create', '<xsl:value-of select="$ua-code"/>', 'virginia.edu');
   ga('require', 'linkid', 'linkid.js');
+  ga('require', 'displayfeatures');
   ga('set', 'anonymizeIp', true);
   ga('send', 'pageview');
     </script>
