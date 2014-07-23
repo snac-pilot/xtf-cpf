@@ -193,7 +193,7 @@
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
     <xsl:if test="$rmode!='stats' and $rmode!='terms'">
       <div style="padding: 1em; ">
-        <a href="">
+        <a href="" id="explore-fr">
           <button type="button" class="btn btn-warning btn-lg">
             <span class="glyphicon glyphicon-refresh"></span>
             Explore featured records
@@ -221,7 +221,6 @@
 <p>This website follows <a href="http://www.virginia.edu/copyright.html">University of Virginia Copyright/Website/Privacy Policies</a> with the following notes.</p>
 
 <h1>Terms</h1>
-
 <p>The contents of this prototype historical resource ("website", "site") are made publicly available by the collection-holding repositories for use in research, teaching, and private study.</p>
 <div>By their use of this prototype historical resource, users agree to follow these conditions of use:
 <ul>
@@ -238,6 +237,11 @@
 <p>This website uses the _anonymizeIp option on the google tracker code, which asks google not to log the last octet of your IP address.</p>
 
 <p>If you do not wish to be tracked by google analytics, you can install the <a href="http://tools.google.com/dlpage/gaoptout">Google Analytics Opt-out Browser Add-on (beta)</a>.</p>
+
+<h2>Google Analytics Demographics and Interest Reporting</h2>
+<p>This site has implimented a google advertising feature
+<a href="https://support.google.com/analytics/answer/2799357">Google Analytics Demographics and Interest Reporting</a> and may use data from Google’s Interest-based advertising or 3rd-party audience data (such as age, gender and interests) with Google Analytics.  This site will not facilitate the merging of personally-identifiable information with non-personally identifiable information collected through any Google advertising product or feature without robust notice of, and the user's prior affirmative (i.e., opt-in) consent to, that merger.
+</p>
 
       </xsl:if>
   </xsl:template>
