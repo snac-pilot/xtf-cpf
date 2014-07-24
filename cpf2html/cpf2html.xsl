@@ -166,6 +166,10 @@ use html5 data-xsl* attributes to trigger xslt
     </div>
   </xsl:template>
 
+  <xsl:template match="eac:authorizedForm" mode="eac">
+    <xsl:value-of select="."/><xsl:text> </xsl:text>
+  </xsl:template>
+
   <xsl:template match="eac:nameEntry" mode="extra-names">
     <xsl:text>
 </xsl:text>
@@ -707,7 +711,7 @@ select="($relations)/eac:cpfRelation[
       <xsl:value-of select="$type"/>
       <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:value-of select="."/>
+    <xsl:value-of select="replace(.,'-','&#8209;')"/>
   </xsl:template>
 
   <xsl:template match="eac:occupations | eac:localDescriptions | eac:functions | eac:mandates | eac:places" mode="eac">
@@ -910,14 +914,9 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
-    <div data-xsl='maybeSame'><label>Maybe same as</label>
+    <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
       <a href="{@xlink:href}">
-        <xsl:choose>
-          <xsl:when test="text()">
-            <xsl:value-of select="."/>
-          </xsl:when>
-          <xsl:otherwise>NEED FINAL XML</xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates mode="eac"/>
       </a>
     </div>
   </xsl:template>
