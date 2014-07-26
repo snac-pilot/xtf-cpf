@@ -490,14 +490,18 @@ select="($relations)/eac:cpfRelation[
       <xsl:with-param name="body">
         <div><div class="sprite-icons-archivegrid"></div>
         <a href="http://beta.worldcat.org/archivegrid/?p=1&amp;q={$ident}">ArchiveGrid search</a></div>
-        <div><div class="sprite-icons-dpla"></div>
-        <a href="http://dp.la/search?utf8=✓&amp;q={$ident}">DPLA search</a></div>
+        <xsl:if test="($page)/eac:eac-cpf/meta/facet-dpla">
+          <div>
+            <div class="sprite-icons-dpla"></div>
+            <a href="http://dp.la/search?utf8=✓&amp;q={$ident}">DPLA search</a>
+          </div>
+        </xsl:if>
         <xsl:apply-templates select="$linkedData" mode="eac">
           <xsl:sort select="@xlink:href"/>
         </xsl:apply-templates>
         <xsl:text> </xsl:text>
       </xsl:with-param>
-      <xsl:with-param name="count" select="count($linkedData) + 2"/>
+      <xsl:with-param name="count" select="count($linkedData) + 1 + count(($page)/eac:eac-cpf/meta/facet-dpla)"/>
     </xsl:call-template>
   </xsl:template>
 
