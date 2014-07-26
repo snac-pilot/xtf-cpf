@@ -431,7 +431,7 @@ use html5 data-xsl* attributes to trigger xslt
   </xsl:template>
 
   <xsl:variable name="relations" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:relations"/>
-  <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[contains(lower-case(@xlink:role),'archival')]" />
+  <xsl:variable name="archivalRecords" select="($relations)/eac:resourceRelation[contains(lower-case(@xlink:role),'archival') or @xlink:role='']" />
   <xsl:variable name="archivalRecords-creatorOf" select="($archivalRecords)[contains(@xlink:arcrole, 'creatorOf')]"/>
   <xsl:variable name="archivalRecords-referencedIn" select="($archivalRecords)[not(contains(@xlink:arcrole, 'creatorOf'))]"/>
 
@@ -961,7 +961,7 @@ select="($relations)/eac:cpfRelation[
             <xsl:if test="local-name(.)='cpfRelation'">
               <xsl:apply-templates select="@xlink:arcrole" mode="arcrole"/>
             </xsl:if>
-          <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/>
+          <xsl:variable name="extra-info" select="eac:date | eac:dateRange | eac:dateSet | eac:descriptiveNote | eac:objectXMLWrap/ead:did[1]/ead:repository[1]"/> 
           <!-- xsl:if test="$extra-info">
             <div>
               <xsl:apply-templates select="$extra-info" mode="eac">
@@ -996,6 +996,7 @@ select="($relations)/eac:cpfRelation[
         </xsl:otherwise>
       </xsl:choose>
       <xsl:apply-templates select="eac:objectXMLWrap/mods:mods/mods:name[mods:role/mods:roleTerm='Repository']"/>
+      <xsl:apply-templates select="eac:objectXMLWrap//ead:repository"/>
     </div>
   </xsl:template>
 
