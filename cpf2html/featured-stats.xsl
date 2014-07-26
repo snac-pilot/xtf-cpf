@@ -171,6 +171,10 @@
                </div>
   </xsl:template>
 
+  <xsl:template match="*[@data-xsl='footer']" mode="html-template">
+    <xsl:copy-of select="document('footer2.html')"/>
+  </xsl:template>
+
 
   <!-- <form method="GET" action="/xtf/search"> -->
   <xsl:template match="form[@action='/xtf/search']" mode="html-template">

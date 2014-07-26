@@ -77,6 +77,10 @@ use html5 data-xsl* attributes to trigger xslt
 
   <!-- templates that hook the html template to the EAC -->
 
+  <xsl:template match="*[@data-xsl='footer']">
+    <xsl:copy-of select="document('footer2.html')"/>
+  </xsl:template>
+
   <xsl:template match="*[@data-xsl='wikipedia_thumbnail']">
     <xsl:variable name="wt" select="$page/eac:eac-cpf/meta/facet-wikithumb[1]"/>
     <xsl:if test="$wt">
