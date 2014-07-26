@@ -114,6 +114,31 @@
     <xsl:with-param name="tree" select="$LinkedData"/>
   </xsl:call-template>
 
+  <xsl:variable name="supplemental_data"
+                select="replace(base-uri(),'/data/','/supplemental_data/')"/>
+  <xsl:if test="FileUtils:exists($supplemental_data)" >
+    <xsl:variable name="data" select="document($supplemental_data)"/>
+    <xsl:if test="($data)/s/@dpla">
+      <facet-dpla xtf:meta="yes" xtf:store="yes">
+        <xsl:text>true</xsl:text>
+      </facet-dpla>
+    </xsl:if>
+    <xsl:if test="($data)/s/@europeana">
+      <facet-europeana xtf:meta="yes" xtf:store="yes">
+        <xsl:text>true</xsl:text>
+      </facet-europeana>
+    </xsl:if>
+    <xsl:if test="($data)/s/@thumb">
+      <facet-wikithumb xtf:meta="yes" xtf:store="yes"
+        id="{($data)/s/@n}"
+        thumb="{($data)/s/@thumb}"
+        rights="{($data)/s/@thumb_rights}">
+        <xsl:text>true</xsl:text>
+      </facet-wikithumb>
+    </xsl:if>
+  </xsl:if>
+
+
   </xsl:template>
 
   <xsl:template name="count-facet">
@@ -135,20 +160,6 @@
   <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" 
                 mode="main-facets">
     <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
-    <xsl:variable name="wikipage">
-      <xsl:value-of select="concat('../data-wikithumbs/',
-                                   substring-after(@xlink:href,'http://en.wikipedia.org/wiki/'),
-                                   '.xml'
-                                  )"/>
-    </xsl:variable>
-    <xsl:if test="FileUtils:exists($wikipage)" >
-      <xsl:variable name="data-wikithumb" select="document($wikipage)"/>
-      <xsl:message><xsl:copy-of select="$data-wikithumb"/></xsl:message>
-      <facet-wikithumb xtf:meta="yes" xtf:store="yes">
-        <xsl:apply-templates select="($data-wikithumb)/nail/@*"/>
-        <xsl:text>true</xsl:text>
-      </facet-wikithumb>
-    </xsl:if>
   </xsl:template>
 
 <!-- <name>
