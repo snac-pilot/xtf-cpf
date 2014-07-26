@@ -392,6 +392,10 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="*[@data-xsl='footer']" mode="html-template">
+    <xsl:copy-of select="document('footer2.html')"/>
+  </xsl:template>
+
   <xsl:template match="*[@tmpl:replace-markup='AZ']|*[@data-xsl='AZ']" mode="html-template">
         <ul class="alphascroll">
           <xsl:apply-templates select="($page)/crossQueryResult/facet[@field='facet-identityAZ']/group" mode="AZletters"/>
