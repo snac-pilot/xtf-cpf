@@ -2,6 +2,7 @@
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:eac="urn:isbn:1-931666-33-4"
+  xmlns:ead="urn:isbn:1-931666-22-9"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xtf="http://cdlib.org/xtf"
   xmlns:xs="http://www.w4.org/2001/XMLSchema" 
@@ -80,7 +81,7 @@
     </facet-entityType>
     <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" mode="main-facets"/>
     <xsl:for-each-group 
-      select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart"
+      select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart | eac:cpfDescription/eac:relations/eac:resourceRelation//ead:repository/ead:corpname"
       group-by="."
     >
       <xsl:sort order="ascending" select="."/>
@@ -155,7 +156,7 @@
   <role> <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/rps">Repository</roleTerm> </role>
 </name> -->
   <xsl:template
-    match="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart" mode="main-facets">
+    match="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart | ead:corpname" mode="main-facets">
     <facet-Location xtf:facet="yes" xtf:meta="yes">
       <xsl:apply-templates/>
     </facet-Location>
