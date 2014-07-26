@@ -200,7 +200,7 @@
         <a href="" id="explore-fr">
           <button type="button" class="btn btn-warning btn-lg">
             <span class="glyphicon glyphicon-refresh"></span>
-            Explore featured names
+            Explore featured identities
           </button>
         </a>
       </div>
