@@ -184,6 +184,20 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="recordIds" mode="dc-json-element">
+    <xsl:param name="terminal"/>
+        <xsl:text>
+"</xsl:text>
+        <xsl:value-of select="name()"/>
+        <xsl:text>":</xsl:text>
+    <xsl:call-template name="escape-string">
+      <xsl:with-param name="s" select="replace(., 'http://n2t.net','')"/>
+    </xsl:call-template>
+    <xsl:if test="number($terminal) != 1">
+      <xsl:text>,</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="facet-wikithumb" mode="dc-json-element">
     <xsl:param name="terminal"/>
         <xsl:text>

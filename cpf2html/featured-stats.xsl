@@ -302,7 +302,7 @@
   <xsl:template match="docHit" mode="thumb">
     <div class="thumbnail">
       <div style="float: none;">
-        <a href="{meta/recordIds[1]}">
+        <a href="{replace(meta/recordIds[1],'http://n2t.net','')}">
           <img src="{meta/facet-wikithumb[1]/@thumb}" alt="[thumbnail of person]"></img>
         </a>
         <a href="{meta/facet-wikithumb[1]/@rights}" class="wikicreditlink">
@@ -311,7 +311,7 @@
       </div>
       <div class="caption">
         <div class="text-muted"><xsl:value-of select="meta/count-ArchivalResource"/> related collections</div>
-        <h4><a href="{meta/recordIds[1]}"><xsl:value-of select="meta/identity[1]"/></a></h4>
+        <h4><a href="{replace(meta/recordIds[1],'http://n2t.net','')}"><xsl:value-of select="meta/identity[1]"/></a></h4>
       </div>
     </div>
   </xsl:template>
