@@ -63,7 +63,7 @@
           indexPath="index" 
 	  returnMetaFields="identity, fromDate, toDate, facet-entityType, facet-recordLevel, facet-Wikipedia, facet-wikithumb, count-LinkedData, count-RelatedRecords, count-BibliographicalResource, count-ArchivalResource, recordIds"
           termLimit="1000" 
-          workLimit="2000000" 
+          workLimit="4000000" 
           maxSnippets="0"
           style="{$stylesheet}" 
           startDoc="{$startDoc}" 
