@@ -96,12 +96,8 @@ use html5 data-xsl* attributes to trigger xslt
 
   <xsl:template match='*[@tmpl:change-value="html-title"]|*[@data-xsl="title"]'>
     <xsl:element name="{name()}">
-
       <xsl:for-each select="@*[not(namespace-uri()='xslt://template')]"><xsl:copy copy-namespaces="no"/></xsl:for-each>
       <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
-      <xsl:text> [</xsl:text>
-      <xsl:value-of select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:entityId"/>
-      <xsl:text>]</xsl:text>
     </xsl:element>
   </xsl:template>
 
