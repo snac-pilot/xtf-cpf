@@ -247,6 +247,9 @@
 <a href="https://support.google.com/analytics/answer/2799357">Google Analytics Demographics and Interest Reporting</a> and may use data from Google’s Interest-based advertising or 3rd-party audience data (such as age, gender and interests) with Google Analytics.  This site will not facilitate the merging of personally-identifiable information with non-personally identifiable information collected through any Google advertising product or feature without robust notice of, and the user's prior affirmative (i.e., opt-in) consent to, that merger.
 </p>
 
+<h1>Thanks</h1>
+<p>Thank you <a href="http://glyphicons.com">Glyphicons</a>.   Glyphicons Halflings are normally not available for free, but their creator has made them available for Bootstrap free of cost.</p>
+
       </xsl:if>
   </xsl:template>
 
