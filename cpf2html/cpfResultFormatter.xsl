@@ -583,7 +583,7 @@
     <div class="result">
       <div class="{meta/facet-entityType}">
       <a>
-        <xsl:attribute name="href" select="replace(meta/recordIds[1],'http://n2t.net','')"/>
+        <xsl:attribute name="href" select="replace(meta/recordIds[1],'^http://n2t.net','')"/>
         <xsl:apply-templates select="meta/identity[1]"/>
       </a> 
       </div>

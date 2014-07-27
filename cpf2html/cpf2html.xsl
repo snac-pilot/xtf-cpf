@@ -1022,7 +1022,7 @@ select="($relations)/eac:cpfRelation[
   
   <xsl:template match="@xlink:href">
     <xsl:attribute name="href">
-      <xsl:value-of select="."/>
+      <xsl:value-of select="replace(.,'^http://n2t.net','')"/>
     </xsl:attribute>
   </xsl:template>
  
