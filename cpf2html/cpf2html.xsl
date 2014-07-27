@@ -706,7 +706,9 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <xsl:template match="*[@data-xsl='maybeSame']"><!-- mayBeSame -->
-    <xsl:apply-templates select="($maybeSame)[1]" mode="eac"/>
+    <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
+      <xsl:apply-templates select="($maybeSame)" mode="eac"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="eac:fromDate | eac:toDate | eac:date" mode="eac">
@@ -918,11 +920,9 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
-    <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
-      <a href="{@xlink:href}">
-        <xsl:apply-templates mode="eac"/>
-      </a>
-    </div>
+    <div><a href="{@xlink:href}">
+      <xsl:apply-templates mode="eac"/>
+    </a></div>
   </xsl:template>
 
   <xsl:template match="eac:cpfRelation[ends-with(@xlink:arcrole,'#sameAs')]
