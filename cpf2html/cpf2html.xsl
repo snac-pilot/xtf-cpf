@@ -166,8 +166,12 @@ use html5 data-xsl* attributes to trigger xslt
     </div>
   </xsl:template>
 
-  <xsl:template match="eac:authorizedForm" mode="eac">
-    <xsl:value-of select="."/><xsl:text> </xsl:text>
+  <xsl:template match="eac:authorizedForm | eac:languageUsed" mode="eac">
+    <xsl:value-of select="."/>,
+  </xsl:template>
+
+  <xsl:template match="eac:authorizedForm[position()=last()] | eac:languageUsed[position()=last()]" mode="eac">
+    <xsl:value-of select="."/>
   </xsl:template>
 
   <xsl:template match="eac:nameEntry" mode="extra-names">
@@ -229,7 +233,7 @@ use html5 data-xsl* attributes to trigger xslt
     <xsl:variable name="desc" select="$page/eac:eac-cpf/eac:cpfDescription/eac:description"/>
     <div data-xsl='nationality'>
       <label>Nationality: </label><xsl:text> </xsl:text>
-      <xsl:value-of select="$desc/eac:localDescription[@localType='http://viaf.org/viaf/terms#nationalityOfEntity']/eac:placeEntry/iso:lookup(lower-case(@countryCode))"/>
+      <xsl:value-of select="$desc/eac:localDescription[@localType='http://viaf.org/viaf/terms#nationalityOfEntity']/eac:placeEntry/iso:lookup(lower-case(@countryCode))"/><xsl:text> </xsl:text>
     </div>
   </xsl:template>
 
@@ -706,9 +710,11 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <xsl:template match="*[@data-xsl='maybeSame']"><!-- mayBeSame -->
-    <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
-      <xsl:apply-templates select="($maybeSame)" mode="eac"/>
-    </div>
+    <xsl:if test="($maybeSame)">
+      <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
+        <xsl:apply-templates select="($maybeSame)" mode="eac"/>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="eac:fromDate | eac:toDate | eac:date" mode="eac">
@@ -858,6 +864,10 @@ select="($relations)/eac:cpfRelation[
 
   <xsl:template match="eac:item" mode="eac">
     <li><xsl:apply-templates mode="eac"/></li>
+  </xsl:template>
+
+  <xsl:template match="eac:citation[position()=last()]" mode="eac">
+    <p class="source last"><xsl:apply-templates mode="eac"/></p>
   </xsl:template>
 
   <xsl:template match="eac:citation" mode="eac">
