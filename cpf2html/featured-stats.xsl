@@ -68,7 +68,7 @@
       <xsl:choose>
         <xsl:when test="$rmode='terms'">SNAC Terms and Conditions</xsl:when>
         <xsl:when test="$rmode='stats'">SNAC Index Stats</xsl:when>
-        <xsl:otherwise>SNAC Featured Items</xsl:otherwise>
+        <xsl:otherwise>SNAC Prototype</xsl:otherwise>
       </xsl:choose>
     </title>
   </xsl:template>
