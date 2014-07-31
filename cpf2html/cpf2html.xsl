@@ -316,8 +316,7 @@ use html5 data-xsl* attributes to trigger xslt
     <xsl:for-each-group 
       group-by="."
       select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description
-                  //eac:localDescription
-                    [not(starts-with(@localType,'http://viaf.org/viaf/terms'))]
+                  //eac:localDescription[@localType='http://viaf.org/viaf/terms#AssociatedSubject']
                     [not(matches(.,'^[\d|\s|-]+$'))]
       "
     ><!-- /^\d+$/  -->
@@ -712,7 +711,7 @@ select="($relations)/eac:cpfRelation[
   <xsl:template match="*[@data-xsl='maybeSame']"><!-- mayBeSame -->
     <xsl:if test="($maybeSame)">
       <div data-xsl='maybeSame'><label>Maybe same as:</label><xsl:text> </xsl:text>
-        <xsl:apply-templates select="($maybeSame)" mode="eac"/>
+        <xsl:apply-templates select="($maybeSame)" mode="mayBeSame"/>
       </div>
     </xsl:if>
   </xsl:template>
@@ -929,7 +928,7 @@ select="($relations)/eac:cpfRelation[
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="eac">
+  <xsl:template match="eac:cpfRelation[contains(@xlink:arcrole,'#mayBeSame')]" mode="mayBeSame">
     <div><a href="{@xlink:href}">
       <xsl:apply-templates mode="eac"/>
     </a></div>
@@ -967,7 +966,7 @@ select="($relations)/eac:cpfRelation[
                  else if (@cpfRelationType) then @cpfRelationType 
                  else 'related'}">
       <xsl:choose>
-        <xsl:when test="@xlink:href and text()">
+        <xsl:when test="@xlink:href and eac:relationEntry">
           <a>
             <xsl:apply-templates select="@xlink:href[.!='']"/>
             <xsl:apply-templates select="eac:relationEntry | eac:placeEntry" mode="eac"/>
