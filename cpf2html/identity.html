@@ -4,15 +4,7 @@
    <head>
       <meta charset="utf-8"></meta>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-      <meta name="description" content=""></meta>
-      <meta name="author" content=""></meta>
-      <link rel="apple-touch-icon-precomposed" sizes="144x144"
-            href="apple-touch-icon-144x144-precomposed.png"></link>
-      <link rel="apple-touch-icon-precomposed" sizes="114x114"
-            href="apple-touch-icon-114x114-precomposed.png"></link>
-      <link rel="apple-touch-icon-precomposed" sizes="72x72"
-            href="apple-touch-icon-72x72-precomposed.png"></link>
-      <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png"></link>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
       <link rel="icon" type="image/ico" data-xsl-asset="images/favicon.ico" href="images/favicon.ico"></link>
       <title data-xsl="title">record page</title>
       <link data-xsl-asset="stylesheets/index.css"
@@ -49,13 +41,14 @@
                </button>
                <a class="navbar-brand" id="snacnav-logo-left" href="/" style="padding: 0px;">
                   <img data-xsl-asset="images/snac_logo_small.svg"
-                       src="http://bioghist.org.s3-website-us-east-1.amazonaws.com/build/images/snac_logo_small.svg"></img>
+                       src="http://bioghist.org.s3-website-us-east-1.amazonaws.com/build/images/snac_logo_small.svg"
+                       alt="SNAC"></img>
                </a>
             </div>
             <div class="navbar-collapse collapse">
                <ul class="nav navbar-nav">
                   <li>
-                     <a href="/snac/search" id="newsearch-link">new search</a>
+                       <a href="/snac/search" id="newsearch-link">PROTOTYPE HOME</a>
                   </li>
                   <li>
                      <a href="/home_prototype.html">about prototype</a>
@@ -64,7 +57,10 @@
                <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs">
                   <li>
                      <a class="navbar-brand" id="snacnav-logo-right" href="/">
-                        <img data-xsl-asset="images/snac_spelled_out_300.svg" src="http://bioghist.org.s3-website-us-east-1.amazonaws.com/build/images/snac_spelled_out_300.svg"></img>
+                        <img data-xsl-asset="images/snac_spelled_out_300.svg"
+                         style="margin-bottom: 4px; padding-bottom: 4px;"
+                         src="http://bioghist.org.s3-website-us-east-1.amazonaws.com/build/images/snac_spelled_out_300.svg"
+                         alt="Social Networks and Archival Context"></img>
                      </a>
                   </li>
                </ul>
@@ -145,7 +141,7 @@
                      </div>
                   </div>
                   <br clear="both"></br>
-                  <div class="well well-sm">Biographical notes are initially generated from 
+                  <div class="well well-sm">Biographical notes are generated from 
 the bibliographic and archival source records supplied by <a href="/datacontrib.html">data contributors</a>.
                   </div>
                </div>
