@@ -217,7 +217,7 @@
 	<xsl:variable name="firstChar" select="upper-case(substring($identity,1,1))"/>
 	<xsl:value-of select="if (matches($firstChar,'[A-Z]')) then $firstChar else '0'"/>
         <xsl:text>::</xsl:text>
-        <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
+        <xsl:apply-templates mode="value-of" select="eac:nameEntry[1]/eac:part"/>
     </facet-identityAZ>
     <xsl:element name="facet-{normalize-space(eac:entityType)}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
@@ -267,11 +267,11 @@
   </xsl:template>
   
   <xsl:template match="eac:cpfRelation" mode="meta">
-    <facet-cpfRelation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:relationEntry"/></facet-cpfRelation>
+    <facet-cpfRelation xtf:facet="yes" xtf:meta="yes"><xsl:apply-templates mode="value-of" select="eac:relationEntry"/></facet-cpfRelation>
   </xsl:template>
   
   <xsl:template match="eac:resourceRelation" mode="meta">
-    <facet-resourceRelation xtf:facet="yes" xtf:meta="yes"><xsl:value-of select="eac:relationEntry"/></facet-resourceRelation>
+    <facet-resourceRelation xtf:facet="yes" xtf:meta="yes"><xsl:apply-templates mode="value-of" select="eac:relationEntry"/></facet-resourceRelation>
   </xsl:template>
 
   <xsl:template match="eac:fromDate|eac:toDate|eac:entityId" mode="meta">
@@ -340,11 +340,11 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="eac:part" mode="value-of">
+  <xsl:template match="eac:part | eac:relationEntry" mode="value-of">
       <xsl:value-of select="replace(.,'\p{Cc}','')"/>
   </xsl:template>
 
-  <xsl:template match="eac:part">
+  <xsl:template match="eac:part | eac:relationEntry">
     <xsl:element name="{name()}" namespace="{namespace-uri()}">
       <xsl:for-each select="@*"/>
       <xsl:value-of select="replace(.,'\p{Cc}','')"/>
