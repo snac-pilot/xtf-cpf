@@ -1054,17 +1054,6 @@ select="($relations)/eac:cpfRelation[
   </xsl:template>
 
   <!-- identity transform copies HTML from the layout file -->
-  <xsl:template match="*" mode="xxlx">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
