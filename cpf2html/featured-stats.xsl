@@ -187,7 +187,7 @@
   <xsl:template match="*[@data-snac-grid]" mode="html-template">
     <xsl:if test="$rmode!='stats' and $rmode!='terms'">
       <div style="padding: 1em; ">
-        <a href="" id="explore-fr">
+        <a href="/snac/search" id="explore-fr">
           <button type="button" class="btn btn-warning btn-lg">
             <span class="glyphicon glyphicon-refresh"></span>
             Explore featured identities
