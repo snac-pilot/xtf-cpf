@@ -87,16 +87,6 @@
         $sectionType='cpfdescription' 
         or editURL:remove(editURL:remove($queryStringClean,'facet-identityAZ'),'facet-entityType')=''
       ">
-        <script>
-  $("label.advancedSearch").hide();
-  $("form.cpfSearch").hoverIntent(function () {
-    $("label.advancedSearch").css("display", "inline");
-  }, function () {
-    if ($("label.advancedSearch select").val() === 'cpfdescription') {
-      $("label.advancedSearch").fadeOut();
-    }
-  });
-        </script>
       </xsl:if>
     </xsl:element>
   </xsl:template>
