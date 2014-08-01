@@ -1,0 +1,6 @@
+The Golden Grid (CSS framework)
+	http://code.google.com/p/the-golden-grid/
+	obtained from http://the-golden-grid.googlecode.com/files/Golden%20Grid%201.0%20%28beta%29.zip
+	Code license: MIT License http://www.opensource.org/licenses/mit-license.php
+
+

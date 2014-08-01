@@ -1,0 +1,20 @@
+cpf2html is a package of XSLT for EAC that can work with XTF
+
+Brian Tingle, California Digital Library  http://www.cdlib.org/contact/staff_directory/btingle.html
+for the SNAC project http://www.iath.virginia.edu/news/news_snac_grant.html
+
+See also: http://bitbucket.org/btingle/cpf2html/wiki/Home
+
+cpf2html.xsl and html-template.html
+	EAC-CPF to HTML 
+
+cpfDocSelector.xsl and cpfXtfPreFilter.xsl
+	For integration with XTF http://xtf.sf.net/
+	cpfResultsFormatter.xsl and XTF conf files/instructions to come
+
+golden-grid-css/ from http://code.google.com/p/the-golden-grid/
+	see golden-grid-css/LICENSE
+
+tests/tests.sh 
+	primative testing structure
+	see tests/LICENSE

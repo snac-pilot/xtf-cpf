@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<script xmlns:tmpl="xslt://template" tmpl:replace="excanvas"/><!-- canvas for IE -->
+
+<!-- JIT Library File -->
+<script language="javascript" type="text/javascript" 
+    src="/xtf/cpf2html/Jit/jit.js"></script>
+<script language="javascript" type="text/javascript" 
+    src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+
+<!-- Example File -->
+<script language="javascript" type="text/javascript" src="/xtf/cpf2html/snac-jit.js"></script>
+<script xmlns:tmpl="xslt://template" tmpl:replace="identity-script">
+var identity = "Sierra Club.";
+</script>
+<style>
+#infovis { 
+    height: 600px; width: 100%;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+}
+#center-container {
+    background-color: #1A1A1A;
+}
+html, body {
+    font-family: "Lucida Grande",Verdana;
+    font-size: 0.9em;
+    text-align: center;
+    margin: 0;
+}
+
+#panZoomControl { 
+    z-index: 2; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 5em;
+}
+
+#panZoomControl button {
+    background-color: #fff;
+}
+
+</style>
+</head>
+
+<body onload="init();">
+
+
+<div id="center-container">
+    <div id="infovis">
+        <div id="panZoomControl">
+            <div><button id="panUp">∧</button></div>
+            <div>
+                <button id="panLeft">&lt;</button>
+                <button id="panRight">&gt;</button>
+            </div>
+            <div><button id="panDown">∨</button></div>
+            <hr/>
+            <div><button id="zoomIn">+</button></div>
+            <div><button id="zoomReset">&#8226;</button></div>
+            <div><button id="zoomOut">-</button></div>
+        </div>
+    </div>    
+</div>
+<footer/>
+</body>
+</html>

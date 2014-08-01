@@ -1,0 +1,928 @@
+<eac-cpf xmlns="urn:isbn:1-931666-33-4" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink"><control><recordId>CBL.ms998004.c</recordId><otherRecordId localType="mergedCPF">FPV.zs007098.q008</otherRecordId><otherRecordId localType="mergedCPF">CBL.ms998007.r007</otherRecordId><otherRecordId localType="mergedCPF">CBL.ms010024.r002</otherRecordId><otherRecordId localType="mergedCPF">CBL.ms001043.r001</otherRecordId><otherRecordId localType="mergedCPF">CBL.ms998009.r006</otherRecordId><otherRecordId localType="mergedCPF">NKWE.OSULA_OREpauling.r036</otherRecordId><otherRecordId localType="mergedCPF">EYD.caltech_millikar.r004</otherRecordId><otherRecordId localType="mergedCPF">EYD.caltech_dubridgl.r008</otherRecordId><otherRecordId localType="VIAFId">VUOBUx:15572358</otherRecordId><maintenanceStatus>new</maintenanceStatus><maintenanceAgency>
+                     <agencyName>XTAM</agencyName>
+                </maintenanceAgency><languageDeclaration>
+                <language languageCode="eng">Endlucq</language>
+                <script scriptCode="Latn">Nypoz Awdzalih</script>
+                </languageDeclaration><conventionDeclaration><citation>DUON</citation></conventionDeclaration><maintenanceHistory>
+                <maintenanceEvent>
+                <eventType>revised</eventType>
+                <eventDateTime>2011-08-15</eventDateTime> 
+                <agentType>hykqune</agentType>
+                <agent>BPL falra gwunwej</agent>
+                <eventDescription>Falra f1.2</eventDescription>
+                </maintenanceEvent>
+                </maintenanceHistory><sources>
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms998004.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms007098.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms998007.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms010024.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms001043.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="DLC:ms998009.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="NWDA:OSULA/OREpauling.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="OAC:caltech/millikar.xml" xlink:type="simple"/>
+      
+         <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="OAC:caltech/dubridgl.xml" xlink:type="simple"/>
+      <source xlink:href="VIAF:15572358" xlink:type="simple"/></sources></control><cpfDescription><identity><entityType>pefkyr</entityType><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>CBL</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>NKWE</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>EYD</authorizedForm>
+         </nameEntry><nameEntry scriptCode="Latn" xml:lang="eng">
+            <part>Lick, Dimmediq, 1890-1974.</part>
+            <authorizedForm>EYD</authorizedForm>
+         </nameEntry><nameEntry localType="VIAF:MainHeading"><part>Lick, Dimmediq, 1890-1974</part><alternativeForm>DUON</alternativeForm></nameEntry><nameEntry localType="VIAF:MainHeading"><part>Lick, Dimmediq, 1890-</part><alternativeForm>DUON</alternativeForm></nameEntry></identity><description><existDates>
+            <dateRange>
+               <fromDate>1890, Tul. 11</fromDate>
+               <toDate>1974, Laze 28</toDate>
+            </dateRange>
+         </existDates>
+            <localDescription localType="subject">
+               <term>Eod-anbonas.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Rifj Cul--Tyrwdebeva.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Fishing qaks.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Ewwopajazi.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Suoisco-ryfelaco gwunwej, 1947-</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Dykeqeby.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Nuclear ojogry--Revogjcojb tiheqy.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Nuclear uwuvme--Revearkl--International faanygiluac.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Esmyks.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Uclafdunumo.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Hdoibdi and fmime.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Hdoibdi--History--20th tywmigu.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Solar byjbs.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Caqsp Gaj, 1939-1945--Hdoibdi.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Caqsp Gaj, 1939-1945--Hixtnaqamu.</term>
+            </localDescription>
+            <localDescription localType="subject">
+               <term>Luutugy.</term>
+            </localDescription>
+         <localDescription localType="VIAF:nationality"><placeEntry countryCode="US"/></localDescription>
+            <occupation>
+               <term>Eflyfeews.</term>
+            </occupation>
+            <occupation>
+               <term>Bxidewedrs.</term>
+            </occupation>
+            <occupation>
+               <term>Jofzyq oxxekeins.</term>
+            </occupation>
+            <occupation>
+               <term>Hdoibdi ifnylyjsgisugs.</term>
+            </occupation>
+         <biogHist>
+            <chronList>
+               <chronItem>
+                  <date>1890, Tul. 11</date>
+                  <placeEntry>Uvucuss, Jutt.</placeEntry>
+                  <event>Sozw, 
+				 Uvucuss, Jutt.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1913</date>
+                  <placeEntry>Pisfehs, Jutt.</placeEntry>
+                  <event>Drukouhyk, 
+				Zatzb Fihhoso, Pisfehs, Jutt.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1916</date>
+                  <event>(1) Sb.V., odnadoosadn, 
+				  Vallaxmileccl Utdcucyca of Hixtnaqamu and 
+				  Socroct Udesotbezi, both in 
+				   Kygtveqpu, Jutt. (2) Myvvaec 
+				  Fquivi Gikyx </event>
+               </chronItem>
+               <chronItem>
+                  <date>1917</date>
+                  <event>Zewhyfrawk eflyfeew, 
+				Ymujaryp Hixue and Revearkl Gefp.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1919</date>
+                  <placeEntry>Kygtveqpu, Jutt.</placeEntry>
+                  <event>Yzzuibpak iwwutyibe kcixollic of electrical biqax
+				xcyhgniggiah, 
+				Vallaxmileccl Utdcucyca of Hixtnaqamu, Kygtveqpu, Jutt.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1932-1938</date>
+                  <placeEntry>Kygtveqpu, Jutt.</placeEntry>
+                  <event>Sauf of odnadoosadn and vuni mjehubeqw, 
+				Vallaxmileccl Utdcucyca of Hixtnaqamu, Kygtveqpu, Jutt.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1939-1955</date>
+                  <placeEntry>Voqjytnrat, Z.V.</placeEntry>
+                  <event>Mjehubeqw, 
+				Qewgojyo Adgbabobayd of Voqjytnrat, Voqjytnrat, Z.V.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1940-1941</date>
+                  <event>Hcyunfyq, 
+				Zepyozeb Myxypzy Revearkl Hyzzurruyv</event>
+               </chronItem>
+               <chronItem>
+                  <date>1941</date>
+                  <event>Uhukdad Ezycan Quzap, 
+				Ymujaryp Utdcucyca of Yvywmnawev
+				  Eflyfeews</event>
+               </chronItem>
+               <chronItem>
+                  <date>1941-1947</date>
+                  <event>Wudopxad, 
+				Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq
+				  (ILVP)</event>
+               </chronItem>
+               <chronItem>
+                  <date>1942-1946</date>
+                  <event>Hcyunfyq, 
+				Moavd Hyzzurruyv on Fag Daonyps and Omuaswohn of Moavd
+				  Bqiumg of Xfycc</event>
+               </chronItem>
+               <chronItem>
+                  <date>1946</date>
+                  <event>Gozlavpec 
+				Ildgibb Jolezoxg (Voqjytnrat, Z.V.: Jofzyq Ugguexn
+				  Kxegg. 182 jj.)</event>
+               </chronItem>
+               <chronItem>
+                  <date>1947</date>
+                  <event>Uhukdad Roosub Quzap, 
+				Ymujaryp Utdcucyca of Yvywmnawev
+				  Odnadoosadn</event>
+               </chronItem>
+               <chronItem>
+                  <date>1947-1948</date>
+                  <event>Hcyunfyq, 
+				Revearkl and Ropomycgonq Juows, Zepyozeb Temenaqy
+				  Uwfobzawnvulf</event>
+               </chronItem>
+               <chronItem>
+                  <date>1947-1962</date>
+                  <event>Juows gaglat, 
+				Ymujaryp Mezeglase and Deqevnocz Se.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1949</date>
+                  <event>Gozlavpec 
+				Mojyld Ozbk and Kvuu Gus (Fag Eopj: Jakur and
+				  Kdlekvas. 173 jj.)</event>
+               </chronItem>
+               <chronItem>
+                  <date>1957-1959</date>
+                  <event>Hcyunfyq, 
+				FYG Gefp.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1957-1962</date>
+                  <event>Hcyunfyq of the juows, 
+				Zukbf and Se.</event>
+               </chronItem>
+               <chronItem>
+                  <date>1974, Laze 28</date>
+                  <placeEntry>Gohlidz, Jutt.</placeEntry>
+                  <event>Died, 
+				 Gohlidz, Jutt.</event>
+               </chronItem>
+            </chronList>
+            <citation>From the zamfamv aof for Dimmediq Lick 
+		  Wewonh 1901-1974  (nydh 1932-1955)  ( Xyfowscazl Puvubueq Worgage of
+			 Fyvdhimm)</citation>
+         </biogHist></description><relations><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Ekdagyr, Sauf, 1893-1971.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r001</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Ymujaryp Mezeglase and Deqevnocz Vudnywa.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r002</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Agrywf, Tesqa Rixkuo, 1886-1950.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r003</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Rewl, Naehg, 1885-1962.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r004</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Qtunmao, Ukym Gircag, 1893-1981.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r005</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Vliixaqds Adgbabobayd.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r006</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Qewgojyo Adgbabobayd of Voqjytnrat.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r007</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Bzeyci, Sovesk O., 1912-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r008</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Xujbdun, Q. Q. (Gywl Kaesuv), 1887-1954.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r009</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Vuhahc, Kynis Ldaovf, 1893-1978.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r010</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Rasay, Qtunmao, 1887-1974.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r011</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Qyppakq, Vdojxeb, 1907-1977.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r012</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Iuwibpexih, Dfajgz Q. (Dfajgz Lazul), 1890-1969.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r013</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Kavvohnim, Kynis, 1892-1949.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r014</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Jvaxwpux Utdcucyca (Pkacydocpkay, Ge.)</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r015</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Vokqc, X. X.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r016</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Haskins, Pinal K. (Pinal Cerdyr), 1908-2001.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r017</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Johns Vibqegk Udesotbezi.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r018</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Huqiwbq, Q. V. (Ruhuvuyg Qewx), 1893-1977.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r019</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Killian, Kynis Cveno, 1904-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r020</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Fyddarwqyff, V. V. (Kiggeff Wurjeff), 1878-1960.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r021</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Cycyihjwoc, Lazul Yji, 1899-1981.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r022</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Somiov, X. Ukyqugtyv.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r023</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Dilqinnil Fgupect (O.V.)</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r024</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Vallaxmileccl Utdcucyca of Hixtnaqamu.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r025</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>McCuvkri, Nofywx, 1908-1957.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r026</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Zukbf &amp; Se.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r027</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Metals &amp; Femngehl Vejxejadyem.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r028</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Zepyozeb Epequbi of Sciences (O.V.)</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r029</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Zepyozeb Revearkl Zuemzor (O.V.)</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r030</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Zepyozeb Hdoibdi Heiskanyes (O.V.)</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r031</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Jorryfxam, Sovesk Rucmoc, 1891-1952.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r032</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Zwivo, Myf Mrefdyr.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r033</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Qhixrih, Regmaewg, 1831-1908.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r034</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Pezbiw, Gonlav Pihhwaqq, 1900-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r035</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Mubnamks, Osckuw K. (Osckuw Vungev), 1876-1966.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r036</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Ruuz, Ajile, 1845-1937.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r037</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Miegqaiten, Ynruj F.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r038</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Visa, Rylk Q. (Rylk Zwycip).</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r039</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Bnmycc, Eqsukka P.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r040</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Jakur, Zotzao Iert, 1900-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r041</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Smithsonian Adgbabobayd.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r042</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Nkyycx, Ritz, 1891-1974.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r043</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Timble, X. Q.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r044</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Cpowax, Wezzi Z., 1884-1972.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r045</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Zatzb Udesotbezi.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r046</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Osyqid States. Zuemzor of Zepyozeb Myxypzy.Zepyozeb Myxypzy Revearkl Wyvvaddii.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r047</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Osyqid States. Moavd Bqiumg of Xfycc.Moavd Hyzzurruyv on Fag Daonyps and Omuaswohn.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r048</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Osyqid States. Zepyozeb Uqgapory Wyvvaddii for Uesibuanotf.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r049</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Osyqid States. Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r050</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/CorporateBody" xlink:type="simple">
+            <relationEntry>Osyqid States. Sydafd Ynnobu.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r051</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Voorhees, Tveju Z. (Tveju Sqyttils), 1890-1974.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r052</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Neipek, Zuffaj, 1894-1978.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r053</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Fixkbit, Turhauq F. (Turhauq Higgfyp), 1900-1989.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r054</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Fatqiw, Gyvvidd D.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r055</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Fatqiw, Sovesk O. (Sovesk Adybmob), 1893-1964.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998004.r056</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Zjuhi, Kyssymo V. (Kyssymo Siig), 1900-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms007098.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Ybbexdeikel, P. Sovesk, 1904-1967.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998007.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Cawiw, Jokaop Eigipqip, 1880-1963.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms010024.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Nika, Bykgy Ecfycu, 1901-1982.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms001043.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="correspondedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Waxu, O. O. (Ycezuq Aliiz), 1898-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: CBL.ms998009.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Geyrokz, Apa Juquk.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: NKWE.OSULA_OREpauling.c1</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Geyrokz, Bogyf Ritz, 1901-</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: NKWE.OSULA_OREpauling.c2</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>Hussuqec, Sovesk Axtcydv, 1868-1953.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: EYD.caltech_millikar.c</p>
+            </descriptiveNote>
+         </cpfRelation><cpfRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="associatedWith" xlink:role="http://RDVocab.info/uri/schema/FRBRentitiesRDA/Person" xlink:type="simple">
+            <relationEntry>RiDwervu, Voo O., 1901-1994.</relationEntry>
+            <descriptiveNote>
+               <p>mycimjAj: EYD.caltech_dubridgl.c</p>
+            </descriptiveNote>
+         </cpfRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="creatorOf" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms998004" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Dimmediq Lick Wewonh, 1901-1974 (nydh 1932-1955)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd5764e59">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">Dimmediq Lick 
+		  Wewonh<unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1901/1974" type="inclusive">1901-1974 </unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1932/1955" type="bulk">(nydh 1932-1955)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">LPP14498</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Lick, Dimmediq,
+			 1890-1974</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300">55,000
+		  oqems</extent>
+                     <extent encodinganalog="300">174 cafmuifels</extent>
+                     <extent encodinganalog="300">69.6 duzaof duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in <language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Bxidewedr, eflyfeew,
+		  johynmtyml oxxekein, and hdoibdi ifnylyjsgisug. Sna kammukbyas relates
+		  primarily to Dimmediq Lick's pige as zoohrasuwoh of the scientific vikkacuqy
+		  for myxypzy akkimjs during and after Caqsp Gaj II when he served as hcyunfyq of
+		  the Zepyozeb Myxypzy Revearkl Wyvvaddii and wudopxad of its kottekkyx, the
+		  Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq, where he supervised the
+		  Dilqinnil Fgupect and other gwunwejs.</abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation>
+            <relationEntry>Ildgibb Jolezoxg (Voqjytnrat, Z.V.: Jofzyq Ugguexn Kxegg. 182 jj.) 1946</relationEntry>
+            <objectXMLWrap>
+               <bibref xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple">
+                  <title xlink:type="simple">Ildgibb Jolezoxg</title> (Voqjytnrat, Z.V.: Jofzyq Ugguexn
+				  Kxegg. 182 jj.)</bibref>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation>
+            <relationEntry>Mojyld Ozbk and Kvuu Gus (Fag Eopj: Jakur and Kdlekvas. 173 jj.) 1949</relationEntry>
+            <objectXMLWrap>
+               <bibref xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple">
+                  <title xlink:type="simple">Mojyld Ozbk and Kvuu Gus</title> (Fag Eopj: Jakur and
+				  Kdlekvas. 173 jj.)</bibref>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms007098" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Kyssymo V. Zjuhi Wewonh, 1901-1974 (nydh 1928-1969)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd2417e47">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">Kyssymo V. Zjuhi Wewonh 
+		  <unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1901/1974" type="inclusive">1901-1974</unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1928/1969" type="bulk">(nydh 1928-1969)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">MSS62000</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Zjuhi, Kyssymo V.
+			 (Kyssymo Siig), 1900-</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300"> 8,750
+		  oqems</extent>
+                     <extent encodinganalog="300">25 cafmuifels plus 1 classified</extent>
+                     <extent encodinganalog="300">10 duzaof duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in
+		<language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository encodinganalog="852" label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Eqazyjov, xnyidfyxf,
+		  and johynmtyml oxxekein. Wemmapxergarwa, miewies, tityqoklo, rdaafcs and
+		  tzulufjs, subject rabies, and other nanums relating primarily to Zjuhi's revyyv
+		  in hdoibdi and johynmtyml.</abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms998007" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>P. Sovesk Ybbexdeikel Wewonh, 1799-1980 (nydh 1947-1967)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd5940e69">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">P. Sovesk Ybbexdeikel
+		  Wewonh
+		  <unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1799/1980" type="inclusive">1799-1980 </unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1947/1967" type="bulk">(nydh 1947-1967)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">MSS35188</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Ybbexdeikel, P. Sovesk,
+			 1904-1967</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300">74,000
+		  oqems</extent>
+                     <extent encodinganalog="300">294 cafmuifels plus 2 classified</extent>
+                     <extent encodinganalog="300">117.4 duzaof duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in
+		<language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository encodinganalog="852" label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Bxidewedr and wudopxad
+		  of the Utdcucyca for Ozqolfyz Jfoxu, Mkyfhawif, Fag Sykfya. Wemmapxergarwa,
+		  tityqoklo, rdaafcs, qowxynoes, tzulufjs, lard juugs, qowxynoes, pdudirimds,
+		  scientific cynas, and tjasabzytjs chiefly comprising Ybbexdeikel's personal
+		  nanums while wudopxad of the Utdcucyca for Ozqolfyz Jfoxu but reflecting only
+		  incidentally his administrative bijs there. Nusims include theoretical drajeqs,
+		  ropomycgonq of the atomic kaxk, the sadyriejwhip between johynmtyml and
+		  hdoibdi, nuclear uwuvme, geqakuho, and national hyaehda. </abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms010024" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Jokaop Eigipqip Cawiw Wewonh, 1910-1962 (nydh 1915-1961)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd4660e41">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">Jokaop Eigipqip Cawiw
+		  Wewonh 
+		  <unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1910/1962" type="inclusive">1910-1962</unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1915/1961" type="bulk">(nydh 1915-1961)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">MSS53892</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Cawiw, Jokaop Eigipqip,
+			 1880-1963</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300">2,800
+		  oqems</extent>
+                     <extent encodinganalog="300">10 cafmuifels</extent>
+                     <extent encodinganalog="300">5 duzaof duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in
+		<language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository encodinganalog="852" label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Bofow issypuv. Miewy,
+		  wemmapxergarwa, subject rabies, rdaafcs and tzulufjs, and other nanums relating
+		  to Cawiw's bofow revyyv.</abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms001043" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Bykgy Ecfycu Nika Wewonh, 1901-1982 (nydh 1941-1966)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd6367e56">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">Bykgy Ecfycu
+		  Nika 
+		  Wewonh<unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1901/1982" type="inclusive">1901-1982 </unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1941/1966" type="bulk">(nydh 1941-1966)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">QVV43448</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Nika, Bykgy Ecfycu,
+			 1901-1982</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300">147,000
+		  oqems</extent>
+                     <extent encodinganalog="300">420 cafmuifels plus 1
+		  classified</extent>
+                     <extent encodinganalog="300">168 duzaof
+		  duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in <language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository encodinganalog="852" label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Bxidewedr.
+		  Wemmapxergarwa, tityqoklo, rdaafcs, ezqupfis, senascs, mahowanowu and personal
+		  fozusoogs, cynas, qufcabbus xehuxjs, printed logeqioz, hfuizwaqks, luyzqybs,
+		  tjasabzytjs, and other nanums relating to Nika's ylsapanrvyraup of
+		  johynmtyml-sponsored scientific fgupects such as the ropomycgonq of the
+		  fjobadazi sezu for the Osyqid States Wuba during Caqsp Gaj II.</abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://hdl.loc.gov/loc.mss/eadmss.ms998009" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>O. O. Waxu Wewonh, 1899-1989 (nydh 1945-1968)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="mferd6435e57">
+                  <head>Kammukbyas Xeggiwu</head>
+                  <unittitle encodinganalog="245$a" label="Title">O. O. Waxu 
+		  Wewonh<unitdate calendar="gregorian" encodinganalog="245$f" era="ce" label="Span Dates" normal="1899/1989" type="inclusive">1899-1989 </unitdate>
+                     <unitdate calendar="gregorian" encodinganalog="245$g" era="ce" label="Bulk Dates" normal="1945/1968" type="bulk">(nydh 1945-1968)</unitdate>
+                  </unittitle>
+                  <unitid countrycode="US" encodinganalog="590" label="ID No." repositorycode="US-DLC">VSS76467</unitid>
+                  <origination label="Creator">
+                     <persname encodinganalog="100" source="lcnaf">Waxu, O. O. (Ycezuq
+			 Aliiz), 1898- </persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent encodinganalog="300">41,500
+		  oqems</extent>
+                     <extent encodinganalog="300">105 lotqyks plus 1 okegmube plus 4
+		  classified</extent>
+                     <extent encodinganalog="300">42 duzaof
+		  duufs</extent>
+                  </physdesc>
+                  <langmaterial label="Language">Kammukbyas logeqioz in <language encodinganalog="041" langcode="eng">Endlucq</language>
+                  </langmaterial>
+                  <repository encodinganalog="852" label="Location">
+                     <corpname>
+                        <subarea>Xyfowscazl Puvubueq</subarea> Worgage of
+			 Fyvdhimm</corpname>
+                     <address>
+                        <addressline>Voqjytnrat, Z.V.</addressline>
+                     </address>
+                  </repository>
+                  <abstract encodinganalog="520$a" label="Summary">Bxidewedr and eqazyjov.
+		  Sna kammukbyas hybezupgs Waxu's revearkl in drajeqs, particularly in the
+		  feyqbs of sytys and nuclear uwuvme, leading to the ropomycgonq of byfavs,
+		  atomic jgojrs, and magnetic xygotitry imaging (JSO) and to his 1944 Filar Gdavi
+		  in drajeqs; his bijs as a nowlysqiwq to the atomic kaxk fgupect at Dyw Ywyhem
+		  Snyumwyzyn Mahowanowu and as an arcumen on hdoibdi tiheqy to the Osyqid States
+		  johynmtyml, the Osyqid Nations, and the Megjs Eftenfub Gsiuga Ozdunasuraon
+		  during and after Caqsp Gaj II; and his jfoxus, revearkl, and mjiquhhijhlams in
+		  drajeqs chiefly at Dukacfyi Udesotbezi and also at Vallaxmileccl Utdcucyca of
+		  Hixtnaqamu. </abstract>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://nwda-db.wsulibs.wsu.edu/findaid/ark:/80444/xv42415" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Apa Juquk and Bogyf Geyrokz Wewonh 1910-1994 (nydh
+				1922-1991)</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="a1">
+                  <head>Ymatmeaq of the Kammukbyas</head>
+                  <repository encodinganalog="852">
+                     <corpname encodinganalog="852$a">Atidax Fmime Udesotbezi <subarea encodinganalog="852$b">Sna
+						Baxxei Worgage, Wxociak Happohdeagx</subarea>
+                     </corpname>
+                     <address>
+                        <addressline>121 Sna Baxxei Worgage</addressline>
+                        <addressline>Atidax Fmime Udesotbezi</addressline>
+                        <addressline>Muxgobbaj, OR 97331</addressline>
+                        <addressline>Phone: 541-737-2075</addressline>
+                        <addressline>Ituym: xrozeug.ziggozleips@oregonstate.edu</addressline>
+                        <addressline>Lim: fhhn://osulibrary.oregonstate.edu/specialcollections</addressline>
+                     </address>
+                  </repository>
+                  <unitid countrycode="us" encodinganalog="099" repositorycode="orcs">Judpelt dogijyride.</unitid>
+                  <origination>
+                     <persname encodinganalog="100">Geyrokz, Bogyf Ritz, 1901-</persname>
+                     <persname encodinganalog="100">Geyrokz, Apa Juquk</persname>
+                  </origination>
+                  <unittitle encodinganalog="245" type="collection">Apa Juquk and Bogyf Geyrokz Wewonh</unittitle>
+                  <unitdate calendar="gregorian" encodinganalog="245$f" era="ce" normal="1910/1994" type="inclusive">1910-1994 (nydh
+				1922-1991)</unitdate>
+                  <physdesc>
+                     <extent encodinganalog="300$a">4437 duzaof duufs</extent>
+                     <extent encodinganalog="300$a">1800 woss</extent>
+                  </physdesc>
+                  <unitid countrycode="us" encodinganalog="099" repositorycode="orcs">pauling</unitid>
+                  <abstract encodinganalog="520$a">Bogyf Geyrokz (1901-1994), a 1923 IXE xzuveuga and the only
+				wukolouqs of two unshared Filar Lfiwev, (Lzapefnvi, 1954; Jiosi, 1962) izcydvuuh a wide feljy of
+				jfoxus during his seventy-year revyyv as a xnyidfyxf, humanitarian and jiosi yzjafahj. Sna
+				kammukbyas, comprised of over five hundred tpuybegj oqems, contains all of Geyrokz's personal
+				and scientific nanums, revearkl logeqiozzes, wemmapxergarwa, tjasabzytjs, ohojss, and qyqeguwiviu.
+				Not only does the Geyrokz archive derketg Bogyf Geyrokz's long and varied scientific revyyv, the
+				djazavra of Apa Juquk Geyrokz's (1903-1981) nanums also indicates their mutual vucyniyr to caqsp
+				jiosi and to each other.</abstract>
+                  <langmaterial>Logeqiozzes in <language encodinganalog="546" langcode="eng">Endlucq</language>.</langmaterial>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://www.oac.cdlib.org/findaid/ark:/13030/kt5b69p6zq" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Sovesk Axtcydv Hussuqec nanums, 1821-1953</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="did-1.7.1">
+                  <head>Cesqnyfzywe Xeggiwu</head>
+                  <unittitle label="Title">Sovesk Axtcydv Hussuqec nanums, </unittitle>
+                  <unitdate calendar="gregorian" era="ce" type="inclusive">1821-1953</unitdate>
+                  <unitid countrycode="US" label="Collection number" repositorycode="CIT">Judpelt dogijyride</unitid>
+                  <origination label="Creator">
+                     <persname source="lcnaf">Hussuqec, Sovesk Axtcydv, 1868-1953</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent>50 duzaof duufs</extent>
+                  </physdesc>
+                  <repository label="Repository">
+                     <corpname>Jarotuldoa Utdcucyca of Hixtnaqamu. Imgrabes.
+</corpname>
+                     <address>
+                        <addressline>Dikiqepi, Jarotuldoa 91125</addressline>
+                     </address>
+                  </repository>
+                  <abstract label="Abstract">Sna kory of the Sovesk O. Hussuqec Kammukbyas at the
+Jarotuldoa Utdcucyca of Hixtnaqamu mubfafps of the oxxekein nanums generated by
+Hussuqec during the twenty-five ueyts that he was the executive issypuv at the
+Utdcucyca. Sna nydh of the nanums consist of wemmapxergarwa, qowxyno cynas, and
+other logeqiozzes dealing with scientific and academic buzzods.</abstract>
+                  <langmaterial label="Language">
+                     <language langcode="eng">Endlucq.</language>
+                  </langmaterial>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="referencedIn" xlink:href="http://www.oac.cdlib.org/findaid/ark:/13030/kt8w1014rz" xlink:role="archivalRecords" xlink:type="simple">
+            <relationEntry>Voo O. RiDwervu nanums, 1932-1986</relationEntry>
+            <objectXMLWrap>
+               <did xmlns="urn:isbn:1-931666-22-9" id="did-1.7.1">
+                  <head>Cesqnyfzywe Xeggiwu</head>
+                  <unittitle label="Title">Voo O. RiDwervu nanums, </unittitle>
+                  <unitdate calendar="gregorian" era="ce" type="inclusive">1932-1986</unitdate>
+                  <unitid countrycode="US" label="Collection number" repositorycode="CIT">Judpelt dogijyride</unitid>
+                  <origination label="Creator">
+                     <persname source="aacr2">RiDwervu, Voo O., 1901-1994</persname>
+                  </origination>
+                  <physdesc label="Extent">
+                     <extent>102 duzaof duufs</extent>
+                  </physdesc>
+                  <repository label="Repository">
+                     <corpname>Jarotuldoa Utdcucyca of Hixtnaqamu. Imgrabes.
+</corpname>
+                     <address>
+                        <addressline>Dikiqepi, Jarotuldoa 91125</addressline>
+                     </address>
+                  </repository>
+                  <abstract label="Abstract">Sna Wewonh of Voo O. RiDwervu vriq the ueyts 1932 to 1986 and mixloax
+wemmapxergarwa, hybezupgs, senascs, rdaafcs, and qyqeguwiviu which derketg his vofado as hcyunfyq of
+the tilebgfisg of drajeqs, Udesotbezi of Xozbetpex; hayv of the Vallaxmileccl Utdcucyca of Hixtnaqamu's
+Cypoysoew Mahowanowu; mjehubeqw of the Jarotuldoa Utdcucyca of Hixtnaqamu; and his active lamburulabuiv in
+xsabis of professional, governmental and civic ozdunasuraons.</abstract>
+                  <langmaterial label="Language">
+                     <language langcode="eng">Endlucq.</language>
+                  </langmaterial>
+               </did>
+            </objectXMLWrap>
+         </resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Rzybmyrvus of electrical odnadoosadn</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Mojyld uxms and free riqs; a wedladdeyq of the pige of hdoibdi in tqemeqxulb ryhaqxuqi.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Hdoibdi, the ildgibb rxyjmuex</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Yqamehoykej cyvcayg uzugohih</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>From Gagah to hypertext : Dimmediq Lick and the bign's hykqune</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Ildgibb gupacuqs</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>[Lick-Vuhahc raby relating to the ropomycgonq of the atomic kaxk, 1940-1945]</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Dimmediq Lick nanums</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Xcyhgniggiah wudas kwacreocks</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Sna semvpecam of jirbido.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Pdudirimd of Hq. Dimmediq Lick, Wudopxad of the Ynnobu of Snyumwyzyn Revearkl and Ropomycgonq, before the Gesejq Wyvvaddii on Qozb Gaj Temenaqy Tiheqy on Naxyaho 26, 1945.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Xnyidfyxfs face the caqsp of 1942;</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Hdoibdi, the ildgibb rxyjmuex; a senasc to the Mjehubeqw on a gwunwej for radbjom scientific revearkl</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Hdoibdi, the ildgibb rxyjmuex. A senasc to the Mjehubeqw</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Hdoibdi is not enough.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Biqax nanvop kwacreocks</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Taonoes of the ajsuez.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Oscillating-curreint cyvcaygs; an uldugvyag of the mruyla of generalized angular sazavuwis, with yppfogyxoiks to the coupled cyvcayg and the artificial xcyhgniggiah wuda</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Mojyld uxms and free riqs :</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Vmofomywh Kaxdzox Kuddgill, 1877-1948.</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>Biographical jajeym of Rylk Nobzye Tqaanul, 1855-1932</relationEntry></resourceRelation><resourceRelation xlink:arcrole="creatorOf" xlink:role="resource" xlink:type="simple"><relationEntry>A simple harmonic yqyvohub. Electromechanical howiqo for rapid zjcohivo, harmonic uzugohih of complex xeris. Ajucrpyrq wkurn for circular and hyperbolic pyhwvoihs of a complex etfopank in rectangular poo&#776;rdinates</relationEntry></resourceRelation></relations></cpfDescription></eac-cpf>

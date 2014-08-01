@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+body { background-color: rgb(204, 204, 204); }
+
+a[href^="http://"]:after { content: " ↗"; }
+a.noarrow:after { content: ""; }
+.hit { background-color: yellow; }
+
+/* css order tries to match source order basically */
+
+div.home { padding-bottom: 0.5em; float: left; }
+div.home { font-weight: 400; font-size: 150%; }
+.home { font-family: 'Reenie Beanie', Georgia, 'Times New Roman', serif; }
+
+.actions { float: right; }
+
+.page-header h1 a:hover { text-decoration: none; }
+.page-header h1 { padding-top: 10px; float: left; padding-bottom: 10px; }
+
+
+#logo { 
+  float: right; 
+  clear: both; 
+  background-image:url('http://socialarchive.iath.virginia.edu/images/paperdolls_mask_smaller2.jpg'); height: 52px; width: 127px; 
+  margin-left: .5em;
+  font-size: 150%;
+  text-align: right;
+}
+
+#logo a, #logo span { background: transparent url('white.png') repeat;} 
+#logo a { font-weight: bold; }
+
+/* tabs http://css.maxdesign.com.au/listamatic/horizontal03.htm */
+
+.page-header ul {
+  padding-left: 0;
+  margin-left: 0;
+  margin-right: 0; 
+  padding-left: 0;
+  background-color: #036;
+  color: #fff;
+  float: left;
+  width: 100%;
+}
+.page-header > a.noarrow:hover { text-decoration: none; } 
+
+.page-header ul li { display: inline; }
+.page-header ul li:first-child a { font-weight: bold; }
+.page-header ul li a {
+  padding: 0.2em 1em;
+  background-color: #036;
+  color: #fff;
+  text-decoration: none;
+  float: left;
+  border-right: 1px solid #fff;
+}
+
+.page-header ul li.selected a {
+  padding: 0.2em 1em;
+  background-color: #d6e5f4;
+  color: #000;
+  text-decoration: none;
+  float: left;
+  border-right: 1px solid #fff;
+}
+
+.page-header ul li a:hover {
+  background-color: #369;
+  color: #fff;
+ }
+
+.top-browse {
+  -moz-box-shadow: -5px -5px 15px #CCC; /* Firefox */
+  -webkit-box-shadow: -5px -5px 15px #CCC; /* Safari, Chrome */
+  box-shadow: -5px -5px 15px #CCC; /* CSS3 */
+
+  /* background-color, zoom, and filter are for IE /*
+  /* http://ole-laursen.blogspot.com/2009/08/using-css3-box-shadow-with-ie.html */
+  background-color: #fff;
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696', Direction=315, Strength=3);
+
+
+}
+.top-browse h2 { padding-top: 3px; padding-left: 3px; }
+.g480 h3 { border-bottom: 2px solid #000; }
+.refine-browse { border-right: 1px solid #ddd; margin-bottom: 1em; padding-left: 2px; } 
+.refine-browse .label { font-style: italic; }
+
+/* identity section elements need to get closer than defaults */
+.identity h1 { margin-bottom: 0.3em; }
+/* .identity .id { margin-left: .3em; }
+.identity .description { margin-left: 0.3em; } */
+.identity .gender, .identity .nationality, .identity .languageUsed { padding-left: 3em; }
+
+.identity .authorizedForm, .arcrole { font-size: 0.8em; color: #8d8a72; }
+ 
+.identity .person { background-color: #FFDEAD; }
+.identity .corporateBody { background-color: #E0FFFF; }
+.identity .family { background-color: #DEB887; }
+
+.description ul li:hover { background-color: #D3D3D3; }
+
+.view-source { position:absolute;bottom:0; } 
+
+/* .content {} */
+.chronList { margin-bottom: 1em; }
+.chronList time { font-weight: bold; }
+.chronList div div { margin-left: 1.5em; }
+.chronList div[itemprop=placeEntry] { font-style: italic; } 
+.identity .nationality { font-style: italic; } 
+
+div.biogHist:first-child { 
+  border-top: 0; 
+  padding-top: 0em;
+} 
+
+div.biogHist { 
+  border-top: 1px solid #000; 
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+/* various relations need more space
+   values will wrap no matter how wide, so it needs to almost look like a list w/o bullets
+*/
+.relations div { margin-bottom: 0.2em; padding: 0.3em; }
+/* .relations h3 { margin-bottom: 0.441em; margin-top: 0.441em;} */
+.relations div.person:hover { background-color: #FFDEAD; }
+.relations div.corporateBody:hover { background-color: #E0FFFF; }
+.relations div.family:hover { background-color: #DEB887; }
+.relations div.archivalRecords:hover { background-color: #F694FF; }
+.relations div.related:hover { background-color: #CEFFAD; }
+
+.relations h2 { z-index: 40; } 
+
+.ui-accordion .ui-accordion-content { padding: 0; }
+.ui-accordion .ui-accordion-content { max-height: 250px; }
+.ui-widget-header { font-weight: normal; font-size: 70%; }
+.ui-tabs .ui-tabs-panel { padding: 0.3em; }
+.ui-widget-content a { color: #035292; }
+
+/* CEFFAD green ; ADEFFF blue; FFADEF pink */
+
+/* .person, .corporateBody, .resources {} */
+
+/* .main{ background-color:#fff; } */
+
+.cpfSearch { font-size: 13px;
+    background-color: #d6e5f4;
+    padding: 10px;
+    }
+.cpfSearch input[type="text"] { font-size: 1.32em; font-family:inherit;}
+.cpfSearch input.button { font-size: 1.32em; background-color: #ffffff; 
+font-family: inherit;
+}
+
+/* .cpfSearch div.top-facets { float: right; } */
+.cpfSearch .advancedSearch { filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; 
+padding-left: 1em;
+float: right; padding-top: 0.6em; 
+position: absolute;
+} 
+form.cpfSearch div.facet-limit { 
+  border: 1px solid #000; 
+  background-color: #FFF;
+  margin-bottom: 0.633em; 
+  width: 220px;
+}
+form.cpfSearch div.top-facets { clear: both; }
+
+.cpfSearch .advancedSearch option.default { font-weight: bold; }
+
+.occupation li.selected, .localDescription li.selected { font-weight: bold; }
+.occupation li.selected a, .localDescription li.selected a { font-weight: normal; }
+.x { padding: 0.33em; }
+
+/*
+.cpfSearch div.main-search { padding-right: 4em; padding-top: .3em; }
+*/
+
+.AZletters, .AZlist { padding-bottom: 1em; }
+.AZletters { font-size: 140%; }
+.AZlist div { text-indent: -1.5em;
+padding-left: 1.5em; }
+.AZlist .hasBiogHist { font-weight: bold; font-size: 111%; }
+.AZlist h1 { border-bottom: 2px solid black; padding-bottom:2px; } 
+.results .person .hit, h1 .person, .home .person { background-color: #FFDEAD; }
+.results .corporateBody .hit, h1 .corporateBody, .home .corporateBody { background-color: #E0FFFF; }
+.results .family .hit, h1 .family, .home .family { background-color: #DEB887; }
+
+
+div.result { margin-bottom: 0.4em; padding-top: 0.3em; padding-bottom: 0.3em; }
+.relations div.related div { 
+padding: 0; margin-bottom: 0;
+}
+div.result {
+  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+  border-width: 1px;
+  border-color: #eee; 
+  border-style: solid;
+  cursor: pointer;
+}
+div.result:hover { 
+  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+  border-width: 1px;
+  border-color: #000; 
+  border-style: solid;
+}
+
+.results h3, { margin-bottom: 0.441em; margin-top: 0.441em;}
+
+div.result div:first-child { font-size: 140%; }
+div.result div:last-child { font-size: 80%; }
+
+.blank { padding-bottom: 20em; }
+
+.return-top { font-size: 400%; position: fixed;
+  filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; 
+  top: 1em;
+  right: 1em;
+  display: none;
+  height: 100px;
+  line-height: 200%;
+ } 
+
+   .return-top a:hover { text-decoration: overline; }
+.footer { background-color: #d6e5f4; }
+
+
+#watermark {
+     -moz-transform: rotate(340deg);  
+       -o-transform: rotate(340deg);  
+  -webkit-transform: rotate(340deg);  
+      -ms-transform: rotate(340deg);  
+          transform: rotate(340deg);  
+             filter:  progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',  
+                      M11=0.7071067811865475, M12=0.7071067811865477, M21=-0.7071067811865477, M22=0.7071067811865475); 
+         -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865475, M12=0.7071067811865477, M21=-0.7071067811865477, M22=0.7071067811865475,sizingMethod='auto expand')"; 
+                      
+               zoom: 1;
+position: fixed;
+        bottom: 220px; 
+  font-size: 400%; 
+   opacity: 0.15;
+  filter: alpha(opacity = 15);
+height: 3em;
+line-height: 2em;
+z-index: -1;
+}
+
+.version { text-align: right; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6;  }
+.selected, .active { background-color: #ff0;}

@@ -1,0 +1,22 @@
+Anthony, Susan B	anthony-susan-b-cr.xml
+Berkeley Free Church	berkeley-free-church-cr.xml
+Bernstein, Leonard, 1918-	bernstein-leonard-cr.xml
+Block, Herbert, 1909-2001	block-herbert-1909-2001-cr.xml
+Bush, Vannevar, 1890-1974	bush-vannevar-1890-1974-cr.xml
+Cha, Theresa Hak Kyung	cha-theresa-hak-kyung-cr.xml
+Feynman, Richard Phillips, 1918-1988	feynman-richard-phillips-1918-1988-cr.xml
+Fitzgerald, Ella, 1918-1996	fitzgerald-ella-cr.xml
+Frankfurter, Felix, 1882-1965	frankfurter-felix-1882-1965-cr.xml
+Franklin, Benjamin, 1706-1790	franklin-benjamin-1706-1790-cr.xml
+Fuller, R. Buckminster (Richard Buckminster), 1895-1983	fuller-r-buckminster-richard-buckminster-1895-1983-cr.xml
+Hamilton, Alexander, 1757-1804	hamilton-alexander-1757-1804-cr.xml
+Luce, Clare Boothe, 1903-1987	luce-clare-boothe-1903-1987-cr.xml
+Oppenheimer, J. Robert, 1904-1967	oppenheimer-j-robert-1904-1967-cr.xml
+Patton family	patton-family-cr.xml
+Patton, George S. (George Smith), 1885-1945	patton-george-s-george-smith-1885-1945-cr.xml
+Sontag, Susan, 1933-2004	sontag-susan-1933-2004-cr.xml
+Washington, George, 1732-1799	washington-george-1732-1799-cr.xml
+Whitman, Walt, 1819-1892	whitman-walt-1819-1892-cr.xml
+Wright, Lloyd, 1890-1978	wright-lloyd-1890-1978-cr.xml
+Yamada, Mitsuye	yamada-mitsuye-cr.xml
+

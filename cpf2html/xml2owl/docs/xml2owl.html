@@ -1,0 +1,312 @@
+<!DOCTYPE html>  <html> <head>   <title>xml2owl.xsl</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               xml2owl.xsl             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h1>convert EAC XML to RDF</h1>
+
+<p><a href="http://code.google.com/p/xtf-cpf/source/browse/cpf2html/xml2owl/xml2owl.xsl?name=xtf-cpf">this file on google code</a> </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">&lt;xsl:stylesheet</span>
+  <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span>
+  <span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span>
+  <span class="na">xmlns:rdfs=</span><span class="s">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span>
+  <span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span>
+  <span class="na">xmlns:dcterms=</span><span class="s">&quot;http://purl.org/dc/terms/&quot;</span>
+  <span class="na">xmlns:owl=</span><span class="s">&quot;http://www.w3.org/2002/07/owl#&quot;</span>
+  <span class="na">xmlns:xsd=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span>
+  <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+  <span class="na">xmlns:skos=</span><span class="s">&quot;http://www.w3.org/2008/05/skos#&quot;</span>
+  <span class="na">xmlns:foaf=</span><span class="s">&quot;http://xmlns.com/foaf/0.1/&quot;</span>
+  <span class="na">xmlns:bio=</span><span class="s">&quot;http://purl.org/vocab/bio/0.1/&quot;</span>
+  <span class="na">xmlns=</span><span class="s">&quot;urn:isbn:1-931666-33-4&quot;</span>
+  <span class="na">xmlns:eax=</span><span class="s">&quot;urn:isbn:1-931666-33-4&quot;</span>
+  <span class="na">xmlns:eac-cpf=</span><span class="s">&quot;http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/&quot;</span>
+  <span class="na">xmlns:viaf=</span><span class="s">&quot;http://viaf.org/ontology/1.1/#&quot;</span>
+  <span class="na">xmlns:gn=</span><span class="s">&quot;http://www.geonames.org/ontology#&quot;</span>
+  <span class="na">xmlns:xlink=</span><span class="s">&quot;http://www.w3.org/1999/xlink&quot;</span>
+  <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Created by Silvia Mazzini, Regesta.exe, 2011</p>
+
+<p>Copyright (c) 2011, Regesta.exe
+All rights reserved.</p>
+
+<p>Redistribution and use are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Eduserv nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.</p>
+
+<h3>Related Work</h3>
+
+<p><a href="http://ceur-ws.org/Vol-801/paper6.pdf">EAC-CPF Ontology and Linked Archival Data</a>
+Proceedings of the 1st International Workshop on Semantic Digital Archives (SDA 2011)</p>
+
+<p><a href="http://templates.xdams.net/RelationBrowser/genericEAC/RelationBrowserCIA.html">eac-cpf ontology browser</a></p>
+
+<p><a href="http://code.google.com/p/elda/">Epimorphics Linked Data API Implementation</a> <br />
+a java implementation of the 
+<a href="http://code.google.com/p/linked-data-api/">Linked Data API</a></p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>Social Network and Archival Context</h3>
+
+<p>Modified by Brian Tingle for the <a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival 
+Context Project</a>
+Sponsored by the National Endowment for the Humanaties http://www.neh.gov/</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;xml&quot;</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">indent=</span><span class="s">&quot;yes&quot;</span><span class="nt">/&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>supplied by XTF </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;docId&quot;</span><span class="nt">/&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>root template </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;*&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:existDates&quot;</span> <span class="na">mode=</span><span class="s">&quot;inLabel&quot;</span><span class="nt">&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>we use dateRange/fromDate and dateRange/toDate </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>, <span class="k">&lt;/xsl:text&gt;</span>
+    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;substring(eax:date/@standardDate,1,4)&quot;</span><span class="nt">/&gt;</span>
+    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>-<span class="k">&lt;/xsl:text&gt;</span>
+    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;substring(eax:date/@standardDate,10,4)&quot;</span><span class="nt">/&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:existDates&quot;</span> <span class="na">mode=</span><span class="s">&quot;dc&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dc:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:date/@standardDate&quot;</span><span class="nt">/&gt;&lt;/dc:date&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:sources&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:source&quot;</span><span class="nt">/&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:source[@xlink:href]&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dcterms:source&gt;</span>
+      <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:href&quot;</span><span class="nt">/&gt;</span>
+      <span class="k">&lt;/xsl:attribute&gt;</span>
+    <span class="nt">&lt;/dcterms:source&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:source[not(@xlink:href)]&quot;</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;eac-cpf:source&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:sourceEntry&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:source&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>XML's Id to OWL's ID </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:recordId | eax:otherRecordId&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;eac-cpf:{substring(local-name(),0,string-length(local-name()))}D&quot;</span><span class="nt">&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+    <span class="k">&lt;/xsl:element&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:maintenanceStatus | eax:publicationStatus | eax:maintenanceAgency | eax:languageDeclaration | eax:conventionDeclaration&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;eac-cpf:{local-name()}&quot;</span><span class="nt">&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+    <span class="k">&lt;/xsl:element&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>not sure why this is not a straigt mapping; also there is a script sub-element in the xml version of the declaration </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:languageDeclaration&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;eac-cpf:languageDeclaration&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:language&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/eac-cpf:languageDeclaration&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>this mapping jogs as well </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:maintenanceAgency&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;eac-cpf:maintenanceAgency&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:agencyName&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/eac-cpf:maintenanceAgency&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:agencyName&quot;</span><span class="nt">&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span> 
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:control&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;eac-cpf:control&gt;</span>
+      <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span>
+      <span class="nt">&lt;rdfs:label&gt;</span>
+        <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:attribute&gt;</span>
+        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../eax:cpfDescription/eax:identity/eax:nameEntry/eax:part/text()&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;/rdfs:label&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:recordId | eax:otherRecordId | eax:maintenanceStatus | eax:publicationStatus | eax:maintenanceAgency | eax:languageDeclaration | eax:conventionDeclaration | eax:otherRecordId&quot;</span><span class="nt">/&gt;</span>
+      <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:sources&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/eac-cpf:control&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>I could not get this to work in the default namespace; 
+       choose eax: for the xml; eac-cpf is the RDF's namespace ~bt </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:eac-cpf&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;existDates&quot;</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates&quot;</span><span class="nt">/&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>root rdf element </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nt">&lt;rdf:RDF&gt;</span> 
+      <span class="k">&lt;xsl:element</span> <span class="na">name=</span><span class="s">&quot;eac-cpf:{eax:cpfDescription/eax:identity/eax:entityType}&quot;</span><span class="nt">&gt;</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>link data http range compliant identifier for entity </p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:about&quot;</span><span class="nt">&gt;</span>
+          <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>http://socialarchive.iath.virginia.edu/xtf/view?docId=<span class="k">&lt;/xsl:text&gt;</span>
+          <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;$docId&quot;</span><span class="nt">/&gt;</span>
+          <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>#entity<span class="k">&lt;/xsl:text&gt;</span>
+        <span class="k">&lt;/xsl:attribute&gt;</span>
+          <span class="nt">&lt;rdfs:label</span> <span class="na">rdf:datatype=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#string&quot;</span><span class="nt">&gt;</span>
+            <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:identity/eax:nameEntry/eax:part&quot;</span><span class="nt">/&gt;</span>
+            <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;$existDates&quot;</span> <span class="na">mode=</span><span class="s">&quot;inLabel&quot;</span><span class="nt">/&gt;</span>
+          <span class="nt">&lt;/rdfs:label&gt;</span>
+          </pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p><code>foaf:page, foaf:depiction, owl:sameAs per viaf, gn:Feature</code> </p>             </td>             <td class="code">               <div class="highlight"><pre>          </pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>dates </p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;$existDates&quot;</span> <span class="na">mode=</span><span class="s">&quot;dc&quot;</span><span class="nt">/&gt;</span>
+          </pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>todo: owl:sameAs </p>             </td>             <td class="code">               <div class="highlight"><pre>          </pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>viaf </p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>add dbpedia as well </p>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h2>control</h2>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:control&quot;</span><span class="nt">/&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>==========================
+this is as far as I've gotten with the refactor to templates</p>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <h2>cpfDescription</h2>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;eac-cpf:description&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:identity/eax:nameEntry&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;eac-cpf:nameEntry&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;foaf:name&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;xml:lang&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xml:lang&quot;</span><span class="nt">/&gt;</span>
+              <span class="k">&lt;/xsl:attribute&gt;&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:part/text()&quot;</span><span class="nt">/&gt;&lt;/foaf:name&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:authorizedForm&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;eac-cpf:authorizedForm&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:authorizedForm/text()&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:authorizedForm&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:alternativeForm&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;eac-cpf:alternativeForm&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:alternativeForm/text()&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:alternativeForm&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@localType&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;dcterms:conformsTo&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@localType&quot;</span><span class="nt">/&gt;&lt;/dcterms:conformsTo&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/eac-cpf:nameEntry&gt;</span>
+        <span class="k">&lt;/xsl:for-each&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;eac-cpf:existDates&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:date/@standardDate&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:existDates&gt;</span>
+        <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:dateRange&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;eac-cpf:existDates&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:fromDate&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:toDate&quot;</span><span class="nt">&gt;</span>/<span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:existDates/eax:dateRange/eax:toDate&quot;</span><span class="nt">/&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/eac-cpf:existDates&gt;</span>
+        <span class="k">&lt;/xsl:if&gt;&lt;xsl:choose</span><span class="nt">&gt;</span>
+          <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:localDescription[@localType=&#39;subject&#39;]&quot;</span><span class="nt">&gt;</span>
+            <span class="k">&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:localDescription[@localType=&#39;subject&#39;]&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;dc:subject&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:term/text()&quot;</span><span class="nt">/&gt;&lt;/dc:subject&gt;</span>
+            <span class="k">&lt;/xsl:for-each&gt;</span>
+          <span class="k">&lt;/xsl:when&gt;</span>
+        <span class="k">&lt;/xsl:choose&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:places&quot;</span><span class="nt">&gt;</span>
+          <span class="k">&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:places/eax:place&quot;</span><span class="nt">&gt;</span>
+            <span class="k">&lt;xsl:choose</span><span class="nt">&gt;</span>
+              <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;contains(eax:descriptiveNote/eax:p,&#39;nascita&#39;)&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;bio:Birth&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;bio:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;substring-before(../../eax:existDates,&#39;-&#39;)&quot;</span><span class="nt">/&gt;&lt;/bio:date&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;gn:Feature&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                      <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/gn:Feature&gt;</span>
+                    <span class="nt">&lt;eac-cpf:place&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                      <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/eac-cpf:place&gt;</span>
+                  <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/bio:Birth&gt;</span>
+              <span class="k">&lt;/xsl:when&gt;</span>
+              <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;contains(eax:descriptiveNote/eax:p,&#39;morte&#39;)&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;bio:Death&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;bio:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;substring-after(../../eax:existDates,&#39;-&#39;)&quot;</span><span class="nt">/&gt;&lt;/bio:date&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;gn:Feature&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                      <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/gn:Feature&gt;</span>
+                    <span class="nt">&lt;eac-cpf:place&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                        <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                      <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/eac-cpf:place&gt;</span>
+                  <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/bio:Death&gt;</span>
+              <span class="k">&lt;/xsl:when&gt;</span>
+              <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()=&#39;sede&#39;&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;gn:Feature&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                      <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                    <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/gn:Feature&gt;</span>
+                  <span class="nt">&lt;eac-cpf:place&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>
+                      <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:placeEntry&quot;</span><span class="nt">/&gt;</span>
+                    <span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/eac-cpf:place&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;</span>
+              <span class="k">&lt;/xsl:when&gt;</span>
+            <span class="k">&lt;/xsl:choose&gt;</span>
+          <span class="k">&lt;/xsl:for-each&gt;</span>
+        <span class="k">&lt;/xsl:if&gt;</span>
+
+<span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:biogHist&quot;</span><span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:description/eax:occupation&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/eac-cpf:description&gt;</span>
+      <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:cpfDescription/eax:relations&quot;</span><span class="nt">&gt;</span>
+        <span class="k">&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:relations/eax:cpfRelation&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;eac-cpf:cpfRelation&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;&lt;xsl:choose</span><span class="nt">&gt;</span>
+              <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;@cpfRelationType&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;rdfs:label&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:attribute&gt;&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@cpfRelationType&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;xsl:text</span><span class="nt">&gt;</span> <span class="k">&lt;/xsl:text&gt;&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>B<span class="nt">&lt;/rdfs:label&gt;</span>
+                <span class="nt">&lt;eac-cpf:cpfRelationType&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@cpfRelationType&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:cpfRelationType&gt;</span>
+                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;dc:description&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;&lt;/dc:description&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;</span>
+              <span class="k">&lt;/xsl:when&gt;</span>
+              <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;rdfs:label&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:attribute&gt;</span>
+                  <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry[1]/eax:part&quot;</span><span class="nt">/&gt;</span>
+                  <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span> <span class="k">&lt;/xsl:text&gt;</span>
+                  <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">/&gt;</span> 
+                  <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span> <span class="k">&lt;/xsl:text&gt;</span>
+                  <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;/rdfs:label&gt;</span>
+                <span class="nt">&lt;eac-cpf:cpfRelationType&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:cpfRelationType&gt;</span>
+                <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;dc:description&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;&lt;/dc:description&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;</span>
+              <span class="k">&lt;/xsl:when&gt;</span>
+            <span class="k">&lt;/xsl:choose&gt;</span>
+            <span class="nt">&lt;dcterms:relation&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:resource&quot;</span><span class="nt">&gt;</span>http://archivi.ibc.regione.emilia-romagna.it/eac-cpf/<span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/@localType&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;/dcterms:relation&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;date&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;dc:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;&lt;/dc:date&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;</span>
+          <span class="nt">&lt;/eac-cpf:cpfRelation&gt;</span>
+        <span class="k">&lt;/xsl:for-each&gt;</span>
+        <span class="k">&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:relations/eax:resourceRelation&quot;</span><span class="nt">&gt;</span>
+          <span class="k">&lt;xsl:choose</span><span class="nt">&gt;</span>
+            <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;@resourceRelationType&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;eac-cpf:resourceRelation&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;rdfs:label&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>
+                     <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:text&gt;</span>
+                  <span class="k">&lt;/xsl:attribute&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@resourceRelationType=&#39;creatorOf&#39;&quot;</span><span class="nt">&gt;</span>
+                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span>
+                    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>  creator of <span class="k">&lt;/xsl:text&gt;</span>
+                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+                  <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@resourceRelationType=&#39;other&#39;&quot;</span><span class="nt">&gt;</span>
+                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span>
+                    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>  in relation with <span class="k">&lt;/xsl:text&gt;</span>
+                    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+                  <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/rdfs:label&gt;&lt;eac-cpf:resourceRelationType&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@resourceRelationType&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:resourceRelationType&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;dc:description&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;&lt;/dc:description&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:date&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;dc:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:date&quot;</span><span class="nt">/&gt;&lt;/dc:date&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/eac-cpf:resourceRelation&gt;</span>
+            <span class="k">&lt;/xsl:when&gt;</span>
+            <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;eac-cpf:resourceRelation&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;rdfs:label&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>
+                    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:text&gt;</span>
+                  <span class="k">&lt;/xsl:attribute&gt;&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry[1]/eax:part&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">/&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;&lt;/rdfs:label&gt;&lt;eac-cpf:resourceRelationType&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@xlink:arcrole&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:resourceRelationType&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
+                  <span class="nt">&lt;dc:description&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;&lt;/dc:description&gt;</span>
+                <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/eac-cpf:resourceRelation&gt;</span>
+            <span class="k">&lt;/xsl:when&gt;</span>
+          <span class="k">&lt;/xsl:choose&gt;</span>
+        <span class="k">&lt;/xsl:for-each&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>controllare </p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">&lt;xsl:for-each</span> <span class="na">select=</span><span class="s">&quot;eax:cpfDescription/eax:relations/eax:functionRelation&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;eac-cpf:functionRelation&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;rdfs:label&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:datatype&quot;</span><span class="nt">&gt;</span>http://www.w3.org/2001/XMLSchema#string<span class="k">&lt;/xsl:attribute&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@functionRelationType=&#39;controls&#39;&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span>  creator of 
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+              <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@functionRelationType=&#39;owns&#39;&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span>  creator of 
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+              <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;@functionRelationType=&#39;performs&#39;&quot;</span><span class="nt">&gt;</span>
+                <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;../../eax:identity/eax:nameEntry/eax:part[@localType=&#39;normal&#39;]&quot;</span><span class="nt">/&gt;</span>  creator of 
+              <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:relationEntry/text()&quot;</span><span class="nt">/&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/rdfs:label&gt;&lt;eac-cpf:functionRelationType&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;@functionRelationType&quot;</span><span class="nt">/&gt;&lt;/eac-cpf:functionRelationType&gt;</span><span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;eax:descriptiveNote/eax:p&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;dc:description&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:descriptiveNote/eax:p/text()&quot;</span><span class="nt">/&gt;&lt;/dc:description&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;date&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;dc:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;&lt;/dc:date&gt;</span>
+            <span class="k">&lt;/xsl:if&gt;</span><span class="nt">&lt;/eac-cpf:functionRelation&gt;</span>
+        <span class="k">&lt;/xsl:for-each&gt;</span>
+      <span class="k">&lt;/xsl:if&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>not sure if we want this yet </p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nt">&lt;skos:changeNote&gt;</span><span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;rdf:parseType&quot;</span><span class="nt">&gt;</span>Resource<span class="k">&lt;/xsl:attribute&gt;</span><span class="nt">&lt;dc:date&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:control/eax:maintenanceHistory/eax:maintenanceEvent[child::eventType=&#39;create&#39;]/eax:eventDateTime/text()&quot;</span><span class="nt">/&gt;&lt;/dc:date&gt;&lt;dc:creator/&gt;&lt;rdf:value/&gt;&lt;/skos:changeNote&gt;</span>
+      <span class="nt">&lt;dc:identifier&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:control/eax:recordId&quot;</span><span class="nt">/&gt;&lt;/dc:identifier&gt;</span>
+      <span class="nt">&lt;dc:creator&gt;</span><span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;eax:control/eax:maintenanceHistory/eax:maintenanceEvent[child::eventType=&#39;create&#39;]/eax:agent&quot;</span><span class="nt">/&gt;&lt;/dc:creator&gt;</span>
+    <span class="k">&lt;/xsl:if&gt;</span>
+
+      <span class="k">&lt;/xsl:element&gt;</span>
+    <span class="nt">&lt;/rdf:RDF&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  </pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>bioghist </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:biogHist&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;eac-cpf:biogHist&gt;</span> 
+      <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/eac-cpf:biogHist&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:chronList&quot;</span><span class="nt">&gt;</span> 
+      <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:chronItem&quot;</span><span class="nt">&gt;</span> 
+    <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:date&quot;</span><span class="nt">/&gt;</span>
+    <span class="k">&lt;xsl:text</span><span class="nt">&gt;</span>: <span class="k">&lt;/xsl:text&gt;</span>
+    <span class="k">&lt;xsl:apply-templates</span> <span class="na">select=</span><span class="s">&quot;eax:event&quot;</span><span class="nt">/&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>what about placeEntry's? </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:p&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:apply-templates</span><span class="nt">/&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+  <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;eax:occupation&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;eac-cpf:occupation&gt;</span>
+      <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;normalize-space(.)&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/eac-cpf:occupation&gt;</span>
+  <span class="k">&lt;/xsl:template&gt;</span>
+
+<span class="k">&lt;/xsl:stylesheet&gt;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -1,0 +1,294 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en">
+   <head>
+      <meta charset="utf-8"></meta>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+      <link rel="icon" type="image/ico" data-xsl-asset="images/favicon.ico" href="images/favicon.ico"></link>
+      <title data-xsl="html-title">snac search results</title>
+      <link data-xsl-asset="stylesheets/index.css" href="../stylesheets/index.css" media="all" rel="stylesheet" type="text/css"></link>
+
+      <script data-xsl-asset="javascripts/modernizr.js" src="../javascripts/modernizr.js" charset="utf-8" type="text/javascript"></script>
+      
+    <style>
+      h3 { color: black; }
+.csscolumns .list-comments {
+ column-width: 15em;
+ -moz-column-width: 15em;
+ -webkit-column-width: 15em;
+ column-gap: .5em;
+ -moz-column-gap: .5em;
+ -webkit-column-gap: .5em; 
+}
+
+.csscolumns .thumbnail {
+ display: inline-block;
+ margin:  .5em;
+ padding:  0; 
+ width:98%;
+}
+
+.no-csscolumns .thumbnail {
+  width: 15em;
+  margin:  .5em;
+  height: 25em;
+  float: left;
+}
+
+.thumbnail img:hover {
+ opacity: 0.66;
+ filter: alpha(opacity=66); 
+}
+
+.wikicredit {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.33em;
+}
+
+    a.wikicreditlink { color: #fff; }
+    a.wikicreditlink:hover div { text-decoration: underline; }
+    </style>
+    <script data-xsl-ga="ga"/>
+   </head>
+   
+   
+   <body class="search search_index">
+      
+      <!-- Fixed navbar -->
+      
+      <div id="snacnav" role="navigation">
+         
+         <div>
+            
+            <div class="navbar-header">
+               
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  
+                  <span class="sr-only">Toggle navigation</span>
+                  
+                  <span class="icon-bar"></span>
+                  
+                  <span class="icon-bar"></span>
+                  
+                  <span class="icon-bar"></span>
+                  
+               </button>
+               
+               <a class="navbar-brand" id="snacnav-logo-left" href="/" style="padding: 0px;">
+                  <img data-xsl-asset="images/snac_logo_small.svg" src="../images/snac_logo_small.svg"
+                   alt="SNAC"></img>
+               </a>
+               
+            </div>
+            
+            <div class="navbar-collapse collapse">
+               
+               <ul class="nav navbar-nav">
+                  
+                  <li>
+                       <a href="/snac/search" id="newsearch-link">PROTOTYPE HOME</a>
+                  </li>
+
+                  <li>
+                     <a href="/home_prototype.html">ABOUT PROTOTYPE</a>
+                  </li>
+                  
+               </ul>
+               
+               <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs">
+                  
+                  <li>
+                     
+                     <a class="navbar-brand" id="snacnav-logo-right" href="/">
+                        <img data-xsl-asset="images/snac_spelled_out_300.svg" src="../images/snac_spelled_out_300.svg"
+                         style="margin-bottom: 4px; padding-bottom: 4px;"
+                         alt="Social Networks and Archival Context"></img>
+                     </a>
+                     
+                  </li>
+                  
+               </ul>
+               
+            </div>
+            <!--/.nav-collapse -->
+            
+         </div>
+         
+      </div>
+      
+      
+      <div class="main_content">
+         
+         <div id="search_by">
+            
+            <h3>Search by:</h3>
+            
+            <ul data-xsl="navigation">
+               
+               <li class="active">
+                  <a href="#home" data-toggle="tab">All</a>
+               </li>
+               
+               <li>
+                  <a href="search?facet-entityType=person">
+                     <span class="icon-ind x2"></span>Person
+                  </a>
+               </li>
+               
+               <li>
+                  <a href="search?facet-entityType=family">
+                     <span class="icon-fam x2"></span>Family
+                  </a>
+               </li>
+               
+               <li>
+                  <a href="search?facet-entityType=corporateBody">
+                     <span class="icon-org x2"></span>Organization
+                  </a>
+               </li>
+               
+               <!-- li class="count">Showing 1,336 results for "Washington, George, 1732-1799."</li -->
+               
+            </ul>
+            
+            <form method="GET" action="/xtf/search">
+               <div class="top-facets" data-xsl="top-facets">top facets</div>
+          <div>
+               <a data-xsl="clear-search" href="/xtf/search">☒ </a>
+               <input id="userInput" type="text" style="width: 100%;" title="enter a name or keywords" placeholder="enter a name or keywords" name="text" value="Washington, George, 1732-1799." class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" data-xsl="search"></input>
+               
+               <input class="button" style="margin-top: 5px;" title="full text" type="submit" value="search"></input>
+               
+               <label class="advancedSearch" title="Advanced Search" style="display: none;" data-xsl="sectionType">
+                  
+                  <i>advanced</i>… limit to
+                  
+                  <a title="EAC tag library" class="noarrow" href="https://spreadsheets.google.com/pub?key=0AmlczcEUr8GxdGRjeEJ6S2tBU0lmMjlDaWZZdFNiQmc&amp;hl=en&amp;output=html">section</a>
+                  
+                  <select name="sectionType">
+                     
+                     <option value="" selected="selected">eac-cpf</option>
+                     
+                     <option value="control">  control</option>
+                     
+                     <option value="cpfdescription" title="default" class="default" selected="selected">  cpfDescription</option>
+                     
+                     <option value="identity">    identity</option>
+                     
+                     <option value="description">    description</option>
+                     
+                     <option value="existdates">      existDates</option>
+                     
+                     <option value="bioghist">      biogHist</option>
+                     
+                     <option value="generalcontext">      generalContext</option>
+                     
+                     <option value="occupation">      occupation</option>
+                     
+                     <option value="localdescription">      localDescription</option>
+                     
+                     <option value="relation">    relations</option>
+                     
+                     <option value="cpfrelation">      cpfRelation</option>
+                     
+                     <option value="resourcerelation">      resourceRelation</option>
+                     
+                  </select>
+                  
+               </label>
+          </div>
+               <div data-xsl="spelling"/> 
+            </form>
+            
+         </div>
+         
+         <div id="browsefilterby">
+            
+            <div>
+               
+               <h3>Browse or filter by:</h3>
+               
+               <div class="result_summary" data-xsl="result_summary">
+      <i>Showing results for "some search"</i>
+    </div>
+               
+            </div>
+            
+            <div class="tabbar">
+               
+               <div data-xsl='BW-facet' class="filternav">
+                  <small>Show records with: </small>
+                  <ul>
+                     <li>
+                        <a href="#" class="active" role="button">All</a>
+                     </li>
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-B"></div>Biographies
+                        </a>
+                     </li>
+                     <li>
+                        <a href="#" role="button">
+                           <div class="icon-W"></div>Wikipedia Links
+                        </a>
+                     </li>
+                  </ul>
+                     <!-- li><a href="#" role="button"><i class="C_icon"></i>Collection Links</a></li -->
+                  <span></span>
+                  <!-- this span to prepend select/option to -->
+               </div>
+               
+               <div class="browsenav" data-xsl='browsenav'>
+                  <ul>
+                     <li><a href="">Featured</a></li>
+                     <li class="active">
+                        <a href="">Name</a>
+                     </li>
+                     <li>
+                        <a href="">Occupation</a>
+                     </li>
+                     <li>
+                        <a href="">Subject</a>
+                     </li>
+                  </ul>
+               </div>
+               
+            </div>
+            
+         </div>
+         
+       <div class="azgrid" style="position: relative;"> 
+         <div data-xsl="AZ">A B C D ... Z </div> 
+         <div style="width: 100%;" data-snac-grid="{}">
+           <div class="alert alert-danger">Javascript failed.  Please contact the system operator.</div>
+         </div>
+       </div>
+         
+         
+     
+      
+      </div>
+    <div class="container" data-xsl="footer">
+      <div style="padding-top: 1em; padding-bottom: 0;">
+        <a href="/snac/search?rmode=terms">Terms and Privacy</a>
+        <span class="pull-right"><a href="http://socialarchive.iath.virginia.edu/about.html">About 
+        <abbr class="initialism">SNAC</abbr>
+        </a></span>
+      </div>
+    </div>
+      <!-- /.container -->
+      
+      <script data-xsl-asset="javascripts/all.js" src="../javascripts/all.js" charset="utf-8" type="text/javascript"></script>
+      
+      
+      <script data-xsl-asset="javascripts/sample.js" src="../javascripts/sample.js" charset="utf-8" type="text/javascript"></script>
+      
+      <script data-xsl-asset="javascripts/results.js" src="../javascripts/results.js" charset="utf-8" type="text/javascript"></script>
+      
+      
+      
+   </body>
+   
+</html>
