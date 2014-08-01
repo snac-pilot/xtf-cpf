@@ -13,7 +13,7 @@
       
     <style>
       h3 { color: black; }
-.list-comments {
+.csscolumns .list-comments {
  column-width: 15em;
  -moz-column-width: 15em;
  -webkit-column-width: 15em;
@@ -22,11 +22,18 @@
  -webkit-column-gap: .5em; 
 }
 
-.thumbnail {
+.csscolumns .thumbnail {
  display: inline-block;
  margin:  .5em;
  padding:  0; 
  width:98%;
+}
+
+.no-csscolumns .thumbnail {
+  width: 15em;
+  margin:  .5em;
+  height: 25em;
+  float: left;
 }
 
 .thumbnail img:hover {
