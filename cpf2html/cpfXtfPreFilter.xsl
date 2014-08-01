@@ -207,21 +207,7 @@
 
   <xsl:template match="eac:identity" mode="meta">
     <xsl:apply-templates select="eac:nameEntry" mode="meta"/>
-    <xsl:variable name="part" select="eac:nameEntry[1]/eac:part"/>
-    <xsl:variable name="identity">
-      <xsl:choose>
-        <xsl:when test="$part = '.'
-                     or $part = '--Correspondence.'
-                     or $part = ',.'
-                     or $part = '[].' ">
-          <xsl:text>ZZZZ</xsl:text>
-          <xsl:value-of select="replace(upper-case(eac:nameEntry[1]/eac:part),'^[^0-9A-Z\s]','')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="replace(replace(upper-case(eac:nameEntry[1]/eac:part),'^[^0-9A-Z\s]',''),'^\s20\$A','')"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="identity" select="replace(eac:nameEntry[1]/eac:part,'\p{Cc}','')"/>
     <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
       <xsl:value-of select="CharUtils:applyAccentMap('../conf/accentFolding/accentMap.txt', $identity)"/>
@@ -236,26 +222,13 @@
     <xsl:element name="facet-{normalize-space(eac:entityType)}">
       <xsl:attribute name="xtf:meta">yes</xsl:attribute>
       <xsl:attribute name="xtf:facet">yes</xsl:attribute>
-      <xsl:value-of select="eac:nameEntry[1]/eac:part"/>
+      <xsl:apply-templates mode="value-of" select="eac:nameEntry[1]/eac:part"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="eac:nameEntry[position()>1]" mode="meta">
-    <xsl:variable name="parts">
-      <xsl:value-of select="eac:part"/>
-    </xsl:variable>
-    <identity xtf:meta="yes"><!-- temp fix for no spaces between subfiled issues -->
-      <xsl:value-of select="normalize-space(replace(replace($parts,
-                            '([^0-9]|,*)([0-9].*)','$1 $2'),
-                            '(,|\.)([^ ])','$1 $2'))"/>
-    </identity>
-                            <!-- http://gskinner.com/RegExr/?2sgb9 -->
-                            <!-- http://gskinner.com/RegExr/?2sgbc -->
-  </xsl:template>
-
-  <xsl:template match="eac:nameEntry[1]" mode="meta">
+  <xsl:template match="eac:nameEntry" mode="meta">
     <identity xtf:meta="yes">
-      <xsl:value-of select="eac:part"/>
+      <xsl:apply-templates mode="value-of" select="eac:part"/>
     </identity>
   </xsl:template>
 
@@ -365,6 +338,17 @@
       <xsl:apply-templates select="@*"/>
       <xsl:value-of select="iso:langLookup(@languageCode)"/>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="eac:part" mode="value-of">
+      <xsl:value-of select="replace(.,'\p{Cc}','')"/>
+  </xsl:template>
+
+  <xsl:template match="eac:part">
+    <xsl:element name="{name()}" namespace="{namespace-uri()}">
+      <xsl:for-each select="@*"/>
+      <xsl:value-of select="replace(.,'\p{Cc}','')"/>
+    </xsl:element>
   </xsl:template>
 
   <!-- identity transform -->
