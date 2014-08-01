@@ -162,15 +162,31 @@
     <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
   </xsl:template>
 
-<!-- <name>
-  <namePart>University of California, San Diego</namePart>
-  <role> <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/rps">Repository</roleTerm> </role>
-</name> -->
   <xsl:template
     match="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart | ead:corpname" mode="main-facets">
     <facet-Location xtf:facet="yes" xtf:meta="yes">
-      <xsl:apply-templates/>
+    <xsl:choose>
+      <xsl:when test=". = 'Unknown'">
+        <xsl:apply-templates select="../../mods:recordInfo/mods:recordContentSource" mode="fixup-location"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
     </facet-Location>
+  </xsl:template>
+
+  <xsl:template match="mods:recordContentSource" mode="fixup-location">
+    <xsl:choose>
+      <xsl:when test=". = 'ISIL:DLC'">
+        <xsl:text>Library of Congress</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>Unknown (</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>)</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="eac:control" mode="meta">
