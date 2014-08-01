@@ -1013,20 +1013,29 @@ select="($relations)/eac:cpfRelation[
     </div>
   </xsl:template>
 
-<!-- 
-
-  <name>
-                     <namePart>University of Connecticut</namePart>
-                     <role>
-                        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/rps">Repository</roleTerm>
-                     </role>
-                  </name>
-               </mods>
-
--->
-
   <xsl:template match="mods:name">
-    <xsl:apply-templates select="mods:namePart"/>
+    <xsl:choose>
+      <xsl:when test="mods:namePart = 'Unknown'">
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates select="../mods:recordInfo/mods:recordContentSource" mode="fixup-location"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="mods:namePart"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+ <xsl:template match="mods:recordContentSource" mode="fixup-location">
+    <xsl:choose>
+      <xsl:when test=". = 'ISIL:DLC'">
+        <xsl:text>Library of Congress</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>Unknown (</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>)</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="@xlink:href">
