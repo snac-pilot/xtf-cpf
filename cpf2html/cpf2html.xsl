@@ -87,7 +87,7 @@ use html5 data-xsl* attributes to trigger xslt
       <xsl:element name="{name()}">
       <xsl:copy-of select="@*"/>
         <a href="{($wt)//@rights}">
-          <img src="{($wt)//@thumb}" alt= "" />
+          <img src="{($wt)//@thumb}" alt="picture of" style="min-width: 160px;"/>
           <div>Image from Wikipedia</div>
         </a>
       </xsl:element>
