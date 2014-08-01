@@ -210,7 +210,7 @@
     <input type="hidden" value="{@value}" name="{@name}"/>
   </xsl:template>
 
-  <xsl:template match='*[@tmpl:process-markup="sectionType"]|*[data-xsl="sectionType"]' mode="html-template">
+  <xsl:template match='*[@tmpl:process-markup="sectionType"]|*[@data-xsl="sectionType"]' mode="html-template">
     <xsl:element name="{name(.)}">
       <xsl:attribute name="class"><xsl:value-of select="@class"/></xsl:attribute>
       <xsl:attribute name="title"><xsl:value-of select="@title"/></xsl:attribute>
@@ -224,16 +224,6 @@
         $sectionType='cpfdescription' 
         or editURL:remove(editURL:remove($queryStringClean,'facet-identityAZ'),'facet-entityType')=''
       ">
-        <script>
-  $("label.advancedSearch").hide();
-  $("form.cpfSearch").hoverIntent(function () {
-    $("label.advancedSearch").css("display", "inline");
-  }, function () {
-    if ($("label.advancedSearch select").val() === 'cpfdescription') {
-      $("label.advancedSearch").fadeOut();
-    }
-  });
-        </script>
       </xsl:if>
     </xsl:element>
   </xsl:template>
@@ -760,21 +750,21 @@
 
   <!-- identity transform copies HTML from the layout file -->
 
-  <xsl:template match="*" mode="html-template sectionType-selected">
-    <xsl:element name="{name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{name(.)}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates mode="html-template"/>
-    </xsl:element>
+  <xsl:template match="@*|node()" mode="html-template">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="html-template"/>
+    </xsl:copy>
   </xsl:template>
 
-   
+  <xsl:template match="@*|node()" mode="sectionType-selected">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="sectionType-selected"/>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>
    <!--
-      Copyright (c) 2010, Regents of the University of California
+      Copyright (c) 2014, Regents of the University of California
       All rights reserved.
       
       Redistribution and use in source and binary forms, with or without 
