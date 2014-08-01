@@ -1008,8 +1008,10 @@ select="($relations)/eac:cpfRelation[
           </a>
         </xsl:otherwise>
       </xsl:choose>
+      <div>
       <xsl:apply-templates select="eac:objectXMLWrap/mods:mods/mods:name[mods:role/mods:roleTerm='Repository']"/>
       <xsl:apply-templates select="eac:objectXMLWrap//ead:repository"/>
+      </div>
     </div>
   </xsl:template>
 
