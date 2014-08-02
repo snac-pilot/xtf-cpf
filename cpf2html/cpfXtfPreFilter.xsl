@@ -351,6 +351,15 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="eac:biogHist[1]">
+    <xsl:for-each select="../eac:biogHist">
+      <xsl:sort select="sum(eac:p/string-length())" data-type="number" order="descending"/>
+      <xsl:copy-of select="."/>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="eac:biogHist[position() > 1]"/>
+
   <!-- identity transform -->
   <xsl:template match="@*|node()">
     <xsl:copy>
