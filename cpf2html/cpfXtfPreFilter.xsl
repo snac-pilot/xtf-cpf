@@ -207,7 +207,14 @@
 
   <xsl:template match="eac:identity" mode="meta">
     <xsl:apply-templates select="eac:nameEntry" mode="meta"/>
-    <xsl:variable name="identity" select="replace(eac:nameEntry[1]/eac:part,'\p{Cc}','')"/>
+    <xsl:variable
+      name="identity"
+      select="replace(
+        upper-case(
+          replace(eac:nameEntry[1]/eac:part,'\p{Cc}','')
+        ),'^[^0-9A-Z\s]',''
+      )"/>
+
     <!-- was getting errors sorting on identity from above, creating untokenized -->
     <sort-identity xtf:meta="yes" xtf:tokenize="false">
       <xsl:value-of select="CharUtils:applyAccentMap('../conf/accentFolding/accentMap.txt', $identity)"/>
