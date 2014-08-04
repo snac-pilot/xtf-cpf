@@ -12,6 +12,7 @@
   xmlns:FileUtils="java:org.cdlib.xtf.xslt.FileUtils"
   xmlns:CharUtils="java:org.cdlib.xtf.xslt.CharUtils"
   xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+  xmlns:this="this://xslt"
   exclude-result-prefixes="#all" 
   version="2.0">
 
@@ -82,10 +83,12 @@
     <xsl:apply-templates select="eac:cpfDescription/eac:relations/eac:cpfRelation[ends-with(@xlink:arcrole,'sameAs')][starts-with(@xlink:href,'http://en.wikipedia.org/wiki/')]" mode="main-facets"/>
     <xsl:for-each-group 
       select="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart | eac:cpfDescription/eac:relations/eac:resourceRelation//ead:repository/ead:corpname"
-      group-by="."
+      group-by="this:facet-Location(.)"
     >
-      <xsl:sort order="ascending" select="."/>
-      <xsl:apply-templates select="." mode="main-facets"/>
+      <xsl:sort order="ascending" select="current-grouping-key()"/>
+      <facet-Location xtf:facet="yes" xtf:meta="yes">
+        <xsl:value-of select="this:facet-Location(.)"/>
+      </facet-Location>
     </xsl:for-each-group>
 
   <xsl:variable name="ArchivalResource"
@@ -162,19 +165,17 @@
     <facet-Wikipedia xtf:facet="yes" xtf:meta="yes">Wikipedia</facet-Wikipedia>
   </xsl:template>
 
-  <xsl:template
-    match="eac:cpfDescription/eac:relations/eac:resourceRelation//mods:name[mods:role/mods:roleTerm='Repository']/mods:namePart | ead:corpname" mode="main-facets">
-    <facet-Location xtf:facet="yes" xtf:meta="yes">
+  <xsl:function name="this:facet-Location">
+    <xsl:param name="node"/>
     <xsl:choose>
-      <xsl:when test=". = 'Unknown'">
-        <xsl:apply-templates select="../../mods:recordInfo/mods:recordContentSource" mode="fixup-location"/>
+      <xsl:when test="$node/text() = 'Unknown'">
+        <xsl:apply-templates select="($node)/../../mods:recordInfo/mods:recordContentSource" mode="fixup-location"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates/>
+        <xsl:apply-templates select="$node"/>
       </xsl:otherwise>
     </xsl:choose>
-    </facet-Location>
-  </xsl:template>
+  </xsl:function>
 
   <xsl:template match="mods:recordContentSource" mode="fixup-location">
     <xsl:choose>
