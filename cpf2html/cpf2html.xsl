@@ -479,7 +479,11 @@ select="($relations)/eac:cpfRelation[
   -->
 
   <xsl:template match="*[@data-xsl='linkedData']">
-    <xsl:variable name="ident" select="($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part"/>
+    <xsl:variable name="ident" select="replace(
+      ($page)/eac:eac-cpf/eac:cpfDescription/eac:identity/eac:nameEntry[1]/eac:part,
+      ' ',
+      '+'
+    )"/>
     <xsl:call-template name="panel">
       <xsl:with-param name="id" select="'linkedData'"/>
       <xsl:with-param name="head">
