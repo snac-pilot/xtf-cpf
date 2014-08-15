@@ -439,6 +439,11 @@
                              editURL:remove($queryString, 'facet-localDescription'),
                              'browse-json', 'facet-localDescription') }">Subject</a>
                      </li>
+                     <li class="{if ($browse-json!='facet-Location') then '' else 'active'}">
+                        <a href="search?{ editURL:set(
+                             editURL:remove($queryString, 'facet-Location'),
+                             'browse-json', 'facet-Location') }">Location</a>
+                     </li>
                   </ul>
                </div>
   </xsl:template>
@@ -494,6 +499,7 @@
       <xsl:if test="not($browse-json)">Showing </xsl:if>
       <xsl:if test="$browse-json = 'facet-occupation'">Occupations from </xsl:if>
       <xsl:if test="$browse-json = 'facet-localDescription'">Subjects from </xsl:if>
+      <xsl:if test="$browse-json = 'facet-Locations'">Locations from </xsl:if>
       <xsl:value-of select="format-number($page/crossQueryResult/@totalDocs, '###,###')"/>
       <xsl:text> result</xsl:text>
       <xsl:if test="$page/crossQueryResult/@totalDocs != 1"><xsl:text>s</xsl:text></xsl:if>
@@ -503,6 +509,7 @@
       <span><xsl:apply-templates select="$page/crossQueryResult/parameters/param[@name='facet-entityType'],
                                          $page/crossQueryResult/parameters/param[ends-with(@name,'occupation')], 
                                          $page/crossQueryResult/parameters/param[ends-with(@name,'localDescription')], 
+                                         $page/crossQueryResult/parameters/param[ends-with(@name,'Location')], 
                                          $page/crossQueryResult/parameters/param[starts-with(@name,'f00')]" 
                mode="result_summary"/></span>
       </i>
@@ -527,6 +534,10 @@
 
   <xsl:template match="param[ends-with(@name,'occupation')]" mode="result_summary">
     Occupation: «<xsl:value-of select="@value"/>»
+  </xsl:template>
+
+  <xsl:template match="param[ends-with(@name,'Location')]" mode="result_summary">
+    Location: «<xsl:value-of select="@value"/>»
   </xsl:template>
 
   <xsl:template match="*[@tmpl:replace-markup='sumnav']" mode="html-template">
