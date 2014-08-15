@@ -155,6 +155,21 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="facet-Location-select">
+      <xsl:choose>
+        <xsl:when test="$browse-json = 'facet-Location'">
+          <xsl:text>*[</xsl:text>
+          <xsl:value-of select="$startDoc"/>
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="number($startDoc)+number(25)"/>
+          <xsl:text>]</xsl:text>
+
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>*[0]</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <query
       indexPath="index"
       termLimit="1000"
@@ -164,6 +179,7 @@
       startDoc="{$startDoc}"
       returnMetaFields="facet-identityAZ"
       maxDocs="{$maxDocs}">
+          <facet field="facet-Location" select="{$facet-Location-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-occupation" select="{$facet-occupation-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-localDescription" select="{$facet-localDescription-select}" sortGroupsBy="{$sortGroupsBy}"/>
           <facet field="facet-Wikipedia" select="*" sortGroupsBy="{$sortGroupsBy}"/>
@@ -287,7 +303,7 @@
   </xsl:template>
 
   <xsl:template match="/" mode="featured">
-    <xsl:variable name="totalFeaturedRecords" select="number(14090)"/>
+    <xsl:variable name="totalFeaturedRecords" select="number(17664)"/>
     <xsl:variable name="rnd" select="xs:integer(round($totalFeaturedRecords * math:random()))" as="xs:integer"/>
     <query indexPath="index" termLimit="1000" workLimit="20000000" 
       returnMetaFields="identity, facet-wikithumb, count-ArchivalResource, facet-Location, recordIds"
