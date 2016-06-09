@@ -316,7 +316,7 @@ use html5 data-xsl* attributes to trigger xslt
     <xsl:for-each-group 
       group-by="."
       select="($page)/eac:eac-cpf/eac:cpfDescription/eac:description
-                  //eac:localDescription[@localType='http://viaf.org/viaf/terms#AssociatedSubject']
+                  //eac:localDescription[@localType='http://socialarchive.iath.virginia.edu/control/terms#AssociatedSubject']
                     [not(matches(.,'^[\d|\s|-]+$'))]
       "
     ><!-- /^\d+$/  -->
